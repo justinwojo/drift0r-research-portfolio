@@ -53,16 +53,16 @@ Stable identifiers make the analysis reviewable:
 
 The project distinguishes documented findings, patient-reported history, interpretations, hypotheses, counterevidence, and open questions. Counts of citations are never treated as evidence weights.
 
-## Status (v0.1.3-rc.9)
+## Status (v0.1.3)
 
 | Item | Current status |
 |---|---|
-| Analysis version | `v0.1.3-rc.9` research preview |
+| Analysis version | `v0.1.3` initial public research release |
 | Evidence current through | 2026-08-05 |
 | Drift0r publication permission | Obtained 2026-08-05 |
 | Drift0r or clinician endorsement | None claimed |
 | Clinician review | Not performed |
-| Search indexing | Disabled during the quiet-preview phase |
+| Search indexing | Enabled; pages may appear in public search results |
 | Original medical PDFs in this repository | Not included |
 | Public contribution surface | Moderated GitHub issue templates; blank issues disabled |
 

@@ -1,7 +1,7 @@
 {
   "name": "drift0r-research-portfolio",
   "type": "module",
-  "version": "0.1.3-rc.9",
+  "version": "0.1.3",
   "private": true,
   "engines": {
     "node": ">=22.12.0"

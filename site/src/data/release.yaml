@@ -1,6 +1,6 @@
-# Live release metadata — v0.1.3-rc.9 public research-preview (Checkpoint J.2 / J.2.1).
-# noindex remains true; patient publication approval obtained; clinician review not performed.
-# Permission is not endorsement. Not marked published for indexing/production deploy.
+# Live release metadata — v0.1.3 initial public release.
+# Search indexing is enabled; patient publication approval obtained; clinician review not performed.
+# Permission is not endorsement. Research preview limitations remain in force.
 # Schema: schemas/release.schema.json
 # Site mode: DRIFT0R_SITE_MODE=preview (default) | publication — see site/src/lib/publication.ts
 #
@@ -9,13 +9,13 @@
 # 2) Record that tip SHA here (last reviewed content commit before this metadata-only update).
 # 3) Commit this release.yaml (+ packet) as a separate provenance commit that must NOT be used as
 #    its own base_commit. Never set base_commit to the hash of the commit that only edits this field.
-content_version: v0.1.3-rc.9
-as_of: "2026-08-05"
-last_reviewed: "2026-08-05"
+content_version: v0.1.3
+as_of: "2026-08-06"
+last_reviewed: "2026-08-06"
 # Date through which patient records and literature were considered for this analysis snapshot.
 evidence_current_through: "2026-08-05"
 disclaimer_id: legal-baseline-2026-08
-review_status: release_candidate
+review_status: published
 patient_approval:
   status: obtained
   scope: >-
@@ -40,11 +40,11 @@ clinician_review_scope:
   domains: []
   date: null
   label_must_not_imply_global: true
-# Release content tip (private monorepo) — last substantive Checkpoint J.2.1 follow-up UX commit (not this file).
+# Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "df2c1929fef1fd51b766054d48865d53cda818b1"
+base_commit: "bc4bf0fd314c75e8b621cd06c982e73ee2dc0016"
 allowlist_version: "1.9.1"
-noindex: true
+noindex: false
 ai_models_disclosed:
   - Grok (M4 / M4R / E2.x / Checkpoint F / F.1 / F.1.1 / G.1 / G.2 / G.2.1 / G.2.2 / H.1 / I / I.1 / I.1.1 / J.1 prelaunch remediation)
   - Claude (design package / Round-1 swarm / G audit / H final audit / J go-no-go)

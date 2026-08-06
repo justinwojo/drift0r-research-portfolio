@@ -8,6 +8,30 @@ not_medical_advice: true
 # IDs listed here are permanently reserved and must never be reassigned to new records.
 retired_or_reserved_ids: []
 entries:
+  - version: v0.1.3
+    date: "2026-08-06"
+    kind: patch
+    status: published
+    evidence_current_through: "2026-08-05"
+    summary: >-
+      Initial stable public release of the research evidence portfolio. This promotes the reviewed
+      v0.1.3-rc.9 candidate without changing medical evidence, claims, literature polarity, working
+      hypotheses, or confidence. Search indexing is enabled. The portfolio remains incomplete,
+      AI-assisted, not medical advice, and not clinician-reviewed; licensed clinicians must verify
+      all underlying records and findings.
+    added_evidence: []
+    changed_interpretations:
+      - "No analytical change from v0.1.3-rc.9; stable-release and indexing metadata only"
+    strengthened_or_weakened_hypotheses:
+      - "No hypothesis strength change"
+    retired_or_superseded: []
+    corrections: []
+    git_tag_planned: v0.1.3
+    github_release_planned: true
+    notes: >-
+      Promoted after the quiet custom-domain deployment and live HTTPS verification. Clinician
+      review remains not performed, and publication permission does not imply endorsement.
+
   - version: v0.1.3-rc.9
     date: "2026-08-05"
     kind: patch

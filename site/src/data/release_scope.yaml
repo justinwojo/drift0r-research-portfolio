@@ -1,11 +1,11 @@
-# Explicit per-surface publication approval for v0.1 public research-preview candidate.
+# Explicit per-surface publication approval for the v0.1 public research release.
 # Claim public_approved=true does NOT auto-approve these lists — each surface is listed.
 # Patient publication permission obtained 2026-08-05 (REV-0005 / DEC-0026).
 # Clinician review has NOT been performed — do not imply clinical validation.
-version: "1.1.0"
-as_of: "2026-08-05"
+version: "1.1.1"
+as_of: "2026-08-06"
 notes: >
-  v0.1 openly shared noindex research preview. Scope derived from repository IDs
+  v0.1 openly shared and indexed research preview. Scope derived from repository IDs
   for all launch medical surfaces. Clinician review remains not_reviewed. Primary
   instrument records remain unreviewed. Patient consent permits case-related
   publication; it does not establish medical accuracy.

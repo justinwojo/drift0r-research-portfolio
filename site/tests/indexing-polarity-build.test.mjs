@@ -53,15 +53,15 @@ function bodyOnly(html) {
 describe('indexing false-polarity publication build scan', () => {
   it('noindex:false fixture → index,follow meta; body has no stuck disabled/noindex copy', () => {
     const live = readFileSync(liveReleasePath, 'utf8');
-    assert.match(live, /^noindex:\s*true\s*$/m, 'live tracked release must remain noindex: true');
+    assert.match(live, /^noindex:\s*false\s*$/m, 'published live release must enable indexing');
 
     // Isolated fixture only — never write the tracked release.yaml.
     const fixtureDir = mkdtempSync(join(tmpdir(), 'drift0r-noindex-false-'));
     const fixtureRelease = join(fixtureDir, 'release-noindex-false.yaml');
-    const flipped = live.replace(/^noindex:\s*true\s*$/m, 'noindex: false');
-    assert.match(flipped, /^noindex:\s*false\s*$/m);
-    assert.notEqual(flipped, live);
-    writeFileSync(fixtureRelease, flipped, 'utf8');
+    const fixture = `${live}\n# Isolated noindex:false publication-test fixture.\n`;
+    assert.match(fixture, /^noindex:\s*false\s*$/m);
+    assert.notEqual(fixture, live);
+    writeFileSync(fixtureRelease, fixture, 'utf8');
 
     // Pre-flight: live file unchanged after writing fixture.
     assert.equal(readFileSync(liveReleasePath, 'utf8'), live);
@@ -93,7 +93,7 @@ describe('indexing false-polarity publication build scan', () => {
         live,
         'tracked release.yaml must not be mutated by polarity test',
       );
-      assert.match(readFileSync(liveReleasePath, 'utf8'), /^noindex:\s*true\s*$/m);
+      assert.match(readFileSync(liveReleasePath, 'utf8'), /^noindex:\s*false\s*$/m);
 
       const home = readFileSync(join(scratch, 'index.html'), 'utf8');
       assert.match(
@@ -155,6 +155,6 @@ describe('indexing false-polarity publication build scan', () => {
       rmSync(fixtureDir, { recursive: true, force: true });
     }
 
-    assert.match(readFileSync(liveReleasePath, 'utf8'), /^noindex:\s*true\s*$/m);
+    assert.match(readFileSync(liveReleasePath, 'utf8'), /^noindex:\s*false\s*$/m);
   });
 });

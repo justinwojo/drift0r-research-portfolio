@@ -143,10 +143,10 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.doesNotMatch(html, /Approval status/i);
     // Compact provenance: region label + collapsed version + short review-status (not full wall)
     assert.match(html, /aria-label="Version and review status"|provenance--compact/i);
-    assert.match(html, /v0\.1\.3-rc\.9/);
-    assert.match(html, /release candidate/i);
-    // robots meta still noindex while marketing lede does not need the token
-    assert.match(html, /name="robots"\s+content="noindex,\s*nofollow"/i);
+    assert.match(html, /v0\.1\.3/);
+    assert.match(html, /published/i);
+    // Stable public release permits indexing while keeping the research caveat.
+    assert.match(html, /name="robots"\s+content="index,\s*follow"/i);
     // Lede paragraph only (do not spill into the hero disclaimer callout)
     const ledeOnly = html.match(/<p class="lede landing-lede">([\s\S]*?)<\/p>/i);
     if (ledeOnly) {
@@ -308,11 +308,13 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.doesNotMatch(robots, /Disallow:\s*\/\s*\n/);
   });
 
-  it('live noindex:true → robots meta noindex,nofollow; provenance agrees; no hard-coded stuck noindex when flipped unit-tested elsewhere', () => {
+  it('live published release → robots meta index,follow; provenance agrees', () => {
     const html = readFileSync(join(dist, 'index.html'), 'utf8');
-    assert.match(html, /name="robots"\s+content="noindex,\s*nofollow"/i);
+    assert.match(html, /name="robots"\s+content="index,\s*follow"/i);
+    assert.doesNotMatch(html, /name="robots"\s+content="noindex/i);
     // Provenance disclosure (compact on home) still records indexing status accurately
-    assert.match(html, /indexing:\s*disabled\s*\(noindex,\s*nofollow\)/i);
+    assert.match(html, /indexing:\s*enabled/i);
+    assert.doesNotMatch(html, /indexing:\s*disabled/i);
     // Social preview meta
     assert.match(html, /property="og:image"/i);
     assert.match(html, /name="twitter:card"\s+content="summary_large_image"/i);

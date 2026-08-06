@@ -566,7 +566,7 @@ describe('J.2.1 rendered UX interaction regression', {
     // Collapsed provenance: version + short review label, not full wall
     assert.ok(m390.provText, 'compact provenance summary present');
     assert.doesNotMatch(m390.provText, /allowlist|patient approval|evidence current through/i);
-    assert.match(m390.provText, /v0\.1\.3-rc\.9|release candidate|release_candidate/i);
+    assert.match(m390.provText, /v0\.1\.3|published/i);
 
     writeFileSync(
       join(shotDir, 'overflow-report.json'),

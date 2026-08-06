@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HypothesisRecord from '../../components/HypothesisRecord.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getHypotheses } from '../../lib/data';
+import { CONFIDENCE_ORDER, CONFIDENCE_LABELS } from '../../lib/constants';
+import { withBase } from '../../lib/paths';
+
+const all = getHypotheses();
+const nullHyp = all.find((h) => h.id === 'H-NULL');
+const hypotheses = all.filter((h) => h.id !== 'H-NULL');
+---
+
+<BaseLayout
+  title="Working model"
+  currentPath="/working-model/"
+  description="Current working hypotheses with supporting and contradicting evidence. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Working model</div>
+    <h1>Hypotheses with what they fail to explain</h1>
+    <p class="lede">
+      Ordered by stable identifier (H1–H5), not as a leaderboard. Each record shows support and
+      contradiction with equal visual weight, plus what would change the assessment. H-NULL is a qualitative
+      baseline, not a competing disease label.
+    </p>
+    <AnalysisVersionBadge />
+  </section>
+
+  <section class="page-section">
+    <h2 class="sec">Confidence vocabulary</h2>
+    <p class="sec-note">
+      Five words only — never a percentage, score, or continuous bar. Dual architecture / module buckets
+      are shown separately and never averaged.
+    </p>
+    <div class="badge-row">
+      {
+        CONFIDENCE_ORDER.map((c) => (
+          <span class="badge mono">{CONFIDENCE_LABELS[c]}</span>
+        ))
+      }
+    </div>
+    <p class="record-note">
+      Rankings reflect multi-model research synthesis (Round 1, 2026-08-05), not a clinical diagnosis.
+      Models can be wrong and can agree on errors.
+    </p>
+    <p>
+      <a href={withBase('/working-model/evidence-table/')}>Printable evidence table</a>
+      {' · '}
+      <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+    </p>
+  </section>
+
+  {
+    nullHyp && (
+      <section class="page-section" id="H-NULL" aria-labelledby="H-NULL-title">
+        <div class="callout caution">
+          <div class="legend-label">Null model / base-rate honesty</div>
+          <h2 id="H-NULL-title" style="font-size: var(--t-h2); margin: 8px 0 10px;">
+            <span class="mono">{nullHyp.id}</span> — {nullHyp.title}
+          </h2>
+          <p style="margin: 0 0 10px;">{nullHyp.public_summary}</p>
+          <p class="record-note" style="margin: 0;">
+            A defensible numeric population prior for this exact multi-system presentation is
+            <strong> not available</strong> from the sources currently cited on this site. Stating a
+            false-precision percentage would overclaim. H-NULL is Bayesian discipline: several common or
+            semi-independent processes may coexist without one rare unifier. It is not a diagnosis and not
+            a vote against H1–H5.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  {hypotheses.map((h) => <HypothesisRecord hypothesis={h} />)}
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <div class="callout">
+      <strong class="legend-label">What this page does not say</strong>
+      <p style="margin: 8px 0 0;">
+        No hypothesis here is a diagnosis. Infection limbs are detachable pending adjudication. Specialty
+        laboratory-developed tests remain not independently confirmed.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

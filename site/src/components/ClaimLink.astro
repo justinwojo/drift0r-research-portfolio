@@ -1,0 +1,45 @@
+---
+/**
+ * Linked CLM reference with data attributes for the accessible record-preview tooltip.
+ * Click/keyboard navigation to the case fragment is preserved; preview is progressive enhancement.
+ */
+import { getClaimById } from '../lib/data';
+import {
+  claimExcerpt,
+  claimPreviewFromClaim,
+  isClaimId,
+  recordPreviewDataAttrs,
+} from '../lib/claimPreview';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  id: string;
+  /** Optional trailing text (e.g. full statement) rendered after the link. */
+  showExcerptInline?: boolean;
+  class?: string;
+}
+const { id, showExcerptInline = false, class: className = 'mono claim-link' } = Astro.props;
+const claim = isClaimId(id) ? getClaimById(id) : undefined;
+const href = isClaimId(id) ? withBase(`/case/#${id}`) : null;
+const preview = claim ? claimPreviewFromClaim(claim) : null;
+const attrs = recordPreviewDataAttrs(preview);
+const excerpt = claim ? claimExcerpt(claim.public_statement || '', 120) : '';
+---
+
+{
+  href ? (
+    <a href={href} class={className} {...attrs}>
+      {id}
+    </a>
+  ) : (
+    <span class={className}>{id}</span>
+  )
+}
+{
+  showExcerptInline && excerpt ? (
+    <span class="claim-inline-excerpt">
+      {': '}
+      {excerpt}
+    </span>
+  ) : null
+}

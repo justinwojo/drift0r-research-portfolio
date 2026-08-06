@@ -1,0 +1,57 @@
+name: Validate public research portfolio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: site
+    env:
+      DRIFT0R_SITE_MODE: publication
+      DRIFT0R_SITE_URL: https://drift0rresearch.org
+      DRIFT0R_PUBLIC_REPO_URL: https://github.com/justinwojo/drift0r-research-portfolio
+      DRIFT0R_SKIP_EXPORT_BUILD_TEST: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type and content checks
+        run: npm run check
+
+      - name: Unit tests before build
+        run: npm test
+
+      - name: Build publication artifact
+        run: npm run build:publication
+
+      - name: Post-build tests
+        run: npm test
+
+      - name: Validate publication artifact and rendered contribution links
+        env:
+          DRIFT0R_REQUIRE_PUBLIC_REPO_URL: '1'
+        run: node scripts/require-publication-mode.mjs --require-public-repo

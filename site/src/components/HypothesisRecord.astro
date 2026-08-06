@@ -1,0 +1,196 @@
+---
+import type { Hypothesis } from '../lib/data';
+import { getClaimById, getLitById, getUqById, kindMeta, reviewMeta } from '../lib/data';
+import {
+  hypothesisPreviewFromHypothesis,
+  recordPreviewDataAttrs,
+  uqPreviewFromUq,
+} from '../lib/claimPreview';
+import MarginApparatus from './MarginApparatus.astro';
+import Badge from './Badge.astro';
+import ClaimLink from './ClaimLink.astro';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  hypothesis: Hypothesis;
+}
+const { hypothesis: h } = Astro.props;
+const kind = kindMeta('hypothesis');
+const review = reviewMeta(h.review_status);
+const hPreviewAttrs = recordPreviewDataAttrs(hypothesisPreviewFromHypothesis(h));
+
+function litLine(id: string): string {
+  const e = getLitById(id);
+  return e ? `${id}: ${e.title} (${e.year})` : id;
+}
+---
+
+<article class="hypothesis" id={h.id} aria-labelledby={`${h.id}-title`}>
+  <div class="with-apparatus">
+    <div>
+      <div class="record-head">
+        <span class="record-id mono" {...hPreviewAttrs} tabindex="0">{h.id}</span>
+        <Badge glyph={kind.glyph} label={kind.label} css={kind.css} />
+        <Badge glyph={review.glyph} label={review.label} />
+        <span class="mono" style="font-size: 12px; color: var(--muted);">as of {h.as_of}</span>
+        {
+          h.supersedes ? (
+            <span class="mono" style="font-size: 12px; font-weight: 700;">
+              supersedes {h.supersedes}
+            </span>
+          ) : null
+        }
+      </div>
+      {
+        h.supersedes ? (
+          <div class="callout caution" style="margin: 8px 0 10px;" role="note">
+            <strong class="legend-label">Supersession notice</strong>
+            <p style="margin: 6px 0 0; font-size: 14px;">
+              This hypothesis supersedes <span class="mono">{h.supersedes}</span>. Prior IDs remain reserved and are
+              never reused. See the{' '}
+              <a href={withBase('/changelog/')}>analysis changelog</a> for release-level history.
+            </p>
+          </div>
+        ) : null
+      }
+      <h2 id={`${h.id}-title`} style="font-size: var(--t-h2); margin: 8px 0 12px;">{h.title}</h2>
+      <p class="lede" style="font-size: 17px;">{h.public_summary}</p>
+      <p class="record-note">
+        This is a <strong>working research hypothesis</strong>, not a diagnosis. Rankings reflect multi-model
+        research synthesis (Round 1, 2026-08-05), not a clinical diagnosis. Models can be wrong and can agree on errors.
+      </p>
+
+      <div class="coverage">
+        <div class="col support">
+          <h3>+ What it would explain</h3>
+          {
+            h.explains_claim_ids.length ? (
+              <ul>
+                {h.explains_claim_ids.map((id) => (
+                  <li>
+                    <ClaimLink id={id} />
+                    {': '}
+                    {getClaimById(id)?.public_statement || ''}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>— none listed —</p>
+            )
+          }
+        </div>
+        <div class="col contra">
+          <h3>− What it does not explain</h3>
+          {
+            h.does_not_explain_claim_ids.length ? (
+              <ul>
+                {h.does_not_explain_claim_ids.map((id) => (
+                  <li>
+                    <ClaimLink id={id} />
+                    {': '}
+                    {getClaimById(id)?.public_statement || ''}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                No explicit “does not explain” claim IDs on this record. Absence of a list is not evidence that the
+                hypothesis covers the full case.
+              </p>
+            )
+          }
+        </div>
+      </div>
+
+      {
+        h.contradicting_literature_ids.length > 0 && (
+          <div class="callout caution">
+            <strong class="legend-label">Contradicting literature (full list)</strong>
+            <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+              {h.contradicting_literature_ids.map((id) => (
+                <li>
+                  <a href={withBase(`/literature/${id}/`)} class="mono">
+                    {id}
+                  </a>
+                  {': '}
+                  {litLine(id).replace(`${id}: `, '')}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        h.supporting_literature_ids.length > 0 && (
+          <div class="callout" style="margin-top: 12px;">
+            <strong class="legend-label">Supporting literature (full list)</strong>
+            <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+              {h.supporting_literature_ids.map((id) => {
+                const e = getLitById(id);
+                return (
+                  <li>
+                    <a href={withBase(`/literature/${id}/`)} class="mono">
+                      {id}
+                    </a>
+                    {e ? `: ${e.title} (${e.year})` : ''}
+                    {e?.quality_notes && /not a match|EXCLUSION|women only|uremia|CKD/i.test(e.quality_notes) ? (
+                      <span class="mono" style="display: block; font-size: 12px; color: var(--contra);">
+                        Applicability flag — see card for cohort limits.
+                      </span>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
+            <p class="record-note" style="margin: 8px 0 0;">
+              Counts are not weights. Supporting-list membership is not etiologic proof.
+            </p>
+          </div>
+        )
+      }
+
+      <div class="change-block">
+        <h3>What would change this?</h3>
+        <p style="margin: 0 0 8px; font-size: 14.5px;">
+          Concrete open items from the unresolved-question register. These are research gaps, not orders.
+        </p>
+        {
+          h.what_would_change.length ? (
+            <ul style="margin: 0; padding-left: 1.1em;">
+              {h.what_would_change.map((item) => {
+                const uq = getUqById(item.id);
+                const uqAttrs = uq
+                  ? recordPreviewDataAttrs(uqPreviewFromUq(uq))
+                  : { 'data-record-preview': item.id, 'data-record-type': 'unresolved_question' };
+                return (
+                  <li>
+                    <span class="mono uq-chip" tabindex="0" {...uqAttrs}>
+                      {item.id}
+                    </span>
+                    : {item.text}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p>No open questions linked on this hypothesis record.</p>
+          )
+        }
+        {
+          h.what_would_not_change.length > 0 && (
+            <>
+              <h3 style="margin-top: 14px;">What would <em>not</em> change this</h3>
+              <ul style="margin: 0; padding-left: 1.1em;">
+                {h.what_would_not_change.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+      </div>
+    </div>
+    <MarginApparatus hypothesis={h} />
+  </div>
+</article>

@@ -1,0 +1,76 @@
+name: Correction, privacy, or removal request
+description: >-
+  Report a factual error about the patient, a privacy concern, or request
+  correction/removal of published material. Not for research literature suggestions.
+title: "[privacy/correction/removal] "
+labels: ["privacy", "correction", "removal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.**
+
+        Use this template for:
+        - Factual corrections about the published case materials
+        - Privacy concerns about what is published
+        - Requests to correct, limit, or remove published content
+
+        ### Do not post private medical information
+        - **Do not** attach lab PDFs, imaging, clinic notes, or other private records
+        - **Do not** paste full private identifiers (addresses, phone numbers, full DOB, etc.)
+        - **Do not** request personal medical advice or post treatment instructions
+        - Quote only what is **already on the public site or public repository**, or describe the issue in general terms
+
+        Sensitive consent or **withdrawal of publication consent** from Drift0r may continue through the **existing private correspondence channel** with the repository owner (not this public issue form). Public issues are moderated and may be visible to others.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Type of request
+      options:
+        - Factual correction about published content
+        - Privacy concern about published content
+        - Request to correct or limit published wording
+        - Request to remove published material
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: input
+    id: record_id
+    attributes:
+      label: Record or page (if known)
+      description: e.g. CLM-0046, /case/, literature card ID, or a site URL path
+      placeholder: /case/ or CLM-
+
+  - type: textarea
+    id: what_is_wrong
+    attributes:
+      label: What is wrong or what should change
+      description: >-
+        Prefer quoting public site text only. Do not paste private medical records.
+        If this is a removal request, say what should be removed and why (in general terms).
+    validations:
+      required: true
+
+  - type: textarea
+    id: preferred_outcome
+    attributes:
+      label: Preferred outcome
+      description: e.g. correct the wording, add a caveat, remove a claim, take down a page
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: >-
+            I am not posting private medical records, personal identifiers of third parties,
+            treatment instructions, or a personal medical-advice request in this issue.
+          required: true
+        - label: >-
+            I understand this issue is on a public repository surface and may be visible to others;
+            sensitive consent or withdrawal from Drift0r may use the existing private correspondence channel instead.
+          required: true

@@ -1,0 +1,220 @@
+---
+import '../styles/global.css';
+import '../styles/print.css';
+import ProvenanceBar from '../components/ProvenanceBar.astro';
+import ClaimPreviewRuntime from '../components/ClaimPreviewRuntime.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import StatusNotice from '../components/StatusNotice.astro';
+import { DISCLAIMER_SHORT, MASTHEAD_NAME, PERSISTENT_STATUS_NOTICE } from '../lib/constants';
+import { getRelease, getClaims } from '../lib/data';
+import { robotsMetaContent } from '../lib/indexing';
+import { withBase } from '../lib/paths';
+import { assertPublicationSafe, getSiteMode } from '../lib/publication';
+import {
+  absoluteSiteUrl,
+  isRealSiteOrigin,
+  readConfiguredSiteUrl,
+  siteOriginFromConfiguredUrl,
+} from '../lib/siteUrl';
+
+interface Props {
+  title: string;
+  description?: string;
+  currentPath?: string;
+  showDisclaimer?: boolean;
+  isPrintRoute?: boolean;
+  /** When true (default for medical routes), publication mode fails if zero claims approved. */
+  publicationRequiresApprovedClaims?: boolean;
+  /**
+   * When true, publication mode also requires this route in release_scope.approved_hardcoded_routes.
+   * Default true for medical routes; pure meta routes set false.
+   */
+  publicationRequiresRouteApproval?: boolean;
+}
+const {
+  title,
+  description = 'AI-assisted research evidence portfolio. Research only — not medical advice.',
+  currentPath = '/',
+  showDisclaimer = true,
+  isPrintRoute = false,
+  publicationRequiresApprovedClaims = true,
+  publicationRequiresRouteApproval = publicationRequiresApprovedClaims,
+} = Astro.props;
+/** Homepage uses a compact version/review disclosure instead of the full black provenance wall. */
+const provenanceCompact = currentPath === '/' || currentPath === '';
+
+const release = getRelease();
+const pageTitle = `${title} · ${MASTHEAD_NAME}`;
+// Print routes carry their own disclaimer inside the sheet; avoid duplicate chrome.
+const effectiveShowDisclaimer = isPrintRoute ? false : showDisclaimer;
+
+/**
+ * Canonical / OG origin: single build-time source (DRIFT0R_SITE_URL → Astro site).
+ * Prefer Astro.site when set; fall back to env. Never hard-code a second origin that
+ * can diverge from the Astro base used for internal links (custom-domain root = base /).
+ */
+const configuredSiteUrl =
+  (Astro.site ? Astro.site.href : '') || readConfiguredSiteUrl() || 'https://example.invalid/drift0r';
+const SITE_ORIGIN = siteOriginFromConfiguredUrl(configuredSiteUrl) || 'https://example.invalid';
+const ogDescription =
+  description && !/T-score|ng\/dL|tryptase|diagnosis|osteoporosis|hypogonad|thiamine|IgG/i.test(description)
+    ? description
+    : 'AI-assisted research evidence portfolio. Research only — not medical advice. Not clinician-reviewed.';
+const canonicalPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+const canonicalUrl = absoluteSiteUrl(SITE_ORIGIN, canonicalPath === '//' ? '/' : canonicalPath);
+/** release.yaml:noindex is the sole source for robots meta (and provenance via same flag). */
+const robotsContent = robotsMetaContent(Boolean(release.noindex));
+/** Production-safe 1200×630 social image — generic framing only (no medical detail). */
+const ogImagePath = withBase('/images/og-default.png');
+const ogImageUrl = isRealSiteOrigin(SITE_ORIGIN)
+  ? absoluteSiteUrl(SITE_ORIGIN, ogImagePath)
+  : ogImagePath;
+const ogImageAlt =
+  'Research Evidence Portfolio — independent community research preview. Not medical advice.';
+
+// Publication mode fail-closed: medical surfaces cannot render when nothing is approved,
+// and hardcoded medical routes require explicit release-scope route approval.
+// Opt out on pure meta routes via publicationRequiresApprovedClaims={false}.
+if (publicationRequiresApprovedClaims || publicationRequiresRouteApproval) {
+  assertPublicationSafe(getSiteMode(), getClaims().length, {
+    surface: currentPath || title,
+    requireApprovedClaims: publicationRequiresApprovedClaims,
+    requireRouteApproval: publicationRequiresRouteApproval,
+    routePath: currentPath || '/',
+  });
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content={robotsContent} />
+    <meta name="description" content={ogDescription} />
+    <meta name="color-scheme" content="light" />
+    <title>{pageTitle}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="any" />
+    <meta name="generator" content={Astro.generator} />
+    {/* Open Graph / X — generic research framing only; never unfurl medical detail. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={MASTHEAD_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+  </head>
+  <body class={isPrintRoute ? 'print-route' : undefined}>
+    <a class="skip" href="#main">Skip to main content</a>
+    {/* Persistent status on every HTML route, including print routes (F.1.1). */}
+    <div class="status-notice-bar">
+      <div class="wrap">
+        <StatusNotice printVisible={true} />
+      </div>
+    </div>
+    <div class={isPrintRoute ? 'no-print' : undefined}>
+      <ProvenanceBar compact={provenanceCompact} />
+    </div>
+    {!isPrintRoute && <ClaimPreviewRuntime />}
+    {
+      !isPrintRoute && (
+        <div class="disclaimer-sticky no-print">
+          {DISCLAIMER_SHORT}{' '}
+          <a href="#research-disclaimer">Full disclaimer</a>
+        </div>
+      )
+    }
+    <div class={isPrintRoute ? 'no-print' : undefined}>
+      <SiteHeader currentPath={currentPath} />
+    </div>
+    <main id="main">
+      <div class="wrap">
+        {effectiveShowDisclaimer && <Disclaimer />}
+        <slot />
+      </div>
+    </main>
+    <div class={isPrintRoute ? 'no-print' : undefined}>
+      <SiteFooter />
+    </div>
+    {/*
+      Non-print routes: Cmd+P must NOT emit multi-page medical content without
+      recurring disclaimers (H.1.3). print.css hides all body children except this
+      block and shows only a one-page safety notice pointing at the four designated
+      browser-print routes. Stamped QA PDFs are local-only and not shipped.
+    */}
+    {
+      !isPrintRoute && (
+        <aside class="print-browser-block" role="note" aria-label="Print not available for this page">
+          <h1>This page is not a designated browser-print route</h1>
+          <p>
+            Browser printing of multi-page medical content is limited to four routes that carry
+            recurring on-page disclaimers. This page’s medical content is intentionally withheld from
+            the print output so it cannot leave the site without those notices.
+          </p>
+          <p>
+            Print only from one of these routes (index:{' '}
+            <a href={withBase('/about/downloads/')}>Printable routes</a>):
+          </p>
+          <ol>
+            <li>
+              <a href={withBase('/for-clinicians/')}>For clinicians</a>
+            </li>
+            <li>
+              <a href={withBase('/working-model/evidence-table/')}>Working model evidence table</a>
+            </li>
+            <li>
+              <a href={withBase('/questions-for-clinicians/packet/')}>
+                Questions for clinicians — packet
+              </a>
+            </li>
+            <li>
+              <a href={withBase('/about/snapshot/')}>Research snapshot</a>
+            </li>
+          </ol>
+          <p class="print-browser-block-disclaimer mono">
+            Research only — not medical advice. Research preview · Published with Drift0r's permission ·
+            Permission is not endorsement · Not clinician-reviewed · clinician review:{' '}
+            {release.clinician_review_scope.status === 'not_reviewed'
+              ? 'not performed'
+              : release.clinician_review_scope.status.replace(/_/g, ' ')}{' '}
+            · {MASTHEAD_NAME} · analysis version {release.content_version} · evidence current through{' '}
+            {release.evidence_current_through} · as of {release.as_of} · patient approval:{' '}
+            {release.patient_approval.status} · {PERSISTENT_STATUS_NOTICE}. Licensed clinicians must verify underlying
+            records. Do not start, stop, or change treatment based on this material. Separately built PDF files of
+            medical pages are not available for download.
+          </p>
+        </aside>
+      )
+    }
+    {/*
+      Legacy .print-footer kept in DOM for assistive tech / screen context only.
+      Under @media print it is always display:none (Chromium fixed footers cover content;
+      designated routes use in-flow banners; non-print routes use .print-browser-block).
+    */}
+    <div class="print-footer" role="note">
+      Research only — not medical advice. Research preview · Published with Drift0r's permission · Permission is not
+      endorsement · Not clinician-reviewed · clinician review: {
+        release.clinician_review_scope.status === 'not_reviewed'
+          ? 'not performed'
+          : release.clinician_review_scope.status.replace(/_/g, ' ')
+      } · {MASTHEAD_NAME} · analysis version {release.content_version} · evidence current through{' '}
+      {release.evidence_current_through} · as of {release.as_of} · patient approval: {
+        release.patient_approval.status
+      } · {PERSISTENT_STATUS_NOTICE}. Licensed clinicians must verify underlying records. Do not start, stop, or change
+      treatment based on this material.
+    </div>
+  </body>
+</html>

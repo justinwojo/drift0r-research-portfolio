@@ -1,0 +1,2339 @@
+meta:
+  run_id: 2026-08-publication-readiness
+  created: '2026-08-05'
+  base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
+  # Inventory extraction base (when claims were first inventoried). Distinct from
+  # site/src/data/release.yaml base_commit (release content tip, currently b368809…).
+  # Do not treat meta.base_commit as the public release content commit.
+  inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
+  release_content_commit_ref: site/src/data/release.yaml#base_commit
+  evidence_pack_version: v1+v2
+  purpose: Public research-preview claim inventory (74 approved A/B/C rows; do_not_publish omitted)
+  not_medical_advice: true
+  claim_count: 74
+  tier_counts:
+    Tier A: 61
+    Tier B: 11
+    Tier C: 2
+  kind_counts:
+    hypothesis: 8
+    interpretation: 4
+    observed_fact: 34
+    reported_history: 7
+    research_question: 21
+  verification_counts:
+    contested: 1
+    not_verified: 21
+    partially_verified: 52
+  schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
+  public_export: true
+  withheld_do_not_publish_count: 0
+  notes: Private monorepo inventory retains two do_not_publish rows (CLM-0075, CLM-0076) which are not
+    exported here.
+claims:
+- id: CLM-0001
+  statement: Subject is an adult male born 1987 (age ~38 at latest 2025–2026 studies).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: demographics
+  patient_sources:
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Identity section
+    record_date: ''
+  - source_id: patient_yaml
+    path: evidence/facts/patient.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: meta.birth_year
+    record_date: ''
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: header ages 37–38
+    record_date: 2025-2026
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Birth year and age consistent across pack and specialty summaries; original ID documents not
+    in repo.
+  triage: Tier A
+- id: CLM-0002
+  statement: Public case materials were released by the patient in de-identified form for community research
+    help (YouTube 2026-08-03).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: provenance
+  patient_sources:
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Identity / video URL
+    record_date: '2026-08-03'
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: ''
+    record_date: '2026-08-03'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0003
+  statement: DXA lumbar L3 Z-score −4.3 on 2025-06-16 at Site 1 (BMD 0.631 g/cm²); same-day L3 T-score
+    −4.3 (Z-score preferred for males <50 per ISCD).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Appendix per-vertebra table
+    record_date: '2025-06-16'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Hard numbers table
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T001
+    record_date: '2025-06-16'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Transcribed from patient-compiled DXA summary, not original printout.
+  triage: Tier A
+- id: CLM-0004
+  statement: DXA L1–L4 total Z-score −3.7 (BMD 0.681 g/cm²) at Site 1 on 2025-06-16; T-score −3.7 (Z-score preferred for males <50 per ISCD).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: L1–L4 table + appendix
+    record_date: '2025-06-16'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0005
+  statement: Left forearm total Z-score −3.1 and T-score −3.3 on 2026-06-19 Site 1 (BMD 0.516 g/cm²) (Z-score preferred for males <50 per ISCD).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Left forearm table
+    record_date: '2026-06-19'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Hard numbers
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0006
+  statement: Total hip BMD fell from 0.836 to 0.802 g/cm² (compiled summary states −4.2%; recomputation
+    (0.802−0.836)/0.836 ≈ −4.1%) between 2025-06-16 and 2026-06-19 on the same Site 1 scanner; compiled
+    summary states LSC=0.027 g/cm² and calls the change significant at 95% confidence.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Left hip table + LSC footnote
+    record_date: 2025-06-16 to 2026-06-19
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Total hip 12 mo −4.2%
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T004
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Absolute change −0.034 g/cm² exceeds stated LSC 0.027. Facility precision report beyond summary
+    not in repo. COR-0001.
+  triage: Tier A
+- id: CLM-0007
+  statement: Site 1 and Site 2 DXA systems are different scanners; absolute BMD is not comparable across
+    sites. Only same-scanner comparisons are used for percent change in the compiled summary.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Interpretation caveat; L1–L4 cross-site note
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0011. Prevents misreading Site2 L1–L4 T−2.9 as recovery from Site1 T−3.7.
+  triage: Tier A
+- id: CLM-0008
+  statement: Patient-compiled bone summary applies WHO classification by lowest T-score and labels the
+    case 'Osteoporosis' (spine and forearm osteoporotic range; hip osteopenic).
+  kind: interpretation
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: At a glance diagnosis line; reading notes WHO thresholds
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: patient_compiled_summary
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0002. Not an independent clinician chart diagnosis string recovered in-repo. For males <50,
+    public language must emphasize Z-scores.
+  triage: Tier A
+- id: CLM-0009
+  statement: For a male younger than 50, DXA interpretation should emphasize Z-scores and secondary-cause
+    evaluation rather than using T-score alone as a standalone diagnostic label.
+  kind: research_question
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources: []
+  literature_refs:
+  - lit-0015
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ISCD densitometry positions (lit-0015 / Shuhart et al. J Clin Densitom 2023). lit-0001 Endocrine
+    Society 2012 male osteoporosis CPG is formally retired 2025-10-16 and is not used as current guidance
+    support. lit-0224 is alias of lit-0015 (same ISCD page).
+  triage: Tier A
+- id: CLM-0010
+  statement: Serum CTX 616 pg/mL on 2026-06-26 (reference 70–780 pg/mL) — upper end of reference interval;
+    fasting/time-of-day not stated in compiled summary.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Bone turnover marker table
+    record_date: '2026-06-26'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: CTX row
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T007
+    record_date: '2026-06-26'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0006. Do not over-interpret as pathognomonic uncoupling without formation markers.
+  triage: Tier A
+- id: CLM-0011
+  statement: Bone formation markers (P1NP, bone-specific ALP, osteocalcin) are not documented among ~118
+    tests in the public ledger.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: counts + gaps; no P1NP/BSAP entries
+    record_date: ''
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #1'
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Absence of documentation is not proof never drawn outside public pack.
+  triage: Tier A
+- id: CLM-0012
+  statement: Serial total ALP values in endocrine summary are mid-low within adult reference 36–130 U/L
+    (52, 42, 50 U/L on sampled dates); age/sex-adjusted pediatric/young-adult reference audit not completed.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: CMP ALP rows 03/15/21, 09/16/22, 10/01/25
+    record_date: 2021-2025
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T100
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: HPP branch remains low unless age/sex-adjusted ALP truly low — unresolved Q.
+  triage: Tier B
+- id: CLM-0013
+  statement: L5–S1 bilateral pars defects with grade 1 spondylolisthesis and right L5 root impingement
+    are documented on imaging summaries; SCS implanted March 2026.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: spine
+  patient_sources:
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Lumbar MRI/CT themes
+    record_date: 2024-2025
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Core syndrome #4'
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T076 T077 T097
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Pars level reported slightly differently across studies (L4–L5 vs L5) — preserve as documented
+    variance.
+  triage: Tier A
+- id: CLM-0014
+  statement: Whether L5 pars defects meet a formal fragility-fracture definition for young-male osteoporosis
+    criteria is not adjudicated in the public pack.
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: pars fractures wording
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: atraumatic L5–S1 facet fractures wording
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Imaging uses 'pars fractures'; formal OP fragility-fracture criteria not applied in-repo.
+  triage: Tier B
+- id: CLM-0015
+  statement: 24-hour urine calcium values 283 → 254 → 333 mg/24h (male; common threshold often 300 mg/day
+    or 4 mg/kg — 2 of 3 collections below 300), with high urine sodium on latest panel (174 mmol/24h)
+    and alkaline urine pH 6.53. Middle value (254 on 2025-09-30) was normal at the performing lab (ref
+    100–300) and high only against Litholink range 40–250; ranges differ by lab.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal_bone
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Trend table + stone-risk panel
+    record_date: 2025-07 to 2026-05
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 24h urine Ca up to 333
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T055 T056
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Inter-lab reference ranges differ (performing lab 100–300 vs Litholink 40–250). Do not label
+    as 'serial hypercalciuria' without stating values and male threshold context. Not a stone-former
+    narrative (CT urogram 2026-02-27 without stones).
+  triage: Tier A
+- id: CLM-0016
+  statement: Heterozygous SLC7A9 (cystinuria carrier) documented with 2022 urine cystine/lysine elevation;
+    2026 qualitative urine cystine negative at high volume.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Clinical notes + abnormal findings
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T057 T059 T058
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0017
+  statement: Primary hyperparathyroidism is not supported by available serum calcium and PTH values in
+    the public summaries (normal Ca; low-normal PTH).
+  kind: interpretation
+  verification_status: partially_verified
+  medical_domain: endocrine_bone
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: PTH/Ca notes
+    record_date: ''
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: serum Ca 9.7 note
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Formally against
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Interpretation of available labs; not a universal exclusion forever.
+  triage: Tier A
+- id: CLM-0018
+  statement: Historical total testosterone reported as low as ~34 ng/dL (narrative/clinical-context in
+    summaries); earliest discrete tabulated total T values in endocrine summary begin 2021.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Clinical context opening; methodology note (1)
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Abnormal findings / timeline ~2017–2019
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Hard numbers Total T historical
+    record_date: ''
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: timeline ~Age 30 T 34 x2
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0004. Original 2017–2019 lab reports not in repo.
+  triage: Tier A
+- id: CLM-0019
+  statement: On-therapy total testosterone by LC/MS has been in roughly the 500–800+ ng/dL range on multiple
+    documented draws (e.g., 554, 656, 766).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: HPG longitudinal table
+    record_date: 2021-2026
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T on clomiphene later
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0020
+  statement: 'Off-therapy pattern documented 2021-07-14: total T 140 ng/dL (immunoassay) with low LH 1.3;
+    consistent with central/off-SERM pattern per summary methodology notes.'
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Abnormal findings table; notes (2)(6)
+    record_date: '2021-07-14'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Leans against classic hypergonadotropic Klinefelter pattern on available off-therapy draw, but
+    karyotype not done.
+  triage: Tier B
+- id: CLM-0021
+  statement: Estradiol values on therapy are documented in-range on multiple dates (e.g., 9.3–35 pg/mL
+    depending on assay); mixed sensitive LC/MS vs immunoassay methods limit comparability.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: HPG table estradiol row; methodology note (5)
+    record_date: 2021-2026
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T012
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Original hypogonadism-era estradiol not available.
+  triage: Tier B
+- id: CLM-0022
+  statement: Pituitary MRI ~2021 described a ~2–3 mm focus of differential enhancement; 2022 follow-up
+    did not visualize a discrete mass.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Pituitary theme
+    record_date: 2021-2022
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Clinical context
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T070 T071
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0023
+  statement: Serum/plasma thiamine 7 nmol/L on 2022-09-29 (reference 8–30) — laboratory-low / deficient
+    by that assay.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Primary finding table
+    record_date: '2022-09-29'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Hard numbers
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T021
+    record_date: '2022-09-29'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0024
+  statement: Whole-blood thiamine 381.8 nmol/L on 2023-04-11 (reference 66.5–200.0) after supplementation
+    — high / over-repleted on that assay; not directly comparable to serum value.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Primary finding table + comparability note
+    record_date: '2023-04-11'
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T022
+    record_date: '2023-04-11'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0025
+  statement: Patient-reported rapid relief of burning neuropathy within days of thiamine/benfotiamine
+    repletion and fuller recovery over ~9–12 months.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Correlation section + timeline
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Strong treatment signals
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Treatment response ≠ etiology proof for all symptoms. DEC-0014.
+  triage: Tier A
+- id: CLM-0026
+  statement: Dry beriberi is used as an interpretive clinical label in patient-compiled and research materials
+    around documented deficiency + neuropathy phenotype; a separate formal neurology diagnosis string
+    is not recovered in-repo.
+  kind: interpretation
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: timeline dry-beriberi pattern language
+    record_date: ''
+  - source_id: mh_pdf
+    path: evidence/sources/Drift0r_MentalHealth_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: context dry beriberi mention
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Core syndrome #2'
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0012.
+  triage: Tier A
+- id: CLM-0027
+  statement: IgG subclass 1 persistently low and IgG subclass 4 persistently high across multiple 2025–2026
+    draws (e.g., IgG1 324 with ref 382–929; IgG4 163.6 with ref 4–86); total IgG remains in range.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: IgG subclass longitudinal table
+    record_date: 2025-11 to 2026-06
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §2a
+    record_date: 2026-01/06
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Hard numbers IgG
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T028
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0028
+  statement: SPEP without monoclonal band and polyclonal free light chains with normal ratio — IgG4 elevation
+    not accompanied by a detectable clone in public pack.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: SPEP & free light chains
+    record_date: '2026'
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T030
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0029
+  statement: Classic fibrotic IgG4-related disease is not supported by multi-modality imaging descriptions
+    in the public pack (no organ fibrosis criteria met in available summaries).
+  kind: interpretation
+  verification_status: partially_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: cross-study themes
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Formally against
+    record_date: ''
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Explicit rejects
+    record_date: '2026-08-05'
+  literature_refs:
+  - lit-0089
+  - lit-0097
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0030
+  statement: Serum tryptase elevated (17.7 µg/L on 2025-10-01; 14.5 mcg/L on 2026-06 panel) above ref
+    <11; urinary mast-cell mediators normal on 2026 panel.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: tryptase 17.7
+    record_date: '2025-10-01'
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §2b tryptase 14.5 + urine mediators
+    record_date: 2026-06
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: mast-cell section
+    record_date: 2026-06
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T034 T037
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0031
+  statement: Hereditary alpha-tryptasemia (HαT) reported positive in patient materials.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: mid 2025 mastocytosis workup line
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Genetics HαT+
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T035
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: TPSAB1 copy-number detail incomplete (T114).
+  triage: Tier A
+- id: CLM-0032
+  statement: KIT mutations reported negative; assay specimen, method, and limit of detection are not documented
+    in the public pack.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: KIT-negative statement
+    record_date: ''
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_reported_narrative
+    is_transcription: true
+    page_or_lines: kit gene mutations
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T036
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: KIT neg
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0005. Negative ≠ full SM exclusion.
+  triage: Tier A
+- id: CLM-0033
+  statement: HαT explains basal tryptase elevation better than it explains multi-system bone/joint/B1/IgG
+    findings; HαT-as-driver is rejected as a unifier in Round-1 consensus.
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H-HαT / executive consensus
+    record_date: '2026-08-05'
+  literature_refs:
+  - lit-0075  # canonical (lit-0212 is alias of same Lyons 2018 work)
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Model consensus does not upgrade evidence status.
+  triage: Tier A
+- id: CLM-0034
+  statement: Hib IgG titer non-protective (0.33 mcg/mL, ref ≥1.00) and many pneumococcal serotype IgG
+    values low on Jun 2026 panel; these are functional titers, not a formal vaccine-challenge study.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §2c vaccine-response titers
+    record_date: 2026-06
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Vaccine-response antibodies section
+    record_date: 2026-06
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T039
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Vaccine history/platform incomplete — unresolved.
+  triage: Tier A
+- id: CLM-0035
+  statement: Formal specific antibody deficiency (SAD) label remains low confidence until same-lab pre/post
+    polysaccharide vaccine challenge and infection history are completed.
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H5
+    record_date: '2026-08-05'
+  literature_refs:
+  - lit-0205
+  - lit-0206
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0036
+  statement: Babesia FISH (whole blood) positive on two specialty-lab draws (Jul 2023 and Feb 2024); Babesia
+    PCR (B. microti and B. duncani) and immunoblot IgM/IgG negative on Jul 2023 panel.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §1a Babesia table
+    record_date: 2023-07 / 2024-02
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T047 T048
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Core syndrome #8'
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Specialty LDTs not FDA-cleared per summary. COR-0007.
+  triage: Tier A
+- id: CLM-0037
+  statement: Bartonella immunoblot IgM genus/species positive Jul 2023, later indeterminate/negative pattern
+    Feb 2024; Bartonella PCR and FISH negative.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §1b Bartonella table
+    record_date: 2023-07 / 2024-02
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T049 T050
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0038
+  statement: Lyme / Borrelia multi-method testing negative by specialty and CDC/NYS criteria including
+    immunoblot and PCR pathways documented in summary.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §1c
+    record_date: 2023-07
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T051
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0039
+  statement: Patient-reported best systemic symptomatic improvement on two courses of atovaquone + clindamycin
+    (± azithromycin), non-durable after courses ended.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Purpose snapshot treatment response; timeline
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Mid 2023 / Early 2024 abx lines
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Strong treatment signals
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Not microbiologic confirmation; anti-inflammatory effects possible. DEC-0014.
+  triage: Tier A
+- id: CLM-0040
+  statement: 'MRI left humerus Feb 2026: mild periosteal edema/enhancement without marrow signal change;
+    reactive-appearing axillary nodes.'
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: imaging
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: §4 Imaging
+    record_date: '2026-02-20'
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: MRI Left Humerus
+    record_date: '2026-02-20'
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T081
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Summary notes bartonella-associated pattern as literature association; does not confirm infection.
+  triage: Tier B
+- id: CLM-0041
+  statement: Palpable left forearm nodules not visualized on MRI/ultrasound in available imaging summaries;
+    nodule biopsy refused.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: msk
+  patient_sources:
+  - source_id: imaging_pdf
+    path: evidence/sources/Drift0r_Imaging_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: forearm imaging
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: not visualized
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T085 T069
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0042
+  statement: Active babesiosis is considered low probability / near-closed as preferred research hypothesis
+    pending properly timed reference smear+PCR during symptoms, given absent hematologic footprint and
+    PCR/IB negatives.
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H-BABESIA / rejects
+    record_date: '2026-08-05'
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Babesia discordance
+    record_date: ''
+  literature_refs:
+  - lit-0057  # canonical IDSA babesiosis guideline (lit-0220 is alias)
+  - lit-0058
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0043
+  statement: Bartonella-spectrum disease remains a low–medium residual contributor hypothesis (minority
+    medium) based on specialty IgM trajectory, periosteal/nodule clues, and non-durable antimicrobial
+    response without commercial confirmation.
+  kind: hypothesis
+  verification_status: contested
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H4 + minority reports
+    record_date: '2026-08-05'
+  literature_refs:
+  - lit-0049
+  - lit-0057
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: 'Specialty LDT author-ecosystem discount noted in synthesis. Pass4: lit-0049 weak NPV note; lit-0057
+    IDSA confirmation standard as counterweight to LDT overread.'
+  triage: Tier A
+- id: CLM-0044
+  statement: CRP and ESR repeatedly normal; broad seronegative CTD workup (ANA/ENA/RF/CCP etc.) unrevealing
+    on available panels.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: rheumatology
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Clinical snapshot + lupus panel
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Formally against
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T031 T032 T033
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0045
+  statement: Non-inflammatory migratory then generalized polyarthralgia with joint fragility phenotype
+    and without swelling/heat is the dominant pain narrative.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: msk
+  patient_sources:
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Core syndrome #1'
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: joint examination no swelling
+    record_date: ''
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_reported_narrative
+    is_transcription: true
+    page_or_lines: joint description
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0046
+  statement: Somatic symptom disorder assessed 2021; re-evaluation 2025 determined DSM-5 SSD criteria
+    no longer met. Patient-reported psychological/psychiatric evaluation history frames anxiety as
+    proportionate to medical illness on multiple evaluations; instrument-documented MMPI-2-RF determination
+    is carried separately as CLM-0047.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: mental_health
+  patient_sources:
+  - source_id: mh_pdf
+    path: evidence/sources/Drift0r_MentalHealth_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Clinical context + eval #1 (patient-reported evaluation history)'
+    record_date: 2021/2025
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T094 T093
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Core syndrome #10'
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: COR-0008. Evidence-type split — multi-evaluation narrative is patient-reported history
+    (kind reported_history); MMPI-2-RF instrument result is observed_fact under CLM-0047. Scope is
+    SSD reversal + secondary anxiety framing — not 'all psych absent'.
+  triage: Tier A
+- id: CLM-0047
+  statement: 'MMPI-2-RF (June 2025): no evidence of over-reporting of somatic symptoms; determination
+    no longer meets SSD with predominant pain.'
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: mental_health
+  patient_sources:
+  - source_id: mh_pdf
+    path: evidence/sources/Drift0r_MentalHealth_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: MMPI-2-RF section
+    record_date: 2025-06
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T093
+    record_date: 2025-06
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0048
+  statement: >-
+    Primary psychiatric / somatic-symptom-disorder framing as the default explanation for the
+    multi-system medical findings is not supported by the presently available record given objective
+    labs/imaging and the documented SSD-label reversal; this is a research-team hypothesis, not a
+    clinical adjudication. Multi-model AI research agreement does not clinically validate this statement.
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: mental_health
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Explicit rejects
+    record_date: '2026-08-05'
+  - source_id: mh_pdf
+    path: evidence/sources/Drift0r_MentalHealth_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: ''
+    record_date: '2025'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: >-
+    AI multi-model research agreement is not clinical validation and is not used as the public warrant
+    for rejecting a psychiatric framing about an identifiable person.
+  triage: Tier A
+- id: CLM-0049
+  statement: Preferred research architecture is a multi-disease stack (skeletal–metabolic–neurologic–immune)
+    rather than a single rare unifier covering ≥6 of 10 anchors.
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: working_model
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Executive consensus
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H1
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Architecture bucket medium; module identity medium. AI multi-model research agreement ≠ clinical validation.
+  triage: Tier A
+- id: CLM-0050
+  statement: Best single-primary research alternative is monogenic/constitutional early-onset osteoporosis
+    spectrum (e.g., WNT1/LRP5/PLS3/mild OI; HPP low branch unless ALP truly low).
+  kind: hypothesis
+  verification_status: not_verified
+  medical_domain: working_model
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: H2
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Gene panel not performed (S004/T117 gap). Yield honesty COR-0009.
+  triage: Tier A
+- id: CLM-0051
+  statement: COVID-vaccine etiology is rejected because multi-system illness onset is reported ~2017,
+    pre-COVID vaccines.
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: working_model
+  patient_sources:
+  - source_id: timeline
+    path: evidence/facts/timeline.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: onset ~2017
+    record_date: ''
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: rejects
+    record_date: '2026-08-05'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Formally against
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0052
+  statement: 'Mold/CIRS as primary ongoing driver is low: patient reports mold toxicity/allergy labs negative
+    and household mold removal without clear symptom change.'
+  kind: hypothesis
+  verification_status: partially_verified
+  medical_domain: working_model
+  patient_sources:
+  - source_id: pack_v2
+    path: evidence/evidence_pack_v2.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Patient X clarifications
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: mold removed no change
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T054
+    record_date: ''
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: rejects
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0053
+  statement: 'Question for clinicians: obtain paired bone formation markers (P1NP, BSAP ± osteocalcin)
+    before long-term bone-agent class decisions.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #1'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #1'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0054
+  statement: 'Question for clinicians: next same-scanner DXA include Z-scores, VFA, TBS; verify hip change
+    vs facility LSC documentation.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #2'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #2'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0055
+  statement: 'Question for clinicians: controlled calcium-flux phenotyping (Na-controlled 24h urine +
+    fasting UCa/Cr + paired Ca/PTH/PO4).'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: renal_bone
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #3'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #3'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0056
+  statement: 'Question for clinicians: early-onset osteoporosis gene panel with expert interpretation
+    when appropriate.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: genetics
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #4'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #4'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0057
+  statement: 'Question for clinicians: high-sensitivity peripheral-blood KIT D816V with method and LOD
+    documented.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #5'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #5'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0058
+  statement: 'Question for clinicians: same-lab pre/post pneumococcal (± Hib) vaccine challenge to adjudicate
+    SAD.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #6'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #6'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0059
+  statement: 'Question for clinicians: serum copper + ceruloplasmin + zinc as a don''t-miss screen.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #7'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #7'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0060
+  statement: 'Question for clinicians: objective SFN/autonomic battery if pain phenotype warrants.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: neurology
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #8'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #8'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0061
+  statement: 'Question for clinicians: infection split adjudication — Babesia smear+PCR during symptoms;
+    Bartonella culture/PCR/IFA/tissue only if appropriate — not IgM churn.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #9'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #9'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0062
+  statement: 'Question for clinicians: reconstruct original HPG at historical T≈34 era if records exist;
+    karyotype/CMA when appropriate.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Test matrix #10'
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'Top 10 #10'
+    record_date: '2026-08-05'
+  - source_id: ranking
+    path: differentials/current_ranking.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Top 10 tests
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: Research questions only — not consumer instructions or orders. Medical-safety rules.
+  triage: Tier A
+- id: CLM-0063
+  statement: 'Don''t-miss research priority: occult vertebral fracture / progressive structural spine
+    risk given extreme BMD + pars disease.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: spine
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0064
+  statement: 'Don''t-miss research priority: monogenic bone disease before long-term antiresorptive vs
+    anabolic strategy choices by clinicians.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0065
+  statement: 'Don''t-miss research priority: incomplete SM exclusion given unknown KIT method.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: mast_cell
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0066
+  statement: 'Don''t-miss research priority: copper-deficiency myeloneuropathy (may lack cytopenias).'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0067
+  statement: 'Don''t-miss research priority: clinically important antibody deficiency if challenge fails.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: immunology
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0068
+  statement: 'Don''t-miss research priority: microbiologically confirmed invasive infection only if proven
+    — do not treat research notes as confirmation.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: infectious_disease
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0069
+  statement: 'Don''t-miss research priority: thiamine status around future major surgery given prior documented
+    deficiency.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0070
+  statement: 'Don''t-miss care pathway: local spine/SCS neurologic red flags (weakness, bowel/bladder,
+    saddle) — emergency clinical pathway, not research delay.'
+  kind: research_question
+  verification_status: not_verified
+  medical_domain: spine
+  patient_sources:
+  - source_id: synthesis
+    path: differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss list
+    record_date: '2026-08-05'
+  - source_id: onepager
+    path: differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Don't-miss bullets
+    record_date: '2026-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier A
+- id: CLM-0071
+  statement: CYP2D6 *1/*4 intermediate metabolizer trait reported.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: pharmacogenetics
+  patient_sources:
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Genetics
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T066
+    record_date: ''
+  - source_id: patient_yaml
+    path: evidence/facts/patient.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: labs_key.cyp2d6
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: C
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier C
+- id: CLM-0072
+  statement: Sustained low basal body temperature ~97.2–97.7°F reported.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: autonomic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: core body temperature
+    record_date: ''
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Baseline temp
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T101
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0073
+  statement: Post-SCS multi-joint symptom flare ~4 weeks after implant is patient-reported; causal link
+    to systemic disease vs peri-procedural factors is unproven.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: spine
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Early–Mid 2026 SCS line
+    record_date: '2026'
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: SCS signal
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T097
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier B
+- id: CLM-0074
+  statement: Childhood idiopathic intracranial hypertension (pseudotumor cerebri) managed with serial
+    LPs and diuretics; resolved with puberty — historical, patient-reported/compiled.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: neurology
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Ages 9–13
+    record_date: ''
+  - source_id: timeline
+    path: evidence/facts/timeline.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: pseudotumor_cerebri_serial_lps_diuretics
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T098
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: C
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-05'
+  notes: ''
+  triage: Tier C

@@ -1,0 +1,26 @@
+{
+  "card_title": "Testosterone Therapy in Men With Hypogonadism: An Endocrine Society Clinical Practice Guideline",
+  "card_year": 2018,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1210/jc.2018-00229",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0121",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1210/jc.2018-00229",
+    "title": "Testosterone Therapy in Men With Hypogonadism: An Endocrine Society* Clinical Practice Guideline",
+    "type": "journal-article",
+    "year": 2018
+  },
+  "resolved_container": "The Journal of Clinical Endocrinology &amp; Metabolism",
+  "resolved_title": "Testosterone Therapy in Men With Hypogonadism: An Endocrine Society* Clinical Practice Guideline",
+  "resolved_year": 2018,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:04Z",
+  "year_delta": 0
+}

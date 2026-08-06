@@ -1,0 +1,192 @@
+# Machine-readable public allowlist — deny by default.
+# Validated by scripts/validate_all.py. Human narrative: PUBLIC_FILE_ALLOWLIST.md
+version: "1.9.1"
+as_of: "2026-08-05"
+not_medical_advice: true
+
+# ---------------------------------------------------------------------------
+# v1 *public git repository* content set for sanitized export (Checkpoint F.1.1).
+# Exact paths only. Never auto-includes deep_archive_optional.
+# Node/Astro site is independently buildable; monorepo Python tooling is NOT exported.
+# ---------------------------------------------------------------------------
+v1_public_repository:
+  - .editorconfig
+  - .nvmrc
+  - LEGAL.md
+  - LICENSE
+  - README.md
+  # Concise public roadmap only — monorepo root ROADMAP.md is operational and NOT exported.
+  - docs/public/ROADMAP.md
+  - CONTRIBUTING.md
+  - CODE_OF_CONDUCT.md
+  - SECURITY.md
+  - docs/public/COMMUNITY_MODERATION.md
+  - docs/public/LAUNCH_FAQ.md
+  - docs/public/FIRST_72_HOURS_ISSUE_MONITORING.md
+  - .github/ISSUE_TEMPLATE/
+  - .github/CODEOWNERS
+  - .github/dependabot.yml
+  - .github/pull_request_template.md
+  - .github/workflows/
+  - docs/REPOSITORY_STRUCTURE.md
+  - docs/DEPLOYMENT.md
+  - governance/PUBLICATION_POLICY.md
+  - governance/PRIVACY_AND_CONSENT.md
+  - governance/REVIEW_POLICY.md
+  - governance/AI_METHODS.md
+  - governance/CORRECTIONS_POLICY.md
+  - governance/RELEASE_VERSIONING.md
+  - governance/LEGAL_BASELINE.md
+  - governance/PUBLIC_FILE_ALLOWLIST.md
+  - governance/public_allowlist.yaml
+  - schemas/
+  - templates/
+  - literature/README.md
+  - literature/CORPUS_STATUS.md
+  - literature/catalog.yaml
+  - literature/oa_manifest.md
+  - literature/topics/
+  - literature/entries/
+  - literature/attestations/
+  - literature/search/index.json
+  - differentials/hypotheses/
+  - differentials/clinician_questions/
+  - differentials/current_ranking.md
+  - differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+  - differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+  - audits/2026-08-publication-readiness/01_claim_inventory_public.yaml
+  - audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml
+  - audits/2026-08-publication-readiness/03_public_language_guide.md
+  - audits/2026-08-publication-readiness/CORRECTIONS.md
+  - audits/2026-08-publication-readiness/DECISIONS.md
+  - audits/2026-08-publication-readiness/review_register.yaml
+  - site/package.json
+  - site/package-lock.json
+  - site/astro.config.mjs
+  - site/tsconfig.json
+  - site/README.md
+  - site/src/
+  - site/public/
+  - site/scripts/
+  - site/tests/
+
+# ---------------------------------------------------------------------------
+# Destination rewrites for sanitized export (source path → public-tree path).
+# Source must appear in v1_public_repository. Dest is the path written to --out.
+# Private monorepo root ROADMAP.md must never be listed as a direct export source
+# while a rewrite targets dest ROADMAP.md.
+# ---------------------------------------------------------------------------
+export_path_rewrites:
+  - source: docs/public/ROADMAP.md
+    dest: ROADMAP.md
+
+# ---------------------------------------------------------------------------
+# Build inputs (repository paths used to *generate* the site — not the artifact)
+# ---------------------------------------------------------------------------
+medical_page_body_sources:
+  - audits/2026-08-publication-readiness/01_claim_inventory_public.yaml
+  - audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml
+  - audits/2026-08-publication-readiness/03_public_language_guide.md
+  - differentials/hypotheses/
+  - differentials/clinician_questions/
+  - differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
+  - differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+  - differentials/current_ranking.md
+
+# ---------------------------------------------------------------------------
+# v1 *built* site artifact paths — relative to site/dist/ (not repo root)
+# ---------------------------------------------------------------------------
+v1_site_artifact:
+  - index.html
+  - 404.html
+  - favicon.svg
+  - favicon.ico
+  - robots.txt
+  - .nojekyll
+  - _astro/
+  - methods/
+  - case/
+  - working-model/
+  - questions-for-clinicians/
+  - for-clinicians/
+  - how-this-could-be-wrong/
+  - literature/
+  - changelog/
+  - legal/
+  - about/
+  - assets/
+  - fonts/
+  - images/
+  - .artifact_manifest.txt
+
+v1_dist_repo_mirrors: []
+
+deep_archive_optional:
+  - README.md
+  - ROADMAP.md
+  - evidence/evidence_pack.md
+  - evidence/evidence_pack_v2.md
+  - evidence/facts/patient.yaml
+  - evidence/facts/timeline.yaml
+  - evidence/facts/tests_ledger.md
+  - evidence/facts/tests_ledger.yaml
+  - evidence/00_Master_Symptoms_and_Findings.md
+  - differentials/SWARM_ORCHESTRATION.md
+  - differentials/swarm-runs/2026-08-05-round1/
+  - community/README.md
+  - community/ideas.md
+  - audits/2026-08-publication-readiness/
+  - research-runs/2026-08-targeted/
+  - literature/entries/
+  - literature/oa_manifest.md
+  - literature/catalog.yaml
+  - literature/search/index.json
+  - literature/README.md
+  - literature/CORPUS_STATUS.md
+  - literature/topics/
+  - governance/
+  - schemas/
+  - site/README.md
+  - site/SITE_PLAN.md
+  - site/mockups/
+  - templates/
+  - LEGAL.md
+  - LICENSE
+  - scripts/
+
+source_record_pdfs:
+  publication_approved: false
+  approval_date: null
+  approval_scope: ""
+  source_paths:
+    - evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    - evidence/sources/Drift0r_Endocrine_Summary.pdf
+    - evidence/sources/Drift0r_Imaging_Summary.pdf
+    - evidence/sources/Drift0r_infectious_disease_summary.pdf
+  dist_paths: []
+  external_patient_hosted_folder: "https://drive.google.com/drive/folders/1z_juK9yVdhbzaGJafzzZYZWe3U1cs37e"
+  external_folder_notes: >
+    A Google Drive folder is publicly/anonymously accessible under Drift0r's external control.
+    Drift0r granted broad publish permission for this research portfolio; the owner continues
+    linking the folder for provenance. The folder may include mental-health specialty summaries
+    and other sensitive medical documents. The site and public repository do not redistribute
+    original PDFs. Contents may change or disappear without notice.
+
+never_publish:
+  - data/papers_local/
+  - data/papers_oa/
+  - community/raw/
+  - private/
+  - evidence/sources/
+  - .env
+  - .env.
+  - node_modules/
+  - .git/
+  - .DS_Store
+  - .map
+  - .sanitized-export-test/
+  - PublishApproval.jpg
+  - audits/2026-08-publication-readiness/01_claim_inventory.yaml
+
+artifact_dist_dir: site/dist
+artifact_manifest_path: site/dist/.artifact_manifest.txt

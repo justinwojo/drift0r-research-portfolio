@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/patient-source.schema.json",
+  "title": "Drift0rPatientSource",
+  "description": "Reference to a patient-record source used for claim provenance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "path", "source_class"],
+  "properties": {
+    "source_id": { "type": "string" },
+    "path": { "type": "string" },
+    "source_class": {
+      "type": "string",
+      "description": "Epistemic class of the underlying record. Independent of verification_status. Never infer clinician_document or primary_instrument_record from clinical-sounding prose.",
+      "enum": [
+        "primary_instrument_record",
+        "clinician_document",
+        "patient_compiled_summary",
+        "patient_reported_narrative",
+        "video_statement",
+        "unknown"
+      ]
+    },
+    "legacy_source_bucket": {
+      "type": "string",
+      "description": "Optional legacy path-oriented label (not a substitute for source_class).",
+      "enum": [
+        "specialty_summary_pdf",
+        "evidence_pack",
+        "structured_facts",
+        "test_ledger",
+        "swarm_artifact",
+        "transcript",
+        "missing_primary"
+      ]
+    },
+    "page_or_lines": { "type": "string" },
+    "record_date": { "type": "string" },
+    "is_transcription": {
+      "type": "boolean",
+      "description": "True when document is a compilation rather than original instrument report."
+    },
+    "public_allowed": {
+      "type": "boolean",
+      "description": "Whether this path may appear in public site artifacts."
+    }
+  }
+}

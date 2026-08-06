@@ -1,0 +1,26 @@
+{
+  "card_title": "Bone mineral density changes in hypercalciuretic osteoporotic men treated with thiazide diuretics",
+  "card_year": 2004,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1016/j.jbspin.2003.09.009",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0164",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1016/j.jbspin.2003.09.009",
+    "title": "Bone mineral density changes in hypercalciuretic osteoporotic men treated with thiazide diuretics",
+    "type": "journal-article",
+    "year": 2004
+  },
+  "resolved_container": "Joint Bone Spine",
+  "resolved_title": "Bone mineral density changes in hypercalciuretic osteoporotic men treated with thiazide diuretics",
+  "resolved_year": 2004,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:14Z",
+  "year_delta": 0
+}

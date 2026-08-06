@@ -1,0 +1,27 @@
+{
+  "card_title": "IgG4-related disease",
+  "card_year": 2012,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "22316447",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0089",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1056/NEJMra1104650",
+    "pmid": "22316447",
+    "pubdate": "2012 Feb 9",
+    "source": "N Engl J Med",
+    "title": "IgG4-related disease."
+  },
+  "resolved_container": "N Engl J Med",
+  "resolved_title": "IgG4-related disease.",
+  "resolved_year": 2012,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:58Z",
+  "year_delta": 0
+}

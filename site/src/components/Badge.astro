@@ -1,0 +1,13 @@
+---
+interface Props {
+  glyph: string;
+  label: string;
+  css?: string;
+}
+const { glyph, label, css = '' } = Astro.props;
+---
+
+<span class={`badge ${css}`} title={label}>
+  <span class="g" aria-hidden="true">{glyph}</span>
+  <span>{label}</span>
+</span>

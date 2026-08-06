@@ -1,0 +1,27 @@
+{
+  "card_title": "The 2019 American College of Rheumatology/European League Against Rheumatism classification criteria for IgG4-related disease",
+  "card_year": 2020,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "31793250",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0096",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1002/art.41120",
+    "pmid": "31793250",
+    "pubdate": "2020 Jan",
+    "source": "Arthritis Rheumatol",
+    "title": "The 2019 American College of Rheumatology/European League Against Rheumatism Classification Criteria for IgG4-Related Disease."
+  },
+  "resolved_container": "Arthritis Rheumatol",
+  "resolved_title": "The 2019 American College of Rheumatology/European League Against Rheumatism Classification Criteria for IgG4-Related Disease.",
+  "resolved_year": 2020,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:59Z",
+  "year_delta": 0
+}

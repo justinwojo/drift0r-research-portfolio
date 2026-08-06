@@ -1,0 +1,27 @@
+{
+  "card_title": "Human babesiosis",
+  "card_year": 2012,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "22716978",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0058",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1056/NEJMra1202018",
+    "pmid": "22716978",
+    "pubdate": "2012 Jun 21",
+    "source": "N Engl J Med",
+    "title": "Human babesiosis."
+  },
+  "resolved_container": "N Engl J Med",
+  "resolved_title": "Human babesiosis.",
+  "resolved_year": 2012,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:54Z",
+  "year_delta": 0
+}

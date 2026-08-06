@@ -1,0 +1,24 @@
+id: CQ-007
+question: Should serum copper, ceruloplasmin, and zinc be measured as a don’t-miss
+  screen for copper-deficiency myeloneuropathy (which can lack cytopenias)?
+rationale: Copper not documented in public pack; copper-deficiency myeloneuropathy
+  can present with neurologic findings and may lack frank cytopenias. Zinc excess
+  is a risk context. Wilson disease (copper overload) is a different problem and is
+  not the citation basis here.
+related_claim_ids:
+- CLM-0059
+related_hypothesis_ids:
+- H-NULL
+literature_refs:
+- lit-0186
+- lit-0242
+- lit-0243
+priority: medium
+dont_miss: true
+medical_domain: metabolic
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

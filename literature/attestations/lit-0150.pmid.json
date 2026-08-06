@@ -1,0 +1,27 @@
+{
+  "card_title": "Palindromic rheumatism as part of the rheumatoid arthritis continuum",
+  "card_year": 2019,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "31595059",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0150",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1038/s41584-019-0308-5",
+    "pmid": "31595059",
+    "pubdate": "2019 Nov",
+    "source": "Nat Rev Rheumatol",
+    "title": "Palindromic rheumatism as part of the rheumatoid arthritis continuum."
+  },
+  "resolved_container": "Nat Rev Rheumatol",
+  "resolved_title": "Palindromic rheumatism as part of the rheumatoid arthritis continuum.",
+  "resolved_year": 2019,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:09Z",
+  "year_delta": 0
+}

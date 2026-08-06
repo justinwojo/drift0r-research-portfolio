@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPredictionMatrix, getRelease } from '../../lib/data';
+import { withBase } from '../../lib/paths';
+
+const rows = getPredictionMatrix();
+const release = getRelease();
+---
+
+<BaseLayout
+  title="Prediction / outcome matrix"
+  currentPath="/questions-for-clinicians/prediction-matrix/"
+  description="Pre-registered qualitative outcomes for top clinician questions. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Pre-registered outcomes</div>
+    <h1>Prediction / outcome matrix</h1>
+    <p class="lede">
+      For selected high-priority clinician questions, this matrix states in advance how a supportive,
+      against, or inconclusive result would affect each listed hypothesis: strengthen, weaken, unchanged,
+      or reframe. It does not predict a diagnosis, invent thresholds, or order tests.
+    </p>
+    <div class="callout caution">
+      <strong class="legend-label">Standing limits</strong>
+      <p style="margin: 8px 0 0;">
+        Research instrument only. A licensed clinician decides whether any question is worth asking and how
+        to interpret real results. Analysis version {release.content_version} · evidence current through{' '}
+        {release.evidence_current_through} · as of {release.as_of}.
+      </p>
+    </div>
+    <p>
+      <a href={withBase('/questions-for-clinicians/')}>All clinician questions</a>
+      {' · '}
+      <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="badge-row" style="margin-bottom: 16px;">
+      <span class="badge">strengthen</span>
+      <span class="badge">weaken</span>
+      <span class="badge">unchanged</span>
+      <span class="badge">reframe</span>
+    </div>
+
+    {
+      rows.length === 0 ? (
+        <p class="sec-note">No prediction rows available for the current publication mode.</p>
+      ) : (
+        rows.map((row) => (
+          <article class="record kind-research_question" id={`pred-${row.question_id}`} style="margin-bottom: 22px;">
+            <div class="record-head">
+              <span class="record-id">{row.question_id}</span>
+            </div>
+            <div class="record-body" style="font-size: 16px;">{row.question}</div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label={`Outcomes for ${row.question_id}`}>
+              <table class="data" style="margin-top: 12px;">
+                <caption>
+                  Pre-registered qualitative outcomes for {row.question_id}. Not a diagnostic scorecard.
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Hypothesis</th>
+                    <th scope="col">If result supports the research question’s intended signal</th>
+                    <th scope="col">If result argues against that signal</th>
+                    <th scope="col">If inconclusive / unavailable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {row.cells.map((cell) => (
+                    <tr>
+                      <th scope="row" class="mono">
+                        {cell.hypothesis_id}
+                      </th>
+                      <td class="mono">{cell.if_supportive}</td>
+                      <td class="mono">{cell.if_against}</td>
+                      <td class="mono">{cell.if_inconclusive}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        ))
+      )
+    }
+  </section>
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <div class="callout">
+      <strong class="legend-label">What this page does not do</strong>
+      <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+        <li>It does not name a diagnosis or preferred treatment.</li>
+        <li>It does not turn research questions into test orders or consumer instructions.</li>
+        <li>It does not assign numeric probabilities or post-hoc re-rank scores after results arrive.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+{
+  "card_title": "PLS3 Mutations in X-Linked Osteoporosis with Fractures",
+  "card_year": 2013,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "24088043",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0290",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1056/NEJMoa1308223",
+    "pmid": "24088043",
+    "pubdate": "2013 Oct 17",
+    "source": "N Engl J Med",
+    "title": "PLS3 mutations in X-linked osteoporosis with fractures."
+  },
+  "resolved_container": "N Engl J Med",
+  "resolved_title": "PLS3 mutations in X-linked osteoporosis with fractures.",
+  "resolved_year": 2013,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:34Z",
+  "year_delta": 0
+}

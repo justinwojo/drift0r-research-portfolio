@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrintButton from '../../components/PrintButton.astro';
+import PrintPageDisclaimer from '../../components/PrintPageDisclaimer.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getClinicianQuestions, getRelease } from '../../lib/data';
+
+const questions = getClinicianQuestions();
+const release = getRelease();
+// Chunk into print pages so each physical page carries banner + end disclaimer (P0-2).
+const PAGE_SIZE = 4;
+const pages: (typeof questions)[] = [];
+for (let i = 0; i < questions.length; i += PAGE_SIZE) {
+  pages.push(questions.slice(i, i + PAGE_SIZE));
+}
+if (pages.length === 0) pages.push([]);
+---
+
+<BaseLayout
+  title="Clinician questions packet"
+  currentPath="/questions-for-clinicians/packet/"
+  description="Printable clinician question packet. Research only — not medical advice."
+  isPrintRoute={true}
+>
+  <section class="hero no-print">
+    <div class="legend-label">Printable route</div>
+    <h1>Questions for clinicians — packet</h1>
+    <p class="lede">
+      Printable packet with rationale and citation identifiers. Discussion questions only — not orders.
+    </p>
+    <AnalysisVersionBadge />
+    <p class="no-print"><PrintButton /></p>
+  </section>
+
+  <div class="print-sheet">
+    {
+      pages.map((chunk, pageIdx) => (
+        <section class="print-page" aria-label={`Clinician questions packet page ${pageIdx + 1}`}>
+          <PrintPageDisclaimer variant="banner" />
+          {pageIdx === 0 && (
+            <>
+              <AnalysisVersionBadge compact />
+              <p class="mono" style="font-size: 12px;">
+                analysis {release.content_version} · evidence through {release.evidence_current_through} · as of {release.as_of} · clinician review: not performed · patient
+                approval: {release.patient_approval.status.replace(/_/g, ' ')} · Research only — not medical advice.
+              </p>
+              <p style="font-size: 14px;">
+                A licensed clinician may accept, modify, or reject any item. Nothing here is a protocol or consumer
+                instruction. Do not start, stop, or change treatment based on this material.
+              </p>
+            </>
+          )}
+          {chunk.map((q) => (
+            <article style="margin: 18px 0; break-inside: avoid; border-bottom: 1px solid #ccc; padding-bottom: 12px;">
+              <h2 class="mono" style="font-size: 14px; margin: 0 0 6px;">
+                {q.id} · {q.medical_domain} · research priority: {q.priority}
+                {q.dont_miss ? ' · don’t-miss review priority' : ''}
+              </h2>
+              <p style="margin: 0 0 8px; font-weight: 600;">{q.question}</p>
+              <p style="margin: 0 0 6px; font-size: 13.5px;">
+                <strong>Rationale.</strong> {q.rationale}
+              </p>
+              <p class="mono" style="margin: 0; font-size: 11.5px; color: #444;">
+                claims: {q.related_claim_ids.join(', ') || '—'} · hypotheses:{' '}
+                {q.related_hypothesis_ids.join(', ') || '—'} · lit: {q.literature_refs.join(', ') || '—'}
+              </p>
+            </article>
+          ))}
+          <PrintPageDisclaimer variant="end" />
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>

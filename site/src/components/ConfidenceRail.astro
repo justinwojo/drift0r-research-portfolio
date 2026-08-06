@@ -1,0 +1,30 @@
+---
+import { CONFIDENCE_ORDER, CONFIDENCE_LABELS } from '../lib/constants';
+
+interface Props {
+  value: string | null | undefined;
+  label?: string;
+}
+const { value, label = 'Confidence' } = Astro.props;
+const current = value || 'not_supported';
+---
+
+<div
+  class="conf-wrap"
+  role="group"
+  aria-label={`${label}: ${CONFIDENCE_LABELS[current] || current}`}
+>
+  {label && <div class="legend-label">{label}</div>}
+  <div class="conf-rail">
+    {
+      CONFIDENCE_ORDER.map((n) => (
+        <div
+          class:list={['notch', { struck: n === 'not_supported' && current === 'not_supported' }]}
+          aria-current={n === current ? 'true' : undefined}
+        >
+          {CONFIDENCE_LABELS[n]}
+        </div>
+      ))
+    }
+  </div>
+</div>

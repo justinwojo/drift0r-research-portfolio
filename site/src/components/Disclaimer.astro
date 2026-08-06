@@ -1,0 +1,14 @@
+---
+import { DISCLAIMER_FULL } from '../lib/constants';
+
+interface Props {
+  id?: string;
+}
+const { id = 'research-disclaimer' } = Astro.props;
+---
+
+<aside class="disclaimer" role="note" id={id} aria-label="Research-only medical disclaimer">
+  {/* Non-heading title: avoids h2-before-h1 (Lighthouse heading-order) while remaining prominent. */}
+  <p class="disclaimer-title">Research only — not medical advice</p>
+  <p>{DISCLAIMER_FULL}</p>
+</aside>

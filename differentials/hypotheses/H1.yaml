@@ -1,0 +1,36 @@
+id: H1
+title: Layered skeletal–metabolic–neurologic–immune stack (infection detachable)
+kind: architecture
+confidence: medium
+architecture_confidence: medium
+module_confidence: medium
+summary: Preferred multi-disease research architecture from Round-1 synthesis — a
+  research organizing frame, not a single causal mechanism and not a diagnosis. Infection
+  limb detachable pending adjudication. Does not by itself explain tryptase/HαT (CLM-0030/0031),
+  Babesia FISH×2 (CLM-0036), or historical profound hypogonadism (CLM-0018). Supporting
+  cards are domain or methodological anchors (densitometry reporting, thiamine biomarkers,
+  humoral abnormality), not proof of a layered multi-disease etiology. Models can agree
+  on errors; architecture confidence is medium pending further adjudication.
+explains_claim_ids:
+- CLM-0003
+- CLM-0015
+- CLM-0023
+- CLM-0027
+- CLM-0013
+does_not_explain_claim_ids:
+- CLM-0030
+- CLM-0031
+- CLM-0036
+- CLM-0018
+supporting_literature_ids:
+- lit-0015
+- lit-0021
+- lit-0205
+contradicting_literature_ids: []
+open_question_ids:
+- UQ-0003
+- UQ-0013
+- UQ-0017
+review_status: source_audited
+as_of: '2026-08-05'
+supersedes: null

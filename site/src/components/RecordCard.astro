@@ -1,0 +1,105 @@
+---
+import type { Claim } from '../lib/data';
+import { kindMeta, reviewMeta } from '../lib/data';
+import Badge from './Badge.astro';
+import VerificationMeter from './VerificationMeter.astro';
+import SourceTrail from './SourceTrail.astro';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  claim: Claim;
+}
+const { claim } = Astro.props;
+const kind = kindMeta(claim.kind);
+const review = reviewMeta(claim.clinician_review_status);
+const lifecycle = claim.lifecycle_status || 'active';
+const isInactive = lifecycle === 'retired' || lifecycle === 'superseded';
+const changelogHref = claim.changelog_entry
+  ? withBase(`/changelog/#${claim.changelog_entry}`)
+  : withBase('/changelog/');
+---
+
+<article class={`record kind-${claim.kind}`} id={claim.id} aria-labelledby={`${claim.id}-title`}>
+  <div class="record-head">
+    <span class="record-id">{claim.id}</span>
+    <span class="mono" style="font-size: 12px; color: var(--muted);">{claim.medical_domain}</span>
+    <span class="mono" style="font-size: 12px; color: var(--muted);">
+      public_approved: {String(claim.public_approved)}
+    </span>
+    {
+      isInactive && (
+        <span class="mono" style="font-size: 12px; font-weight: 700;">
+          {lifecycle}
+        </span>
+      )
+    }
+  </div>
+  {
+    isInactive && (
+      <div class="callout caution" style="margin: 8px 0 10px;" role="note">
+        <strong class="legend-label">
+          {lifecycle === 'superseded' ? 'Superseded' : 'Retired'} record
+        </strong>
+        <p style="margin: 6px 0 0; font-size: 14px;">
+          This ID is retained for traceability and is <strong>never reused</strong>.
+          {claim.superseded_by ? (
+            <>
+              {' '}
+              Replaced by{' '}
+              <a class="mono" href={withBase(`/case/#${claim.superseded_by}`)}>
+                {claim.superseded_by}
+              </a>
+              .
+            </>
+          ) : null}
+          {' '}
+          See <a href={changelogHref}>changelog</a>
+          {claim.changelog_entry ? (
+            <>
+              {' '}
+              (<span class="mono">{claim.changelog_entry}</span>)
+            </>
+          ) : null}
+          .
+        </p>
+      </div>
+    )
+  }
+  <div class="record-body" id={`${claim.id}-title`}>{claim.public_statement}</div>
+  {claim.notes && <p class="record-note">{claim.notes}</p>}
+  <div class="badge-row">
+    <Badge glyph={kind.glyph} label={kind.label} css={kind.css} />
+    <VerificationMeter status={claim.verification_status} />
+    <Badge glyph={review.glyph} label={`Clinician: ${review.label}`} />
+    {
+      claim.corrections.map((c) => (
+        <a href={withBase(`/changelog/#${c.id}`)} style="text-decoration: none;">
+          <Badge glyph="◇" label={`${c.id}: ${c.title}`} css="corr" />
+        </a>
+      ))
+    }
+  </div>
+  {
+    claim.corrections.length > 0 && (
+      <p class="record-note" style="margin-top: 10px;">
+        Correction / supersession notices:{' '}
+        {claim.corrections.map((c, i) => (
+          <>
+            {i > 0 ? ', ' : null}
+            <a class="mono" href={withBase(`/changelog/#${c.id}`)}>
+              {c.id}
+            </a>
+          </>
+        ))}
+        {' · '}
+        <a href={withBase('/changelog/')}>full changelog</a>
+      </p>
+    )
+  }
+  <details style="margin-top: 12px;">
+    <summary style="min-height: 44px; display: flex; align-items: center; cursor: pointer; font-family: var(--mono); font-size: 12.5px;">
+      Source trail (always available — expand for locator detail)
+    </summary>
+    <SourceTrail claim={claim} />
+  </details>
+</article>

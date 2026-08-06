@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrintButton from '../../components/PrintButton.astro';
+import PrintPageDisclaimer from '../../components/PrintPageDisclaimer.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getRelease, metrics, getHypotheses } from '../../lib/data';
+import { DISCLAIMER_FULL } from '../../lib/constants';
+import { indexingStatusCompact } from '../../lib/indexing';
+
+const release = getRelease();
+const m = metrics();
+const hyps = getHypotheses();
+const indexingStatus = indexingStatusCompact(Boolean(release.noindex));
+---
+
+<BaseLayout
+  title="Research snapshot"
+  currentPath="/about/snapshot/"
+  description="Printable public research snapshot. Research only — not medical advice."
+  isPrintRoute={true}
+>
+  <section class="hero no-print">
+    <div class="legend-label">Printable route · About</div>
+    <h1>Public research snapshot</h1>
+    <p class="lede">One-page status of the research portfolio for offline sharing.</p>
+    <AnalysisVersionBadge />
+    <p class="no-print"><PrintButton /></p>
+  </section>
+
+  <div class="print-sheet">
+    <section class="print-page" aria-label="Research snapshot">
+      <PrintPageDisclaimer variant="banner" />
+      <AnalysisVersionBadge compact />
+      <p class="mono" style="font-size: 12px;">
+        analysis {release.content_version} · evidence through {release.evidence_current_through} · as of {release.as_of} · patient approval: {release.patient_approval.status.replace(/_/g, ' ')} · clinician
+        review: not performed · indexing: {indexingStatus}
+      </p>
+      <p style="font-size: 13px; max-width: 70ch;">{DISCLAIMER_FULL}</p>
+
+      <h2 style="font-size: 14px;">Honest metrics</h2>
+      <ul style="font-size: 13px;">
+        <li>{m.diagnoses} diagnoses stated on this site</li>
+        <li>{m.clinicianReviews} clinician reviews completed</li>
+        <li>
+          {m.verifiedPrimary} of {m.claimCount} claims verified against a primary instrument record
+        </li>
+        <li>{m.openQuestions} open record questions · {m.corrections} corrections · {m.hypotheses} hypotheses</li>
+        <li>
+          {m.literatureCards} literature cards ({m.uniqueWorks} unique works)
+        </li>
+      </ul>
+
+      <h2 style="font-size: 14px;">Working hypotheses (identifiers only on snapshot)</h2>
+      <ol style="font-size: 12.5px;">
+        {
+          hyps.map((h) => (
+            <li>
+              <span class="mono">{h.id}</span> — {h.title} (confidence: {h.confidence})
+            </li>
+          ))
+        }
+      </ol>
+
+      <p style="font-size: 12px; margin-top: 16px;">
+        Full evidence trails, specialty-versus-independent tables, and clinician questions are on the
+        corresponding site routes. Source PDFs are not attached.
+      </p>
+      <PrintPageDisclaimer variant="end" />
+    </section>
+  </div>
+</BaseLayout>

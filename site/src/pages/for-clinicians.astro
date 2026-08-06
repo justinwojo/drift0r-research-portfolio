@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PrintButton from '../components/PrintButton.astro';
+import PrintPageDisclaimer from '../components/PrintPageDisclaimer.astro';
+import {
+  getClinicianQuestions,
+  getHypotheses,
+  getSpecialtyChannels,
+  getRelease,
+  getClaimById,
+  getUnresolvedQuestions,
+} from '../lib/data';
+import { withBase } from '../lib/paths';
+import { PERSISTENT_STATUS_NOTICE, PRINT_PAGE_DISCLAIMER_COMPACT } from '../lib/constants';
+import { indexingStatusCompact } from '../lib/indexing';
+import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
+
+const release = getRelease();
+const indexingStatus = indexingStatusCompact(Boolean(release.noindex));
+const hyps = getHypotheses().filter((h) => h.id !== 'H-NULL');
+const nullHyp = getHypotheses().find((h) => h.id === 'H-NULL');
+const qs = getClinicianQuestions().filter((q) => q.dont_miss || q.priority === 'high');
+const channels = getSpecialtyChannels();
+const uqs = getUnresolvedQuestions().filter((u) => u.blocks_launch_critical_wording);
+const preferredAnchors = ['CLM-0003', 'CLM-0006', 'CLM-0015', 'CLM-0018', 'CLM-0036', 'CLM-0037'];
+const anchors = preferredAnchors.filter((id) => getClaimById(id));
+const qsLead = qs.slice(0, 3);
+const hypsLead = hyps.slice(0, 3);
+const uqsLead = uqs.slice(0, 3);
+const anchorsLead = anchors.slice(0, 5);
+
+const patientStatus = release.patient_approval.status.replace(/_/g, ' ');
+const clinicianStatus =
+  release.clinician_review_scope.status === 'not_reviewed'
+    ? 'not performed'
+    : release.clinician_review_scope.status.replace(/_/g, ' ');
+const reviewStatus = release.review_status.replace(/_/g, ' ');
+
+/** Compact status line used on every print page (must stay accurate to release.yaml). */
+const statusLine = `analysis ${release.content_version} · evidence through ${release.evidence_current_through} · as of ${release.as_of} · review: ${reviewStatus} · patient approval: ${patientStatus} · clinician review: ${clinicianStatus}`;
+const pageEndLine = `${PRINT_PAGE_DISCLAIMER_COMPACT} · Patient approval: ${patientStatus} · Clinician review: ${clinicianStatus} · analysis ${release.content_version} · evidence through ${release.evidence_current_through}`;
+---
+
+<BaseLayout
+  title="For clinicians"
+  currentPath="/for-clinicians/"
+  description="Concise printable research handout for clinicians. Research only — not medical advice."
+  isPrintRoute={true}
+  showDisclaimer={false}
+>
+  <section class="hero no-print">
+    <div class="legend-label">Print-first clinician sheet</div>
+    <AnalysisVersionBadge />
+    <p class="lede">
+      Dense research handout. Print via the browser. Deterministic two-page layout for Letter and A4. Research only —
+      not medical advice. Compact research-preview and clinician non-review notices are printed on each page of this
+      handout (banner and page-end).
+    </p>
+    <p><PrintButton /></p>
+  </section>
+
+  {/*
+    Deterministic two-section print layout (E2.3 / P0-2):
+    Each section is one printed page. Explicit compact disclaimer/status on page 1 and page 2.
+    Do not rely on CSS thead/tfoot or position:fixed for status repetition.
+  */}
+  <div class="print-sheet clinician-print">
+    <section class="print-page print-page-1" aria-label="Clinician handout page 1">
+      <PrintPageDisclaimer variant="banner" />
+      <header class="print-sheet-header">
+        <div class="legend-label">Research evidence portfolio · clinician handout</div>
+        <h1>For clinicians — case research snapshot</h1>
+        <p class="mono print-meta">{statusLine} · indexing: {indexingStatus}</p>
+        <p class="print-status-notice mono" role="status">{PERSISTENT_STATUS_NOTICE}</p>
+        <p class="print-disclaimer">
+          <strong>Research only — not medical advice.</strong> A licensed clinician must verify underlying records,
+          interpret findings, and decide on testing or treatment. Do not start, stop, or change treatment based on this
+          site. Published with Drift0r’s permission — permission is not endorsement. Patient approval:{' '}
+          <span class="mono">{patientStatus}</span>. Clinician review: <span class="mono">{clinicianStatus}</span>.{' '}
+          Analysis version {release.content_version} · evidence current through {release.evidence_current_through} · as
+          of {release.as_of}.
+        </p>
+        <p class="print-primary-limit">
+          <strong>
+            No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by this
+            project.
+          </strong>
+        </p>
+      </header>
+
+      <h2>Documented gaps and open questions (lead)</h2>
+      <p class="print-note">
+        Research gaps first — not a ranked diagnosis list. Priority chips mean research priority, never clinical urgency.
+      </p>
+      <ol class="print-list">
+        {
+          qsLead.map((q) => (
+            <li>
+              <span class="mono">{q.id}</span> [{q.medical_domain} · {q.priority}
+              {q.dont_miss ? ' · don’t-miss' : ''}] — {q.question}
+            </li>
+          ))
+        }
+      </ol>
+      {
+        qs.length > qsLead.length && (
+          <p class="print-note mono">
+            +{qs.length - qsLead.length} additional high-priority questions on /questions-for-clinicians/ (not repeated
+            here for print density).
+          </p>
+        )
+      }
+      {
+        uqsLead.length > 0 && (
+          <>
+            <h3 class="print-h3">Record questions that still block wording</h3>
+            <ul class="print-list">
+              {uqsLead.map((u) => (
+                <li>
+                  <span class="mono">{u.id}</span> — {u.question}
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      <h2>Selected documented anchors</h2>
+      <ul class="print-list">
+        {
+          anchorsLead.length === 0 ? (
+            <li class="mono">No approved anchors in the current publication mode.</li>
+          ) : (
+            anchorsLead.map((id) => {
+              const c = getClaimById(id);
+              return (
+                <li>
+                  <span class="mono">{id}</span>
+                  {c ? `: ${c.public_statement}` : ''}
+                  {c ? ` [${c.verification_status.replace(/_/g, ' ')}]` : ''}
+                </li>
+              );
+            })
+          )
+        }
+      </ul>
+      <p class="print-page-disclaimer print-page-end mono" role="note" data-print-disclaimer="end">
+        {pageEndLine}
+      </p>
+    </section>
+
+    <section class="print-page print-page-2" aria-label="Clinician handout page 2">
+      <PrintPageDisclaimer variant="banner" />
+      <p class="print-status-notice mono" role="status">{PERSISTENT_STATUS_NOTICE}</p>
+      <p class="print-disclaimer mono">
+        <strong>Research only — not medical advice.</strong> Licensed clinicians must verify underlying records. Do not
+        start, stop, or change treatment based on this material. Permission is not endorsement. Patient approval:{' '}
+        {patientStatus}. Clinician review: {clinicianStatus}. {release.content_version} · {release.as_of}.
+      </p>
+
+      <h2>Working hypotheses (research index — not diagnoses)</h2>
+      <p class="print-note">
+        Ranked as a research index only. Lead with gaps above. Multi-model research synthesis is not clinical
+        validation. Clinician review of this portfolio has <strong>not</strong> been performed.
+      </p>
+      <ol class="print-list">
+        {
+          hypsLead.map((h) => (
+            <li>
+              <span class="mono">{h.id}</span> — {h.title} · {h.confidence}
+              <div class="print-hyp-sum">
+                {h.public_summary.length > 140 ? `${h.public_summary.slice(0, 137)}…` : h.public_summary}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      {
+        hyps.length > hypsLead.length && (
+          <p class="print-note mono">
+            +{hyps.length - hypsLead.length} additional model(s) on /working-model/ (omitted here for two-page density).
+          </p>
+        )
+      }
+      {
+        nullHyp && (
+          <p class="print-note">
+            <span class="mono">H-NULL</span> (null model): several common processes may coexist without a single rare
+            unifier — see working model.
+          </p>
+        )
+      }
+
+      <h2>Specialty LDT vs independent testing</h2>
+      {
+        channels.length === 0 ? (
+          <p class="print-note mono">No specialty channels in the current publication mode.</p>
+        ) : (
+          <ul class="print-list">
+            {channels.map((ch) => (
+              <li>
+                <span class="mono">{ch.pathogen}</span>: signal {ch.signal.result}; reference {ch.reference.result}.{' '}
+                <strong>{ch.verdict}</strong> (claims {ch.claim_ids.join(', ')}; channels not merged).
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <p class="print-closing mono">
+        Bone terminology for males under 50 emphasizes Z-scores and BMD below expected range for age. Infection limb
+        detachable. No source PDFs are attached. Related routes (browser):{' '}
+        <a href={withBase('/how-this-could-be-wrong/')}>how-this-could-be-wrong</a>
+        {' · '}
+        <a href={withBase('/questions-for-clinicians/prediction-matrix/')}>prediction matrix</a>.
+      </p>
+      <p class="print-page-disclaimer print-page-end mono" role="note" data-print-disclaimer="end">
+        {pageEndLine}
+      </p>
+    </section>
+  </div>
+</BaseLayout>

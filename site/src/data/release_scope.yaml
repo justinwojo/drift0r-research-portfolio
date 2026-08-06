@@ -1,0 +1,114 @@
+# Explicit per-surface publication approval for v0.1 public research-preview candidate.
+# Claim public_approved=true does NOT auto-approve these lists — each surface is listed.
+# Patient publication permission obtained 2026-08-05 (REV-0005 / DEC-0026).
+# Clinician review has NOT been performed — do not imply clinical validation.
+version: "1.1.0"
+as_of: "2026-08-05"
+notes: >
+  v0.1 openly shared noindex research preview. Scope derived from repository IDs
+  for all launch medical surfaces. Clinician review remains not_reviewed. Primary
+  instrument records remain unreviewed. Patient consent permits case-related
+  publication; it does not establish medical accuracy.
+
+approved_hypothesis_ids:
+  - H1
+  - H2
+  - H3
+  - H4
+  - H5
+
+approved_null_model: true
+
+approved_question_ids:
+  - CQ-001
+  - CQ-002
+  - CQ-003
+  - CQ-004
+  - CQ-005
+  - CQ-006
+  - CQ-007
+  - CQ-008
+  - CQ-009
+  - CQ-010
+
+approved_uq_ids:
+  - UQ-0001
+  - UQ-0002
+  - UQ-0003
+  - UQ-0004
+  - UQ-0005
+  - UQ-0006
+  - UQ-0007
+  - UQ-0008
+  - UQ-0009
+  - UQ-0010
+  - UQ-0011
+  - UQ-0012
+  - UQ-0013
+  - UQ-0014
+  - UQ-0015
+  - UQ-0016
+  - UQ-0017
+
+approved_specialty_pathogens:
+  - Babesia
+  - Bartonella
+
+# Launch-cited literature cards may show applicability notes under patient publication permission.
+approved_literature_applicability_ids:
+  - lit-0001
+  - lit-0012
+  - lit-0013
+  - lit-0014
+  - lit-0015
+  - lit-0021
+  - lit-0037
+  - lit-0042
+  - lit-0047
+  - lit-0049
+  - lit-0050
+  - lit-0055
+  - lit-0057
+  - lit-0058
+  - lit-0075
+  - lit-0080
+  - lit-0089
+  - lit-0096
+  - lit-0097
+  - lit-0121
+  - lit-0152
+  - lit-0153
+  - lit-0186
+  - lit-0205
+  - lit-0206
+  - lit-0212
+  - lit-0220
+  - lit-0226
+  - lit-0235
+  - lit-0242
+  - lit-0243
+  - lit-0270
+  - lit-0287
+  - lit-0290
+  - lit-0293
+  - lit-0294
+  - lit-0297
+
+approved_hardcoded_routes:
+  - /
+  - /case/
+  - /working-model/
+  - /working-model/evidence-table/
+  - /questions-for-clinicians/
+  - /questions-for-clinicians/packet/
+  - /questions-for-clinicians/prediction-matrix/
+  - /for-clinicians/
+  - /how-this-could-be-wrong/
+  - /methods/
+  - /changelog/
+  - /legal/
+  - /about/
+  - /about/snapshot/
+  - /about/downloads/
+  - /about/contribute/
+  - /literature/

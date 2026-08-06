@@ -1,0 +1,28 @@
+{
+  "card_title": "Primary Osteoporosis in Young Adults: Genetic Basis and Identification of Novel Variants in Causal Genes",
+  "card_year": 2018,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC6124172",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0294",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.1002/jbm4.10020",
+    "pmcid": "PMC6124172",
+    "pmid": "30283887",
+    "source": "JBMR Plus",
+    "title": "Primary Osteoporosis in Young Adults: Genetic Basis and Identification of Novel Variants in Causal Genes.",
+    "year": 2018
+  },
+  "resolved_container": "JBMR Plus",
+  "resolved_title": "Primary Osteoporosis in Young Adults: Genetic Basis and Identification of Novel Variants in Causal Genes.",
+  "resolved_year": 2018,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:31Z",
+  "year_delta": 0
+}

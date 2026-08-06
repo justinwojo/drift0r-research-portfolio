@@ -1,0 +1,26 @@
+{
+  "card_title": "IL-10, IL-6, and TNF-\u03b1: Central factors in the altered cytokine network of uremia\u2014The good, the bad, and the ugly",
+  "card_year": 2005,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1111/j.1523-1755.2005.00200.x",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0104",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1111/j.1523-1755.2005.00200.x",
+    "title": "IL-10, IL-6, and TNF-\u03b1: Central factors in the altered cytokine network of uremia\u2014The good, the bad, and the ugly",
+    "type": "journal-article",
+    "year": 2005
+  },
+  "resolved_container": "Kidney International",
+  "resolved_title": "IL-10, IL-6, and TNF-\u03b1: Central factors in the altered cytokine network of uremia\u2014The good, the bad, and the ugly",
+  "resolved_year": 2005,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:01Z",
+  "year_delta": 0
+}

@@ -1,0 +1,28 @@
+{
+  "card_title": "Specific Antibody Deficiency: Controversies in Diagnosis and Management",
+  "card_year": 2017,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC5439175",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0205",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.3389/fimmu.2017.00586",
+    "pmcid": "PMC5439175",
+    "pmid": "28588580",
+    "source": "Front Immunol",
+    "title": "Specific Antibody Deficiency: Controversies in Diagnosis and Management.",
+    "year": 2017
+  },
+  "resolved_container": "Front Immunol",
+  "resolved_title": "Specific Antibody Deficiency: Controversies in Diagnosis and Management.",
+  "resolved_year": 2017,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:24Z",
+  "year_delta": 0
+}

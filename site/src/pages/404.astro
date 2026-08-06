@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false} title="Not found" currentPath="/404/" showDisclaimer={true}>
+  <section class="hero">
+    <div class="legend-label">404</div>
+    <h1>Page not found</h1>
+    <p class="lede">
+      No medical summary is shown out of context on this error page. Return to a known route.
+    </p>
+    <div class="paths" style="max-width: 28rem;">
+      <a class="path primary" href={withBase('/')}>
+        <div class="t">Home</div>
+        <div class="d">Research portfolio landing</div>
+      </a>
+      <a class="path" href={withBase('/legal/')}>
+        <div class="t">Legal</div>
+        <div class="d">Disclaimer and privacy posture</div>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

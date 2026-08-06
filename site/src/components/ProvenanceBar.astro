@@ -1,0 +1,201 @@
+---
+import { getRelease, getSiteMode } from '../lib/data';
+import { indexingProvenanceLabel } from '../lib/indexing';
+
+interface Props {
+  /**
+   * Homepage (J.2 / J.2.1): single compact row with version + short review-status only.
+   * Indexing, dates, approval, allowlist live inside the expandable disclosure.
+   * Medical routes keep the fuller always-visible chrome.
+   */
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+
+const release = getRelease();
+const siteMode = getSiteMode();
+const patientNeg = release.patient_approval.status !== 'obtained';
+const clinicianNeg = release.clinician_review_scope.status === 'not_reviewed';
+/** release.yaml:noindex — same flag as BaseLayout robots meta. */
+const indexNeg = Boolean(release.noindex);
+const indexingLabel = indexingProvenanceLabel(indexNeg);
+const modeNeg = siteMode !== 'publication';
+const reviewPos = release.review_status === 'published';
+const reviewStatusLabel = release.review_status.replace(/_/g, ' ');
+---
+
+<div
+  class:list={['provenance', compact && 'provenance--compact']}
+  role="region"
+  aria-label="Version and review status"
+>
+  <div class="wrap">
+    {
+      compact ? (
+        <details class="prov-compact">
+          <summary class="prov-compact-summary">
+            <span class="pos prov-compact-version">
+              <b>{release.content_version}</b>
+            </span>
+            <span class:list={['prov-compact-review', reviewPos ? 'pos' : 'neg']}>
+              {reviewStatusLabel}
+            </span>
+          </summary>
+          <div class="prov-grid">
+            <span class="pos">
+              <b>analysis version {release.content_version}</b>
+            </span>
+            <span>
+              evidence current through <b>{release.evidence_current_through}</b>
+            </span>
+            <span>
+              as of <b>{release.as_of}</b>
+            </span>
+            <span>
+              last reviewed <b>{release.last_reviewed}</b>
+            </span>
+            <span class={reviewPos ? 'pos' : 'neg'}>
+              review status: {reviewStatusLabel}
+            </span>
+            <span class={modeNeg ? 'neg' : 'pos'}>site mode: {siteMode}</span>
+            <span class={patientNeg ? 'neg' : 'pos'}>
+              patient approval: {release.patient_approval.status.replace(/_/g, ' ')}
+            </span>
+            <span class={clinicianNeg ? 'neg' : 'pos'}>
+              clinician review:{' '}
+              {clinicianNeg
+                ? 'not performed'
+                : release.clinician_review_scope.status.replace(/_/g, ' ')}
+              {release.clinician_review_scope.domains?.length
+                ? ` (scope: ${release.clinician_review_scope.domains.join(', ')})`
+                : ''}
+            </span>
+            <span class={indexNeg ? 'neg' : 'pos'}>indexing: {indexingLabel}</span>
+            <span>allowlist {release.allowlist_version}</span>
+          </div>
+        </details>
+      ) : (
+        <>
+          <details class="prov-mobile">
+            <summary>
+              <span class="pos">
+                <b>analysis {release.content_version}</b>
+              </span>
+              <span>evidence through {release.evidence_current_through}</span>
+              {clinicianNeg ? (
+                <span class="neg">clinician review: not performed</span>
+              ) : (
+                <span class="pos">clinician review: scoped</span>
+              )}
+            </summary>
+            <div class="prov-grid">
+              <span class="pos">
+                <b>analysis version {release.content_version}</b>
+              </span>
+              <span>
+                evidence current through <b>{release.evidence_current_through}</b>
+              </span>
+              <span>
+                as of <b>{release.as_of}</b>
+              </span>
+              <span>
+                last reviewed <b>{release.last_reviewed}</b>
+              </span>
+              <span class={reviewPos ? 'pos' : 'neg'}>
+                review status: {reviewStatusLabel}
+              </span>
+              <span class={modeNeg ? 'neg' : 'pos'}>site mode: {siteMode}</span>
+              <span class={patientNeg ? 'neg' : 'pos'}>
+                patient approval: {release.patient_approval.status.replace(/_/g, ' ')}
+              </span>
+              <span class={clinicianNeg ? 'neg' : 'pos'}>
+                clinician review:{' '}
+                {clinicianNeg
+                  ? 'not performed'
+                  : release.clinician_review_scope.status.replace(/_/g, ' ')}
+                {release.clinician_review_scope.domains?.length
+                  ? ` (scope: ${release.clinician_review_scope.domains.join(', ')})`
+                  : ''}
+              </span>
+              <span class={indexNeg ? 'neg' : 'pos'}>indexing: {indexingLabel}</span>
+              <span>allowlist {release.allowlist_version}</span>
+            </div>
+          </details>
+          <div class="prov-desktop">
+            <span class="pos">
+              <b>analysis version {release.content_version}</b>
+            </span>
+            <span>
+              evidence current through <b>{release.evidence_current_through}</b>
+            </span>
+            <span>
+              as of <b>{release.as_of}</b>
+            </span>
+            <span>
+              last reviewed <b>{release.last_reviewed}</b>
+            </span>
+            <span class={reviewPos ? 'pos' : 'neg'}>
+              review status: {reviewStatusLabel}
+            </span>
+            <span class={modeNeg ? 'neg' : 'pos'}>site mode: {siteMode}</span>
+            <span class={patientNeg ? 'neg' : 'pos'}>
+              patient approval: {release.patient_approval.status.replace(/_/g, ' ')}
+            </span>
+            <span class={clinicianNeg ? 'neg' : 'pos'}>
+              clinician review:{' '}
+              {clinicianNeg
+                ? 'not performed'
+                : release.clinician_review_scope.status.replace(/_/g, ' ')}
+            </span>
+            <span class={indexNeg ? 'neg' : 'pos'}>indexing: {indexingLabel}</span>
+          </div>
+        </>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .prov-mobile {
+    display: none;
+  }
+  .prov-desktop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+    width: 100%;
+  }
+  .prov-compact {
+    display: block;
+    width: 100%;
+  }
+  /* J.2.1: genuine single compact row — version + review-status only */
+  .prov-compact-summary {
+    flex-wrap: nowrap;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .prov-compact-version {
+    flex: 0 0 auto;
+  }
+  .prov-compact-review {
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 480px) {
+    .prov-mobile {
+      display: block;
+    }
+    .prov-desktop {
+      display: none;
+    }
+    .prov-compact-summary {
+      min-height: 32px;
+      font-size: 11.5px;
+      gap: 8px;
+    }
+  }
+</style>

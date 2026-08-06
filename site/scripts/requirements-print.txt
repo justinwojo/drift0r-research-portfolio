@@ -1,0 +1,13 @@
+# Python dependencies for site/scripts print QA (npm run print:pdfs).
+# Not required for the public sanitized tree's Node/Astro site build.
+# Stamped PDFs are local QA artifacts only — they are not shipped to visitors.
+#
+# Setup (from monorepo root or site/):
+#   python3 -m pip install -r site/scripts/requirements-print.txt
+#
+# Used by:
+#   site/scripts/stamp_print_footer.py   (pypdf)
+#   site/scripts/render-print-pdfs.mjs   (pypdf + pdfminer.six via python3 -c)
+
+pypdf>=5.0.0,<7
+pdfminer.six>=20231228

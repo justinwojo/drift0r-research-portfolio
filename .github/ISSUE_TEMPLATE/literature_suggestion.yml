@@ -1,0 +1,44 @@
+name: Literature suggestion
+description: Suggest a peer-reviewed paper, guideline, or high-quality review for the bibliography.
+title: "[lit] "
+labels: ["literature", "suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.** Permission to publish this project is not endorsement.
+        Clinician review has not been performed.
+
+        **Do not** post private medical records, personal identifiers, treatment instructions, or unsupported diagnoses.
+  - type: input
+    id: citation
+    attributes:
+      label: Citation (preferred DOI or PMID)
+      description: e.g. 10.xxxx/... or PMID 12345678
+      placeholder: 10.
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Work title
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why this is relevant to the research portfolio
+      description: Applicability and limits in your own words. No full copyrighted text.
+    validations:
+      required: true
+  - type: textarea
+    id: counter
+    attributes:
+      label: Known limitations or counterevidence (if any)
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I am not posting private medical records, personal identifiers, treatment instructions, or a personal medical-advice request.
+          required: true

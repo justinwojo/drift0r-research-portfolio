@@ -1,0 +1,27 @@
+{
+  "card_title": "Bartonella spp. seroprevalence in tick-exposed Swedish patients with persistent symptoms",
+  "card_year": 2021,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "34641972",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0055",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1186/s13071-021-05043-3",
+    "pmid": "34641972",
+    "pubdate": "2021 Oct 12",
+    "source": "Parasit Vectors",
+    "title": "Bartonella spp. seroprevalence in tick-exposed Swedish patients with persistent symptoms."
+  },
+  "resolved_container": "Parasit Vectors",
+  "resolved_title": "Bartonella spp. seroprevalence in tick-exposed Swedish patients with persistent symptoms.",
+  "resolved_year": 2021,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:08Z",
+  "year_delta": 0
+}

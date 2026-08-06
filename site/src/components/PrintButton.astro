@@ -1,0 +1,13 @@
+---
+---
+
+<button type="button" class="btn-print no-print" id="print-btn" aria-label="Print this page using the browser print dialog">
+  Print this page
+</button>
+
+<script>
+  const btn = document.getElementById('print-btn');
+  btn?.addEventListener('click', () => {
+    window.print();
+  });
+</script>

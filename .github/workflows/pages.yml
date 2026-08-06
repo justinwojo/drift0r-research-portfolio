@@ -1,0 +1,149 @@
+# GitHub Pages — publication-mode only, manual dispatch (Checkpoint G P1-10 / G.2).
+# Does NOT auto-deploy on push. Operator must explicitly run workflow_dispatch
+# after a reviewed publication build. Least privilege: pages write + id-token only.
+#
+# URL configuration (G.2 / G.2.1):
+# - DRIFT0R_PUBLIC_REPO_URL is derived from github.repository (https://github.com/<owner>/<repo>).
+#   This workflow is intended to run on the **public** repository that hosts contribution
+#   issue templates. If the public remote differs, set repository variable
+#   PUBLIC_REPO_URL_OVERRIDE to an explicit reviewed https://github.com/owner/repo value.
+# - DRIFT0R_SITE_URL uses project Pages https://<owner>.github.io/<repo> unless SITE_URL_OVERRIDE
+#   is set. Astro `base` is derived from the site URL pathname and must equal the repository
+#   name for project Pages (G.2.1). Root `/` is for user Pages / custom domains only.
+# - Check/tests run first; the certified publication build + gate run immediately before upload.
+# - dist is never mutated after certification (.nojekyll must already be in the artifact).
+name: Deploy publication site (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_publication:
+        description: 'Type "publication" to confirm this is a publication-mode deploy'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-publication
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Confirm publication intent
+        run: |
+          if [ "${{ inputs.confirm_publication }}" != "publication" ]; then
+            echo "Rejected: confirm_publication must be exactly 'publication'."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Derive public repo + site URLs
+        id: urls
+        working-directory: site
+        run: |
+          # Prefer explicit reviewed overrides (repository variables); else derive safely.
+          # Validation + base_path derivation: shared Node logic (repo-url.mjs), not shell parsing.
+          # Root/custom-domain (https://research.example.org[/]) → base /
+          # Project Pages (https://owner.github.io/repo) → base /repo; path must match repo name.
+          REPO_URL="${{ vars.PUBLIC_REPO_URL_OVERRIDE }}"
+          if [ -z "$REPO_URL" ]; then
+            REPO_URL="https://github.com/${{ github.repository }}"
+          fi
+          SITE_URL="${{ vars.SITE_URL_OVERRIDE }}"
+          if [ -z "$SITE_URL" ]; then
+            # Project Pages default: https://<owner>.github.io/<repo>
+            OWNER="${{ github.repository_owner }}"
+            NAME="${{ github.event.repository.name }}"
+            SITE_URL="https://${OWNER}.github.io/${NAME}"
+          fi
+          node scripts/repo-url.mjs --ci-deploy-urls \
+            --repo-url "$REPO_URL" \
+            --site-url "$SITE_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Check and unit tests (before publication artifact)
+        working-directory: site
+        env:
+          # Tests must not need a real public URL; they use scratch outDirs.
+          DRIFT0R_SKIP_EXPORT_BUILD_TEST: '1'
+        run: |
+          npm run check
+          npm test
+
+      - name: Publication-mode build (bake repo + site URLs)
+        working-directory: site
+        env:
+          DRIFT0R_SITE_MODE: publication
+          DRIFT0R_PUBLIC_REPO_URL: ${{ steps.urls.outputs.public_repo_url }}
+          DRIFT0R_SITE_URL: ${{ steps.urls.outputs.site_url }}
+        run: npm run build:publication
+
+      # Checkpoint H P1-8: content-safety tests that require site/dist must run after the real build.
+      - name: Post-build content-safety tests (requires site/dist)
+        working-directory: site
+        env:
+          DRIFT0R_SITE_MODE: publication
+          DRIFT0R_PUBLIC_REPO_URL: ${{ steps.urls.outputs.public_repo_url }}
+          DRIFT0R_SITE_URL: ${{ steps.urls.outputs.site_url }}
+          DRIFT0R_SKIP_EXPORT_BUILD_TEST: '1'
+        run: npm test
+
+      - name: Publication + launch gate (rendered contribution link + digests + site URL)
+        working-directory: site
+        env:
+          DRIFT0R_SITE_MODE: publication
+          DRIFT0R_PUBLIC_REPO_URL: ${{ steps.urls.outputs.public_repo_url }}
+          DRIFT0R_SITE_URL: ${{ steps.urls.outputs.site_url }}
+          DRIFT0R_REQUIRE_PUBLIC_REPO_URL: '1'
+        run: node scripts/require-publication-mode.mjs --require-public-repo
+
+      - name: Require certified .nojekyll (never mutate dist after gate)
+        working-directory: site
+        run: |
+          if [ ! -f dist/.nojekyll ]; then
+            echo "REJECTED: dist/.nojekyll missing after certification. Rebuild; do not touch dist."
+            exit 1
+          fi
+          if [ ! -f dist/.artifact_manifest.txt ]; then
+            echo "REJECTED: dist/.artifact_manifest.txt missing"
+            exit 1
+          fi
+          # Refuse to create or rewrite anything under dist here.
+
+      - name: Upload Pages artifact (site/dist only)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

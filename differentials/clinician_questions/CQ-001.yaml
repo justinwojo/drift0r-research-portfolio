@@ -1,0 +1,26 @@
+id: CQ-001
+question: Would paired bone formation markers (P1NP, bone-specific ALP ± osteocalcin),
+  interpreted with preanalytical standards, help classify turnover before any long-term
+  bone-agent class discussion?
+rationale: Formation markers are not documented in the public ledger; CTX alone (upper-normal,
+  fasting unknown) cannot establish formation–resorption uncoupling. BTM use for monitoring/interpretation
+  and sex-specific reference intervals are the relevant literature (not densitometry-only
+  guidance).
+related_claim_ids:
+- CLM-0011
+- CLM-0010
+related_hypothesis_ids:
+- H3
+- H2
+literature_refs:
+- lit-0012
+- lit-0297
+priority: high
+dont_miss: true
+medical_domain: bone
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

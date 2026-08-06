@@ -1,0 +1,28 @@
+{
+  "card_title": "Diagnostic criteria for small fibre neuropathy in clinical practice and research",
+  "card_year": 2019,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC6906595",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0270",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.1093/brain/awz333",
+    "pmcid": "PMC6906595",
+    "pmid": "31665231",
+    "source": "Brain",
+    "title": "Diagnostic criteria for small fibre neuropathy in clinical practice and research.",
+    "year": 2019
+  },
+  "resolved_container": "Brain",
+  "resolved_title": "Diagnostic criteria for small fibre neuropathy in clinical practice and research.",
+  "resolved_year": 2019,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:26Z",
+  "year_delta": 0
+}

@@ -1,0 +1,680 @@
+version: 1.0.0
+as_of: '2026-08-05'
+identity_only_disclaimer: Identifier resolution proves bibliographic identity only;
+  it does not prove that the card summary supports any medical claim.
+semantic_verification_note: 'This coverage file records bibliographic identity verification
+  only. semantic_verified is always 0: identifier resolution does not prove that a
+  card summary supports any medical claim.'
+catalog_card_count: 334
+alias_count: 10
+launch_cited_count: 44
+identity_verified_count: 44
+identity_unverified_count: 280
+identity_unresolvable_count: 0
+identity_mismatch_count: 0
+semantic_verified_count: 0
+semantic_unverified_count: 324
+identity_verified:
+- lit-0001
+- lit-0012
+- lit-0013
+- lit-0014
+- lit-0015
+- lit-0021
+- lit-0037
+- lit-0042
+- lit-0047
+- lit-0049
+- lit-0050
+- lit-0055
+- lit-0057
+- lit-0058
+- lit-0075
+- lit-0080
+- lit-0089
+- lit-0096
+- lit-0097
+- lit-0104
+- lit-0115
+- lit-0121
+- lit-0146
+- lit-0149
+- lit-0150
+- lit-0152
+- lit-0153
+- lit-0160
+- lit-0164
+- lit-0166
+- lit-0186
+- lit-0191
+- lit-0205
+- lit-0206
+- lit-0226
+- lit-0235
+- lit-0242
+- lit-0243
+- lit-0270
+- lit-0287
+- lit-0290
+- lit-0293
+- lit-0294
+- lit-0297
+identity_unverified:
+- lit-0002
+- lit-0003
+- lit-0004
+- lit-0005
+- lit-0006
+- lit-0007
+- lit-0008
+- lit-0009
+- lit-0010
+- lit-0011
+- lit-0016
+- lit-0017
+- lit-0018
+- lit-0019
+- lit-0020
+- lit-0022
+- lit-0023
+- lit-0024
+- lit-0025
+- lit-0026
+- lit-0027
+- lit-0028
+- lit-0029
+- lit-0030
+- lit-0031
+- lit-0032
+- lit-0033
+- lit-0034
+- lit-0035
+- lit-0036
+- lit-0038
+- lit-0039
+- lit-0040
+- lit-0041
+- lit-0043
+- lit-0044
+- lit-0045
+- lit-0046
+- lit-0048
+- lit-0051
+- lit-0052
+- lit-0053
+- lit-0054
+- lit-0056
+- lit-0059
+- lit-0060
+- lit-0061
+- lit-0062
+- lit-0063
+- lit-0064
+- lit-0065
+- lit-0066
+- lit-0067
+- lit-0068
+- lit-0069
+- lit-0070
+- lit-0071
+- lit-0072
+- lit-0073
+- lit-0074
+- lit-0076
+- lit-0077
+- lit-0078
+- lit-0079
+- lit-0081
+- lit-0082
+- lit-0083
+- lit-0084
+- lit-0085
+- lit-0087
+- lit-0088
+- lit-0090
+- lit-0091
+- lit-0092
+- lit-0093
+- lit-0094
+- lit-0095
+- lit-0098
+- lit-0099
+- lit-0101
+- lit-0102
+- lit-0103
+- lit-0105
+- lit-0106
+- lit-0107
+- lit-0108
+- lit-0109
+- lit-0110
+- lit-0111
+- lit-0112
+- lit-0113
+- lit-0114
+- lit-0116
+- lit-0117
+- lit-0118
+- lit-0119
+- lit-0120
+- lit-0122
+- lit-0123
+- lit-0124
+- lit-0125
+- lit-0126
+- lit-0127
+- lit-0128
+- lit-0129
+- lit-0130
+- lit-0131
+- lit-0132
+- lit-0133
+- lit-0134
+- lit-0135
+- lit-0136
+- lit-0137
+- lit-0138
+- lit-0139
+- lit-0140
+- lit-0141
+- lit-0142
+- lit-0143
+- lit-0144
+- lit-0145
+- lit-0148
+- lit-0151
+- lit-0154
+- lit-0155
+- lit-0156
+- lit-0157
+- lit-0158
+- lit-0159
+- lit-0161
+- lit-0162
+- lit-0163
+- lit-0165
+- lit-0167
+- lit-0168
+- lit-0169
+- lit-0170
+- lit-0171
+- lit-0172
+- lit-0173
+- lit-0174
+- lit-0175
+- lit-0176
+- lit-0177
+- lit-0178
+- lit-0179
+- lit-0180
+- lit-0181
+- lit-0182
+- lit-0183
+- lit-0184
+- lit-0185
+- lit-0187
+- lit-0188
+- lit-0189
+- lit-0190
+- lit-0192
+- lit-0193
+- lit-0194
+- lit-0195
+- lit-0196
+- lit-0197
+- lit-0198
+- lit-0199
+- lit-0200
+- lit-0201
+- lit-0202
+- lit-0203
+- lit-0204
+- lit-0207
+- lit-0208
+- lit-0209
+- lit-0210
+- lit-0211
+- lit-0213
+- lit-0214
+- lit-0217
+- lit-0218
+- lit-0219
+- lit-0221
+- lit-0225
+- lit-0227
+- lit-0228
+- lit-0230
+- lit-0231
+- lit-0232
+- lit-0233
+- lit-0234
+- lit-0236
+- lit-0237
+- lit-0238
+- lit-0239
+- lit-0240
+- lit-0241
+- lit-0244
+- lit-0245
+- lit-0246
+- lit-0247
+- lit-0248
+- lit-0249
+- lit-0250
+- lit-0251
+- lit-0252
+- lit-0253
+- lit-0254
+- lit-0255
+- lit-0256
+- lit-0257
+- lit-0258
+- lit-0259
+- lit-0260
+- lit-0261
+- lit-0262
+- lit-0263
+- lit-0264
+- lit-0265
+- lit-0266
+- lit-0267
+- lit-0268
+- lit-0269
+- lit-0271
+- lit-0272
+- lit-0273
+- lit-0274
+- lit-0275
+- lit-0276
+- lit-0277
+- lit-0278
+- lit-0279
+- lit-0280
+- lit-0281
+- lit-0282
+- lit-0283
+- lit-0284
+- lit-0285
+- lit-0286
+- lit-0288
+- lit-0289
+- lit-0291
+- lit-0292
+- lit-0295
+- lit-0296
+- lit-0298
+- lit-0299
+- lit-0300
+- lit-0301
+- lit-0302
+- lit-0304
+- lit-0305
+- lit-0306
+- lit-0307
+- lit-0308
+- lit-0309
+- lit-0310
+- lit-0311
+- lit-0312
+- lit-0313
+- lit-0314
+- lit-0315
+- lit-0316
+- lit-0317
+- lit-0318
+- lit-0319
+- lit-0320
+- lit-0321
+- lit-0322
+- lit-0323
+- lit-0324
+- lit-0325
+- lit-0326
+- lit-0327
+- lit-0328
+- lit-0329
+- lit-0330
+- lit-0331
+- lit-0332
+- lit-0333
+- lit-0334
+- lit-0335
+- lit-0336
+identity_unresolvable: []
+identity_mismatch: []
+launch_cited_unverified: []
+by_status:
+  lit-0001: identity_verified
+  lit-0002: identity_unverified
+  lit-0003: identity_unverified
+  lit-0004: identity_unverified
+  lit-0005: identity_unverified
+  lit-0006: identity_unverified
+  lit-0007: identity_unverified
+  lit-0008: identity_unverified
+  lit-0009: identity_unverified
+  lit-0010: identity_unverified
+  lit-0011: identity_unverified
+  lit-0012: identity_verified
+  lit-0013: identity_verified
+  lit-0014: identity_verified
+  lit-0015: identity_verified
+  lit-0016: identity_unverified
+  lit-0017: identity_unverified
+  lit-0018: identity_unverified
+  lit-0019: identity_unverified
+  lit-0020: identity_unverified
+  lit-0021: identity_verified
+  lit-0022: identity_unverified
+  lit-0023: identity_unverified
+  lit-0024: identity_unverified
+  lit-0025: identity_unverified
+  lit-0026: identity_unverified
+  lit-0027: identity_unverified
+  lit-0028: identity_unverified
+  lit-0029: identity_unverified
+  lit-0030: identity_unverified
+  lit-0031: identity_unverified
+  lit-0032: identity_unverified
+  lit-0033: identity_unverified
+  lit-0034: identity_unverified
+  lit-0035: identity_unverified
+  lit-0036: identity_unverified
+  lit-0037: identity_verified
+  lit-0038: identity_unverified
+  lit-0039: identity_unverified
+  lit-0040: identity_unverified
+  lit-0041: identity_unverified
+  lit-0042: identity_verified
+  lit-0043: identity_unverified
+  lit-0044: identity_unverified
+  lit-0045: identity_unverified
+  lit-0046: identity_unverified
+  lit-0047: identity_verified
+  lit-0048: identity_unverified
+  lit-0049: identity_verified
+  lit-0050: identity_verified
+  lit-0051: identity_unverified
+  lit-0052: identity_unverified
+  lit-0053: identity_unverified
+  lit-0054: identity_unverified
+  lit-0055: identity_verified
+  lit-0056: identity_unverified
+  lit-0057: identity_verified
+  lit-0058: identity_verified
+  lit-0059: identity_unverified
+  lit-0060: identity_unverified
+  lit-0061: identity_unverified
+  lit-0062: identity_unverified
+  lit-0063: identity_unverified
+  lit-0064: identity_unverified
+  lit-0065: identity_unverified
+  lit-0066: identity_unverified
+  lit-0067: identity_unverified
+  lit-0068: identity_unverified
+  lit-0069: identity_unverified
+  lit-0070: identity_unverified
+  lit-0071: identity_unverified
+  lit-0072: identity_unverified
+  lit-0073: identity_unverified
+  lit-0074: identity_unverified
+  lit-0075: identity_verified
+  lit-0076: identity_unverified
+  lit-0077: identity_unverified
+  lit-0078: identity_unverified
+  lit-0079: identity_unverified
+  lit-0080: identity_verified
+  lit-0081: identity_unverified
+  lit-0082: identity_unverified
+  lit-0083: identity_unverified
+  lit-0084: identity_unverified
+  lit-0085: identity_unverified
+  lit-0087: identity_unverified
+  lit-0088: identity_unverified
+  lit-0089: identity_verified
+  lit-0090: identity_unverified
+  lit-0091: identity_unverified
+  lit-0092: identity_unverified
+  lit-0093: identity_unverified
+  lit-0094: identity_unverified
+  lit-0095: identity_unverified
+  lit-0096: identity_verified
+  lit-0097: identity_verified
+  lit-0098: identity_unverified
+  lit-0099: identity_unverified
+  lit-0101: identity_unverified
+  lit-0102: identity_unverified
+  lit-0103: identity_unverified
+  lit-0104: identity_verified
+  lit-0105: identity_unverified
+  lit-0106: identity_unverified
+  lit-0107: identity_unverified
+  lit-0108: identity_unverified
+  lit-0109: identity_unverified
+  lit-0110: identity_unverified
+  lit-0111: identity_unverified
+  lit-0112: identity_unverified
+  lit-0113: identity_unverified
+  lit-0114: identity_unverified
+  lit-0115: identity_verified
+  lit-0116: identity_unverified
+  lit-0117: identity_unverified
+  lit-0118: identity_unverified
+  lit-0119: identity_unverified
+  lit-0120: identity_unverified
+  lit-0121: identity_verified
+  lit-0122: identity_unverified
+  lit-0123: identity_unverified
+  lit-0124: identity_unverified
+  lit-0125: identity_unverified
+  lit-0126: identity_unverified
+  lit-0127: identity_unverified
+  lit-0128: identity_unverified
+  lit-0129: identity_unverified
+  lit-0130: identity_unverified
+  lit-0131: identity_unverified
+  lit-0132: identity_unverified
+  lit-0133: identity_unverified
+  lit-0134: identity_unverified
+  lit-0135: identity_unverified
+  lit-0136: identity_unverified
+  lit-0137: identity_unverified
+  lit-0138: identity_unverified
+  lit-0139: identity_unverified
+  lit-0140: identity_unverified
+  lit-0141: identity_unverified
+  lit-0142: identity_unverified
+  lit-0143: identity_unverified
+  lit-0144: identity_unverified
+  lit-0145: identity_unverified
+  lit-0146: identity_verified
+  lit-0147: alias
+  lit-0148: identity_unverified
+  lit-0149: identity_verified
+  lit-0150: identity_verified
+  lit-0151: identity_unverified
+  lit-0152: identity_verified
+  lit-0153: identity_verified
+  lit-0154: identity_unverified
+  lit-0155: identity_unverified
+  lit-0156: identity_unverified
+  lit-0157: identity_unverified
+  lit-0158: identity_unverified
+  lit-0159: identity_unverified
+  lit-0160: identity_verified
+  lit-0161: identity_unverified
+  lit-0162: identity_unverified
+  lit-0163: identity_unverified
+  lit-0164: identity_verified
+  lit-0165: identity_unverified
+  lit-0166: identity_verified
+  lit-0167: identity_unverified
+  lit-0168: identity_unverified
+  lit-0169: identity_unverified
+  lit-0170: identity_unverified
+  lit-0171: identity_unverified
+  lit-0172: identity_unverified
+  lit-0173: identity_unverified
+  lit-0174: identity_unverified
+  lit-0175: identity_unverified
+  lit-0176: identity_unverified
+  lit-0177: identity_unverified
+  lit-0178: identity_unverified
+  lit-0179: identity_unverified
+  lit-0180: identity_unverified
+  lit-0181: identity_unverified
+  lit-0182: identity_unverified
+  lit-0183: identity_unverified
+  lit-0184: identity_unverified
+  lit-0185: identity_unverified
+  lit-0186: identity_verified
+  lit-0187: identity_unverified
+  lit-0188: identity_unverified
+  lit-0189: identity_unverified
+  lit-0190: identity_unverified
+  lit-0191: identity_verified
+  lit-0192: identity_unverified
+  lit-0193: identity_unverified
+  lit-0194: identity_unverified
+  lit-0195: identity_unverified
+  lit-0196: identity_unverified
+  lit-0197: identity_unverified
+  lit-0198: identity_unverified
+  lit-0199: identity_unverified
+  lit-0200: identity_unverified
+  lit-0201: identity_unverified
+  lit-0202: identity_unverified
+  lit-0203: identity_unverified
+  lit-0204: identity_unverified
+  lit-0205: identity_verified
+  lit-0206: identity_verified
+  lit-0207: identity_unverified
+  lit-0208: identity_unverified
+  lit-0209: identity_unverified
+  lit-0210: identity_unverified
+  lit-0211: identity_unverified
+  lit-0212: alias
+  lit-0213: identity_unverified
+  lit-0214: identity_unverified
+  lit-0215: alias
+  lit-0216: alias
+  lit-0217: identity_unverified
+  lit-0218: identity_unverified
+  lit-0219: identity_unverified
+  lit-0220: alias
+  lit-0221: identity_unverified
+  lit-0222: alias
+  lit-0223: alias
+  lit-0224: alias
+  lit-0225: identity_unverified
+  lit-0226: identity_verified
+  lit-0227: identity_unverified
+  lit-0228: identity_unverified
+  lit-0229: alias
+  lit-0230: identity_unverified
+  lit-0231: identity_unverified
+  lit-0232: identity_unverified
+  lit-0233: identity_unverified
+  lit-0234: identity_unverified
+  lit-0235: identity_verified
+  lit-0236: identity_unverified
+  lit-0237: identity_unverified
+  lit-0238: identity_unverified
+  lit-0239: identity_unverified
+  lit-0240: identity_unverified
+  lit-0241: identity_unverified
+  lit-0242: identity_verified
+  lit-0243: identity_verified
+  lit-0244: identity_unverified
+  lit-0245: identity_unverified
+  lit-0246: identity_unverified
+  lit-0247: identity_unverified
+  lit-0248: identity_unverified
+  lit-0249: identity_unverified
+  lit-0250: identity_unverified
+  lit-0251: identity_unverified
+  lit-0252: identity_unverified
+  lit-0253: identity_unverified
+  lit-0254: identity_unverified
+  lit-0255: identity_unverified
+  lit-0256: identity_unverified
+  lit-0257: identity_unverified
+  lit-0258: identity_unverified
+  lit-0259: identity_unverified
+  lit-0260: identity_unverified
+  lit-0261: identity_unverified
+  lit-0262: identity_unverified
+  lit-0263: identity_unverified
+  lit-0264: identity_unverified
+  lit-0265: identity_unverified
+  lit-0266: identity_unverified
+  lit-0267: identity_unverified
+  lit-0268: identity_unverified
+  lit-0269: identity_unverified
+  lit-0270: identity_verified
+  lit-0271: identity_unverified
+  lit-0272: identity_unverified
+  lit-0273: identity_unverified
+  lit-0274: identity_unverified
+  lit-0275: identity_unverified
+  lit-0276: identity_unverified
+  lit-0277: identity_unverified
+  lit-0278: identity_unverified
+  lit-0279: identity_unverified
+  lit-0280: identity_unverified
+  lit-0281: identity_unverified
+  lit-0282: identity_unverified
+  lit-0283: identity_unverified
+  lit-0284: identity_unverified
+  lit-0285: identity_unverified
+  lit-0286: identity_unverified
+  lit-0287: identity_verified
+  lit-0288: identity_unverified
+  lit-0289: identity_unverified
+  lit-0290: identity_verified
+  lit-0291: identity_unverified
+  lit-0292: identity_unverified
+  lit-0293: identity_verified
+  lit-0294: identity_verified
+  lit-0295: identity_unverified
+  lit-0296: identity_unverified
+  lit-0297: identity_verified
+  lit-0298: identity_unverified
+  lit-0299: identity_unverified
+  lit-0300: identity_unverified
+  lit-0301: identity_unverified
+  lit-0302: identity_unverified
+  lit-0303: alias
+  lit-0304: identity_unverified
+  lit-0305: identity_unverified
+  lit-0306: identity_unverified
+  lit-0307: identity_unverified
+  lit-0308: identity_unverified
+  lit-0309: identity_unverified
+  lit-0310: identity_unverified
+  lit-0311: identity_unverified
+  lit-0312: identity_unverified
+  lit-0313: identity_unverified
+  lit-0314: identity_unverified
+  lit-0315: identity_unverified
+  lit-0316: identity_unverified
+  lit-0317: identity_unverified
+  lit-0318: identity_unverified
+  lit-0319: identity_unverified
+  lit-0320: identity_unverified
+  lit-0321: identity_unverified
+  lit-0322: identity_unverified
+  lit-0323: identity_unverified
+  lit-0324: identity_unverified
+  lit-0325: identity_unverified
+  lit-0326: identity_unverified
+  lit-0327: identity_unverified
+  lit-0328: identity_unverified
+  lit-0329: identity_unverified
+  lit-0330: identity_unverified
+  lit-0331: identity_unverified
+  lit-0332: identity_unverified
+  lit-0333: identity_unverified
+  lit-0334: identity_unverified
+  lit-0335: identity_unverified
+  lit-0336: identity_unverified

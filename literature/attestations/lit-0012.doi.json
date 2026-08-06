@@ -1,0 +1,26 @@
+{
+  "card_title": "Markers of bone turnover for the prediction of fracture risk and monitoring of osteoporosis treatment: a need for international reference standards",
+  "card_year": 2011,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1007/s00198-010-1501-1",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0012",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1007/s00198-010-1501-1",
+    "title": "Markers of bone turnover for the prediction of fracture risk and monitoring of osteoporosis treatment: a need for international reference standards",
+    "type": "journal-article",
+    "year": 2011
+  },
+  "resolved_container": "Osteoporosis International",
+  "resolved_title": "Markers of bone turnover for the prediction of fracture risk and monitoring of osteoporosis treatment: a need for international reference standards",
+  "resolved_year": 2011,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:37Z",
+  "year_delta": 0
+}

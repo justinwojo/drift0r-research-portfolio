@@ -1,0 +1,14 @@
+---
+import { PERSISTENT_STATUS_NOTICE } from '../lib/constants';
+
+interface Props {
+  /** When true, keep the notice in print output (default true). */
+  printVisible?: boolean;
+}
+const { printVisible = true } = Astro.props;
+const cls = printVisible ? 'status-notice' : 'status-notice no-print';
+---
+
+<div class={cls} role="status" aria-label="Publication status notice">
+  {PERSISTENT_STATUS_NOTICE}
+</div>

@@ -1,0 +1,23 @@
+id: CQ-006
+question: Is same-lab, same-assay pre/post pneumococcal polysaccharide vaccine challenge
+  (± Hib as directed) appropriate to adjudicate specific antibody deficiency, given
+  baseline non-protective titers and IgG1-low pattern?
+rationale: Baseline titers are not a vaccine-challenge study; formal SAD criteria
+  require response assessment and infection history.
+related_claim_ids:
+- CLM-0034
+- CLM-0035
+related_hypothesis_ids:
+- H5
+literature_refs:
+- lit-0205
+- lit-0206
+priority: high
+dont_miss: true
+medical_domain: immunology
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

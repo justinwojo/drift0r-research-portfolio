@@ -1,0 +1,234 @@
+meta:
+  run_id: 2026-08-publication-readiness
+  created: "2026-08-05"
+  base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
+  purpose: >
+    Unresolved primary-record questions after M1 reconciliation.
+    Absence of a record is never a negative finding.
+  not_medical_advice: true
+
+questions:
+  - id: UQ-0001
+    topic: KIT assay method
+    question: >
+      What was the exact KIT assay for the reported negative result — specimen type,
+      method (ASO-qPCR, ddPCR, NGS, other), laboratory, and limit of detection?
+    why_it_matters: >
+      Low-burden systemic mastocytosis exclusion depends on assay sensitivity;
+      "KIT negative" without method is incomplete for public certainty language.
+    related_claims: [CLM-0032, CLM-0057, CLM-0065]
+    related_corrections: [COR-0005]
+    closest_available_record: >
+      Narrative statements of KIT-negative in thiamine summary, medical-psychological
+      history PDF, evidence pack, ledger T036 — no method sheet.
+    status: open
+    owner: patient_or_clinician_records
+    blocks_launch_critical_wording: true
+  - id: UQ-0002
+    topic: CTX pre-analytical conditions
+    question: >
+      Was serum CTX 616 pg/mL (2026-06-26) drawn fasting, at a standardized morning time,
+      and on which assay platform?
+    why_it_matters: CTX is sensitive to food intake and diurnal variation; affects turnover interpretation.
+    related_claims: [CLM-0010]
+    related_corrections: [COR-0006]
+    closest_available_record: Bone density summary turnover table — value and ref only.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0003
+    topic: Original hypogonadism-era HPG labs
+    question: >
+      Can original laboratory reports for total testosterone ≈34 ng/dL (reportedly ×2)
+      be retrieved with dates, assay methods, and concurrent LH, FSH, prolactin, estradiol, SHBG?
+    why_it_matters: >
+      Distinguishes reported history from instrument-verified values; informs central vs
+      primary hypogonadism and Klinefelter pretest probability.
+    related_claims: [CLM-0018]
+    related_corrections: [COR-0004]
+    closest_available_record: >
+      Narrative ~34 ng/dL in endocrine/thiamine/ID summaries; tabulated HPG from 2021 onward.
+    status: open
+    owner: patient_or_clinic_archives
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0004
+    topic: Early estradiol and treatment context
+    question: >
+      What were estradiol values, assay methods, and aromatase-inhibitor/SERM timing
+      at the original hypogonadism presentation?
+    why_it_matters: Limits causal narratives about estrogen handling; 2021–2026 E2 only partially available.
+    related_claims: [CLM-0021]
+    related_corrections: []
+    closest_available_record: Endocrine summary HPG estradiol row + methodology note (5).
+    status: open
+    owner: patient_or_clinic_archives
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0005
+    topic: ALP age/sex reference audit
+    question: >
+      Do any historical ALP values fall below age- and sex-adjusted reference intervals
+      (not only the adult 36–130 U/L band), and was bone-specific ALP ever measured?
+    why_it_matters: Hypophosphatasia branch gating; total ALP mid-low normal is insufficient alone.
+    related_claims: [CLM-0012]
+    related_corrections: []
+    closest_available_record: Endocrine CMP ALP 52/42/50 U/L within adult ref.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0006
+    topic: Fragility-fracture characterization of pars defects
+    question: >
+      Do treating clinicians characterize L5 pars defects as fragility fractures meeting
+      formal osteoporosis diagnostic criteria for a young male, or as stress/isthmic lesions?
+    why_it_matters: Affects public "fragility fracture" language and diagnostic criteria claims.
+    related_claims: [CLM-0014, CLM-0013]
+    related_corrections: []
+    closest_available_record: Imaging "pars fractures"; thiamine timeline "atraumatic facet fractures".
+    status: open
+    owner: treating_clinicians
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0007
+    topic: Vaccine history and titer platform
+    question: >
+      What is the vaccine history (products, dates) behind Hib and 23-valent pneumococcal
+      IgG titers, and which assay platform/lab produced the June 2026 panel?
+    why_it_matters: Functional titers without challenge or history cannot confirm or refute SAD.
+    related_claims: [CLM-0034, CLM-0035, CLM-0058]
+    related_corrections: []
+    closest_available_record: ID summary §2c — titers + explicit not-a-challenge note.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0008
+    topic: Dry beriberi formal diagnosis language
+    question: >
+      Did a licensed clinician document "dry beriberi" or equivalent as a formal diagnosis,
+      or is the label solely patient-compiled / research interpretive language around
+      documented thiamine deficiency and neuropathy?
+    why_it_matters: Prevents overstating confirmed diagnosis vs lab deficiency + phenotype.
+    related_claims: [CLM-0026]
+    related_corrections: [COR-0012]
+    closest_available_record: Thiamine summary pattern language; lab value 7 nmol/L.
+    status: open
+    owner: treating_clinicians
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0009
+    topic: Facility DXA precision study / LSC source document
+    question: >
+      What is the facility-authored precision assessment document supporting LSC = 0.027 g/cm²
+      (total hip) and 0.022 g/cm² (L3–L4 subregion), including software version?
+    why_it_matters: Independent audit of "real loss" claim beyond patient-compiled footnote.
+    related_claims: [CLM-0006]
+    related_corrections: [COR-0001]
+    closest_available_record: Bone density summary LSC footnotes.
+    status: open
+    owner: DXA_facility
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0010
+    topic: Clinician osteoporosis diagnosis string
+    question: >
+      What exact diagnostic phrasing did treating clinicians use for the bone disease
+      (e.g., osteoporosis, low BMD, idiopathic osteoporosis, osteopenia)?
+    why_it_matters: Public site must not invent clinician diagnosis wording.
+    related_claims: [CLM-0008]
+    related_corrections: [COR-0002]
+    closest_available_record: WHO-by-lowest-T language in bone summary only.
+    status: open
+    owner: treating_clinicians
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0011
+    topic: Copper / ceruloplasmin / zinc results
+    question: Have serum copper, ceruloplasmin, and zinc been measured, and what were the results?
+    why_it_matters: Don't-miss myeloneuropathy screen; currently a documented gap (S002/T110).
+    related_claims: []
+    related_corrections: []
+    closest_available_record: Ledger marks not in 2026 micronutrient extract; zinc normal on one panel.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0012
+    topic: Karyotype / CMA
+    question: Has peripheral karyotype or chromosomal microarray been performed?
+    why_it_matters: Closes XXY/mosaic question; available gonadotropin pattern leans central but not definitive.
+    related_claims: []
+    related_corrections: []
+    closest_available_record: Ledger T109 / S001 not in public pack.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0013
+    topic: Rare-bone gene panel
+    question: Has an early-onset osteoporosis / OI-spectrum gene panel been run, and with what result?
+    why_it_matters: Best single-primary hypothesis remains untested genetically.
+    related_claims: [CLM-0050, CLM-0056, CLM-0064]
+    related_corrections: [COR-0009]
+    closest_available_record: Ledger T117 / S004 gap.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0014
+    topic: TPSAB1 copy number detail
+    question: What is the exact TPSAB1 copy-number genotype underlying the HαT-positive report?
+    why_it_matters: Completeness of HαT claim; may affect tryptase-adjusted SM criteria discussions.
+    related_claims: [CLM-0031, CLM-0030]
+    related_corrections: []
+    closest_available_record: HαT positive statements; T114 incomplete.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0015
+    topic: UTSW no-category statement
+    question: >
+      Is there a primary clinic note supporting "UTSW finds no clear category," and what was
+      the exact scope of that evaluation?
+    why_it_matters: README-level claim; easy to over-read as institutional diagnostic exhaustion.
+    related_claims: []
+    related_corrections: []
+    closest_available_record: README case snapshot prose only — not found in specialty PDFs reviewed.
+    status: open
+    owner: patient
+    blocks_launch_critical_wording: true
+
+  - id: UQ-0016
+    topic: Same-scanner software and positioning identity
+    question: >
+      For Site 1 serial DXA, were software version, analysis conventions, and positioning
+      held constant across 2025-06-16 and 2026-06-19 hip scans?
+    why_it_matters: Supports or weakens serial % change validity beyond LSC arithmetic.
+    related_claims: [CLM-0006, CLM-0007]
+    related_corrections: [COR-0011]
+    closest_available_record: >
+      Summary states "same Site 1 scanner" and Hologic Horizon Wi; software/positioning identity not independently documented.
+    status: open
+    owner: DXA_facility
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0017
+    topic: Infection specialty LDT vs independent confirmation
+    question: >
+      Can specialty Babesia FISH / Bartonella IgM signals be independently adjudicated with
+      reference-method testing (Babesia smear+PCR during symptoms; Bartonella culture/PCR/IFA/tissue
+      if clinician-indicated), without relying on post-antibiotic FISH or IgM churn?
+    why_it_matters: >
+      Launch-critical infection wording requires dual-status specialty vs commercial pathways;
+      H4 residual probability depends on proper adjudication instruments.
+    related_claims: [CLM-0036, CLM-0037, CLM-0042, CLM-0043, CLM-0061]
+    related_corrections: [COR-0007]
+    closest_available_record: >
+      Infectious-disease summary §1a–1b tables; commercial PCR/IB negatives; specialty positives.
+    status: open
+    owner: patient_or_treating_clinicians
+    blocks_launch_critical_wording: true

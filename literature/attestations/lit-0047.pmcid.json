@@ -1,0 +1,28 @@
+{
+  "card_title": "Limitations of Serological Diagnosis of Typical Cat Scratch Disease and Recommendations for the Diagnostic Procedure",
+  "card_year": 2023,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC10008113",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0047",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.1155/2023/4222511",
+    "pmcid": "PMC10008113",
+    "pmid": "36915870",
+    "source": "Can J Infect Dis Med Microbiol",
+    "title": "Limitations of Serological Diagnosis of Typical Cat Scratch Disease and Recommendations for the Diagnostic Procedure.",
+    "year": 2023
+  },
+  "resolved_container": "Can J Infect Dis Med Microbiol",
+  "resolved_title": "Limitations of Serological Diagnosis of Typical Cat Scratch Disease and Recommendations for the Diagnostic Procedure.",
+  "resolved_year": 2023,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:01Z",
+  "year_delta": 0
+}

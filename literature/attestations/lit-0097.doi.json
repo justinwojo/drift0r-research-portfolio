@@ -1,0 +1,26 @@
+{
+  "card_title": "The 2020 revised comprehensive diagnostic (RCD) criteria for IgG4-RD",
+  "card_year": 2021,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1080/14397595.2020.1859710",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0097",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1080/14397595.2020.1859710",
+    "title": "The 2020 revised comprehensive diagnostic (RCD) criteria for IgG4-RD",
+    "type": "journal-article",
+    "year": 2021
+  },
+  "resolved_container": "Modern Rheumatology",
+  "resolved_title": "The 2020 revised comprehensive diagnostic (RCD) criteria for IgG4-RD",
+  "resolved_year": 2021,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:00Z",
+  "year_delta": 0
+}

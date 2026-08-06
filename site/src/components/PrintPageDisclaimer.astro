@@ -1,0 +1,25 @@
+---
+/**
+ * Compact print-visible per-page disclaimer (P0-2).
+ * Class is never .no-print and never inside .site-footer.
+ * Place as banner (top) and end (bottom) of every .print-page.
+ */
+import { PRINT_PAGE_DISCLAIMER_COMPACT, DISCLAIMER_FULL } from '../lib/constants';
+
+interface Props {
+  /** banner = page top; end = page bottom; full = once-per-sheet full text */
+  variant?: 'banner' | 'end' | 'full';
+}
+const { variant = 'banner' } = Astro.props;
+const isFull = variant === 'full';
+const cls = isFull
+  ? 'print-page-disclaimer print-page-disclaimer-full'
+  : variant === 'end'
+    ? 'print-page-disclaimer print-page-end'
+    : 'print-page-disclaimer print-page-banner';
+const text = isFull ? DISCLAIMER_FULL : PRINT_PAGE_DISCLAIMER_COMPACT;
+---
+
+<p class={`${cls} mono`} role="note" data-print-disclaimer={variant}>
+  {text}
+</p>

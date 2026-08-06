@@ -1,0 +1,27 @@
+{
+  "card_title": "Pitfalls and fallacies of cat scratch disease serology: evaluation of Bartonella henselae-based indirect fluorescence assay and enzyme-linked immunoassay",
+  "card_year": 1997,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "9230358",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0042",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1128/jcm.35.8.1931-1937.1997",
+    "pmid": "9230358",
+    "pubdate": "1997 Aug",
+    "source": "J Clin Microbiol",
+    "title": "Pitfalls and fallacies of cat scratch disease serology: evaluation of Bartonella henselae-based indirect fluorescence assay and enzyme-linked immunoassay."
+  },
+  "resolved_container": "J Clin Microbiol",
+  "resolved_title": "Pitfalls and fallacies of cat scratch disease serology: evaluation of Bartonella henselae-based indirect fluorescence assay and enzyme-linked immunoassay.",
+  "resolved_year": 1997,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:21:57Z",
+  "year_delta": 0
+}

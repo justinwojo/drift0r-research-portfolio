@@ -1,0 +1,27 @@
+{
+  "card_title": "Anatomic and Functional Imaging of Immunoglobulin G4\u2013related Disease and Its Mimics",
+  "card_year": 2023,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "36821510",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0146",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1148/rg.220097",
+    "pmid": "36821510",
+    "pubdate": "2023 Mar",
+    "source": "Radiographics",
+    "title": "Anatomic and Functional Imaging of Immunoglobulin G4-related Disease and Its Mimics."
+  },
+  "resolved_container": "Radiographics",
+  "resolved_title": "Anatomic and Functional Imaging of Immunoglobulin G4-related Disease and Its Mimics.",
+  "resolved_year": 2023,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:06Z",
+  "year_delta": 0
+}

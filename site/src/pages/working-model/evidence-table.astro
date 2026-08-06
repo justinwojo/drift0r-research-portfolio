@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrintButton from '../../components/PrintButton.astro';
+import PrintPageDisclaimer from '../../components/PrintPageDisclaimer.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getHypotheses, getClaims, matrixCell, getRelease } from '../../lib/data';
+import { PRINT_PAGE_DISCLAIMER_COMPACT } from '../../lib/constants';
+
+// Include H-NULL (P1-09) — null model must appear on the printable clinician handout.
+const hyps = getHypotheses();
+const release = getRelease();
+const allClaims = getClaims();
+// Launch-critical anchors used across hypotheses
+const claimIds = [
+  ...new Set(hyps.flatMap((h) => [...h.explains_claim_ids, ...h.does_not_explain_claim_ids])),
+].sort();
+const claimMap = new Map(allClaims.map((c) => [c.id, c]));
+const matrixCoverageNote = `Matrix covers ${claimIds.length} of ${allClaims.length} published claims that are anchored to at least one hypothesis (explains or does-not-explain). Coverage is incomplete by design — unlinked claims remain on /case/.`;
+---
+
+<BaseLayout
+  title="Working model evidence table"
+  currentPath="/working-model/evidence-table/"
+  description="Printable finding × hypothesis matrix. Research only — not medical advice."
+  isPrintRoute={true}
+>
+  <section class="hero no-print">
+    <div class="legend-label">Printable route</div>
+    <h1>Working model — evidence table</h1>
+    <p class="lede">
+      Dense matrix for clinician discussion. Glyphs: + explained · − argues against · · not explained · ?
+      cannot be assessed. Legend is on the same surface as the matrix. Includes H-NULL.
+    </p>
+    <AnalysisVersionBadge />
+    <p class="no-print"><PrintButton /></p>
+  </section>
+
+  <div class="print-sheet">
+    <section class="print-page" aria-label="Evidence matrix page">
+      <PrintPageDisclaimer variant="banner" />
+      <AnalysisVersionBadge compact />
+      <p class="mono" style="font-size: 12px;">
+        analysis {release.content_version} · evidence through {release.evidence_current_through} · as of {release.as_of} · clinician review: not performed · patient
+        approval: {release.patient_approval.status.replace(/_/g, ' ')} · Research only — not medical advice.
+      </p>
+
+      <div class="badge-row" style="margin: 12px 0;">
+        <span class="badge">+ explained</span>
+        <span class="badge">− argues against</span>
+        <span class="badge">· not explained</span>
+        <span class="badge">? cannot be assessed</span>
+      </div>
+
+      <p class="print-note" style="font-size: 12.5px; max-width: 70ch;">
+        <strong>Citation counts are not weights.</strong> Supporting and contradicting literature tallies are
+        list lengths only — they are not scores, probabilities, or diagnostic weights.
+      </p>
+      <p class="print-note mono" style="font-size: 12px; max-width: 70ch;">
+        {matrixCoverageNote}
+      </p>
+
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Finding by hypothesis matrix">
+        <table class="data">
+          <caption>
+            Finding × hypothesis matrix including H-NULL. Legend: + explained, − argues against, · not
+            explained, ? cannot be assessed. Not a diagnostic scorecard. Citation counts are not weights.
+          </caption>
+          <thead>
+            <tr class="print-table-disclaimer-row">
+              <th colspan={hyps.length + 1} scope="colgroup" class="print-page-disclaimer mono">
+                {PRINT_PAGE_DISCLAIMER_COMPACT}
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">Claim</th>
+              {hyps.map((h) => <th scope="col" class="mono">{h.id}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              claimIds.map((id) => (
+                <tr>
+                  <th scope="row">
+                    <span class="mono">{id}</span>
+                    <div style="font-weight: 400; font-size: 12.5px; max-width: 36ch;">
+                      {claimMap.get(id)?.public_statement || ''}
+                    </div>
+                  </th>
+                  {hyps.map((h) => (
+                    <td class="mono" style="text-align: center; font-size: 16px;">
+                      {matrixCell(id, h)}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <PrintPageDisclaimer variant="end" />
+    </section>
+
+    <section class="print-page" aria-label="Hypothesis summaries page">
+      <PrintPageDisclaimer variant="banner" />
+      <h2 class="sec" style="margin-top: 8px;">Hypothesis summaries</h2>
+      <p class="print-note" style="font-size: 12px;">
+        Citation counts are not weights. Confidence uses the five-word vocabulary only (never numeric probability).
+      </p>
+      {
+        hyps.map((h) => (
+          <div style="margin-bottom: 14px; break-inside: avoid;">
+            <h3 class="mono" style="margin: 0 0 4px;">
+              {h.id} — {h.title}
+            </h3>
+            <p style="margin: 0; font-size: 14px;">{h.public_summary}</p>
+            <p class="mono" style="font-size: 12px; color: var(--muted); margin: 4px 0 0;">
+              confidence: {h.confidence} · support lit +{h.supporting_literature_ids.length} · contradict lit −
+              {h.contradicting_literature_ids.length} · open: {h.open_question_ids.join(', ') || '—'} (counts are not
+              weights)
+            </p>
+          </div>
+        ))
+      }
+      <PrintPageDisclaimer variant="end" />
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,34 @@
+id: H4
+title: Bartonella-spectrum residual contributor (specialty LDT contested)
+kind: residual
+confidence: low
+architecture_confidence: null
+module_confidence: low
+summary: Detachable residual contributor hypothesis for periosteal/nodule signals
+  and contested specialty serology. Specialty IgM contested; PCR/FISH negative. Not
+  commercially confirmed. Support is limited to applicability-limited musculoskeletal/osseous
+  Bartonella case literature, not serology alone. Does not explain magnitude of generalized
+  low BMD, historical hypogonadism, or hypercalciuria. Patient-reported improvement
+  on atovaquone + clindamycin (± azithromycin) (CLM-0039) is a Babesia-directed regimen
+  and is not organism-specific evidence for Bartonella — not listed as explained by H4.
+explains_claim_ids:
+- CLM-0037
+- CLM-0040
+does_not_explain_claim_ids:
+- CLM-0003
+- CLM-0018
+- CLM-0015
+- CLM-0039
+supporting_literature_ids:
+- lit-0037
+- lit-0050
+contradicting_literature_ids:
+- lit-0049
+- lit-0042
+- lit-0047
+- lit-0055
+open_question_ids:
+- UQ-0017
+review_status: source_audited
+as_of: '2026-08-05'
+supersedes: null

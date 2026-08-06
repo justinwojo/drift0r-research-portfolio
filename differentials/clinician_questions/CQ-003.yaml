@@ -1,0 +1,34 @@
+id: CQ-003
+question: Is controlled calcium-flux phenotyping (sodium-aware 24h urine with stone
+  profile + fasting urine Ca/Cr + paired serum Ca/PTH/PO4) appropriate to classify
+  hypercalciuria mechanism?
+rationale: >
+  Serial 24h urine calcium values 283→254→333 mg/24h in a male (common male threshold
+  often 300 mg/day or 4 mg/kg; 2 of 3 collections below 300; middle value 254 normal
+  at performing lab ref 100–300 vs Litholink 40–250). Mechanism (absorptive vs renal
+  leak vs resorptive) incomplete; high urine Na noted. Counter-consideration from AUA
+  2014 Statement 7 (Recommendation, Grade C) — clinicians should NOT routinely perform
+  "fast and calcium load" testing to distinguish among types of hypercalciuria, because
+  it has not been shown to change clinical practice — and that guideline population is
+  stone formers, whereas this record is not primarily a stone-former narrative (no stones
+  on CT urogram 2026-02-27). Sodium-aware 24-h panel framing (AUA Statement 6) is the
+  better-supported element; mechanism-classification testing remains a research question,
+  not a mandated order.
+related_claim_ids:
+- CLM-0015
+related_hypothesis_ids:
+- H3
+- H-NULL
+literature_refs:
+- lit-0013
+- lit-0152
+- lit-0226
+priority: high
+dont_miss: false
+medical_domain: renal_bone
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

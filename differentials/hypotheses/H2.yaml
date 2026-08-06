@@ -1,0 +1,33 @@
+id: H2
+title: Monogenic / constitutional early-onset osteoporosis spectrum
+kind: single_primary
+confidence: medium
+architecture_confidence: null
+module_confidence: medium
+summary: Best single-primary research alternative (WNT1/LRP5/PLS3/mild OI spectrum;
+  HPP low unless ALP truly low). Gene panel not performed. Related-cohort pathogenic
+  yield is modest; high VUS rate; negative panel does not close unknown genes or multi-hit
+  secondary OP. No dedicated contradicting literature card is filed — the empty contradicting_literature_ids
+  list reflects missing formal counters, not absence of caveats; the related-cohort
+  modest yield / high VUS rate already named here are the primary counter-considerations.
+explains_claim_ids:
+- CLM-0003
+- CLM-0005
+- CLM-0006
+does_not_explain_claim_ids:
+- CLM-0023
+- CLM-0027
+- CLM-0036
+supporting_literature_ids:
+- lit-0287
+- lit-0290
+- lit-0294
+- lit-0293
+- lit-0015
+contradicting_literature_ids: []
+open_question_ids:
+- UQ-0013
+- UQ-0005
+review_status: source_audited
+as_of: '2026-08-05'
+supersedes: null

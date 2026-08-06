@@ -1,0 +1,26 @@
+{
+  "card_title": "Soft-tissue tumors and tumorlike lesions: a systematic imaging approach",
+  "card_year": 2009,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1148/radiol.2532081199",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0149",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1148/radiol.2532081199",
+    "title": "Soft-Tissue Tumors and Tumorlike Lesions: A Systematic Imaging Approach",
+    "type": "journal-article",
+    "year": 2009
+  },
+  "resolved_container": "Radiology",
+  "resolved_title": "Soft-Tissue Tumors and Tumorlike Lesions: A Systematic Imaging Approach",
+  "resolved_year": 2009,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:07Z",
+  "year_delta": 0
+}

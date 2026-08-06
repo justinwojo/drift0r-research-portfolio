@@ -1,0 +1,363 @@
+/* Print styles — designated browser-print routes + non-print safety block (H.1.3). */
+
+@media print {
+  /*
+   * Print policy (Checkpoint H.1.3):
+   *
+   * A) Designated print routes (body.print-route): four browser-print surfaces only
+   *    (/for-clinicians/, /working-model/evidence-table/, /questions-for-clinicians/packet/,
+   *    /about/snapshot/ — plus /about/downloads/ index). In-flow .print-page-disclaimer
+   *    banners on every .print-page. CSS fixed footer is HIDDEN (Chromium paints
+   *    position:fixed over content). Local QA may stamp margin footers via
+   *    npm run print:pdfs; stamped PDFs are NOT shipped to visitors.
+   *
+   * B) Every other route (body:not(.print-route)): browser print produces ONLY a
+   *    one-page safety notice directing users to the four printable routes. Multi-page
+   *    medical content (e.g. /case/, prediction matrix) must not leave via Cmd+P without
+   *    recurring disclaimers — simpler than fighting Chromium pagination.
+   */
+  @page {
+    size: letter;
+    /* bottom margin reserves band for QA-stamped footers on print-route shells */
+    margin: 0.45in 0.5in 1.0in 0.5in;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 9.5pt !important;
+    line-height: 1.35 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* —— Non-print routes: one-page safety notice only —— */
+  body:not(.print-route) > *:not(.print-browser-block) {
+    display: none !important;
+  }
+  body:not(.print-route) .print-browser-block {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 12pt 8pt !important;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+  body:not(.print-route) .print-browser-block h1 {
+    font-size: 14pt !important;
+    margin: 0 0 8pt !important;
+  }
+  body:not(.print-route) .print-browser-block p,
+  body:not(.print-route) .print-browser-block li {
+    font-size: 10.5pt !important;
+    margin: 0 0 6pt !important;
+  }
+  body:not(.print-route) .print-browser-block ol {
+    margin: 0 0 10pt !important;
+    padding-left: 1.3em !important;
+  }
+  body:not(.print-route) .print-browser-block .print-browser-block-disclaimer {
+    border: 0.75pt solid #000 !important;
+    padding: 6pt 8pt !important;
+    margin-top: 10pt !important;
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+  }
+
+  /* —— Shared chrome hide (print routes; non-print already hid all children) —— */
+  .skip,
+  .primary-nav,
+  .btn-print,
+  .disclaimer-sticky,
+  .masthead,
+  .no-print,
+  .site-footer,
+  .provenance,
+  .screen-only-h1 {
+    display: none !important;
+  }
+
+  /*
+   * Print routes carry explicit .print-page-disclaimer on every .print-page (P0-2).
+   * Hide the global chrome status bar to avoid triple-stacking with per-page notices,
+   * but NEVER hide .print-page-disclaimer / .print-page-banner / .print-page-end.
+   */
+  body.print-route .status-notice-bar {
+    display: none !important;
+  }
+
+  .status-notice-bar {
+    display: block !important;
+    background: #fff !important;
+    border-bottom: 1px solid #000 !important;
+    margin-bottom: 4pt;
+  }
+
+  .status-notice,
+  .print-status-notice {
+    display: block !important;
+    font-size: 8.5pt !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    padding: 2pt 0 !important;
+  }
+
+  /* Compact per-page notice — required on every physical printed page */
+  .print-page-disclaimer,
+  .print-page-banner.print-page-disclaimer,
+  .print-page-end.print-page-disclaimer {
+    display: block !important;
+    visibility: visible !important;
+    font-size: 8.5pt !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    border: 0.5pt solid #000 !important;
+    padding: 3pt 4pt !important;
+    margin: 0 0 6pt !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Repeating table header row with compact disclaimer (multi-page matrices) */
+  thead {
+    display: table-header-group;
+  }
+  .print-table-disclaimer-row th {
+    display: table-cell !important;
+    font-size: 8pt !important;
+    font-weight: 600 !important;
+    border: 0.5pt solid #000 !important;
+    padding: 2pt 3pt !important;
+    background: #fff !important;
+    color: #000 !important;
+    text-align: left !important;
+  }
+
+  /* Letter density: keep deterministic two-page clinician sheet. */
+  .clinician-print .print-page {
+    font-size: 9pt !important;
+  }
+  .clinician-print .print-list {
+    margin: 2pt 0 4pt !important;
+  }
+  .clinician-print h2 {
+    margin: 6pt 0 2pt !important;
+  }
+  .clinician-print .print-disclaimer,
+  .clinician-print .print-page-banner {
+    margin: 2pt 0 3pt !important;
+  }
+
+  main,
+  .wrap {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Each .print-page is one physical page */
+  .print-page {
+    break-after: page;
+    page-break-after: always;
+  }
+  .print-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-page-banner,
+  .print-page-end {
+    display: block !important;
+    visibility: visible !important;
+    font-size: 8.5pt !important;
+    line-height: 1.3 !important;
+    border: 0.5pt solid #000;
+    padding: 3pt 4pt !important;
+    margin: 0 0 6pt !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .print-page-end {
+    margin-top: 8pt !important;
+    margin-bottom: 0 !important;
+  }
+
+  /*
+   * Do NOT paint a fixed footer over medical content (H.1.2).
+   * Designated routes: in-flow .print-page-disclaimer.
+   * Local QA multi-page PDFs: margin-stamped footer via render-print-pdfs.mjs
+   * (not shipped; visitors never receive those files).
+   */
+  .print-footer {
+    display: none !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: none;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    font-family: ui-monospace, monospace;
+    word-break: break-all;
+  }
+
+  .clinician-print,
+  .print-sheet.clinician-print {
+    font-size: 9.5pt !important;
+  }
+
+  .print-sheet-header {
+    border-bottom: 1.5pt solid #000;
+    padding-bottom: 4pt;
+    margin-bottom: 6pt;
+  }
+
+  .print-sheet-header h1 {
+    font-size: 12pt !important;
+    margin: 2pt 0 3pt !important;
+    line-height: 1.15 !important;
+  }
+
+  .print-meta {
+    font-size: 8pt !important;
+    margin: 0 0 3pt !important;
+  }
+
+  .print-disclaimer,
+  .print-primary-limit,
+  .print-note,
+  .print-hyp-sum {
+    font-size: 9.5pt !important;
+    margin: 2pt 0 !important;
+  }
+
+  .print-primary-limit {
+    font-weight: 600;
+  }
+
+  .print-list {
+    margin: 0 0 4pt !important;
+    padding-left: 1.05em !important;
+    font-size: 9.5pt !important;
+  }
+
+  .print-list li {
+    margin-bottom: 1.5pt !important;
+    break-inside: avoid;
+  }
+
+  .print-closing {
+    font-size: 8.5pt !important;
+    margin-top: 4pt !important;
+    border-top: 1pt solid #000;
+    padding-top: 3pt !important;
+  }
+
+  h2 {
+    break-after: avoid;
+    font-size: 11pt !important;
+    margin: 6pt 0 2pt !important;
+  }
+
+  h3,
+  .print-h3 {
+    font-size: 10pt !important;
+    margin: 6pt 0 2pt !important;
+  }
+
+  .print-hyp-sum {
+    font-size: 9.5pt !important;
+    margin: 0 0 1pt !important;
+  }
+
+  .page-section {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* On-screen */
+.print-page-banner,
+.print-page-disclaimer {
+  font-size: 12px;
+  border: 1px solid #000;
+  padding: 8px;
+  margin-bottom: 12px;
+  max-width: 70ch;
+}
+
+.print-page-end {
+  font-size: 11px;
+  border: 1px solid #ccc;
+  padding: 6px;
+  margin-top: 16px;
+  max-width: 70ch;
+}
+
+/* Safety block and fixed footer are print-only; hide on screen. */
+.print-browser-block,
+.print-footer {
+  display: none;
+}
+
+.print-sheet-header h1 {
+  font-size: 22px;
+  margin: 6px 0;
+}
+
+.print-meta {
+  font-size: 11px;
+  margin: 0;
+}
+
+.print-disclaimer {
+  font-size: 12.5px;
+  margin: 8px 0 0;
+  max-width: 70ch;
+}
+
+.print-primary-limit {
+  font-size: 12.5px;
+  margin: 8px 0 0;
+  max-width: 70ch;
+}
+
+.print-note {
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+
+.print-list {
+  margin: 0 0 14px;
+  padding-left: 1.2em;
+  font-size: 12.5px;
+}
+
+.print-list li {
+  margin-bottom: 6px;
+}
+
+.print-hyp-sum {
+  color: #333;
+}
+
+.print-closing {
+  font-size: 10.5px;
+  margin-top: 18px;
+  border-top: 1px solid #000;
+  padding-top: 8px;
+}
+
+.print-h3 {
+  font-size: 12px;
+  margin: 10px 0 6px;
+}

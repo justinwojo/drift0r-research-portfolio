@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getRelease } from '../../lib/data';
+import { withBase } from '../../lib/paths';
+
+const release = getRelease();
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="About"
+  currentPath="/about/"
+  description="Who built this independent research portfolio, why it exists, and what it is not."
+>
+  <section class="hero">
+    <div class="legend-label">About</div>
+    <h1>About this project</h1>
+    <p class="lede">
+      An independent community research evidence portfolio — not a clinic, not a product, and not an official
+      Drift0r site.
+    </p>
+    <AnalysisVersionBadge />
+  </section>
+
+  <section class="page-section wrap-prose">
+    <h2 class="sec">Creator</h2>
+    <p>
+      Created and maintained by <strong>Justin Wojciechowski</strong> (
+      <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
+      on GitHub). Justin is <strong>not a clinician</strong>. This work is AI-assisted research packaging of
+      publicly shared materials and open literature — not diagnosis, not treatment advice, and not a substitute
+      for licensed care.
+    </p>
+
+    <h2 class="sec">Independence</h2>
+    <p>
+      This is an <strong>independent community research project</strong>. It is <strong>not</strong> operated by,
+      affiliated with, or endorsed by Drift0r. The project is published with Drift0r’s permission;{' '}
+      <strong>permission is not endorsement</strong> of any finding, hypothesis, or ranking. There is{' '}
+      <strong>no financial relationship</strong> with Drift0r and <strong>no compensation</strong> from Drift0r for
+      this work.
+    </p>
+
+    <h2 class="sec">Why this was built</h2>
+    <p>
+      The goal is contribution-first: organize scattered public case signals, literature, and open questions into a
+      structured, citable portfolio so clinicians, researchers, and careful readers can inspect the evidence trail,
+      challenge weak links, and improve the record. The site privileges provenance, correction, and explicit
+      uncertainty over narrative certainty.
+    </p>
+
+    <h2 class="sec">What this is not</h2>
+    <ul>
+      <li>Not medical advice, diagnosis, or a care plan.</li>
+      <li>Not clinician-reviewed (status: <span class="mono">{release.clinician_review_scope.status}</span>).</li>
+      <li>Not a complete primary-record audit — original labs, imaging, and clinic notes have not been verified by this project.</li>
+      <li>Not an official patient or specialty-lab publication.</li>
+    </ul>
+    <p>
+      Licensed clinicians must verify all findings against primary records and literature before any clinical use.
+      Analysis version <span class="mono">{release.content_version}</span> · evidence current through{' '}
+      <span class="mono">{release.evidence_current_through}</span>.
+    </p>
+
+    <h2 class="sec">Related</h2>
+    <ul>
+      <li><a href={withBase('/methods/')}>Methods</a> — how the portfolio was produced</li>
+      <li><a href={withBase('/legal/')}>Legal</a> — disclaimer, privacy, consent, indexing</li>
+      <li><a href={withBase('/about/contribute/')}>Contribute</a> — structured public issues only</li>
+      <li><a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a></li>
+    </ul>
+  </section>
+</BaseLayout>

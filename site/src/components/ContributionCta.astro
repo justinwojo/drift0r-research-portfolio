@@ -1,0 +1,368 @@
+---
+/**
+ * Contribution call-to-action — single source of truth: PUBLIC_REPO_URL (build-time).
+ * Never renders empty/placeholder/fake GitHub hrefs. Moderated issue templates only
+ * (issues/new/choose); not an unmoderated medical-advice surface.
+ *
+ * Variants:
+ * - callout: full vertical list (literature, contribute page, how-this-could-be-wrong)
+ * - footer: slim footer strip
+ * - home (J.2.1): compact full-width horizontal section — primary action + secondary
+ *   repo links; lengthy safety policy behind /about/contribute/
+ */
+import {
+  CONTRIBUTION_CTA_ACCOUNT_NOTE,
+  CONTRIBUTION_CTA_LEAD,
+  getPublicRepoContributionLinks,
+} from '../lib/constants';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  /** Compact footer strip vs full callout block vs homepage horizontal band. */
+  variant?: 'callout' | 'footer' | 'home';
+  /** Optional heading override. */
+  heading?: string;
+}
+
+const { variant = 'callout', heading = 'Contribute or report a problem' } = Astro.props;
+const links = getPublicRepoContributionLinks();
+const isFooter = variant === 'footer';
+const isHome = variant === 'home';
+const contributePolicyHref = withBase('/about/contribute/');
+---
+
+{
+  links ? (
+    <aside
+      class:list={[
+        'contribution-cta',
+        isFooter && 'contribution-cta--footer',
+        isHome && 'contribution-cta--home',
+      ]}
+      data-contribution-cta="configured"
+      data-contribution-variant={variant}
+      data-contribution-repo={links.repoUrl}
+      aria-label="Contribute via GitHub"
+    >
+      {!isFooter && (
+        <strong class="legend-label contribution-cta__heading">{heading}</strong>
+      )}
+      {isHome ? (
+        <p class="contribution-cta__lead contribution-cta__lead--home">
+          Found incorrect data, a citation problem, contradictory evidence, or another possible interpretation?
+          Raise a moderated GitHub issue — contributions are reviewed before they affect published research.
+        </p>
+      ) : isFooter ? (
+        <p class="contribution-cta__lead contribution-cta__lead--footer">{CONTRIBUTION_CTA_LEAD}</p>
+      ) : (
+        <p class="contribution-cta__lead">{CONTRIBUTION_CTA_LEAD}</p>
+      )}
+
+      {
+        isHome ? (
+          <div class="contribution-cta__home-actions">
+            <a
+              class="contribution-cta__primary"
+              href={links.issuesNewChooseUrl}
+              rel="noopener noreferrer"
+              data-contribution-link="issues-new-choose"
+            >
+              Report an issue or contribute research
+            </a>
+            <div class="contribution-cta__secondary">
+              <a
+                href={links.privacyCorrectionIssueUrl}
+                rel="noopener noreferrer"
+                data-contribution-link="privacy-correction-removal"
+              >
+                Correction / privacy / removal
+              </a>
+              <a href={links.repoUrl} rel="noopener noreferrer" data-contribution-link="repo">
+                View on GitHub
+              </a>
+              <a
+                href={links.issuesListUrl}
+                rel="noopener noreferrer"
+                data-contribution-link="issues-list"
+              >
+                Browse issues
+              </a>
+              <a href={contributePolicyHref} data-contribution-link="contribute-policy">
+                How to contribute safely
+              </a>
+            </div>
+          </div>
+        ) : (
+          <ul class="contribution-cta__links">
+            <li>
+              <a
+                href={links.privacyCorrectionIssueUrl}
+                rel="noopener noreferrer"
+                data-contribution-link="privacy-correction-removal"
+              >
+                Correction, privacy, or removal request
+              </a>
+            </li>
+            <li>
+              <a
+                href={links.issuesNewChooseUrl}
+                rel="noopener noreferrer"
+                data-contribution-link="issues-new-choose"
+              >
+                Report an issue or contribute research
+              </a>
+            </li>
+            <li>
+              <a href={links.repoUrl} rel="noopener noreferrer" data-contribution-link="repo">
+                View project on GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href={links.issuesListUrl}
+                rel="noopener noreferrer"
+                data-contribution-link="issues-list"
+              >
+                Browse existing issues
+              </a>
+            </li>
+          </ul>
+        )
+      }
+
+      {
+        isHome ? (
+          <p class="contribution-cta__policy contribution-cta__policy--home">
+            Do not post private medical records or treatment advice in public issues.{' '}
+            <a href={contributePolicyHref}>Full contribution safety policy</a>.
+          </p>
+        ) : (
+          <>
+            <p class="contribution-cta__note record-note">{CONTRIBUTION_CTA_ACCOUNT_NOTE}</p>
+            {!isFooter && (
+              <p class="contribution-cta__policy">
+                Full policy and allowed submission types:{' '}
+                <a href={contributePolicyHref}>How to contribute safely</a>
+                . Issues use structured templates and are moderated before any change to published research.
+              </p>
+            )}
+          </>
+        )
+      }
+    </aside>
+  ) : (
+    <aside
+      class:list={[
+        'contribution-cta',
+        'contribution-cta--unconfigured',
+        isFooter && 'contribution-cta--footer',
+        isHome && 'contribution-cta--home',
+      ]}
+      data-contribution-cta="unconfigured"
+      data-contribution-variant={variant}
+      aria-label="Contribution path not yet configured"
+    >
+      {!isFooter && (
+        <strong class="legend-label contribution-cta__heading">{heading}</strong>
+      )}
+      <p class="contribution-cta__lead">
+        {CONTRIBUTION_CTA_LEAD} A public repository URL has not been set for this build — there is no
+        actionable GitHub issue link yet. Do not invent a repository URL.
+      </p>
+      <p class="contribution-cta__note record-note">{CONTRIBUTION_CTA_ACCOUNT_NOTE}</p>
+      <p class="contribution-cta__policy">
+        Policy surface:{' '}
+        <a href={contributePolicyHref}>How to contribute safely</a>
+        {' '}
+        (no external issue tracker until the owner configures{' '}
+        <span class="mono">PUBLIC_REPO_URL</span>
+        ).
+      </p>
+    </aside>
+  )
+}
+
+<style>
+  .contribution-cta {
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--rule, #c8bfb0);
+    border-left: 3px solid var(--ink, #1a1814);
+    background: color-mix(in srgb, var(--parchment, #f7f1e6) 88%, var(--ink, #1a1814) 4%);
+    border-radius: 2px;
+  }
+  .contribution-cta--footer {
+    margin: 12px 0 8px;
+    padding: 12px 0 4px;
+    border: none;
+    border-top: 1px solid var(--rule, #c8bfb0);
+    border-left: none;
+    background: transparent;
+  }
+  /* J.2.1 homepage: full-width horizontal band under Path cards */
+  .contribution-cta--home {
+    margin: 0;
+    padding: 14px 16px;
+    border-left-width: 3px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .contribution-cta__heading {
+    display: block;
+    margin-bottom: 8px;
+  }
+  .contribution-cta__lead {
+    margin: 0 0 10px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .contribution-cta__lead--footer {
+    font-size: 13.5px;
+    color: var(--muted, #5c564c);
+  }
+  .contribution-cta__lead--home {
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    max-width: 70ch;
+  }
+  .contribution-cta__home-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .contribution-cta__primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid var(--ink, #1a1814);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--ink, #1a1814) 10%, var(--card, #fffdf8));
+    color: var(--ink, #1a1814);
+    box-sizing: border-box;
+  }
+  .contribution-cta__primary:hover {
+    background: color-mix(in srgb, var(--ink, #1a1814) 16%, var(--card, #fffdf8));
+  }
+  .contribution-cta__primary:focus-visible {
+    outline: 2px solid var(--focus, #0b5fff);
+    outline-offset: 2px;
+  }
+  .contribution-cta__secondary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: center;
+  }
+  .contribution-cta__secondary a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 6px 2px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink, #1a1814);
+  }
+  .contribution-cta__secondary a:focus-visible {
+    outline: 2px solid var(--focus, #0b5fff);
+    outline-offset: 2px;
+  }
+  .contribution-cta__policy--home {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--muted, #5c564c);
+  }
+  @media (min-width: 720px) {
+    .contribution-cta__home-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px 20px;
+    }
+    .contribution-cta__primary {
+      flex: 0 0 auto;
+      min-width: min(100%, 280px);
+    }
+    .contribution-cta__secondary {
+      flex: 1 1 auto;
+    }
+  }
+  .contribution-cta__links {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Comfortable mobile tap targets for expected X traffic (Checkpoint I.1.1). */
+  .contribution-cta__links a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.3;
+    text-decoration: none;
+    border: 1px solid var(--rule, #c8bfb0);
+    border-radius: 4px;
+    background: var(--card, #fffdf8);
+    color: var(--ink, #1a1814);
+    box-sizing: border-box;
+  }
+  .contribution-cta__links a:hover {
+    border-color: var(--ink, #1a1814);
+    background: color-mix(in srgb, var(--parchment, #f7f1e6) 70%, #fff 30%);
+  }
+  .contribution-cta__links a:focus-visible {
+    outline: 2px solid var(--focus, #0b5fff);
+    outline-offset: 2px;
+  }
+  /* Primary action: correction/privacy template */
+  .contribution-cta__links a[data-contribution-link='privacy-correction-removal'],
+  .contribution-cta__links a[data-contribution-link='issues-new-choose'] {
+    border-color: var(--ink, #1a1814);
+    background: color-mix(in srgb, var(--ink, #1a1814) 8%, var(--card, #fffdf8));
+  }
+  .contribution-cta--footer .contribution-cta__links {
+    gap: 6px;
+  }
+  .contribution-cta--footer .contribution-cta__links a {
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  @media (min-width: 720px) {
+    .contribution-cta__links {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .contribution-cta__links a {
+      flex: 1 1 calc(50% - 8px);
+      min-width: min(100%, 240px);
+    }
+  }
+  .contribution-cta__note {
+    margin: 0 0 8px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .contribution-cta__policy {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .contribution-cta--unconfigured {
+    border-left-color: var(--contra, #8b3a3a);
+  }
+</style>

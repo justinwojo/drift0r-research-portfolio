@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/changelog.schema.json",
+  "title": "Drift0rAnalysisChangelog",
+  "description": "Structured public analysis changelog. Site remains current-best-understanding only; no historical rendered archives required.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "not_medical_advice", "entries"],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "not_medical_advice": { "type": "boolean", "const": true },
+    "retired_or_reserved_ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Permanently reserved IDs that must never be reassigned to new records."
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "date",
+        "kind",
+        "status",
+        "evidence_current_through",
+        "summary",
+        "added_evidence",
+        "changed_interpretations",
+        "strengthened_or_weakened_hypotheses",
+        "retired_or_superseded",
+        "corrections"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[A-Za-z0-9.]+)?$"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["patch", "minor", "major"],
+          "description": "Patch=wording/links/metadata; minor=new evidence or material analytical change; major=methodology/data-model or clinician-reviewed release."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "internal_review",
+            "patient_review",
+            "clinician_review",
+            "release_candidate",
+            "published",
+            "withdrawn"
+          ]
+        },
+        "evidence_current_through": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "summary": { "type": "string", "minLength": 1 },
+        "added_evidence": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "changed_interpretations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "strengthened_or_weakened_hypotheses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "retired_or_superseded": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/retirement" }
+        },
+        "corrections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^COR-[0-9]{4}$"
+          }
+        },
+        "git_tag_planned": {
+          "type": ["string", "null"]
+        },
+        "github_release_planned": {
+          "type": "boolean"
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "retirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["retired", "superseded"]
+        },
+        "replaced_by": {
+          "type": ["string", "null"],
+          "description": "Replacement ID when superseded; null when retired without replacement."
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

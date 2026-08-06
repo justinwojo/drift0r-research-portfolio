@@ -1,0 +1,27 @@
+{
+  "card_title": "Hereditary Alpha Tryptasemia: Genotyping and Associated Clinical Features",
+  "card_year": 2018,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "30007465",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0075",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1016/j.iac.2018.04.003",
+    "pmid": "30007465",
+    "pubdate": "2018 Aug",
+    "source": "Immunol Allergy Clin North Am",
+    "title": "Hereditary Alpha Tryptasemia: Genotyping and Associated Clinical Features."
+  },
+  "resolved_container": "Immunol Allergy Clin North Am",
+  "resolved_title": "Hereditary Alpha Tryptasemia: Genotyping and Associated Clinical Features.",
+  "resolved_year": 2018,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:10Z",
+  "year_delta": 0
+}

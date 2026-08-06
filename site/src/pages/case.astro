@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RecordCard from '../components/RecordCard.astro';
+import { getClaimsByKind, dualTrackTimeline } from '../lib/data';
+import Badge from '../components/Badge.astro';
+import { withBase } from '../lib/paths';
+
+const registers = [
+  { kind: 'observed_fact', title: 'Documented findings', note: 'Values and dates transcribed from the public pack or specialty summaries.' },
+  { kind: 'reported_history', title: 'Patient-reported / history', note: 'Narrative history without a primary instrument report in the public set.' },
+  { kind: 'interpretation', title: 'Interpretations', note: 'Summary- or research-applied meanings. Not independent diagnoses.' },
+  { kind: 'research_question', title: 'Questions for clinicians', note: 'Research questions — not test orders or protocols.' },
+  { kind: 'hypothesis', title: 'Hypothesis-linked claims', note: 'Causal or ranking statements still labeled as hypotheses in the inventory.' },
+] as const;
+
+const timeline = dualTrackTimeline();
+---
+
+<BaseLayout
+  title="Case & evidence"
+  currentPath="/case/"
+  description="Audited case anchors separated by evidence type. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Case & evidence</div>
+    <h1>Anchors by evidence type</h1>
+    <p class="lede">
+      Four registers keep documented findings, reported history, interpretations, and research questions
+      separate. A fifth register holds hypothesis-linked inventory claims so evidence classes stay distinct.
+      Registers are sections, not filters — they are never mixed by a control.
+    </p>
+    <div class="callout caution">
+      <strong class="legend-label">Primary-record limit</strong>
+      <p style="margin: 8px 0 0;">
+        No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by
+        this project.
+      </p>
+    </div>
+    <div class="callout" style="margin-top: 12px;">
+      <strong class="legend-label">Mental-health scope (v0.1)</strong>
+      <p style="margin: 8px 0 0;">
+        Under DEC-0030, only inventory claims <span class="mono">CLM-0046</span>, <span class="mono">CLM-0047</span>,
+        and <span class="mono">CLM-0048</span> (SSD assessment history, MMPI-2-RF framing, and rejection of a primary
+        psychiatric default) are published, with their exact inventory wording. Additional mental-health material
+        remains excluded. Multi-model AI research agreement is not clinical validation. Correction, privacy, or
+        removal requests: use the GitHub issue template on{' '}
+        <a href={withBase('/about/contribute/')}>How to contribute</a>
+        — do not post private medical records. Sensitive consent or withdrawal from Drift0r may continue through
+        the existing private correspondence channel with the repository owner.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="legend-label">Register key</div>
+    <div class="badge-row" style="margin-top: 10px;">
+      <Badge glyph="▣" label="Documented finding" css="fact" />
+      <Badge glyph="❝" label="Patient-reported / history" css="reported" />
+      <Badge glyph="◇" label="Interpretation" css="interp" />
+      <Badge glyph="?" label="Question for clinicians" css="q" />
+      <Badge glyph="⬡" label="Working hypothesis" css="hyp" />
+    </div>
+  </section>
+
+  {
+    registers.map((reg) => {
+      const claims = getClaimsByKind(reg.kind);
+      if (!claims.length) return null;
+      return (
+        <section class="page-section" aria-labelledby={`reg-${reg.kind}`}>
+          <h2 class="sec" id={`reg-${reg.kind}`}>
+            {reg.title}
+          </h2>
+          <p class="sec-note">
+            {reg.note} Count: <span class="mono">{claims.length}</span>.
+          </p>
+          {claims.map((c) => (
+            <RecordCard claim={c} />
+          ))}
+        </section>
+      );
+    })
+  }
+
+  <section class="page-section">
+    <h2 class="sec">Dual-track timeline</h2>
+    <p class="sec-note">
+      Documented findings and reported history stay in separate columns. Proximity in time is not
+      evidence of a relationship.
+    </p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Dual-track timeline">
+      <table class="data">
+        <caption>
+          Dual-track timeline by year. Unknown cells print “— no record retrieved —”. Proximity in time is
+          not evidence of a relationship.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Documented (observed fact)</th>
+            <th scope="col">Reported history</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            timeline.map((row) => (
+              <tr>
+                <th scope="row" class="mono">
+                  {row.date}
+                </th>
+                <td>{row.documented}</td>
+                <td>{row.reported}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <div class="callout">
+      <strong class="legend-label">What this page does not say</strong>
+      <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+        <li>It does not diagnose a disease or name a single cause for all symptoms.</li>
+        <li>It does not publish patient source PDFs or primary instrument printouts.</li>
+        <li>It does not use the patient’s identity, handle, photographs, or quotations.</li>
+        <li>It does not claim clinician endorsement or upgrade verification beyond the inventory status shown on each record.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+id: CQ-010
+question: Can original hypogonadism-era HPG laboratory reports (around historical
+  T≈34) be reconstructed, and is karyotype/CMA appropriate when clinically indicated?
+rationale: Historical T≈34 is reported_history with incomplete instrument provenance;
+  Endocrine Society hypogonadism guidance informs HPG-axis reconstruction. Karyotype/CMA
+  is a separate cytogenetic indication question (e.g., Klinefelter workup pathways),
+  not established by testosterone-therapy guidelines alone.
+related_claim_ids:
+- CLM-0018
+related_hypothesis_ids:
+- H1
+literature_refs:
+- lit-0121
+- lit-0235
+priority: medium
+dont_miss: false
+medical_domain: endocrine
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

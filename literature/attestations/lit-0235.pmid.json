@@ -1,0 +1,27 @@
+{
+  "card_title": "European academy of andrology guidelines on Klinefelter Syndrome",
+  "card_year": 2021,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "32959490",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0235",
+  "manual_override_reason": null,
+  "notes": " Rescored with containment/token-aware title match (M4R).",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1111/andr.12909",
+    "pmid": "32959490",
+    "pubdate": "2021 Jan",
+    "source": "Andrology",
+    "title": "European academy of andrology guidelines on Klinefelter Syndrome Endorsing Organization: European Society of Endocrinology."
+  },
+  "resolved_container": "Andrology",
+  "resolved_title": "European academy of andrology guidelines on Klinefelter Syndrome Endorsing Organization: European Society of Endocrinology.",
+  "resolved_year": 2021,
+  "schema_version": "1.0.0",
+  "title_similarity": 0.8822,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:27Z",
+  "year_delta": 0
+}

@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { DISCLAIMER_FULL, MASTHEAD_NAME } from '../lib/constants';
+import { getRelease } from '../lib/data';
+import { withBase } from '../lib/paths';
+
+const release = getRelease();
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="Legal"
+  currentPath="/legal/"
+  description="Medical, copyright, AI, and privacy disclaimer."
+  showDisclaimer={true}
+>
+  <section class="hero">
+    <div class="legend-label">Legal</div>
+    <h1>Disclaimer, licensing, privacy</h1>
+  </section>
+
+  <section class="page-section wrap-prose">
+    <h2 class="sec">Medical disclaimer</h2>
+    <p>{DISCLAIMER_FULL}</p>
+    <p>
+      If you are in medical distress, seek emergency care. Nothing on this site establishes a doctor–patient
+      relationship with any contributor or AI system.
+    </p>
+
+    <h2 class="sec">Creator and independence</h2>
+    <p>
+      Created and maintained by <strong>Justin Wojciechowski</strong> (
+      <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
+      ). Independent community research project. Justin is not a clinician. This site is{' '}
+      <strong>not</strong> operated by, affiliated with, or endorsed by Drift0r. It is published with Drift0r’s
+      permission; <strong>permission is not endorsement</strong>. There is no financial relationship with or
+      compensation from Drift0r. See <a href={withBase('/about/')}>About</a> for the full statement.
+    </p>
+
+    <h2 class="sec">AI-generated content</h2>
+    <p>
+      Multi-agent analysis is used as a research aid. AI output can be wrong, incomplete, or fabricated.
+      Multi-model agreement is not clinical validation. Always verify against primary literature and clinical
+      records before acting.
+    </p>
+    <p class="record-note">
+      Models disclosed for this content version: {(release.ai_models_disclosed || []).join('; ')}.
+    </p>
+
+    <h2 class="sec">Copyright and literature</h2>
+    <p>
+      Original project content is intended for MIT licensing with the repository. Third-party works keep their
+      own licenses. Bibliographic metadata and short attributed quotations may appear; paywalled publisher
+      PDFs and unlicensed full texts are not redistributed. Local research PDFs are not published on this site.
+    </p>
+
+    <h2 class="sec">Privacy and consent</h2>
+    <p>
+      Patient materials in the research repository were publicly released in de-identified form for community
+      help. A purpose-built website is a new, persistent publication and requires explicit scope approval.
+    </p>
+    <p>
+      <strong>Current status:</strong> patient approval <span class="mono">{release.patient_approval.status}</span>.
+      {release.patient_approval.notes}
+    </p>
+    <p>
+      Broad patient permission allows publication at the owner’s editorial discretion. This candidate still
+      uses the neutral masthead <span class="mono">{MASTHEAD_NAME}</span> and does not publish the private
+      approval correspondence. Consent does not establish clinician review or third-party copyright clearance.
+    </p>
+
+    <h2 class="sec">Indexing</h2>
+    <p>
+      Indexing is controlled by release metadata field <span class="mono">noindex</span> (currently{' '}
+      <span class="mono">{String(release.noindex)}</span>). {
+        release.noindex ? (
+          <>
+            Every page serves HTML <span class="mono">noindex, nofollow</span> and the provenance bar reports
+            indexing disabled.
+          </>
+        ) : (
+          <>
+            Every page serves HTML <span class="mono">index, follow</span> and the provenance bar reports indexing
+            enabled.
+          </>
+        )
+      }{' '}
+      The site <span class="mono">robots.txt</span> permits crawlers to <em>fetch</em> pages so they can read that
+      meta directive — it does not use a blanket <span class="mono">Disallow: /</span>. Patient permission for
+      publication does not by itself enable indexing; the release field is the sole control.
+    </p>
+
+    <h2 class="sec">Contact / corrections</h2>
+    <p>
+      Material errors in research content are logged through the repository corrections process and listed on
+      the changelog and on affected records rather than applied silently. There is <strong>no public privacy
+      email address</strong> for this project.
+    </p>
+    <ul>
+      <li>
+        <strong>Correction, privacy, or removal requests:</strong> open a structured GitHub issue using the
+        template <span class="mono">Correction, privacy, or removal request</span> (see{' '}
+        <a href={withBase('/about/contribute/')}>How to contribute</a>
+        ). <strong>Do not post private medical records</strong> or personal identifiers in the issue.
+      </li>
+      <li>
+        <strong>Public research contributions:</strong> structured GitHub Issues for literature suggestion,
+        factual/citation correction, contradictory evidence, or alternative hypothesis — same contribute page.
+      </li>
+      <li>
+        <strong>Sensitive consent or withdrawal from Drift0r:</strong> may continue through the{' '}
+        <strong>existing private correspondence channel</strong> with the repository owner (not a public issue
+        and not a published email address).
+      </li>
+    </ul>
+
+    <h2 class="sec">Withdrawal of consent</h2>
+    <p>
+      The patient (Drift0r) may revoke publication consent at any time through the{' '}
+      <strong>existing private correspondence channel</strong> with the repository owner, or by filing a
+      removal request via the public GitHub template above without attaching private records. On confirmed
+      revocation the owner will set release status to <span class="mono">revoked</span>, begin site and
+      repository takedown under owner control within a <strong>7-day</strong> target, and log the change.
+      Forks, mirrors, and search caches are outside complete control; removal will be requested where practical.
+    </p>
+  </section>
+  <div style="padding-bottom: 48px;"></div>
+</BaseLayout>

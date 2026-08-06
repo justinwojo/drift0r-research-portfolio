@@ -1,0 +1,28 @@
+id: H5
+title: Humoral abnormality / possible specific antibody deficiency
+kind: module
+confidence: low
+architecture_confidence: null
+module_confidence: low
+summary: IgG1-low / IgG4-high lab pattern is real and polyclonal. Named specific antibody
+  deficiency remains low confidence until same-lab pre/post polysaccharide vaccine
+  challenge and infection history. Not classic IgG4-RD — lit-0089 and lit-0096 support
+  that non-classic / elevation-without-RD framing (catalog polarity supports H5's
+  position) rather than contradicting it.
+explains_claim_ids:
+- CLM-0027
+- CLM-0034
+does_not_explain_claim_ids:
+- CLM-0003
+- CLM-0023
+supporting_literature_ids:
+- lit-0205
+- lit-0206
+- lit-0089
+- lit-0096
+contradicting_literature_ids: []
+open_question_ids:
+- UQ-0007
+review_status: source_audited
+as_of: '2026-08-05'
+supersedes: null

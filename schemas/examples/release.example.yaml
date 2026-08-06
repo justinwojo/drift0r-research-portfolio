@@ -1,0 +1,25 @@
+# Example release metadata — not a live publication approval.
+content_version: v0.0.0
+as_of: "2026-08-05"
+last_reviewed: "2026-08-05"
+evidence_current_through: "2026-08-05"
+disclaimer_id: legal-baseline-2026-08
+review_status: draft
+patient_approval:
+  status: not_obtained
+  scope: ""
+  date: null
+  notes: "No public site launch yet; M5 required."
+clinician_review_scope:
+  status: not_reviewed
+  domains: []
+  date: null
+  label_must_not_imply_global: true
+# base_commit = last substantive reviewed content commit (not necessarily HEAD if only packet commits follow)
+base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
+allowlist_version: "1.5.0"
+noindex: true
+ai_models_disclosed:
+  - Grok (execution)
+  - Claude (Round-1 swarm)
+  - Codex (Round-1 swarm / planned review)

@@ -1,0 +1,32 @@
+---
+import type { Claim } from '../lib/data';
+import { sourceTrailSteps, sourceClassLabel } from '../lib/data';
+
+interface Props {
+  claim: Claim;
+}
+const { claim } = Astro.props;
+const steps = sourceTrailSteps(claim);
+---
+
+<ol class="trail" aria-label={`Source trail for ${claim.id}`}>
+  {
+    steps.map((s, i) => (
+      <li class={i === steps.length - 1 ? 'terminal' : undefined}>
+        <span class="mono">{s.label}</span>
+        {s.source_class && (
+          <span class="badge source-class" style="margin-left: 6px;">
+            {sourceClassLabel(s.source_class)}
+          </span>
+        )}
+        {s.detail && <span> — {s.detail}</span>}
+      </li>
+    ))
+  }
+</ol>
+<p class="ch-note" style="margin-top: 8px; font-size: 12.5px;">
+  Source documents are described here, not redistributed by this repository. Original PDFs are not downloadable
+  from this site. Source-class badges distinguish patient-compiled summaries from primary instrument records and
+  clinician documents. Drift0r may host source materials externally; see Methods for the patient-hosted folder
+  link (external; may change; not part of this artifact).
+</p>

@@ -1,0 +1,864 @@
+---
+import {
+  atlasTableRows,
+  buildEvidenceAtlas,
+  getClaimById,
+  getHypothesisById,
+  getUqById,
+  kindMeta,
+} from '../lib/data';
+import {
+  claimExcerpt,
+  claimPreviewFromClaim,
+  hypothesisPreviewFromHypothesis,
+  isClaimId,
+  isHypothesisId,
+  isUqId,
+  recordPreviewDataAttrs,
+  uqPreviewFromUq,
+} from '../lib/claimPreview';
+import { withBase } from '../lib/paths';
+
+const rows = atlasTableRows();
+/** Mobile path cards: model hypotheses first; H-NULL last if present. */
+const pathRows = [
+  ...rows.filter((r) => r.id !== 'H-NULL'),
+  ...rows.filter((r) => r.id === 'H-NULL'),
+];
+const atlas = buildEvidenceAtlas();
+
+/** Cap inline lists so a single card is not taller than a phone screen. */
+const MOBILE_INLINE_LIMIT = 2;
+
+const bandOrder = atlas.bands.map((b) => b.key);
+const nodesByBand = new Map(bandOrder.map((k) => [k, atlas.nodes.filter((n) => n.band === k)]));
+
+// Layout constants for SVG
+const W = 1100;
+const bandH = 72;
+const bandGap = 8;
+const topPad = 28;
+const leftPad = 28;
+const rightPad = 28;
+const usableW = W - leftPad - rightPad;
+
+function layoutBand(key: string, bandIndex: number) {
+  const nodes = nodesByBand.get(key as (typeof bandOrder)[number]) || [];
+  const y = topPad + bandIndex * (bandH + bandGap);
+  const n = Math.max(nodes.length, 1);
+  const positions = nodes.map((node, i) => {
+    const x = leftPad + ((i + 0.5) * usableW) / n;
+    return { ...node, x, y: y + bandH / 2 + 8, bandY: y };
+  });
+  return { y, nodes: positions };
+}
+
+const layouts = bandOrder.map((k, i) => layoutBand(k, i));
+const pos = new Map<string, { x: number; y: number }>();
+for (const L of layouts) {
+  for (const n of L.nodes) pos.set(n.id, { x: n.x, y: n.y });
+}
+
+const H = topPad + bandOrder.length * (bandH + bandGap) + 36;
+
+function nodeHref(n: { band: string; label: string; id: string }): string | null {
+  // Only link to fragments/routes that actually exist on built pages (build-safety scans).
+  if (n.band === 'hypotheses') return withBase(`/working-model/#${n.label}`);
+  if (n.band === 'findings' || n.band === 'history' || n.band === 'interpretations') {
+    return withBase(`/case/#${n.label}`);
+  }
+  if (n.band === 'contradictions' && n.label.startsWith('CLM-')) {
+    return withBase(`/case/#${n.label}`);
+  }
+  if (n.band === 'contradictions' && n.label.startsWith('lit-')) {
+    return withBase(`/literature/${n.label}/`);
+  }
+  if (n.band === 'questions' && n.label.startsWith('lit-')) {
+    return withBase(`/literature/${n.label}/`);
+  }
+  // UQ nodes: focusable but not fragment-linked (no stable public UQ anchor route yet)
+  return null;
+}
+
+/** Map node id → incident edges for accessible relationship summaries (no visual clutter). */
+const edgesByNode = new Map<string, { other: string; verb: string }[]>();
+for (const e of atlas.edges) {
+  const a = edgesByNode.get(e.from) || [];
+  a.push({ other: e.to, verb: e.verb });
+  edgesByNode.set(e.from, a);
+  const b = edgesByNode.get(e.to) || [];
+  b.push({ other: e.from, verb: e.verb });
+  edgesByNode.set(e.to, b);
+}
+
+function nodeAccessibleName(n: { band: string; label: string; id: string }): string {
+  const bandLabel = atlas.bands.find((b) => b.key === n.band)?.label || n.band;
+  const rels = edgesByNode.get(n.id) || [];
+  if (!rels.length) return `${n.label}, ${bandLabel}`;
+  // Cap relationship phrase length for screen readers
+  const phrases = rels.slice(0, 6).map((r) => {
+    const otherLabel = atlas.nodes.find((x) => x.id === r.other)?.label || r.other;
+    return `${r.verb} ${otherLabel}`;
+  });
+  const more = rels.length > 6 ? `; and ${rels.length - 6} more` : '';
+  return `${n.label}, ${bandLabel}. Relationships: ${phrases.join('; ')}${more}. Full detail in the table below.`;
+}
+
+/** Stroke style by relationship family — meaning preserved without repeating verb text on every line. */
+function edgeStroke(verb: string): { stroke: string; dash: string; opacity: number; width: number } {
+  if (verb === 'does not explain' || verb === 'contradicted by') {
+    return { stroke: '#8A3B1E', dash: '0', opacity: 0.72, width: 1.15 };
+  }
+  if (verb === 'leaves open') {
+    return { stroke: '#54407A', dash: '4 3', opacity: 0.7, width: 1 };
+  }
+  // would explain / interpreted toward / restates architecture / default support-family
+  return { stroke: '#4C5A63', dash: '0', opacity: 0.55, width: 1 };
+}
+
+function previewAttrsForLabel(label: string): Record<string, string> {
+  if (isClaimId(label)) {
+    const c = getClaimById(label);
+    if (!c) return { 'data-record-preview': label, 'data-claim-preview': label };
+    return recordPreviewDataAttrs(claimPreviewFromClaim(c));
+  }
+  if (isHypothesisId(label)) {
+    const h = getHypothesisById(label);
+    if (!h) return { 'data-record-preview': label, 'data-record-type': 'hypothesis' };
+    return recordPreviewDataAttrs(hypothesisPreviewFromHypothesis(h));
+  }
+  if (isUqId(label)) {
+    const q = getUqById(label);
+    if (!q) return { 'data-record-preview': label, 'data-record-type': 'unresolved_question' };
+    return recordPreviewDataAttrs(uqPreviewFromUq(q));
+  }
+  return {};
+}
+
+function claimLine(id: string): { id: string; excerpt: string; kindLabel: string; domain: string; attrs: Record<string, string> } {
+  const c = getClaimById(id);
+  const attrs = c ? recordPreviewDataAttrs(claimPreviewFromClaim(c)) : { 'data-claim-preview': id, 'data-record-preview': id };
+  return {
+    id,
+    excerpt: c ? claimExcerpt(c.public_statement || '', 140) : '',
+    kindLabel: c ? kindMeta(c.kind).label : '',
+    domain: c?.medical_domain ? c.medical_domain.replace(/_/g, ' ') : '',
+    attrs,
+  };
+}
+
+function uqChipAttrs(id: string): Record<string, string> {
+  const q = getUqById(id);
+  if (!q) return { 'data-record-preview': id, 'data-record-type': 'unresolved_question', tabindex: '0' };
+  return { ...recordPreviewDataAttrs(uqPreviewFromUq(q)), tabindex: '0' };
+}
+---
+
+<figure class="atlas" aria-labelledby="atlas-title">
+  <h2 class="sec" id="atlas-title">Evidence Atlas</h2>
+  <p class="sec-note">
+    Bands from documented findings and patient-reported history through open questions. Hypothesis-kind claims never
+    appear as documented findings. Every node is a real record identifier (CLM, H, lit, UQ). Connectors are undirected
+    and unweighted; relationship meaning is carried by band headings, a compact legend, accessible node descriptions,
+    and the authoritative table — not by repeating the same verb on every line. The diagram terminates in unknowns —
+    there is no answer band. Nodes are links or keyboard-focusable; CLM, H, and UQ nodes expose an accessible preview
+    of approved public fields. A complete table equivalent sits directly below. On narrow screens, swipe
+    hypothesis-centered evidence-path cards.
+  </p>
+
+  <!-- Desktop/tablet SVG -->
+  <div class="atlas-frame atlas-svg-desktop">
+    <svg
+      role="group"
+      viewBox={`0 0 ${W} ${H}`}
+      xmlns="http://www.w3.org/2000/svg"
+      aria-labelledby="atlas-svg-title atlas-svg-desc"
+      class="atlas-svg"
+    >
+      <title id="atlas-svg-title">Evidence Atlas with real record identifiers</title>
+      <desc id="atlas-svg-desc">
+        Horizontal bands: documented findings, patient-reported history, interpretations, working hypotheses,
+        contradicting evidence, and open questions. Hypothesis-kind claims are never in documented findings.
+        Contradicting evidence has equal visual weight. Edge lines are unlabelled to avoid colliding relationship
+        verbs; solid gray lines indicate support-family links (would explain and related), solid rust lines indicate
+        does-not-explain or contradicting literature, and dashed purple lines indicate open questions. Full
+        relationship verbs appear in each node’s accessible name, the legend, and the table below. Nodes are
+        interactive links to case or working-model records. The diagram ends at open questions.
+      </desc>
+
+      <g aria-hidden="true" opacity="0.22" stroke="#C9C2B4" fill="none" stroke-width="1">
+        <path d={`M20,20 C200,0 400,50 600,15 S900,10 1080,35`}></path>
+        <path d={`M20,${H - 20} C180,${H} 420,${H - 40} 640,${H - 10} S920,${H - 30} 1080,${H - 15}`}></path>
+      </g>
+
+      <defs>
+        <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#8A3B1E" stroke-width="2"></line>
+        </pattern>
+      </defs>
+
+      {
+        atlas.bands.map((band, bi) => {
+          const y = layouts[bi].y;
+          const fill = bi === 3 ? '#F6E7E0' : bi === 1 ? '#EBE6F2' : bi === 2 ? '#FBFAF7' : '#FBFAF7';
+          return (
+            <g>
+              <rect
+                x="20"
+                y={y}
+                width="1060"
+                height={bandH}
+                fill={fill}
+                stroke="#6E7880"
+                stroke-width="1"
+                stroke-dasharray={bi === 4 ? '4 3' : '0'}
+              />
+              {bi === 3 && (
+                <rect
+                  x="20"
+                  y={y}
+                  width="1060"
+                  height={bandH}
+                  fill="url(#hatch)"
+                  opacity="0.35"
+                  aria-hidden="true"
+                />
+              )}
+              <text x="32" y={y + 16} font-family="ui-monospace,monospace" font-size="11" fill="#4C5A63">
+                {band.label}
+              </text>
+            </g>
+          );
+        })
+      }
+
+      {
+        /* Uncluttered overview: stroke style encodes relationship family; no per-edge verb text
+           (labels collided when many edges shared "would explain" / "does not explain"). */
+        atlas.edges.map((e) => {
+          const a = pos.get(e.from);
+          const b = pos.get(e.to);
+          if (!a || !b) return null;
+          const style = edgeStroke(e.verb);
+          const fromLabel = atlas.nodes.find((n) => n.id === e.from)?.label || e.from;
+          const toLabel = atlas.nodes.find((n) => n.id === e.to)?.label || e.to;
+          return (
+            <g class="atlas-edge" data-atlas-verb={e.verb} data-atlas-from={e.from} data-atlas-to={e.to}>
+              <title>{`${e.verb}: ${fromLabel} — ${toLabel}`}</title>
+              <line
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+                stroke={style.stroke}
+                stroke-width={style.width}
+                stroke-dasharray={style.dash}
+                opacity={style.opacity}
+              />
+            </g>
+          );
+        })
+      }
+
+      {
+        layouts.flatMap((L) =>
+          L.nodes.map((n) => {
+            const isHyp = n.band === 'hypotheses';
+            const isContra = n.band === 'contradictions';
+            const isQ = n.band === 'questions';
+            const w = Math.max(52, n.label.length * 7.2 + 12);
+            const href = nodeHref(n);
+            const name = nodeAccessibleName(n);
+            const preview = previewAttrsForLabel(n.label);
+            const inner = (
+              <g class="atlas-node">
+                <rect
+                  class="atlas-node-hit"
+                  x={n.x - w / 2}
+                  y={n.y - 14}
+                  width={Math.max(w, 28)}
+                  height={28}
+                  rx="2"
+                  fill="#FBFAF7"
+                  stroke={isContra ? '#8A3B1E' : isHyp ? '#54407A' : isQ ? '#54407A' : '#12202B'}
+                  stroke-width={isHyp ? 1.5 : 1}
+                  stroke-dasharray={isHyp || isQ ? '4 2' : '0'}
+                />
+                <text
+                  x={n.x}
+                  y={n.y + 4}
+                  text-anchor="middle"
+                  font-family="ui-monospace,monospace"
+                  font-size="11"
+                  font-weight={isHyp ? '600' : '400'}
+                  fill="#12202B"
+                  pointer-events="none"
+                >
+                  {n.label}
+                </text>
+                <title>{name}</title>
+              </g>
+            );
+            if (href) {
+              return (
+                <a
+                  href={href}
+                  class="atlas-node-link"
+                  aria-label={name}
+                  tabindex="0"
+                  data-atlas-node={n.label}
+                  data-atlas-band={n.band}
+                  {...preview}
+                >
+                  {inner}
+                </a>
+              );
+            }
+            return (
+              <g
+                class="atlas-node atlas-node-static"
+                role="img"
+                aria-label={name}
+                tabindex="0"
+                data-atlas-node={n.label}
+                data-atlas-band={n.band}
+                {...preview}
+              >
+                {inner}
+              </g>
+            );
+          }),
+        )
+      }
+
+      <text
+        x={W / 2}
+        y={H - 8}
+        text-anchor="middle"
+        font-family="system-ui,sans-serif"
+        font-size="11"
+        fill="#8A3B1E"
+      >
+        Terminal: open questions — the atlas does not conclude with a diagnosis.
+      </text>
+    </svg>
+  </div>
+
+  <!-- Mobile: hypothesis-centered swipeable evidence-path cards (Checkpoint J.2 / J.2.1) -->
+  <div class="atlas-path-scroller">
+    <p class="atlas-path-lead mono">
+      Swipe evidence-path cards → each card is one hypothesis. Ends in open questions — <strong
+        >no diagnosis / answer band</strong
+      >.
+    </p>
+    {/*
+      J.2.1: role/region, accessible label, and tabindex live on the actual overflow
+      element so ArrowLeft/ArrowRight move the carousel. Cards size from track width.
+    */}
+    <div
+      class="atlas-path-track"
+      id="atlas-path-track"
+      role="region"
+      aria-label="Evidence Atlas hypothesis path cards for narrow screens. Swipe or use arrow keys. No diagnosis band."
+      tabindex="0"
+      data-atlas-carousel="path-track"
+    >
+      {
+        pathRows.map((r) => {
+          const explainsAll = r.explains.map(claimLine);
+          const doesNotAll = r.does_not_explain.map(claimLine);
+          const explains = explainsAll.slice(0, MOBILE_INLINE_LIMIT);
+          const doesNot = doesNotAll.slice(0, MOBILE_INLINE_LIMIT);
+          const explainsMore = explainsAll.length - explains.length;
+          const doesNotMore = doesNotAll.length - doesNot.length;
+          const openQs = r.open_questions.slice(0, 4);
+          return (
+            <article class="atlas-path-card" id={`atlas-path-${r.id}`}>
+              <header class="atlas-path-head">
+                <p class="mono atlas-path-id">
+                  <a
+                    href={withBase(`/working-model/#${r.id}`)}
+                    {...previewAttrsForLabel(r.id)}
+                  >
+                    {r.id}
+                  </a>
+                  <span class="atlas-path-kind"> · {r.kind.replace(/_/g, ' ')}</span>
+                </p>
+                <h3 class="atlas-path-title">{r.title}</h3>
+                <p class="mono atlas-path-conf">
+                  Confidence: <strong>{r.confidence}</strong>
+                </p>
+              </header>
+
+              <section class="atlas-path-section support" aria-label={`${r.id} would explain`}>
+                <h4>+ Would explain</h4>
+                {
+                  explains.length ? (
+                    <ul>
+                      {explains.map((c) => (
+                        <li>
+                          <a
+                            href={withBase(`/case/#${c.id}`)}
+                            class="mono claim-link"
+                            {...c.attrs}
+                          >
+                            {c.id}
+                          </a>
+                          {
+                            c.excerpt ? (
+                              <span class="claim-inline-excerpt">
+                                {' '}
+                                — {c.excerpt}
+                              </span>
+                            ) : null
+                          }
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p class="mono atlas-path-empty">— none listed —</p>
+                  )
+                }
+                {
+                  explainsMore > 0 ? (
+                    <p class="mono atlas-path-more">+{explainsMore} more on full record</p>
+                  ) : null
+                }
+              </section>
+
+              <section class="atlas-path-section contra" aria-label={`${r.id} does not explain`}>
+                <h4>− Does not explain</h4>
+                {
+                  doesNot.length ? (
+                    <ul>
+                      {doesNot.map((c) => (
+                        <li>
+                          <a
+                            href={withBase(`/case/#${c.id}`)}
+                            class="mono claim-link"
+                            {...c.attrs}
+                          >
+                            {c.id}
+                          </a>
+                          {
+                            c.excerpt ? (
+                              <span class="claim-inline-excerpt">
+                                {' '}
+                                — {c.excerpt}
+                              </span>
+                            ) : null
+                          }
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p class="mono atlas-path-empty">— none listed —</p>
+                  )
+                }
+                {
+                  doesNotMore > 0 ? (
+                    <p class="mono atlas-path-more">+{doesNotMore} more on full record</p>
+                  ) : null
+                }
+              </section>
+
+              {
+                r.contradicting_lit.length > 0 && (
+                  <section class="atlas-path-section" aria-label={`${r.id} contradicting literature`}>
+                    <h4>Contradicting literature</h4>
+                    <p class="mono">
+                      {r.contradicting_lit.slice(0, 3).map((id, i) => (
+                        <>
+                          {i > 0 ? ', ' : ''}
+                          <a href={withBase(`/literature/${id}/`)}>{id}</a>
+                        </>
+                      ))}
+                      {r.contradicting_lit.length > 3 ? ` +${r.contradicting_lit.length - 3}` : ''}
+                    </p>
+                  </section>
+                )
+              }
+
+              <section class="atlas-path-section questions" aria-label={`${r.id} open questions`}>
+                <h4>? Open questions</h4>
+                <p class="atlas-path-uqs">
+                  {openQs.length
+                    ? openQs.map((id, i) => (
+                        <>
+                          {i > 0 ? ', ' : ''}
+                          <span class="mono uq-chip" {...uqChipAttrs(id)}>
+                            {id}
+                          </span>
+                        </>
+                      ))
+                    : '— none linked on this hypothesis —'}
+                  {r.open_questions.length > openQs.length
+                    ? ` +${r.open_questions.length - openQs.length}`
+                    : ''}
+                </p>
+              </section>
+
+              <p class="atlas-path-full mono">
+                <a href={withBase(`/working-model/#${r.id}`)}>Full {r.id} record on Working model →</a>
+              </p>
+
+              <p class="atlas-path-terminal" role="note">
+                Flow ends at open questions. <strong>There is no diagnosis or answer band.</strong>
+              </p>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <div class="atlas-key" role="group" aria-label="Evidence Atlas legend">
+    <span><span class="badge hyp" style="margin-right: 4px;">⬡</span> hypothesis node</span>
+    <span><span class="badge sup">+</span> support-family edge (solid gray — would explain / related)</span>
+    <span><span class="badge con">−</span> contradiction edge (solid rust — does not explain / contradicted by)</span>
+    <span><span class="badge q">?</span> open-question edge (dashed purple — leaves open)</span>
+    <span>contradicting band uses hatch fill · equal visual weight</span>
+    <span>connectors undirected · unweighted · no repeated verb labels · nodes keyboard-focusable</span>
+  </div>
+
+  <figcaption>
+    What this shows: structured relationships among audited identifiers (CLM, H, lit, UQ). Relationship verbs are not
+    drawn on every connector (they collide in dense layouts); meaning is preserved in band headings, this legend,
+    accessible node descriptions, native edge tooltips on hover, and the authoritative table. What it deliberately does
+    not show: causal certainty, numeric probability, diagnostic conclusions, or AI confidence scores. Decorative
+    contour lines are not data. Mobile cards use the same atlas table rows as the desktop diagram.
+  </figcaption>
+
+  <!-- Complete table equivalent — never behind a toggle -->
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Evidence Atlas table equivalent">
+    <table class="data">
+      <caption>
+        Complete table equivalent of the Evidence Atlas. Prefer this representation if the diagram is unclear. A
+        literature count is not a weight.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Hypothesis</th>
+          <th scope="col">Kind</th>
+          <th scope="col">Confidence (word)</th>
+          <th scope="col">Would explain (claims)</th>
+          <th scope="col">Does not explain (claims)</th>
+          <th scope="col">Supporting lit</th>
+          <th scope="col">Contradicting lit</th>
+          <th scope="col">Open questions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r) => (
+            <tr>
+              <th scope="row">
+                <a
+                  href={withBase(`/working-model/#${r.id}`)}
+                  class="mono"
+                  {...previewAttrsForLabel(r.id)}
+                >
+                  {r.id}
+                </a>
+                <div style="font-weight: 400; font-family: var(--serif); font-size: 13px; margin-top: 4px;">
+                  {r.title}
+                </div>
+              </th>
+              <td class="mono">{r.kind}</td>
+              <td class="mono">{r.confidence}</td>
+              <td class="mono">
+                {r.explains.length
+                  ? r.explains.map((id, i) => (
+                      <>
+                        {i > 0 ? ', ' : ''}
+                        <a
+                          href={withBase(`/case/#${id}`)}
+                          class="claim-link"
+                          {...previewAttrsForLabel(id)}
+                        >
+                          {id}
+                        </a>
+                      </>
+                    ))
+                  : '—'}
+              </td>
+              <td class="mono">
+                {r.does_not_explain.length
+                  ? r.does_not_explain.map((id, i) => (
+                      <>
+                        {i > 0 ? ', ' : ''}
+                        <a
+                          href={withBase(`/case/#${id}`)}
+                          class="claim-link"
+                          {...previewAttrsForLabel(id)}
+                        >
+                          {id}
+                        </a>
+                      </>
+                    ))
+                  : '—'}
+              </td>
+              <td class="mono">
+                +{r.supporting_lit.length}
+                {r.supporting_lit.length ? `: ${r.supporting_lit.join(', ')}` : ''}
+              </td>
+              <td class="mono">
+                −{r.contradicting_lit.length}
+                {r.contradicting_lit.length ? `: ${r.contradicting_lit.join(', ')}` : ''}
+              </td>
+              <td class="mono">
+                {r.open_questions.length
+                  ? r.open_questions.map((id, i) => (
+                      <>
+                        {i > 0 ? ', ' : ''}
+                        <span class="uq-chip" {...uqChipAttrs(id)}>
+                          {id}
+                        </span>
+                      </>
+                    ))
+                  : '—'}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<script is:inline>
+  (function () {
+    if (typeof document === 'undefined') return;
+    var track = document.getElementById('atlas-path-track');
+    if (!track) return;
+    var reduceMotion =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function sizeCards() {
+      // Size from the actual scrollport client width (not viewport). Peek ~28px of next card.
+      var w = track.clientWidth;
+      if (w < 40) return;
+      var cardW = Math.max(40, w - 28);
+      track.style.setProperty('--atlas-card-w', cardW + 'px');
+    }
+    sizeCards();
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(sizeCards).observe(track);
+    } else {
+      window.addEventListener('resize', sizeCards, { passive: true });
+    }
+
+    function cardStep() {
+      var card = track.querySelector('.atlas-path-card');
+      if (!card) return Math.max(120, Math.floor(track.clientWidth * 0.85));
+      var styles = window.getComputedStyle(track);
+      var gap = parseFloat(styles.columnGap || styles.gap || '12') || 12;
+      return card.offsetWidth + gap;
+    }
+
+    track.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+      // Only when the track itself (or a non-interactive child) owns focus
+      if (document.activeElement !== track && !track.contains(document.activeElement)) return;
+      // Don't steal arrows from focused links inside a card
+      var ae = document.activeElement;
+      if (ae && ae !== track && (ae.tagName === 'A' || ae.tagName === 'BUTTON' || ae.isContentEditable)) {
+        return;
+      }
+      ev.preventDefault();
+      var step = cardStep();
+      var delta = ev.key === 'ArrowRight' ? step : -step;
+      if (typeof track.scrollBy === 'function') {
+        track.scrollBy({ left: delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+      } else {
+        track.scrollLeft += delta;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .atlas-node-link {
+    cursor: pointer;
+    outline: none;
+  }
+  .atlas-node-link:hover .atlas-node-hit,
+  .atlas-node-link:focus .atlas-node-hit,
+  .atlas-node-link:focus-visible .atlas-node-hit,
+  .atlas-node-static:focus .atlas-node-hit,
+  .atlas-node-static:focus-visible .atlas-node-hit {
+    stroke: #0b5fff !important;
+    stroke-width: 2.5px !important;
+    fill: #eef4ff !important;
+  }
+  .atlas-node-link:hover .atlas-node-hit {
+    filter: brightness(0.97);
+  }
+
+  .atlas-path-scroller {
+    display: none;
+    margin: 12px 0 4px;
+    /* Prevent scroller chrome from overflowing the document */
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .atlas-path-lead {
+    font-size: 12.5px;
+    margin: 0 0 10px;
+    color: var(--muted);
+    max-width: 48ch;
+  }
+  /* Actual overflow/scroll element — receives role=region, tabindex, arrows */
+  .atlas-path-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 4px;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 14px;
+    overscroll-behavior-x: contain;
+    outline: none;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .atlas-path-track:focus-visible {
+    box-shadow: 0 0 0 2px var(--ink, #12202b);
+  }
+  /*
+   * Card width from the carousel track (not viewport). ~86% leaves a peek of the next card
+   * and never exceeds the scrollport. max-width:100% is a hard clip guard.
+   * JS below also sets --atlas-card-w from track.clientWidth for subpixel reliability.
+   */
+  .atlas-path-card {
+    flex: 0 0 var(--atlas-card-w, 86%);
+    width: var(--atlas-card-w, 86%);
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    border: var(--b-firm);
+    background: var(--card);
+    padding: 12px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+  }
+  .atlas-path-id {
+    margin: 0;
+    font-size: 12.5px;
+  }
+  .atlas-path-title {
+    margin: 4px 0 0;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+  .atlas-path-conf {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .atlas-path-section h4 {
+    margin: 0 0 6px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .atlas-path-section ul {
+    margin: 0;
+    padding-left: 1.05em;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .atlas-path-section li {
+    margin-bottom: 5px;
+    overflow-wrap: anywhere;
+  }
+  .atlas-path-section.support {
+    border-left: 3px solid var(--firm, #2f5d50);
+    padding-left: 10px;
+  }
+  .atlas-path-section.contra {
+    border-left: 3px solid var(--contra, #8a3b1e);
+    padding-left: 10px;
+  }
+  .atlas-path-section.questions {
+    border-left: 3px dashed var(--contested, #54407a);
+    padding-left: 10px;
+  }
+  .atlas-path-empty {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .atlas-path-more {
+    margin: 4px 0 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .atlas-path-full {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+  }
+  .atlas-path-full a {
+    font-weight: 600;
+  }
+  .atlas-path-terminal {
+    margin: 4px 0 0;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line, #c9c2b4);
+    font-size: 12.5px;
+    color: var(--contra, #8a3b1e);
+    font-weight: 600;
+  }
+  .atlas-path-uqs {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .uq-chip {
+    cursor: default;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+  }
+  .uq-chip:focus-visible {
+    outline: 2px solid var(--focus, #0b5fff);
+    outline-offset: 2px;
+  }
+  .claim-inline-excerpt {
+    font-family: var(--serif);
+    font-size: 12.5px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  @media (max-width: 720px) {
+    .atlas-svg-desktop {
+      display: none;
+    }
+    .atlas-path-scroller {
+      display: block;
+    }
+  }
+  @media (min-width: 721px) {
+    .atlas-path-scroller {
+      display: none;
+    }
+    .atlas-svg-desktop {
+      display: block;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .atlas-path-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

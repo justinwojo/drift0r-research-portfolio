@@ -1,0 +1,64 @@
+# Build / package artifacts — never commit
+node_modules/
+site/node_modules/
+site/dist/
+dist/
+.astro/
+site/.astro/
+print-pdfs/
+**/print-pdfs/
+coverage/
+.cache/
+*.log
+# Publication-mode test scratch outDirs (must not appear in public commit)
+site/.test-scratch-*/
+.test-scratch-*/
+
+# Local QA output (screenshots, browser profiles, generated PDFs/reports)
+/audits/**/j2-1-screenshots/
+/audits/**/mobile-qa/
+/audits/**/print-pdfs/
+/audits/**/partial-approval-canary-report.json
+
+# Private research/source material — never publish
+/data/papers_local/
+/data/papers_oa/
+/community/raw/
+/private/
+/evidence/sources/
+/audits/2026-08-publication-readiness/01_claim_inventory.yaml
+/PublishApproval.*
+/ClaudeGoLiveAnalysis.md
+/X_LAUNCH_POST_DRAFTS.md
+
+# Binaries and secrets — never publish at any depth
+*.pdf
+*.map
+.env
+.env.*
+.envrc
+**/credentials
+**/credentials.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Exporter scaffolding (local only; not part of public commit surface)
+.drift0r_sanitized_export_sentinel
+README_SANITIZED_EXPORT.md
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
+.codex/
+.agents/
+*.pyc
+__pycache__/
+.venv/
+venv/

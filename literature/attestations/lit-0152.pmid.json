@@ -1,0 +1,27 @@
+{
+  "card_title": "Urine calcium excretion predicts bone loss in idiopathic hypercalciuria",
+  "card_year": 2006,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "16941029",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0152",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1038/sj.ki.5001778",
+    "pmid": "16941029",
+    "pubdate": "2006 Oct",
+    "source": "Kidney Int",
+    "title": "Urine calcium excretion predicts bone loss in idiopathic hypercalciuria."
+  },
+  "resolved_container": "Kidney Int",
+  "resolved_title": "Urine calcium excretion predicts bone loss in idiopathic hypercalciuria.",
+  "resolved_year": 2006,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:10Z",
+  "year_delta": 0
+}

@@ -1,0 +1,27 @@
+{
+  "card_title": "Copper deficiency myelopathy",
+  "card_year": 2010,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "20232210",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0186",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1007/s00415-010-5511-x",
+    "pmid": "20232210",
+    "pubdate": "2010 Jun",
+    "source": "J Neurol",
+    "title": "Copper deficiency myelopathy."
+  },
+  "resolved_container": "J Neurol",
+  "resolved_title": "Copper deficiency myelopathy.",
+  "resolved_year": 2010,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:18Z",
+  "year_delta": 0
+}

@@ -1,0 +1,24 @@
+---
+interface Props {
+  support: number;
+  contradict: number;
+}
+const { support, contradict } = Astro.props;
+const supTicks = Array.from({ length: Math.max(support, 0) });
+const conTicks = Array.from({ length: Math.max(contradict, 0) });
+---
+
+<div
+  class="balance-rail"
+  role="img"
+  aria-label={`${support} supporting and ${contradict} contradicting literature references. A count is not a weight.`}
+>
+  <span class="mono">+{support}</span>
+  <span class="ticks-row">
+    {supTicks.map(() => <span class="tick sup" aria-hidden="true" />)}
+    <span aria-hidden="true">|</span>
+    {conTicks.map(() => <span class="tick con" aria-hidden="true" />)}
+  </span>
+  <span class="mono">−{contradict}</span>
+  <span class="balance-caption">a count is not a weight</span>
+</div>

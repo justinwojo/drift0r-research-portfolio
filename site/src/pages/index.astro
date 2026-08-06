@@ -1,0 +1,285 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContributionCta from '../components/ContributionCta.astro';
+import EvidenceAtlas from '../components/EvidenceAtlas.astro';
+import TwoChannelReadout from '../components/TwoChannelReadout.astro';
+import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
+import { LANDING_OPENING_CAVEAT } from '../lib/constants';
+import { claimExcerpt } from '../lib/claimPreview';
+import {
+  getClaimById,
+  getHypotheses,
+  getSpecialtyChannels,
+  metrics,
+  type Hypothesis,
+} from '../lib/data';
+import { withBase } from '../lib/paths';
+
+const m = metrics();
+const channels = getSpecialtyChannels();
+// Marketing surfaces: no implementation-oriented "noindex" token in the lede.
+// Indexing remains accurate in HTML meta, compact provenance disclosure, legal/methods.
+const previewLegend = 'Public research preview';
+
+/**
+ * Leading working hypotheses for the homepage synthesis (H1–H3 by stable ID order).
+ * Excerpts are deterministic truncations of approved public fields only — no AI rewrite.
+ */
+function synthesisLine(h: Hypothesis) {
+  const explainId = h.explains_claim_ids[0];
+  const gapId = h.does_not_explain_claim_ids[0];
+  const explainClaim = explainId ? getClaimById(explainId) : undefined;
+  const gapClaim = gapId ? getClaimById(gapId) : undefined;
+  return {
+    id: h.id,
+    title: h.title,
+    kind: h.kind.replace(/_/g, ' '),
+    confidence: h.confidence,
+    overview: claimExcerpt(h.public_summary, 200),
+    mayExplain: explainClaim
+      ? { id: explainClaim.id, text: claimExcerpt(explainClaim.public_statement || '', 130) }
+      : null,
+    importantGap: gapClaim
+      ? { id: gapClaim.id, text: claimExcerpt(gapClaim.public_statement || '', 130) }
+      : null,
+  };
+}
+
+const leadingSynthesis = getHypotheses()
+  .filter((h) => h.id !== 'H-NULL')
+  .slice(0, 3)
+  .map(synthesisLine);
+---
+
+{/*
+  Homepage: omit the layout-level full Disclaimer block above the hero so the
+  project headline can enter the first mobile viewport. Status bar, sticky
+  strip, landing-opening caveat, and footer still carry research-only language.
+  J.2 / J.2.1: single polished hero disclaimer; full-width path columns;
+  contribution as compact horizontal section; no duplicate "open to correction" in lede.
+*/}
+<BaseLayout title="Home" currentPath="/" showDisclaimer={false}>
+  <section class="hero landing-hero">
+    <div class="landing-hero-top">
+      <div class="legend-label">{previewLegend}</div>
+      <AnalysisVersionBadge compact />
+    </div>
+    <h1 class="landing-h1">
+      What is documented.
+      <span class="q"> What was interpreted.</span>
+      <span class="q"> What is still unknown.</span>
+    </h1>
+    <p class="lede landing-lede">
+      Audited claims, working models, and open questions from publicly released materials.
+    </p>
+    <div
+      class="callout caution landing-opening"
+      role="note"
+      id="research-disclaimer"
+      aria-label="Opening research-preview caveat"
+    >
+      <p class="landing-opening-line">
+        <strong>{LANDING_OPENING_CAVEAT}</strong>
+      </p>
+      <p class="landing-opening-detail">
+        This is an <strong>AI-assisted research portfolio</strong>. It is <strong>not</strong> medical advice, a
+        diagnosis, or a treatment plan. <strong>Drift0r directly granted permission</strong> to publish the
+        repository, website, research, and approved public data. That permission does <strong>not</strong> imply that
+        Drift0r or any clinician endorses the findings, interpretations, or hypotheses. <strong
+          >Clinician review has not been performed.</strong
+        > Licensed clinicians must verify all records and interpret all findings.
+      </p>
+    </div>
+
+    {/*
+      Current working synthesis: plain-language overview + leading H1–H3 from approved
+      versioned hypothesis data. No extra disclaimer/status chrome (hero already carries it).
+    */}
+    <section id="current-working-synthesis" class="landing-synthesis" aria-labelledby="landing-synthesis-title">
+      <h2 class="landing-synthesis-title" id="landing-synthesis-title">Current working synthesis</h2>
+      <p class="landing-synthesis-lede">
+        The public draft organizes the audited multi-system presentation around versioned working hypotheses
+        ({m.hypotheses} records, including the H-NULL baseline). The three leading model records below are drawn
+        from approved hypothesis data in stable identifier order (H1–H3). Each line names one claim the record may
+        help organize and one named gap it does not cover.
+      </p>
+      <ul class="landing-synthesis-list">
+        {
+          leadingSynthesis.map((item) => (
+            <li class="landing-synthesis-item">
+              <div class="landing-synthesis-head">
+                <a class="mono landing-synthesis-id" href={withBase(`/working-model/#${item.id}`)}>
+                  {item.id}
+                </a>
+                <span class="landing-synthesis-meta mono">
+                  {item.kind} · confidence: <strong>{item.confidence}</strong>
+                </span>
+              </div>
+              <h3 class="landing-synthesis-h-title">{item.title}</h3>
+              {item.overview ? <p class="landing-synthesis-overview">{item.overview}</p> : null}
+              <dl class="landing-synthesis-dl">
+                <div>
+                  <dt>May help explain</dt>
+                  <dd>
+                    {item.mayExplain ? (
+                      <>
+                        <a class="mono claim-link" href={withBase(`/case/#${item.mayExplain.id}`)}>
+                          {item.mayExplain.id}
+                        </a>
+                        {item.mayExplain.text ? (
+                          <span class="landing-synthesis-claim-text"> — {item.mayExplain.text}</span>
+                        ) : null}
+                      </>
+                    ) : (
+                      <span class="mono">— none listed —</span>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Important gap</dt>
+                  <dd>
+                    {item.importantGap ? (
+                      <>
+                        <a class="mono claim-link" href={withBase(`/case/#${item.importantGap.id}`)}>
+                          {item.importantGap.id}
+                        </a>
+                        {item.importantGap.text ? (
+                          <span class="landing-synthesis-claim-text"> — {item.importantGap.text}</span>
+                        ) : null}
+                      </>
+                    ) : (
+                      <span class="mono">— none listed —</span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="landing-synthesis-more">
+        <a href={withBase('/working-model/')}>Full working model — all hypotheses, support, and counterevidence →</a>
+      </p>
+    </section>
+
+    <div class="landing-paths" aria-label="Reading paths">
+      <a class="path primary" href={withBase('/case/')}>
+        <div class="k">Path A</div>
+        <div class="t">Start with the evidence</div>
+        <div class="d">Audited case anchors separated by evidence type, with source trails.</div>
+      </a>
+      <a class="path" href={withBase('/for-clinicians/')}>
+        <div class="k">Path B</div>
+        <div class="t">I am a clinician — one page</div>
+        <div class="d">Printable research handout. Discussion questions, not orders.</div>
+      </a>
+    </div>
+
+    <div class="landing-contribute">
+      <ContributionCta variant="home" heading="Help improve this research preview" />
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="Honest metrics">
+    <div class="legend-label">Register metrics (negatives first)</div>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="n zero">{m.diagnoses}</div>
+        <div class="l"><b>diagnoses</b> on this site</div>
+      </div>
+      <div class="metric">
+        <div class="n zero">{m.clinicianReviews}</div>
+        <div class="l"><b>clinician reviews</b> completed</div>
+      </div>
+      <div class="metric">
+        <div class="n zero">{m.verifiedPrimary}</div>
+        <div class="l">
+          of {m.claimCount} claims <b>verified against a primary instrument record</b>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="n">{m.claimCount}</div>
+        <div class="l">audited claims in public draft set</div>
+      </div>
+      <div class="metric">
+        <div class="n">{m.openQuestions}</div>
+        <div class="l">open record questions</div>
+      </div>
+      <div class="metric">
+        <div class="n">{m.corrections}</div>
+        <div class="l">logged corrections</div>
+      </div>
+      <div class="metric">
+        <div class="n">{m.literatureCards}</div>
+        <div class="l">literature cards ({m.uniqueWorks} unique works)</div>
+      </div>
+      <div class="metric">
+        <div class="n">{m.hypotheses}</div>
+        <div class="l">working hypotheses</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <EvidenceAtlas />
+  </section>
+
+  <section class="page-section">
+    <h2 class="sec">Specialty LDT vs independent testing</h2>
+    <p class="sec-note">
+      Contested specialty laboratory-developed tests are never merged with independent or commercial results. Dual-energy
+      X-ray absorptiometry (DXA) and other values elsewhere use the same provenance discipline.
+    </p>
+    {channels.map((ch) => <TwoChannelReadout channel={ch} />)}
+  </section>
+
+  <section class="page-section">
+    <h2 class="sec">What this is not</h2>
+    <ul class="notlist">
+      <li>
+        <strong>Not a diagnosis</strong>
+        Working hypotheses are research models. None is a clinical determination.
+      </li>
+      <li>
+        <strong>Not treatment advice</strong>
+        Do not start, stop, or change medication or treatment based on this site.
+      </li>
+      <li>
+        <strong>Not independent lab confirmation</strong>
+        Specialty LDT signals remain contested until independently established.
+      </li>
+      <li>
+        <strong>Not clinician-reviewed</strong>
+        No licensed clinician has reviewed or endorsed these pages. Clinician review has not been performed.
+      </li>
+      <li>
+        <strong>Not a clinical product</strong>
+        Patient permission for repository and website publication was obtained; this remains a research preview, not
+        medical advice or clinician-validated content.
+      </li>
+      <li>
+        <strong>Not AI validation</strong>
+        Multi-model agreement is not clinical validation.
+      </li>
+    </ul>
+  </section>
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <h2 class="sec">Shareable status statements</h2>
+    <p class="sec-note">Dated research status — not claims about a diagnosis.</p>
+    <ul class="notlist">
+      <li>
+        <strong class="mono">Zero of {m.claimCount} claims</strong>
+        verified against a primary instrument record (as of content version on this page).
+      </li>
+      <li>
+        <strong class="mono">{m.hypotheses} working hypotheses</strong>
+        (including H-NULL baseline) published with what each fails to explain where listed.
+      </li>
+      <li>
+        <strong class="mono">{m.openQuestions} open questions</strong>
+        the present public record cannot answer.
+      </li>
+    </ul>
+  </section>
+</BaseLayout>

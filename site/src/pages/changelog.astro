@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
+import { getChangelogEntries, getCorrections, getRelease, getCorrectionById } from '../lib/data';
+import { withBase } from '../lib/paths';
+
+const release = getRelease();
+const entries = getChangelogEntries();
+const corrections = getCorrections();
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="Changelog"
+  currentPath="/changelog/"
+  description="Analysis versions, material changes, and corrections. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Changelog</div>
+    <h1>Analysis versions and corrections</h1>
+    <p class="lede">
+      The website always reflects the <strong>current best understanding</strong>. This page summarizes each
+      analysis release. It is not a frozen historical site archive — there are no rendered
+      <span class="mono">/releases/v…/</span> mirrors in v0.1. Stable claim, hypothesis, question, literature, and
+      correction IDs are never reused; retired or superseded records remain traceable and labelled.
+    </p>
+    <AnalysisVersionBadge />
+  </section>
+
+  <section class="page-section changelog-page">
+    <h2 class="sec">Release policy (summary)</h2>
+    <ul class="notlist" style="max-width: 70ch;">
+      <li>
+        <strong>Patch</strong> — wording, links, metadata, or citation-presentation fixes without material analytical
+        change.
+      </li>
+      <li>
+        <strong>Minor</strong> — new evidence or material analytical changes (interpretations, rankings, new/retired
+        records).
+      </li>
+      <li>
+        <strong>Major</strong> — major methodology or data-model change, or a future clinician-reviewed public release.
+      </li>
+    </ul>
+    <p class="sec-note">
+      Each public release should receive an annotated Git tag and a GitHub Release containing the changelog summary.
+      Full policy: repository <span class="mono">governance/RELEASE_VERSIONING.md</span> (also in the sanitized public
+      tree when exported).
+    </p>
+  </section>
+
+  {
+    entries.map((entry) => (
+      <section class="page-section changelog-page" id={entry.version} aria-labelledby={`${entry.version}-title`}>
+        <h2 class="sec" id={`${entry.version}-title`}>
+          <span class="mono">{entry.version}</span>
+          <span class="mono" style="font-size: 13px; font-weight: 500; margin-left: 10px;">
+            {entry.kind} · {entry.status.replace(/_/g, ' ')} · {entry.date}
+          </span>
+        </h2>
+        <p class="mono" style="font-size: 13px; margin: 0 0 10px;">
+          evidence current through <strong>{entry.evidence_current_through}</strong>
+          {entry.version === release.content_version ? (
+            <span class="badge mono" style="margin-left: 8px;">
+              current on site
+            </span>
+          ) : null}
+        </p>
+        <p style="max-width: 70ch;">{entry.summary}</p>
+
+        <h3 class="print-h3" style="margin-top: 16px;">Added evidence</h3>
+        {entry.added_evidence.length ? (
+          <ul>
+            {entry.added_evidence.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p class="sec-note">None listed for this release.</p>
+        )}
+
+        <h3 class="print-h3">Changed interpretations</h3>
+        {entry.changed_interpretations.length ? (
+          <ul>
+            {entry.changed_interpretations.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p class="sec-note">None listed for this release.</p>
+        )}
+
+        <h3 class="print-h3">Strengthened or weakened hypotheses</h3>
+        {entry.strengthened_or_weakened_hypotheses.length ? (
+          <ul>
+            {entry.strengthened_or_weakened_hypotheses.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p class="sec-note">None listed for this release.</p>
+        )}
+
+        <h3 class="print-h3">Retired / superseded findings</h3>
+        {entry.retired_or_superseded.length ? (
+          <ul>
+            {entry.retired_or_superseded.map((r) => (
+              <li>
+                <span class="mono">{r.id}</span> — <strong>{r.status}</strong>
+                {r.replaced_by ? (
+                  <>
+                    {' '}
+                    → replaced by <span class="mono">{r.replaced_by}</span>
+                  </>
+                ) : null}
+                {r.note ? <> — {r.note}</> : null}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="sec-note">None. All published IDs for this release remain active on the live site.</p>
+        )}
+
+        <h3 class="print-h3">Corrections</h3>
+        {entry.corrections.length ? (
+          <ul class="notlist">
+            {entry.corrections.map((cid) => {
+              const c = getCorrectionById(cid);
+              return (
+                <li id={cid} style="margin-bottom: 8px;">
+                  <strong class="mono">
+                    <a href={`#${cid}`}>{cid}</a>
+                  </strong>
+                  {c ? (
+                    <>
+                      {' '}
+                      — {c.title}{' '}
+                      <span class="mono" style="font-size: 12px;">
+                        (status: {c.status})
+                      </span>
+                    </>
+                  ) : (
+                    <span class="mono"> (see register)</span>
+                  )}
+                  {' · '}
+                  <a href={withBase('/case/')}>case records</a>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p class="sec-note">No correction IDs attached to this release entry.</p>
+        )}
+
+        {entry.notes ? <p class="record-note">{entry.notes}</p> : null}
+        {entry.git_tag_planned || entry.github_release_planned ? (
+          <p class="sec-note mono" style="font-size: 12.5px;">
+            Public release packaging: annotated git tag planned
+            {entry.git_tag_planned ? ` (${entry.git_tag_planned})` : ''}
+            {entry.github_release_planned ? '; GitHub Release with this summary planned' : ''}. Not created during
+            private remediation.
+          </p>
+        ) : null}
+      </section>
+    ))
+  }
+
+  <section class="page-section" style="padding-bottom: 48px;" id="corrections-register">
+    <h2 class="sec">Corrections register (full index)</h2>
+    <p class="sec-note">
+      Every COR-* ID is stable and never reused. Full narrative lives in the repository corrections register; site
+      records surface related IDs with links back here.
+    </p>
+    <ul class="notlist">
+      {
+        corrections.map((c) => (
+          <li id={`register-${c.id}`} style="margin-bottom: 10px;">
+            <strong class="mono">
+              <a href={`#${c.id}`}>{c.id}</a>
+            </strong>
+            <span class="mono" style="margin-left: 8px; font-size: 12px;">
+              status: {c.status}
+            </span>
+            <div>{c.title}</div>
+            <div style="font-size: 13.5px; color: var(--muted); margin-top: 4px;">
+              Visible on affected case records where mapped · see also{' '}
+              <a href={withBase('/case/')}>case & evidence</a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

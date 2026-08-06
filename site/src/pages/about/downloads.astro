@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrintPageDisclaimer from '../../components/PrintPageDisclaimer.astro';
+import { withBase } from '../../lib/paths';
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="Printable routes"
+  currentPath="/about/downloads/"
+  description="Index of browser-print routes. No PDF artifacts."
+  isPrintRoute={true}
+>
+  <section class="hero no-print">
+    <div class="legend-label">Printable routes</div>
+    <h1>The page is the download</h1>
+    <p class="lede">
+      Four routes are styled for browser print. Printing any other page yields a one-page safety notice that points
+      back here. This site does not redistribute original patient source PDFs. Externally hosted materials remain under
+      Drift0r’s control and may change; see Methods.
+    </p>
+  </section>
+
+  <div class="print-sheet">
+    <section class="print-page" aria-label="Printable routes index">
+      <PrintPageDisclaimer variant="banner" />
+      <h1 class="screen-only-h1" style="font-size: 1.4rem;">The page is the download</h1>
+      <p style="font-size: 14px; max-width: 70ch;">
+        Browser-print routes only — multi-page medical pages such as Case and the prediction matrix are not printable
+        via Cmd+P (they print a redirect notice instead). This site does not redistribute original patient source PDFs
+        or separately built medical PDF files. The patient-hosted external folder is under Drift0r’s control, may
+        change, and is not rehosted here. Permission to publish is not endorsement.
+      </p>
+
+      <section class="page-section">
+        <div class="paths">
+          <a class="path" href={withBase('/for-clinicians/')}>
+            <div class="k">1</div>
+            <div class="t">For clinicians</div>
+            <div class="d">Dense clinician research handout. Specialty LDT split, anchors, high-priority questions.</div>
+          </a>
+          <a class="path" href={withBase('/working-model/evidence-table/')}>
+            <div class="k">2</div>
+            <div class="t">Working model evidence table</div>
+            <div class="d">Finding × hypothesis matrix with legend on the same surface (includes H-NULL).</div>
+          </a>
+          <a class="path" href={withBase('/questions-for-clinicians/packet/')}>
+            <div class="k">3</div>
+            <div class="t">Questions for clinicians — packet</div>
+            <div class="d">Full question text, rationale, and citation identifiers.</div>
+          </a>
+          <a class="path" href={withBase('/about/snapshot/')}>
+            <div class="k">4</div>
+            <div class="t">Research snapshot</div>
+            <div class="d">One-page status metrics and hypothesis identifiers.</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="page-section" style="padding-bottom: 24px;">
+        <div class="callout caution">
+          <strong class="legend-label">What is not available</strong>
+          <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+            <li>Patient specialty summary PDFs or any primary instrument records</li>
+            <li>Local research paper PDFs (open-access or otherwise)</li>
+            <li>Raw community data dumps</li>
+            <li>Separately built PDF files of these pages</li>
+            <li>Social share card images (deferred)</li>
+          </ul>
+        </div>
+      </section>
+      <PrintPageDisclaimer variant="end" />
+    </section>
+  </div>
+</BaseLayout>

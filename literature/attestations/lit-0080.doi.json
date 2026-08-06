@@ -1,0 +1,26 @@
+{
+  "card_title": "Updated Diagnostic Criteria and Classification of Mast Cell Disorders: A Consensus Proposal",
+  "card_year": 2021,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1097/HS9.0000000000000646",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0080",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1097/hs9.0000000000000646",
+    "title": "Updated Diagnostic Criteria and Classification of Mast Cell Disorders: A Consensus Proposal",
+    "type": "journal-article",
+    "year": 2021
+  },
+  "resolved_container": "HemaSphere",
+  "resolved_title": "Updated Diagnostic Criteria and Classification of Mast Cell Disorders: A Consensus Proposal",
+  "resolved_year": 2021,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:12Z",
+  "year_delta": 0
+}

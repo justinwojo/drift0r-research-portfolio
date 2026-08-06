@@ -1,0 +1,85 @@
+---
+import type { Hypothesis } from '../lib/data';
+import ConfidenceRail from './ConfidenceRail.astro';
+import BalanceRail from './BalanceRail.astro';
+import { reviewMeta, confidenceLabel } from '../lib/data';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  hypothesis: Hypothesis;
+}
+const { hypothesis: h } = Astro.props;
+const review = reviewMeta(h.review_status);
+---
+
+<aside class="apparatus" aria-label={`Evidence apparatus for ${h.id}`}>
+  <dl>
+    <dt>Identifier</dt>
+    <dd class="mono">{h.id} · {h.kind}</dd>
+
+    <dt>Review status</dt>
+    <dd>
+      <span class="mono">{review.glyph}</span>
+      {review.label} · as of {h.as_of}
+    </dd>
+
+    <dt>Confidence</dt>
+    <dd>
+      {
+        h.architecture_confidence || h.module_confidence ? (
+          <>
+            {h.architecture_confidence && (
+              <ConfidenceRail value={h.architecture_confidence} label="Architecture confidence" />
+            )}
+            {h.module_confidence && (
+              <ConfidenceRail value={h.module_confidence} label="Module identity confidence" />
+            )}
+          </>
+        ) : (
+          <ConfidenceRail value={h.confidence} label="Confidence" />
+        )
+      }
+      <p class="balance-caption" style="margin: 6px 0 0;">
+        Five-word vocabulary only ({confidenceLabel(h.confidence)}). Dual buckets are never averaged.
+      </p>
+    </dd>
+
+    <dt>Literature balance</dt>
+    <dd>
+      <BalanceRail
+        support={h.supporting_literature_ids.length}
+        contradict={h.contradicting_literature_ids.length}
+      />
+    </dd>
+
+    <dt>Open questions</dt>
+    <dd>
+      {
+        h.open_question_ids.length ? (
+          <ul style="margin: 0; padding-left: 1.1em;">
+            {h.open_question_ids.map((id) => (
+              <li class="mono">{id}</li>
+            ))}
+          </ul>
+        ) : (
+          <span>— none listed —</span>
+        )
+      }
+    </dd>
+
+    <dt>Source trail</dt>
+    <dd class="mono" style="font-size: 12px; line-height: 1.5;">
+      {h.id} ← Round-1 synthesis / structured hypothesis YAML ← claim inventory anchors.
+      <br />
+      <span style="color: var(--contra); font-weight: 600;">
+        Trail ends at a research synthesis — not a clinical record.
+      </span>
+    </dd>
+
+    <dt>Applicability limits</dt>
+    <dd>
+      Multi-model research ranking is not clinical validation. Literature may not transfer to this exact record.
+      See <a href={withBase('/methods/')}>methods</a>.
+    </dd>
+  </dl>
+</aside>

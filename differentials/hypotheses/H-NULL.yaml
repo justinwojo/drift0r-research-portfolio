@@ -1,0 +1,21 @@
+id: H-NULL
+title: Multi-independent axes (null model / no single unifier)
+kind: null_model
+confidence: medium
+architecture_confidence: null
+module_confidence: null
+summary: >
+  Qualitative null / base-rate baseline — not a competing disease label. Several common
+  or semi-independent processes may coexist without one rare unifying diagnosis. A
+  defensible numeric population prior for this exact multi-system presentation is not
+  available from the sources currently cited; false precision is avoided. This record
+  exists for Bayesian discipline when weighing H1–H5, not as a diagnosis.
+explains_claim_ids: []
+does_not_explain_claim_ids: []
+supporting_literature_ids: []
+contradicting_literature_ids: []
+open_question_ids:
+  - UQ-0017
+review_status: not_reviewed
+as_of: '2026-08-05'
+supersedes: null

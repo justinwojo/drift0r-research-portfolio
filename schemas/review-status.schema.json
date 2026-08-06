@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/review-status.schema.json",
+  "title": "Drift0rReviewStatus",
+  "description": "Shared review-status enum for claims, hypotheses, questions, and releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "as_of"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "not_reviewed",
+        "source_audited",
+        "patient_reviewed",
+        "clinician_reviewed",
+        "rejected"
+      ]
+    },
+    "as_of": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "reviewer_role": {
+      "type": "string",
+      "enum": [
+        "repository_owner",
+        "patient",
+        "licensed_clinician",
+        "legal_privacy",
+        "technical",
+        "ai_research_aid_not_reviewer"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "description": "What was reviewed; never imply global clinical approval from partial scope."
+    },
+    "notes": { "type": "string" }
+  }
+}

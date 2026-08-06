@@ -1,0 +1,27 @@
+{
+  "card_title": "Specific antibody deficiency: pearls and pitfalls for diagnosis",
+  "card_year": 2022,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "35671934",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0206",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1016/j.anai.2022.05.028",
+    "pmid": "35671934",
+    "pubdate": "2022 Nov",
+    "source": "Ann Allergy Asthma Immunol",
+    "title": "Specific antibody deficiency: pearls and pitfalls for diagnosis."
+  },
+  "resolved_container": "Ann Allergy Asthma Immunol",
+  "resolved_title": "Specific antibody deficiency: pearls and pitfalls for diagnosis.",
+  "resolved_year": 2022,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:21Z",
+  "year_delta": 0
+}

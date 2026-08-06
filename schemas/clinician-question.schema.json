@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/clinician-question.schema.json",
+  "title": "Drift0rClinicianQuestion",
+  "description": "Research question for licensed clinicians — never a consumer test order or treatment instruction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "question",
+    "rationale",
+    "related_claim_ids",
+    "priority",
+    "review_status",
+    "as_of"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CQ-[0-9]{3}$"
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Phrased as a question to discuss with licensed clinicians."
+    },
+    "rationale": { "type": "string" },
+    "related_claim_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^CLM-[0-9]{4}$" }
+    },
+    "related_hypothesis_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "literature_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^lit-[0-9]{4}$"
+      },
+      "description": "Supporting guidelines/studies for the research question rationale. Required non-empty when review_status is source_audited."
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "dont_miss": {
+      "type": "boolean",
+      "default": false
+    },
+    "medical_domain": { "type": "string" },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "not_reviewed",
+        "source_audited",
+        "patient_reviewed",
+        "clinician_reviewed"
+      ]
+    },
+    "as_of": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "forbidden_phrasings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Example consumer-order phrasings that must not appear in public renderings."
+    }
+  }
+}

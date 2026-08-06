@@ -1,0 +1,26 @@
+{
+  "card_title": "Neutral lipid storage disease: genetic disorders caused by mutations in adipose triglyceride lipase/PNPLA2 or CGI-58/ABHD5",
+  "card_year": 2009,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1152/ajpendo.00099.2009",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0191",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1152/ajpendo.00099.2009",
+    "title": "Neutral lipid storage disease: genetic disorders caused by mutations in adipose triglyceride lipase/<i>PNPLA2</i>or<i>CGI-58</i>/<i>ABHD5</i>",
+    "type": "journal-article",
+    "year": 2009
+  },
+  "resolved_container": "American Journal of Physiology-Endocrinology and Metabolism",
+  "resolved_title": "Neutral lipid storage disease: genetic disorders caused by mutations in adipose triglyceride lipase/<i>PNPLA2</i>or<i>CGI-58</i>/<i>ABHD5</i>",
+  "resolved_year": 2009,
+  "schema_version": "1.0.0",
+  "title_similarity": 0.9528,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:18Z",
+  "year_delta": 0
+}

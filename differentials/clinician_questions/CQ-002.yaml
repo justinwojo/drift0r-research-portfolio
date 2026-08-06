@@ -1,0 +1,32 @@
+id: CQ-002
+question: On the next same-scanner DXA, can age-appropriate Z-scores be reported and
+  can hip BMD change be interpreted against a facility-derived LSC? If vertebral fracture
+  assessment (VFA) is considered, does the patient meet formal indication criteria
+  rather than low BMD alone? Trabecular bone score (TBS), if discussed, is per ISCD
+  generally for ages ≥40 with male fracture-risk evidence primarily studied above
+  age 50 — this patient is ~38, so is TBS applicable now, or better deferred?
+rationale: 'ISCD 2023 Adult Official Positions (lit-0015 / Shuhart et al. J Clin Densitom
+  2023 doi 10.1016/j.jocd.2023.101435): Z-scores preferred in men <50; osteoporosis
+  cannot be diagnosed on BMD alone under 50; each facility should determine precision
+  error and calculate LSC (manufacturer LSC not a substitute) for serial change; TBS
+  is appropriate in adults ≥40 (male fracture-risk evidence primarily studied above
+  age 50) and routine TBS-change monitoring is not recommended; VFA has formal indication
+  criteria not met by young age + low BMD alone without other triggers. Age ~38 at
+  latest scans — all four points are carried on the lit-0015 card quality_notes/body.'
+related_claim_ids:
+- CLM-0006
+- CLM-0009
+related_hypothesis_ids:
+- H1
+- H2
+literature_refs:
+- lit-0015
+priority: high
+dont_miss: true
+medical_domain: bone
+review_status: source_audited
+as_of: '2026-08-05'
+forbidden_phrasings:
+- Order this test now
+- You must start
+- Self-experiment protocol

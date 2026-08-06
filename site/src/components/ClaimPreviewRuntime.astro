@@ -1,0 +1,359 @@
+---
+/**
+ * Single-page record-preview tooltip runtime (CLM, H, UQ).
+ * Data is also present on each [data-record-preview]/[data-claim-preview] element
+ * for progressive enhancement. Essential claim text for mobile Atlas is rendered
+ * server-side — not tooltip-only.
+ *
+ * J.2.1: generation-guarded hide timers, single aria-describedby owner,
+ * relatedTarget-aware enter/leave, Escape clears all stale associations,
+ * horizontal scroll accounted for in positioning.
+ */
+import { getRecordPreviewMap } from '../lib/claimPreview';
+
+const map = getRecordPreviewMap();
+const json = JSON.stringify(map).replace(/</g, '\\u003c');
+---
+
+<div
+  id="claim-preview-tooltip"
+  class="claim-preview-tooltip"
+  role="tooltip"
+  hidden
+  aria-hidden="true"
+></div>
+<script type="application/json" id="claim-preview-data" set:html={json} />
+<script is:inline>
+  (function () {
+    if (typeof document === 'undefined') return;
+    var tip = document.getElementById('claim-preview-tooltip');
+    var dataEl = document.getElementById('claim-preview-data');
+    if (!tip || !dataEl) return;
+    var map = {};
+    try {
+      map = JSON.parse(dataEl.textContent || '{}');
+    } catch (e) {
+      map = {};
+    }
+    var activeEl = null;
+    var hideTimer = null;
+    /** Bumped on every show(); stale hide timers compare against this. */
+    var showGen = 0;
+    var TIP_ID = 'claim-preview-tooltip';
+    var reduceMotion =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function previewTarget(node) {
+      if (!node || !node.closest) return null;
+      return (
+        node.closest('[data-record-preview]') ||
+        node.closest('[data-claim-preview]') ||
+        null
+      );
+    }
+
+    function recordId(el) {
+      return (
+        el.getAttribute('data-record-preview') ||
+        el.getAttribute('data-claim-preview') ||
+        ''
+      );
+    }
+
+    function previewFor(el) {
+      var id = recordId(el);
+      if (!id) return null;
+      var fromMap = map[id];
+      if (fromMap) return fromMap;
+      // Progressive enhancement from data attributes when map entry missing
+      var type =
+        el.getAttribute('data-record-type') ||
+        (id.indexOf('CLM-') === 0
+          ? 'claim'
+          : id.indexOf('UQ-') === 0
+            ? 'unresolved_question'
+            : id.indexOf('H') === 0
+              ? 'hypothesis'
+              : 'claim');
+      var related = (el.getAttribute('data-record-related-h') || '')
+        .split(',')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean);
+      return {
+        id: id,
+        record_type: type,
+        type_label:
+          el.getAttribute('data-record-type-label') ||
+          (type === 'hypothesis'
+            ? 'Working research hypothesis — not a diagnosis.'
+            : type === 'unresolved_question'
+              ? 'Open research question — not a test order or treatment recommendation.'
+              : 'Approved public claim statement'),
+        excerpt:
+          el.getAttribute('data-record-excerpt') ||
+          el.getAttribute('data-claim-excerpt') ||
+          '',
+        href: el.tagName === 'A' ? el.getAttribute('href') : null,
+        kind: el.getAttribute('data-claim-kind') || '',
+        kind_label: el.getAttribute('data-claim-kind-label') || '',
+        medical_domain: el.getAttribute('data-claim-domain') || '',
+        title: el.getAttribute('data-record-title') || '',
+        hypothesis_kind: el.getAttribute('data-record-kind') || '',
+        confidence: el.getAttribute('data-record-confidence') || '',
+        status: el.getAttribute('data-record-status') || '',
+        category: el.getAttribute('data-record-category') || '',
+        related_hypothesis_ids: related,
+      };
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function render(p) {
+      if (!p || !p.id) return '';
+      var parts = [];
+      parts.push('<div class="cpt-id mono">' + escapeHtml(p.id) + '</div>');
+      if (p.type_label) {
+        parts.push('<div class="cpt-banner">' + escapeHtml(p.type_label) + '</div>');
+      }
+      var type = p.record_type || 'claim';
+      if (type === 'claim') {
+        if (p.kind_label || p.kind) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Evidence kind</span> ' +
+              escapeHtml(p.kind_label || p.kind) +
+              '</div>',
+          );
+        }
+        if (p.medical_domain) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Domain</span> ' +
+              escapeHtml(p.medical_domain) +
+              '</div>',
+          );
+        }
+      } else if (type === 'hypothesis') {
+        if (p.title) {
+          parts.push('<div class="cpt-title">' + escapeHtml(p.title) + '</div>');
+        }
+        if (p.hypothesis_kind) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Hypothesis kind</span> ' +
+              escapeHtml(p.hypothesis_kind) +
+              '</div>',
+          );
+        }
+        if (p.confidence) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Confidence</span> ' +
+              escapeHtml(p.confidence) +
+              '</div>',
+          );
+        }
+      } else if (type === 'unresolved_question') {
+        if (p.category) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Category</span> ' +
+              escapeHtml(p.category) +
+              '</div>',
+          );
+        }
+        if (p.status) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Status</span> ' +
+              escapeHtml(p.status) +
+              '</div>',
+          );
+        }
+        if (p.related_hypothesis_ids && p.related_hypothesis_ids.length) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Related hypotheses</span> ' +
+              escapeHtml(p.related_hypothesis_ids.join(', ')) +
+              '</div>',
+          );
+        }
+      }
+      if (p.excerpt) {
+        parts.push('<div class="cpt-excerpt">' + escapeHtml(p.excerpt) + '</div>');
+      }
+      var hint =
+        type === 'hypothesis'
+          ? 'Approved public summary excerpt · open link for full working-model record'
+          : type === 'unresolved_question'
+            ? 'Approved public open-question text · not a clinical order'
+            : 'Approved public statement excerpt · open link for full record';
+      parts.push('<div class="cpt-hint mono">' + escapeHtml(hint) + '</div>');
+      return parts.join('');
+    }
+
+    function clearDescribedBy(el) {
+      if (!el) return;
+      if (el.getAttribute('aria-describedby') === TIP_ID) {
+        el.removeAttribute('aria-describedby');
+      }
+    }
+
+    /** At most one element may reference the tooltip at any time. */
+    function clearAllDescribedBy() {
+      var nodes = document.querySelectorAll('[aria-describedby="' + TIP_ID + '"]');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].removeAttribute('aria-describedby');
+      }
+    }
+
+    function place(el) {
+      var rect = el.getBoundingClientRect();
+      var pad = 8;
+      tip.hidden = false;
+      tip.setAttribute('aria-hidden', 'false');
+      var tw = tip.offsetWidth || 280;
+      var th = tip.offsetHeight || 120;
+      var left = rect.left + rect.width / 2 - tw / 2;
+      var top = rect.bottom + pad;
+      if (left < pad) left = pad;
+      if (left + tw > window.innerWidth - pad) left = Math.max(pad, window.innerWidth - tw - pad);
+      if (top + th > window.innerHeight - pad) {
+        top = Math.max(pad, rect.top - th - pad);
+      }
+      // Account for both horizontal and vertical document scroll
+      tip.style.left = Math.round(left + (window.scrollX || window.pageXOffset || 0)) + 'px';
+      tip.style.top = Math.round(top + (window.scrollY || window.pageYOffset || 0)) + 'px';
+      if (!reduceMotion) tip.classList.add('is-visible');
+      else tip.classList.add('is-visible', 'no-motion');
+    }
+
+    /**
+     * @param {Element} el
+     * @param {{ fromPointer?: boolean }} [opts]
+     * fromPointer: skip open on coarse-pointer hover (touch) so navigation is not trapped.
+     * Keyboard focus always opens when excerpt exists.
+     */
+    function show(el, opts) {
+      if (!el) return;
+      opts = opts || {};
+      showGen += 1;
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+      if (opts.fromPointer && window.matchMedia('(hover: none)').matches) {
+        return;
+      }
+      var p = previewFor(el);
+      if (!p || !p.excerpt) return;
+
+      // Detach previous association before attaching a new one
+      if (activeEl && activeEl !== el) {
+        clearDescribedBy(activeEl);
+      }
+      clearAllDescribedBy();
+
+      activeEl = el;
+      tip.innerHTML = render(p);
+      el.setAttribute('aria-describedby', TIP_ID);
+      place(el);
+    }
+
+    function hide(expectedGen) {
+      // Ignore stale pointerout/focusout timers after a newer show()
+      if (expectedGen != null && expectedGen !== showGen) return;
+      clearAllDescribedBy();
+      activeEl = null;
+      tip.classList.remove('is-visible', 'no-motion');
+      tip.hidden = true;
+      tip.setAttribute('aria-hidden', 'true');
+      tip.innerHTML = '';
+    }
+
+    function scheduleHide() {
+      var gen = showGen;
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        hide(gen);
+      }, reduceMotion ? 0 : 80);
+    }
+
+    function relatedIsPreview(related) {
+      if (!related || related === tip) return false;
+      if (related.nodeType === 3) related = related.parentElement;
+      return Boolean(previewTarget(related));
+    }
+
+    document.addEventListener(
+      'focusin',
+      function (ev) {
+        var el = previewTarget(ev.target);
+        if (el) show(el);
+      },
+      true,
+    );
+    document.addEventListener(
+      'focusout',
+      function (ev) {
+        var el = previewTarget(ev.target);
+        if (!el) return;
+        // Moving focus to another preview target: let focusin handle the switch
+        if (relatedIsPreview(ev.relatedTarget)) return;
+        scheduleHide();
+      },
+      true,
+    );
+    document.addEventListener(
+      'pointerover',
+      function (ev) {
+        var el = previewTarget(ev.target);
+        if (el) show(el, { fromPointer: true });
+      },
+      true,
+    );
+    document.addEventListener(
+      'pointerout',
+      function (ev) {
+        if (window.matchMedia('(hover: none)').matches) return;
+        var el = previewTarget(ev.target);
+        if (!el) return;
+        // Leaving into another preview target (or the tip): do not schedule hide
+        if (relatedIsPreview(ev.relatedTarget)) {
+          var next = previewTarget(ev.relatedTarget);
+          if (next && next !== el) show(next);
+          return;
+        }
+        scheduleHide();
+      },
+      true,
+    );
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' || ev.key === 'Esc') {
+        // Clear every stale association, even if tip already visually hidden
+        var hadAssociation =
+          !tip.hidden ||
+          activeEl ||
+          document.querySelector('[aria-describedby="' + TIP_ID + '"]');
+        showGen += 1;
+        if (hideTimer) {
+          clearTimeout(hideTimer);
+          hideTimer = null;
+        }
+        hide(showGen);
+        if (hadAssociation) ev.stopPropagation();
+      }
+    });
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!tip.hidden && activeEl) place(activeEl);
+      },
+      { passive: true, capture: true },
+    );
+    window.addEventListener('resize', function () {
+      if (!tip.hidden && activeEl) place(activeEl);
+    });
+  })();
+</script>

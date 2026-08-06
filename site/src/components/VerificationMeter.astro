@@ -1,0 +1,17 @@
+---
+import { verificationMeta } from '../lib/data';
+
+interface Props {
+  status: string;
+}
+const { status } = Astro.props;
+const meta = verificationMeta(status);
+const ticks = Array.from({ length: 5 }, (_, i) => i < meta.ticks);
+---
+
+<span class="ver" role="img" aria-label={`Verification: ${meta.label}`}>
+  <span class={`ticks ${meta.border}`}>
+    {ticks.map((on) => <i class={on ? 'on' : ''} aria-hidden="true" />)}
+  </span>
+  <span>{meta.label}</span>
+</span>

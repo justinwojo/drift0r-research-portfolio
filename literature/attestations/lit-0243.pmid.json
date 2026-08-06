@@ -1,0 +1,27 @@
+{
+  "card_title": "Hematological manifestations of copper deficiency: a retrospective review",
+  "card_year": 2008,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "18284630",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0243",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1111/j.1600-0609.2008.01050.x",
+    "pmid": "18284630",
+    "pubdate": "2008 Jun",
+    "source": "Eur J Haematol",
+    "title": "Hematological manifestations of copper deficiency: a retrospective review."
+  },
+  "resolved_container": "Eur J Haematol",
+  "resolved_title": "Hematological manifestations of copper deficiency: a retrospective review.",
+  "resolved_year": 2008,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:30Z",
+  "year_delta": 0
+}

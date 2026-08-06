@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { getClinicianQuestions, reviewMeta } from '../../lib/data';
+import { withBase } from '../../lib/paths';
+import Badge from '../../components/Badge.astro';
+
+const questions = getClinicianQuestions();
+const byDomain = new Map<string, typeof questions>();
+for (const q of questions) {
+  const d = q.medical_domain || 'general';
+  const arr = byDomain.get(d) || [];
+  arr.push(q);
+  byDomain.set(d, arr);
+}
+const priorityOrder = { high: 0, medium: 1, low: 2 };
+for (const [k, arr] of byDomain) {
+  arr.sort(
+    (a, b) =>
+      (priorityOrder[a.priority as keyof typeof priorityOrder] ?? 9) -
+      (priorityOrder[b.priority as keyof typeof priorityOrder] ?? 9),
+  );
+  byDomain.set(k, arr);
+}
+---
+
+<BaseLayout
+  title="Questions for clinicians"
+  currentPath="/questions-for-clinicians/"
+  description="Discussion questions for licensed clinicians. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Questions for clinicians</div>
+    <h1>Discussion questions, not orders</h1>
+    <p class="lede">
+      These are research questions for a licensed clinician to accept, modify, or reject. They are not a
+      protocol, not consumer instructions, and not something the patient has been advised to demand.
+    </p>
+    <AnalysisVersionBadge />
+    <div class="callout caution">
+      <strong class="legend-label">Standing statement</strong>
+      <p style="margin: 8px 0 0;">
+        Priority chips mean <strong>research priority</strong>, never clinical urgency. Forbidden phrasings
+        such as “Order this test now”, “You must start”, or “Self-experiment protocol” do not appear as
+        labels or advice.
+      </p>
+    </div>
+    <p>
+      <a href={withBase('/questions-for-clinicians/packet/')}>Printable packet</a>
+      {' · '}
+      <a href={withBase('/questions-for-clinicians/prediction-matrix/')}>Prediction / outcome matrix</a>
+    </p>
+  </section>
+
+  {
+    [...byDomain.entries()].map(([domain, qs]) => (
+      <section class="page-section domain-group" aria-labelledby={`dom-${domain}`}>
+        <h2 class="sec" id={`dom-${domain}`}>
+          {domain.replace(/_/g, ' ')}
+        </h2>
+        {qs.map((q) => {
+          const review = reviewMeta(q.review_status);
+          return (
+            <article class="record kind-research_question" id={q.id}>
+              <div class="record-head">
+                <span class="record-id">{q.id}</span>
+                <span class={`priority-chip ${q.priority}`}>research priority: {q.priority}</span>
+                {q.dont_miss && (
+                  <span class="priority-chip dont-miss">don’t-miss review priority</span>
+                )}
+                <Badge glyph={review.glyph} label={review.label} />
+              </div>
+              <div class="record-body">{q.question}</div>
+              <p class="record-note">
+                <strong>Rationale.</strong> {q.rationale}
+              </p>
+              <p class="record-note mono" style="font-size: 12.5px;">
+                Related claims: {q.related_claim_ids.join(', ') || '—'} · Hypotheses:{' '}
+                {q.related_hypothesis_ids.join(', ') || '—'} · Literature:{' '}
+                {q.literature_refs.map((id, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    <a href={withBase(`/literature/${id}/`)}>{id}</a>
+                  </>
+                ))}
+              </p>
+            </article>
+          );
+        })}
+      </section>
+    ))
+  }
+
+  <section class="page-section" style="padding-bottom: 48px;"></section>
+</BaseLayout>

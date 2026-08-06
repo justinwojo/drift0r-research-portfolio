@@ -1,0 +1,5 @@
+# Crawlers may fetch pages so they can honor HTML robots meta (noindex when set).
+# Indexing policy is controlled by release.yaml:noindex → HTML <meta name="robots">.
+# Do not add Disallow: / here while relying on noindex meta — blocked fetches cannot read it.
+User-agent: *
+Allow: /

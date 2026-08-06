@@ -1,0 +1,28 @@
+---
+import type { SpecialtyChannel } from '../lib/data';
+
+interface Props {
+  channel: SpecialtyChannel;
+}
+const { channel } = Astro.props;
+---
+
+<div class="two-channel" role="group" aria-label={`${channel.pathogen}: specialty LDT versus independent testing`}>
+  <div class="ch-head">{channel.pathogen} — specialty LDT vs independent testing</div>
+  <div class="channels">
+    <div class="channel signal">
+      <div class="ch-label">Signal channel · {channel.signal.label}</div>
+      <div class="ch-result">{channel.signal.result}</div>
+      <div class="ch-note">{channel.signal.note}</div>
+    </div>
+    <div class="channel reference">
+      <div class="ch-label">Reference channel · {channel.reference.label}</div>
+      <div class="ch-result">{channel.reference.result}</div>
+      <div class="ch-note">{channel.reference.note}</div>
+    </div>
+  </div>
+  <div class="verdict" role="status">{channel.verdict}</div>
+  <p class="ch-note" style="padding: 8px 16px 12px; margin: 0; font-family: var(--mono); font-size: 12px;">
+    Related claims: {channel.claim_ids.join(', ')}. Channels cannot be merged into a single positive.
+  </p>
+</div>

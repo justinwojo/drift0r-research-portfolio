@@ -1,0 +1,69 @@
+---
+/**
+ * Prominent analysis version + evidence-current-through badge.
+ * Site is always current best understanding (no historical archive pages).
+ */
+import { getRelease } from '../lib/data';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  /** Compact single-line for print sheets */
+  compact?: boolean;
+  className?: string;
+}
+const { compact = false, className = '' } = Astro.props;
+const release = getRelease();
+const analysisVersion = release.content_version;
+const evidenceThrough = release.evidence_current_through;
+---
+
+{
+  compact ? (
+    <p class={`analysis-version-badge analysis-version-badge--compact mono ${className}`.trim()} role="status">
+      Analysis version <strong>{analysisVersion}</strong>
+      {' · '}
+      evidence current through <strong>{evidenceThrough}</strong>
+      {' · '}
+      <a href={withBase('/changelog/')}>Changelog</a>
+    </p>
+  ) : (
+    <aside
+      class={`analysis-version-badge callout ${className}`.trim()}
+      role="region"
+      aria-label="Analysis version and evidence currency"
+    >
+      <div class="legend-label">Current analysis</div>
+      <p style="margin: 6px 0 0; font-size: 15px; line-height: 1.45;">
+        This site is the <strong>current best understanding</strong> — not a historical archive.
+        <span class="mono" style="display: block; margin-top: 6px;">
+          Analysis version <strong>{analysisVersion}</strong>
+          {' · '}
+          evidence current through <strong>{evidenceThrough}</strong>
+        </span>
+      </p>
+      <p style="margin: 8px 0 0; font-size: 13.5px;">
+        Material changes are recorded on the{' '}
+        <a href={withBase(`/changelog/#${analysisVersion}`)}>changelog</a>
+        {' · '}
+        <a href={withBase('/changelog/')}>all versions</a>
+        . Stable IDs are never reused; retired records stay labelled.
+      </p>
+    </aside>
+  )
+}
+
+<style>
+  .analysis-version-badge--compact {
+    font-size: 12.5px;
+    margin: 0;
+    line-height: 1.35;
+    color: var(--muted, #5a6569);
+  }
+  @media print {
+    .analysis-version-badge--compact {
+      font-size: 9pt !important;
+      margin: 2pt 0 6pt !important;
+      line-height: 1.3 !important;
+    }
+  }
+</style>

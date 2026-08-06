@@ -1,0 +1,27 @@
+{
+  "card_title": "Copper deficiency myelopathy (human swayback)",
+  "card_year": 2006,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "17036563",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0242",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.4065/81.10.1371",
+    "pmid": "17036563",
+    "pubdate": "2006 Oct",
+    "source": "Mayo Clin Proc",
+    "title": "Copper deficiency myelopathy (human swayback)."
+  },
+  "resolved_container": "Mayo Clin Proc",
+  "resolved_title": "Copper deficiency myelopathy (human swayback).",
+  "resolved_year": 2006,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:28Z",
+  "year_delta": 0
+}

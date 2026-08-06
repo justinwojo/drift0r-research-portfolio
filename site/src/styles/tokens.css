@@ -1,0 +1,49 @@
+/* Contour design tokens — M4_DESIGN_SPEC.md §2. Light only (dark deferred P2). */
+:root {
+  --parchment: #f4f1ea;
+  --card: #fbfaf7;
+  --ink: #12202b;
+  --muted: #4c5a63;
+  --hairline: #c9c2b4;
+  --firm: #6e7880;
+  --focus: #0b5fa5;
+  --link: #0b4f73;
+  --support: #14584a;
+  --support-tint: #e4efea;
+  --contra: #8a3b1e;
+  --contra-tint: #f6e7e0;
+  --contested: #54407a;
+  --contested-tint: #ebe6f2;
+
+  /* System stacks as primary; OFL self-hosted fonts are residual work (see asset inventory). */
+  --serif: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --t-xs: 0.6875rem;
+  --t-sm: 0.8125rem;
+  --t-base: 0.9375rem;
+  --t-body: 1.0625rem;
+  --t-lede: 1.15rem;
+  --t-h3: 1.3rem;
+  --t-h2: clamp(1.35rem, 2.6vw, 1.85rem);
+  --t-h1: clamp(1.75rem, 3.6vw, 2.5rem);
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 72px;
+
+  --w-prose: 720px;
+  --w-page: 1180px;
+  --w-wide: 1320px;
+
+  --b-hair: 1px solid var(--hairline);
+  --b-firm: 1px solid var(--firm);
+  --b-strong: 2px solid var(--ink);
+  --b-double: 3px double var(--ink);
+}

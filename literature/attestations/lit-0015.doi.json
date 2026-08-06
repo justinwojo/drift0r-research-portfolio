@@ -1,0 +1,25 @@
+{
+  "card_title": "Executive Summary of the 2023 Adult Position Development Conference of the International Society for Clinical Densitometry: DXA Reporting, Follow-up BMD Testing and Trabecular Bone Score Application and Reporting",
+  "card_year": 2023,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1016/j.jocd.2023.101435",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0015",
+  "manual_override_reason": null,
+  "notes": "Checkpoint J.1: card title corrected to the publication's canonical Crossref/DOI title. Project-friendly densitometry framing retained as scope_note on the card, not as the identity-verified title. Society positions page (iscd.org) remains linked from quality_notes; alias lit-0224 still points at the same work.",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1016/j.jocd.2023.101435",
+    "title": "Executive Summary of the 2023 Adult Position Development Conference of the International Society for Clinical Densitometry: DXA Reporting, Follow-up BMD Testing and Trabecular Bone Score Application and Reporting",
+    "container-title": "Journal of Clinical Densitometry"
+  },
+  "resolved_container": "Journal of Clinical Densitometry",
+  "resolved_title": "Executive Summary of the 2023 Adult Position Development Conference of the International Society for Clinical Densitometry: DXA Reporting, Follow-up BMD Testing and Trabecular Bone Score Application and Reporting",
+  "resolved_year": 2023,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (Checkpoint J.1 lit-0015 canonical title correction)",
+  "verified_at": "2026-08-05T23:00:00Z",
+  "year_delta": 0
+}

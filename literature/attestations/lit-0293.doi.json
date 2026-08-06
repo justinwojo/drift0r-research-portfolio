@@ -1,0 +1,26 @@
+{
+  "card_title": "Mutational Analysis Uncovers Monogenic Bone Disorders in Women with Pregnancy-Associated Osteoporosis: Three Novel Mutations in LRP5, COL1A1, and COL1A2",
+  "card_year": 2018,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1007/s00198-018-4499-4",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0293",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1007/s00198-018-4499-4",
+    "title": "Mutational analysis uncovers monogenic bone disorders in women with pregnancy-associated osteoporosis: three novel mutations in LRP5, COL1A1, and COL1A2",
+    "type": "journal-article",
+    "year": 2018
+  },
+  "resolved_container": "Osteoporosis International",
+  "resolved_title": "Mutational analysis uncovers monogenic bone disorders in women with pregnancy-associated osteoporosis: three novel mutations in LRP5, COL1A1, and COL1A2",
+  "resolved_year": 2018,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:35Z",
+  "year_delta": 0
+}

@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContributionCta from '../../components/ContributionCta.astro';
+import {
+  getLaunchLiterature,
+  litPublicUrl,
+  getLiterature,
+  getSiteMode,
+  literatureApplicabilityApproved,
+  getLitIdentityCoverage,
+  getLitIdentityStatus,
+  litIdentityStatusLabel,
+} from '../../lib/data';
+import { withBase } from '../../lib/paths';
+
+const launch = getLaunchLiterature();
+const all = getLiterature();
+const uniqueCount = new Set(all.map((e) => e.canonical_id || e.id)).size;
+const mode = getSiteMode();
+const identityCoverage = getLitIdentityCoverage();
+
+function topicSlug(t: string): string {
+  return t
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Topic frequency for nav (any topic on a launch card)
+const topics = new Map<string, number>();
+for (const e of launch) {
+  for (const t of e.topics || []) {
+    topics.set(t, (topics.get(t) || 0) + 1);
+  }
+}
+// Nav shows the densest topics; anchors exist for every topic used so badge links resolve
+const topicList = [...topics.entries()].sort((a, b) => b[1] - a[1]);
+const navTopics = topicList.slice(0, 24);
+const allTopicNames = topicList.map(([t]) => t);
+const topicSlugSet = new Set(allTopicNames.map(topicSlug));
+
+// Place each launch card once under its first topic (stable id, no duplicate HTML ids)
+const byTopic = new Map<string, typeof launch>();
+const uncategorized: typeof launch = [];
+const placed = new Set<string>();
+for (const e of launch) {
+  if (placed.has(e.id)) continue;
+  const t = (e.topics && e.topics[0]) || '';
+  if (!t) {
+    uncategorized.push(e);
+    placed.add(e.id);
+    continue;
+  }
+  const arr = byTopic.get(t) || [];
+  arr.push(e);
+  byTopic.set(t, arr);
+  placed.add(e.id);
+}
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="Literature"
+  currentPath="/literature/"
+  description="Launch-critical bibliography with applicability notes. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Literature</div>
+    <h1>Launch-critical bibliography</h1>
+    <p class="lede">
+      Sources cited by working hypotheses and clinician questions (launch subset below —
+      <span class="mono">{launch.length}</span> website routes). Full catalog holds
+      <span class="mono">{all.length}</span> cards (
+      <span class="mono">{uniqueCount}</span> unique works) as data in the public GitHub repository; website detail
+      routes are limited to this launch set so every route has inbound navigation. Paywalled PDFs and local research
+      PDFs are never hosted or linked as files — use DOI or publisher landing pages only.
+    </p>
+    <p class="record-note">
+      Identity coverage (catalog-wide, bibliographic only): verified
+      <span class="mono">{identityCoverage.identity_verified_count}</span> /
+      <span class="mono">{identityCoverage.catalog_card_count}</span> cards; semantic verification
+      <span class="mono">{identityCoverage.semantic_verified_count}</span> (always identity-only — not medical
+      verification). Launch-cited count in coverage:
+      <span class="mono">{identityCoverage.launch_cited_count}</span>.
+    </p>
+    <p class="record-note">
+      Third-party license metadata honesty: about <span class="mono">75%</span> of catalog cards currently
+      record license as <span class="mono">unknown</span> or <span class="mono">all-rights-reserved</span>.
+      This portfolio ships bibliographic metadata and own-words applicability notes only — it does not
+      redistribute paywalled full texts. License fields are incomplete and must not be read as clearance to
+      reuse the underlying works.
+    </p>
+  </section>
+
+  <div class="lit-layout page-section">
+    <nav class="lit-nav" aria-label="Topic entry points">
+      <div class="legend-label">Topics (launch set)</div>
+      <ul>
+        {
+          navTopics.map(([t, n]) => (
+            <li>
+              <a href={`#topic-${topicSlug(t)}`}>
+                {t} <span class="mono">({n})</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      {
+        allTopicNames.map((t) => {
+          const unique = byTopic.get(t) || [];
+          return (
+            <section id={`topic-${topicSlug(t)}`} aria-labelledby={`topic-h-${topicSlug(t)}`}>
+              <h2 class="sec" id={`topic-h-${topicSlug(t)}`}>
+                {t}
+              </h2>
+              {unique.length === 0 ? (
+                <p class="sec-note">
+                  Cards listing this topic as a secondary tag appear under their primary topic section.
+                </p>
+              ) : (
+                unique.map((e) => {
+                  const url = litPublicUrl(e);
+                  const idStatus = getLitIdentityStatus(e.id);
+                  return (
+                    <article class="lit-card" id={e.id}>
+                      <div class="lit-meta">
+                        <a href={withBase(`/literature/${e.id}/`)} class="mono">
+                          {e.id}
+                        </a>
+                        {' · '}
+                        {e.year}
+                        {' · '}
+                        <span class="badge">{e.study_type || 'untyped'}</span>{' '}
+                        <span class="badge">{e.access || 'unknown access'}</span>{' '}
+                        <span class="badge">relevance: {e.relevance || 'n/a'}</span>{' '}
+                        <span class="badge" data-identity-status={idStatus}>
+                          {litIdentityStatusLabel(idStatus)}
+                        </span>
+                      </div>
+                      <h3>
+                        <a href={withBase(`/literature/${e.id}/`)}>{e.title}</a>
+                      </h3>
+                      {
+                        e.scope_note && (
+                          <p style="margin: 0 0 6px; font-size: 13px; color: var(--muted);">
+                            <em>Scope note:</em> {e.scope_note}
+                          </p>
+                        )
+                      }
+                      <p style="margin: 0 0 8px; font-size: 14px; color: var(--muted);">
+                        {(e.authors || []).slice(0, 6).join(', ')}
+                        {(e.authors || []).length > 6 ? ' et al.' : ''}
+                        {e.journal ? ` — ${e.journal}` : ''}
+                      </p>
+                      <div class="badge-row">
+                        {(e.topics || []).slice(0, 4).map((tt) => {
+                          const slug = topicSlug(tt);
+                          return topicSlugSet.has(slug) ? (
+                            <a class="badge" href={`#topic-${slug}`}>
+                              {tt}
+                            </a>
+                          ) : (
+                            <span class="badge">{tt}</span>
+                          );
+                        })}
+                      </div>
+                      {literatureApplicabilityApproved(e.id, mode) && e.quality_notes && (
+                        <p class="record-note">
+                          <strong>Applicability / notes.</strong> {e.quality_notes}
+                        </p>
+                      )}
+                      {literatureApplicabilityApproved(e.id, mode) &&
+                        (e.patient_overlap || []).length > 0 && (
+                          <p class="record-note">
+                            <strong>Record overlap notes (research).</strong>{' '}
+                            {(e.patient_overlap || []).join('; ')}
+                          </p>
+                        )}
+                      <p class="mono" style="font-size: 12.5px; margin-top: 8px;">
+                        {url ? (
+                          <a href={url} rel="noopener noreferrer">
+                            External record (DOI/PubMed/publisher)
+                          </a>
+                        ) : (
+                          <span>No public DOI/PMID URL on card — bibliographic metadata only.</span>
+                        )}
+                        {' · '}
+                        Local PDF: never published
+                      </p>
+                    </article>
+                  );
+                })
+              )}
+            </section>
+          );
+        })
+      }
+
+      {
+        uncategorized.length > 0 && (
+          <section id="topic-uncategorized" aria-labelledby="topic-h-uncategorized">
+            <h2 class="sec" id="topic-h-uncategorized">
+              Uncategorized (launch set)
+            </h2>
+            {uncategorized.map((e) => {
+              const url = litPublicUrl(e);
+              return (
+                <article class="lit-card" id={e.id}>
+                  <div class="lit-meta">
+                    <a href={withBase(`/literature/${e.id}/`)} class="mono">
+                      {e.id}
+                    </a>
+                    {' · '}
+                    {e.year}
+                  </div>
+                  <h3>
+                    <a href={withBase(`/literature/${e.id}/`)}>{e.title}</a>
+                  </h3>
+                  {
+                    e.scope_note && (
+                      <p style="margin: 0 0 6px; font-size: 13px; color: var(--muted);">
+                        <em>Scope note:</em> {e.scope_note}
+                      </p>
+                    )
+                  }
+                  {literatureApplicabilityApproved(e.id, mode) && e.quality_notes && (
+                    <p class="record-note">
+                      <strong>Applicability / notes.</strong> {e.quality_notes}
+                    </p>
+                  )}
+                  {literatureApplicabilityApproved(e.id, mode) &&
+                    (e.patient_overlap || []).length > 0 && (
+                      <p class="record-note">
+                        <strong>Record overlap notes (research).</strong>{' '}
+                        {(e.patient_overlap || []).join('; ')}
+                      </p>
+                    )}
+                  {url && (
+                    <p class="mono" style="font-size: 12.5px;">
+                      <a href={url} rel="noopener noreferrer">
+                        External record
+                      </a>
+                    </p>
+                  )}
+                </article>
+              );
+            })}
+          </section>
+        )
+      }
+    </div>
+  </div>
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <div class="callout">
+      <strong class="legend-label">Publication boundary</strong>
+      <p style="margin: 8px 0 0;">
+        This site does not host paywalled publisher PDFs, local open-access research PDFs, or patient source
+        records. Open-access status is not redistribution permission.
+      </p>
+    </div>
+    <ContributionCta heading="Citation or literature correction?" />
+  </section>
+</BaseLayout>

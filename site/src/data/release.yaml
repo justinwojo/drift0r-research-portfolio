@@ -1,0 +1,51 @@
+# Live release metadata — v0.1.3-rc.9 public research-preview (Checkpoint J.2 / J.2.1).
+# noindex remains true; patient publication approval obtained; clinician review not performed.
+# Permission is not endorsement. Not marked published for indexing/production deploy.
+# Schema: schemas/release.schema.json
+# Site mode: DRIFT0R_SITE_MODE=preview (default) | publication — see site/src/lib/publication.ts
+#
+# base_commit process (non-circular):
+# 1) Land all substantive remediation commits.
+# 2) Record that tip SHA here (last reviewed content commit before this metadata-only update).
+# 3) Commit this release.yaml (+ packet) as a separate provenance commit that must NOT be used as
+#    its own base_commit. Never set base_commit to the hash of the commit that only edits this field.
+content_version: v0.1.3-rc.9
+as_of: "2026-08-05"
+last_reviewed: "2026-08-05"
+# Date through which patient records and literature were considered for this analysis snapshot.
+evidence_current_through: "2026-08-05"
+disclaimer_id: legal-baseline-2026-08
+review_status: release_candidate
+patient_approval:
+  status: obtained
+  scope: >-
+    Broad permission to publish the research project and its analysis in a public GitHub repository
+    and hosted website, including case-related material, identity/handle, sensitive subject areas
+    (including the exact v0.1 mental-health claims CLM-0046/0047/0048 under DEC-0030),
+    persistent searchable publication, social previews, and public contribution surfaces at the
+    repository owner's editorial discretion. Existing do-not-publish privacy exclusions remain in force.
+    Additional mental-health material beyond those three claims remains excluded by default (DEC-0022 residual).
+  date: "2026-08-05"
+  notes: >-
+    Drift0r replied to the owner's publication request: "You're welcome to post. Whatever you see fit."
+    Approval permits publication but does not establish medical accuracy, clinician review, copyright
+    clearance for third-party works, or technical launch readiness, and does not imply endorsement of
+    findings by Drift0r or any clinician. The correspondence screenshot is retained locally and is not
+    committed or published. Public research contributions for v0.1 are tightly gated via structured GitHub
+    issues. Correction/privacy/removal: dedicated GitHub issue template (do not post private medical
+    records). Sensitive consent or withdrawal from Drift0r may continue through existing private
+    correspondence with the repository owner. No published privacy@ email.
+clinician_review_scope:
+  status: not_reviewed
+  domains: []
+  date: null
+  label_must_not_imply_global: true
+# Release content tip (private monorepo) — last substantive Checkpoint J.2.1 follow-up UX commit (not this file).
+# Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
+base_commit: "df2c1929fef1fd51b766054d48865d53cda818b1"
+allowlist_version: "1.9.1"
+noindex: true
+ai_models_disclosed:
+  - Grok (M4 / M4R / E2.x / Checkpoint F / F.1 / F.1.1 / G.1 / G.2 / G.2.1 / G.2.2 / H.1 / I / I.1 / I.1.1 / J.1 prelaunch remediation)
+  - Claude (design package / Round-1 swarm / G audit / H final audit / J go-no-go)
+  - Codex (Checkpoint E / E2 / F dispositions / G.2 independent findings)

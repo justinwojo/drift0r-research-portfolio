@@ -1,0 +1,27 @@
+{
+  "card_title": "Osteoporosis in men: an Endocrine Society clinical practice guideline",
+  "card_year": 2012,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "22675062",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0001",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1210/jc.2011-3045",
+    "pmid": "22675062",
+    "pubdate": "2012 Jun",
+    "source": "J Clin Endocrinol Metab",
+    "title": "Osteoporosis in men: an Endocrine Society clinical practice guideline."
+  },
+  "resolved_container": "J Clin Endocrinol Metab",
+  "resolved_title": "Osteoporosis in men: an Endocrine Society clinical practice guideline.",
+  "resolved_year": 2012,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:37Z",
+  "year_delta": 0
+}

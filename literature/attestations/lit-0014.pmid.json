@@ -1,0 +1,27 @@
+{
+  "card_title": "Rapid recovery of bone mass in hypercalciuric, osteoporotic men treated with hydrochlorothiazide",
+  "card_year": 1999,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "10215562",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0014",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.7326/0003-4819-130-8-199904200-00012",
+    "pmid": "10215562",
+    "pubdate": "1999 Apr 20",
+    "source": "Ann Intern Med",
+    "title": "Rapid recovery of bone mass in hypercalciuric, osteoporotic men treated with hydrochlorothiazide."
+  },
+  "resolved_container": "Ann Intern Med",
+  "resolved_title": "Rapid recovery of bone mass in hypercalciuric, osteoporotic men treated with hydrochlorothiazide.",
+  "resolved_year": 1999,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:25:41Z",
+  "year_delta": 0
+}

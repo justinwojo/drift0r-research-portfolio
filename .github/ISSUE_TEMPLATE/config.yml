@@ -1,0 +1,13 @@
+# Disable free-form blank issues so contributors use the structured templates.
+# This is not a medical-advice discussion surface.
+# Do not create or reference privacy@ email addresses — use issue templates only.
+blank_issues_enabled: false
+contact_links:
+  - name: Correction, privacy, or removal (issue template)
+    url: https://drift0rresearch.org/about/contribute/
+    about: >-
+      Use the GitHub issue template “Correction, privacy, or removal request” from the
+      contribute page or the repository’s New issue chooser. Do not post private medical records.
+  - name: Project legal / disclaimer (site)
+    url: https://drift0rresearch.org/legal/
+    about: Published disclaimer, contribution channels, and withdrawal procedure.

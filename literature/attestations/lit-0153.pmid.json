@@ -1,0 +1,27 @@
+{
+  "card_title": "New insights into the pathogenesis of idiopathic hypercalciuria",
+  "card_year": 2008,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "18359393",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0153",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1016/j.semnephrol.2008.01.005",
+    "pmid": "18359393",
+    "pubdate": "2008 Mar",
+    "source": "Semin Nephrol",
+    "title": "New insights into the pathogenesis of idiopathic hypercalciuria."
+  },
+  "resolved_container": "Semin Nephrol",
+  "resolved_title": "New insights into the pathogenesis of idiopathic hypercalciuria.",
+  "resolved_year": 2008,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:16Z",
+  "year_delta": 0
+}

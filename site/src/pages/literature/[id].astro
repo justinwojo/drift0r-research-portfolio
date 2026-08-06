@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  getLaunchLiterature,
+  litPublicUrl,
+  getHypotheses,
+  getClinicianQuestions,
+  getSiteMode,
+  literatureApplicabilityApproved,
+  getLitIdentityStatus,
+  litIdentityStatusLabel,
+  getLitIdentityCoverage,
+} from '../../lib/data';
+import { withBase } from '../../lib/paths';
+
+/**
+ * Literature card routes — Checkpoint G.2:
+ * Generate detail routes only for the launch-critical set (cited by hypotheses /
+ * clinician questions). Full catalog cards remain in the public repository data
+ * (catalog.yaml + entries/) but are not static website routes — avoids hundreds of
+ * orphan detail pages without inbound navigation.
+ */
+export function getStaticPaths() {
+  return getLaunchLiterature().map((e) => ({ params: { id: e.id } }));
+}
+
+const { id } = Astro.params;
+const entries = getLaunchLiterature();
+const e = entries.find((x) => x.id === id);
+if (!e) {
+  throw new Error(`Unknown launch literature id: ${id}`);
+}
+const url = litPublicUrl(e);
+const citedByH = getHypotheses().filter(
+  (h) =>
+    h.supporting_literature_ids.includes(e.id) || h.contradicting_literature_ids.includes(e.id),
+);
+const citedByQ = getClinicianQuestions().filter((q) => q.literature_refs.includes(e.id));
+const isAlias = e.canonical_id && e.canonical_id !== e.id;
+const mode = getSiteMode();
+const showApplicability = literatureApplicabilityApproved(e.id, mode);
+const identityStatus = getLitIdentityStatus(e.id);
+const identityLabel = litIdentityStatusLabel(identityStatus);
+const coverage = getLitIdentityCoverage();
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  publicationRequiresRouteApproval={false}
+  title={`${e.id} · Literature`}
+  currentPath={`/literature/${e.id}/`}
+  description={`Bibliographic card ${e.id}. Research only — not medical advice.`}
+>
+  <section class="hero">
+    <div class="legend-label">Literature card · launch set</div>
+    <p class="mono" style="margin: 0;">{e.id}{isAlias ? ` · alias of ${e.canonical_id}` : ''}</p>
+    <h1 style="font-size: clamp(1.4rem, 3vw, 2rem); max-width: 36ch;">{e.title}</h1>
+    {
+      e.scope_note && (
+        <p class="lede" style="font-size: 16px; color: var(--muted); max-width: 48ch;">
+          <strong class="legend-label">Project scope note.</strong> {e.scope_note}
+        </p>
+      )
+    }
+    <p class="lede" style="font-size: 17px;">
+      {(e.authors || []).join(', ')} ({e.year}){e.journal ? `. ${e.journal}.` : '.'}
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="badge-row">
+      <span class="badge">study design: {e.study_type || 'untyped'}</span>
+      <span class="badge">access: {e.access || 'unknown'}</span>
+      <span class="badge">license: {e.license || 'unknown'}</span>
+      <span class="badge">relevance: {e.relevance || 'n/a'}</span>
+      <span class="badge" data-identity-status={identityStatus}>{identityLabel}</span>
+    </div>
+    <p class="record-note">
+      Study design and applicability are separate. A rigorous design in an unmatched population is not
+      “strong evidence” for this record.
+    </p>
+    <div class="callout">
+      <strong class="legend-label">Bibliographic identity (not medical verification)</strong>
+      <p style="margin: 8px 0 0;">
+        Status: <span class="mono" data-identity-status={identityStatus}>{identityLabel}</span>.
+        Identifier resolution proves bibliographic identity only; it does not prove that the card
+        summary supports any medical claim, and it is not clinician review.
+        {coverage.semantic_verified_count === 0
+          ? ' Semantic verification count remains 0 for the catalog.'
+          : ''}
+      </p>
+    </div>
+    {
+      showApplicability && e.quality_notes && (
+        <div class="callout">
+          <strong class="legend-label">Applicability / quality notes</strong>
+          <p style="margin: 8px 0 0;">{e.quality_notes}</p>
+        </div>
+      )
+    }
+    {
+      showApplicability && (e.patient_overlap || []).length > 0 && (
+        <p class="record-note">
+          <strong>Record overlap notes (research).</strong> {(e.patient_overlap || []).join('; ')}
+        </p>
+      )
+    }
+    {
+      !showApplicability && mode === 'publication' && (
+        <p class="record-note">
+          Case-applicability notes for this card are withheld until literature applicability is
+          explicitly release-scoped. Bibliographic identity only.
+        </p>
+      )
+    }
+    <p class="mono" style="font-size: 13px;">
+      DOI: {e.doi || '—'} · PMID: {e.pmid || '—'} · PMCID: {e.pmcid || '—'}
+    </p>
+    <p>
+      {
+        url ? (
+          <a href={url} rel="noopener noreferrer">
+            Open external bibliographic record
+          </a>
+        ) : (
+          <span>No external DOI/PMID link available on this card.</span>
+        )
+      }
+    </p>
+    <p class="record-note" style="color: var(--contra); font-weight: 600;">
+      Full text is not hosted here. Local PDFs are not published. Paywalled PDFs are never offered.
+    </p>
+  </section>
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <h2 class="sec">What cites this on the site</h2>
+    {
+      !citedByH.length && !citedByQ.length ? (
+        <p class="sec-note">Not cited by launch hypotheses or clinician questions.</p>
+      ) : (
+        <ul>
+          {citedByH.map((h) => (
+            <li>
+              Hypothesis{' '}
+              <a href={withBase(`/working-model/#${h.id}`)} class="mono">
+                {h.id}
+              </a>
+              {h.supporting_literature_ids.includes(e.id) ? ' (supporting)' : ''}
+              {h.contradicting_literature_ids.includes(e.id) ? ' (contradicting)' : ''}
+            </li>
+          ))}
+          {citedByQ.map((q) => (
+            <li>
+              Question{' '}
+              <a href={withBase(`/questions-for-clinicians/#${q.id}`)} class="mono">
+                {q.id}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p style="margin-top: 16px;">
+      <a href={withBase('/literature/')}>← Back to literature index</a>
+    </p>
+  </section>
+</BaseLayout>

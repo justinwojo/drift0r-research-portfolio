@@ -1,0 +1,23 @@
+{
+  "card_title": "ISCD Official Positions (Adult) \u2014 BMD reporting: T-scores vs Z-scores in men under 50",
+  "card_year": 2023,
+  "comparison_result": "unresolved",
+  "identifier_type": "doi",
+  "identifier_value": "(none)",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0224",
+  "manual_override_reason": null,
+  "notes": "Society positions page; identity is URL-level. No DOI/PMID to attest.",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "reason": "society_positions_page_no_doi_pmid",
+    "url": "https://iscd.org/official-positions-2023/"
+  },
+  "resolved_title": "",
+  "resolved_year": null,
+  "schema_version": "1.0.0",
+  "title_similarity": 0.0,
+  "user_agent": "manual",
+  "verified_at": "2026-08-05T05:30:59Z",
+  "year_delta": null
+}

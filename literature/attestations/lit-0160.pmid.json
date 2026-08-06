@@ -1,0 +1,27 @@
+{
+  "card_title": "Salt and nephrolithiasis",
+  "card_year": 2016,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "25031016",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0160",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1093/ndt/gfu243",
+    "pmid": "25031016",
+    "pubdate": "2016 Jan",
+    "source": "Nephrol Dial Transplant",
+    "title": "Salt and nephrolithiasis."
+  },
+  "resolved_container": "Nephrol Dial Transplant",
+  "resolved_title": "Salt and nephrolithiasis.",
+  "resolved_year": 2016,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:13Z",
+  "year_delta": 0
+}

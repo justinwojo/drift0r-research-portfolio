@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContributionCta from '../../components/ContributionCta.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import { withBase } from '../../lib/paths';
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="How to contribute"
+  currentPath="/about/contribute/"
+  description="Safe, moderated contribution path for literature suggestions and corrections. Not a medical-advice forum."
+>
+  <section class="hero">
+    <div class="legend-label">About · Contributions · v0.1 gated</div>
+    <h1>How to contribute safely</h1>
+    <p class="lede">
+      This research preview accepts a <strong>narrow, moderated</strong> set of public contributions via GitHub
+      issues only. It is <strong>not</strong> a medical-advice discussion board, diagnosis forum, or place to post
+      private health records.
+    </p>
+    <AnalysisVersionBadge />
+    <ContributionCta heading="GitHub contribution path" />
+  </section>
+
+  <section class="page-section wrap-prose">
+    <div class="callout caution">
+      <strong class="legend-label">Safety rules</strong>
+      <p style="margin: 8px 0 0;">
+        Do <strong>not</strong> post private medical records, personal identifiers of third parties, treatment
+        instructions (“start/stop this drug”), or unsupported diagnoses in public issues. Permission from Drift0r to
+        publish this project is <strong>not</strong> endorsement of any finding. Clinician review has not been
+        performed.
+      </p>
+    </div>
+
+    <h2 class="sec">What you may submit</h2>
+    <ul class="notlist">
+      <li>
+        <strong>Literature suggestion</strong>
+        Peer-reviewed or guideline sources with DOI/PMID when available.
+      </li>
+      <li>
+        <strong>Factual or citation correction</strong>
+        Wrong identifier, misquoted figure, broken source trail — cite the claim or card ID.
+      </li>
+      <li>
+        <strong>Contradictory evidence</strong>
+        Published counterevidence to a listed interpretation or hypothesis, with citation.
+      </li>
+      <li>
+        <strong>Alternative hypothesis or research idea</strong>
+        Framed as a research question, not a clinical order or self-treatment plan.
+      </li>
+    </ul>
+
+    <h2 class="sec">Evidence expectations</h2>
+    <p>
+      Prefer stable identifiers (DOI, PMID, PMCID). Summarize applicability in your own words; do not paste large
+      copyrighted full texts. Note limitations and counterevidence when known. Multi-model AI agreement is not
+      clinical validation.
+    </p>
+
+    <h2 class="sec">Correction, privacy, or removal</h2>
+    <p>
+      Material corrections are logged and shown on affected records and the changelog rather than applied silently.
+      See the repository <span class="mono">CONTRIBUTING.md</span> and corrections policy for the full process.
+    </p>
+    <p>
+      For a <strong>factual correction about the patient</strong>, a <strong>privacy concern</strong>, or a
+      request to <strong>correct or remove published material</strong>, use the dedicated GitHub issue template
+      <strong>Correction, privacy, or removal request</strong> (linked first in the contribution path above when
+      the public repository URL is configured). A GitHub account is required.
+    </p>
+    <div class="callout caution">
+      <strong class="legend-label">Do not post private medical information</strong>
+      <p style="margin: 8px 0 0;">
+        Do <strong>not</strong> attach lab PDFs, imaging, clinic notes, or other private records. Do not paste
+        private identifiers. Quote only what is already on the public site or repository, or describe the issue
+        in general terms. This is a public issue surface.
+      </p>
+    </div>
+    <p>
+      Sensitive <strong>consent or withdrawal of publication consent</strong> from Drift0r may continue through
+      the <strong>existing private correspondence channel</strong> with the repository owner — not via a public
+      email address on this site, and not by pasting private records into GitHub.
+    </p>
+
+    <h2 class="sec">Where to open issues</h2>
+    <p>
+      Use the GitHub contribution path above (or the same links in the site footer). A GitHub account is required.
+      Issue templates cover:
+    </p>
+    <ol>
+      <li>
+        <strong>Correction, privacy, or removal request</strong> (dedicated template — preferred for privacy/removal)
+      </li>
+      <li>Literature suggestion</li>
+      <li>Factual / citation correction (research content)</li>
+      <li>Contradictory evidence</li>
+      <li>Alternative hypothesis or research idea</li>
+    </ol>
+    <p class="record-note">
+      Contributions are reviewed before they affect published research. There is no on-site comment form,
+      unmoderated discussion thread, or published privacy@ email address.
+    </p>
+    <p class="record-note">
+      Unmoderated medical-advice threads, diagnosis arguments, and treatment instructions are out of scope and will
+      be closed.
+    </p>
+    <p>
+      <a href={withBase('/legal/')}>Legal / disclaimer</a>
+      {' · '}
+      <a href={withBase('/changelog/')}>Changelog</a>
+      {' · '}
+      <a href={withBase('/methods/')}>Methods</a>
+    </p>
+  </section>
+  <div style="padding-bottom: 48px;"></div>
+</BaseLayout>

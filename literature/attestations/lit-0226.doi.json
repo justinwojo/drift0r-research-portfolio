@@ -1,0 +1,26 @@
+{
+  "card_title": "Medical Management of Kidney Stones: AUA Guideline",
+  "card_year": 2014,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1016/j.juro.2014.05.006",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0226",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1016/j.juro.2014.05.006",
+    "title": "Medical Management of Kidney Stones: AUA Guideline",
+    "type": "journal-article",
+    "year": 2014
+  },
+  "resolved_container": "Journal of Urology",
+  "resolved_title": "Medical Management of Kidney Stones: AUA Guideline",
+  "resolved_year": 2014,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:25Z",
+  "year_delta": 0
+}

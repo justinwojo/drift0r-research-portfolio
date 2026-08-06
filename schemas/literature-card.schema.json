@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/literature-card.schema.json",
+  "title": "Drift0rLiteratureCard",
+  "description": "Bibliographic literature card frontmatter contract.",
+  "type": "object",
+  "required": ["id", "title"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^lit-[0-9]{4}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical publication title (registry / DOI title). Not a project-authored label."
+    },
+    "scope_note": {
+      "type": "string",
+      "description": "Optional project-friendly scope or subtitle. Must not replace title as the identity-verified bibliographic title."
+    },
+    "authors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "year": {
+      "type": ["integer", "string"]
+    },
+    "journal": { "type": "string" },
+    "doi": { "type": "string" },
+    "pmid": { "type": ["string", "integer"] },
+    "pmcid": { "type": "string" },
+    "url": { "type": "string" },
+    "access": {
+      "type": "string",
+      "enum": ["open", "abstract-only", "paywalled"]
+    },
+    "license": { "type": "string" },
+    "topics": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "relevance": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "study_type": {
+      "type": "string",
+      "enum": [
+        "review",
+        "rct",
+        "cohort",
+        "case-report",
+        "case-series",
+        "guideline",
+        "basic-science",
+        "meta-analysis",
+        "observational",
+        "other"
+      ]
+    },
+    "supports": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "contradicts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "patient_overlap": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "quality_notes": { "type": "string" },
+    "local_pdf": { "type": "string" },
+    "canonical_id": { "type": "string" },
+    "alias_of": { "type": "string" },
+    "aliased_by": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "duplicate_reason": { "type": "string" },
+    "_file": { "type": "string" }
+  }
+}

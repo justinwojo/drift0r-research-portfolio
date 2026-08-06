@@ -1,0 +1,39 @@
+---
+import { MASTHEAD_NAME, PRIMARY_NAV } from '../lib/constants';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '/' } = Astro.props;
+
+function isCurrent(href: string): boolean {
+  if (href === '/') return currentPath === '/' || currentPath === '';
+  return currentPath === href || currentPath.startsWith(href);
+}
+---
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href={withBase('/')}>
+      <span class="mark" aria-hidden="true">RE</span>
+      <span>{MASTHEAD_NAME}</span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        {
+          PRIMARY_NAV.map((item) => (
+            <li>
+              <a
+                href={withBase(item.href)}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

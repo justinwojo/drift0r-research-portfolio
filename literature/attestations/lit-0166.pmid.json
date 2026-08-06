@@ -1,0 +1,27 @@
+{
+  "card_title": "The natural history of spondylolysis and spondylolisthesis: 45-year follow-up evaluation",
+  "card_year": 2003,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "12768144",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0166",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1097/01.BRS.0000061992.98108.A0",
+    "pmid": "12768144",
+    "pubdate": "2003 May 15",
+    "source": "Spine (Phila Pa 1976)",
+    "title": "The natural history of spondylolysis and spondylolisthesis: 45-year follow-up evaluation."
+  },
+  "resolved_container": "Spine (Phila Pa 1976)",
+  "resolved_title": "The natural history of spondylolysis and spondylolisthesis: 45-year follow-up evaluation.",
+  "resolved_year": 2003,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T05:26:16Z",
+  "year_delta": 0
+}

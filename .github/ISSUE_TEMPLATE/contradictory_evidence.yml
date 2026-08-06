@@ -1,0 +1,41 @@
+name: Contradictory evidence
+description: Point to published evidence that challenges a listed interpretation or hypothesis.
+title: "[counterevidence] "
+labels: ["counterevidence", "literature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.** Permission is not endorsement. Clinician review has not been performed.
+
+        Frame this as **published evidence**, not personal diagnosis or treatment advice.
+  - type: input
+    id: target
+    attributes:
+      label: Target claim / hypothesis / card ID
+      description: e.g. H4, CLM-0037, lit-0049
+    validations:
+      required: true
+  - type: input
+    id: citation
+    attributes:
+      label: Counterevidence citation (DOI/PMID preferred)
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: How this evidence contradicts or limits the current wording
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limits of the counterevidence itself
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I am not posting private medical records, personal identifiers, treatment instructions, or a personal medical-advice request.
+          required: true

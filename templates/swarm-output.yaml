@@ -1,0 +1,35 @@
+# Multi-agent differential output schema
+# Not medical advice. For clinician discussion only.
+
+meta:
+  agent: ""            # grok | claude | codex | synthesis
+  model: ""
+  date: ""
+  evidence_pack_version: "v1"
+  literature_catalog_version: ""
+
+hypotheses:
+  - id: H1
+    name: ""
+    probability_bucket: medium   # high | medium | low | speculative
+    single_vs_stack: single      # single | multi-disease-stack
+    explains: []
+    fails_to_explain: []
+    predicted_positive_tests: []
+    predicted_negative_tests: []
+    dangerous_if_missed: false
+    nearest_literature: []       # lit-ids
+    notes: ""
+
+dont_miss:
+  - condition: ""
+    why: ""
+    next_test: ""
+
+test_matrix_top10:
+  - test: ""
+    rationale: ""
+    related_hypotheses: []
+
+confidence_notes: ""
+disagreements: ""

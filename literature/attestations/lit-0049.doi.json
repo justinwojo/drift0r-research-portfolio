@@ -1,0 +1,26 @@
+{
+  "card_title": "Characterization of human immunoglobulin (Ig) isotype and IgG subclass response to Bartonella henselae infection",
+  "card_year": 1998,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1128/IAI.66.12.5915-5920.1998",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0049",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1128/iai.66.12.5915-5920.1998",
+    "title": "Characterization of Human Immunoglobulin (Ig) Isotype and IgG Subclass Response to\n            <i>Bartonella henselae</i>\n            Infection",
+    "type": "journal-article",
+    "year": 1998
+  },
+  "resolved_container": "Infection and Immunity",
+  "resolved_title": "Characterization of Human Immunoglobulin (Ig) Isotype and IgG Subclass Response to\n            <i>Bartonella henselae</i>\n            Infection",
+  "resolved_year": 1998,
+  "schema_version": "1.0.0",
+  "title_similarity": 0.9821,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:22:02Z",
+  "year_delta": 0
+}

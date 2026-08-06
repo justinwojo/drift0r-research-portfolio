@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
+import { getRelease } from '../lib/data';
+import { withBase } from '../lib/paths';
+
+const release = getRelease();
+---
+
+<BaseLayout
+  publicationRequiresApprovedClaims={false}
+  title="Methods"
+  currentPath="/methods/"
+  description="How this research portfolio was produced and what the process cannot do."
+>
+  <section class="hero">
+    <div class="legend-label">Methods</div>
+    <h1>How this was produced</h1>
+    <p class="lede">
+      This page describes a research method. It does not sell a product, brand a model family as medical
+      authority, or claim that agreement between models is clinical validation.
+    </p>
+    <AnalysisVersionBadge />
+    <div class="callout caution">
+      <strong class="legend-label">Primary-record limit</strong>
+      <p style="margin: 8px 0 0;">
+        No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by
+        this project.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section wrap-prose">
+    <h2 class="sec">Analysis versioning</h2>
+    <p>
+      The live site is the <strong>current best understanding</strong>. Analysis version{' '}
+      <span class="mono">{release.content_version}</span> is current through evidence dated{' '}
+      <span class="mono">{release.evidence_current_through}</span>. Material changes are summarized on the{' '}
+      <a href={withBase('/changelog/')}>changelog</a> under added evidence, changed interpretations, hypothesis
+      strength changes, retired/superseded findings, and corrections. Stable IDs are never reused. See repository{' '}
+      <span class="mono">governance/RELEASE_VERSIONING.md</span> for patch/minor/major policy and the expectation that
+      public releases receive an annotated Git tag and GitHub Release. Rendered historical archives such as{' '}
+      <span class="mono">/releases/v0.1/</span> are intentionally not built in v0.1.
+    </p>
+  </section>
+
+  <section class="page-section wrap-prose">
+    <h2 class="sec">Evidence model</h2>
+    <p>
+      Material statements are typed as <span class="mono">observed_fact</span>,
+      <span class="mono">reported_history</span>, <span class="mono">interpretation</span>,
+      <span class="mono">hypothesis</span>, or <span class="mono">research_question</span>, with a
+      verification status. Public wording is constrained by an audited language guide. This research preview
+      loads the public claim inventory (approved A/B/C claims with accurate verification status displayed).
+      Site mode <span class="mono">DRIFT0R_SITE_MODE</span> is <span class="mono">preview</span> by default;
+      <span class="mono">publication</span> mode includes only <span class="mono">public_approved===true</span>
+      claims and explicitly release-scoped hypotheses, questions, and routes.
+    </p>
+    <p>
+      Every patient source carries a <span class="mono">source_class</span> (for example patient-compiled
+      summary, video statement). Specialty PDF summaries are never labeled as clinician documents or primary
+      instrument records solely because the prose sounds clinical. Original source PDFs are not redistributed
+      by this repository; see the external patient-hosted source folder link below.
+    </p>
+
+    <h2 class="sec">AI workflow</h2>
+    <p>
+      Round-1 analysis (2026-08-05) used independent model families for primary analyses and adversarial
+      critique, then a synthesis chair. Publication-readiness milestones (M0–M3) audited claims,
+      literature, and governance. M4 implements this static site from structured records.
+    </p>
+    <p class="record-note">
+      Disclosed roles for this content version: {(release.ai_models_disclosed || []).join('; ')}.
+    </p>
+    <div class="callout caution">
+      <strong class="legend-label">Hard limit</strong>
+      <p style="margin: 8px 0 0;">
+        Multi-model agreement is <strong>not</strong> clinical validation. Models can be wrong and can
+        agree on errors. No AI system is listed as a clinician, investigator, or medical reviewer.
+      </p>
+    </div>
+
+    <h2 class="sec">Adversarial rounds</h2>
+    <p>
+      Adversarial passes were instructed to seek overstatement, missing counterevidence, and provenance
+      gaps. Adversarial AI review does not replace patient review or licensed clinician review.
+    </p>
+
+    <h2 class="sec">What this process cannot do</h2>
+    <ul class="notlist">
+      <li>
+        <strong>Cannot diagnose or prescribe</strong>
+        Licensed clinicians interpret records and decide care.
+      </li>
+      <li>
+        <strong>Cannot invent missing records</strong>
+        Open questions stay open when primary instrument reports are absent.
+      </li>
+      <li>
+        <strong>Cannot upgrade evidence by consensus</strong>
+        Agreement among models does not change verification status.
+      </li>
+      <li>
+        <strong>Cannot publish excluded files</strong>
+        Local papers, raw community dumps, and patient source PDFs stay off the artifact.
+      </li>
+    </ul>
+
+    <h2 class="sec">Search and literature limits</h2>
+    <p>
+      Targeted specialty passes used a research cutoff of 2026-08-05. Literature cards may be abstract-only;
+      access and license fields are recorded. Duplicate DOI/PMID records are aliased, not deleted.
+    </p>
+
+    <h2 class="sec">Patient-hosted source documents</h2>
+    <p>
+      A Google Drive folder linked below is publicly/anonymously accessible and is under Drift0r’s external
+      control. Drift0r granted broad publish permission for this research portfolio; the owner continues linking
+      the folder for provenance. This repository does not claim independent documentary proof of the original
+      intent to publish the folder beyond its present accessibility and that permission. Source medical materials
+      are not copied into this public repository or the static site artifact.
+    </p>
+    <ul class="notlist">
+      <li>
+        <strong>Anonymously accessible / world-readable when the patient elects that.</strong> Access control is
+        controlled by Drift0r, not by this site.
+      </li>
+      <li>
+        <strong>Externally controlled by Drift0r.</strong> Contents may change, be restricted, or be removed without
+        notice; this site does not mirror them.
+      </li>
+      <li>
+        <strong>May include sensitive records</strong>, including mental-health specialty summaries and other
+        medical documents. Treat any externally viewed document as private medical information.
+      </li>
+      <li>
+        <strong>This site does not redistribute PDFs.</strong> No original patient source PDFs are shipped in the
+        repository or the static build.
+      </li>
+      <li>
+        <strong>Permission is not endorsement.</strong> Patient permission to publish this research portfolio does not
+        endorse folder contents, any finding, or any clinical action. Clinician review has not been performed.
+      </li>
+    </ul>
+    <p>
+      <a
+        href="https://drive.google.com/drive/folders/1z_juK9yVdhbzaGJafzzZYZWe3U1cs37e"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Patient-hosted source folder (external Google Drive)
+      </a>
+    </p>
+    <p class="record-note">
+      This repository describes and cites those materials; it does not rehost original PDFs. Patient permission
+      for publication was obtained; clinician review has not been performed. Licensed clinicians must verify
+      underlying records. Do not start, stop, or change treatment based on this site.
+    </p>
+
+    <h2 class="sec">Creator and independence</h2>
+    <p>
+      Created and maintained by <strong>Justin Wojciechowski</strong> (
+      <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
+      ). Independent community research project. Justin is not a clinician. Not operated by, affiliated with, or
+      endorsed by Drift0r. Published with Drift0r’s permission; permission is not endorsement. No financial
+      relationship with or compensation from Drift0r. Full statement:{' '}
+      <a href={withBase('/about/')}>About</a>.
+    </p>
+
+    <h2 class="sec">Corrections and contact</h2>
+    <p>
+      Material corrections are logged and shown on affected records and in the changelog. Historical swarm
+      outputs are not silently rewritten. Correction, privacy, or removal requests use a dedicated GitHub issue
+      template (see <a href={withBase('/about/contribute/')}>How to contribute</a>) — do not post private medical
+      records. Sensitive consent or withdrawal from Drift0r may continue through the existing private
+      correspondence channel with the repository owner. There is no published privacy@ email address.
+    </p>
+
+    <h2 class="sec">Models disclosed</h2>
+    <p>
+      Research assistance for this portfolio has used <strong>Grok</strong>, <strong>Claude</strong>, and
+      <strong>Codex</strong> (among other tools). Multi-model agreement is not clinical validation. See the legal
+      page for the release-specific model list.
+    </p>
+  </section>
+  <div style="padding-bottom: 48px;"></div>
+</BaseLayout>

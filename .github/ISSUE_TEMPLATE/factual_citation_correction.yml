@@ -1,0 +1,43 @@
+name: Factual / citation correction
+description: Report a factual error, wrong identifier, or broken source trail.
+title: "[correction] "
+labels: ["correction", "citation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.** Material corrections are logged; they are not silent rewrites.
+
+        **Do not** attach private medical records or post personal identifiers.
+  - type: input
+    id: record_id
+    attributes:
+      label: Record ID (if known)
+      description: e.g. CLM-0003, lit-0015, H4, CQ-001
+      placeholder: CLM-
+  - type: textarea
+    id: current
+    attributes:
+      label: What the site currently says (quote or paraphrase)
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed correction
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / citation for the correction
+      description: DOI/PMID, page/figure, or official source URL
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I am not posting private medical records, personal identifiers, treatment instructions, or a personal medical-advice request.
+          required: true

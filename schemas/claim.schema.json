@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drift0r.local/schemas/claim.schema.json",
+  "title": "Drift0rClaim",
+  "description": "Launch-critical or archived patient/research claim with provenance. Research only; not medical advice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "statement",
+    "kind",
+    "verification_status",
+    "public_priority",
+    "public_approved",
+    "clinician_review_status",
+    "last_checked"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CLM-[0-9]{4}$"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "observed_fact",
+        "reported_history",
+        "interpretation",
+        "hypothesis",
+        "research_question"
+      ]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "partially_verified",
+        "contested",
+        "not_verified",
+        "unsupported"
+      ]
+    },
+    "medical_domain": {
+      "type": "string"
+    },
+    "patient_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/patientSource" }
+    },
+    "literature_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^lit-[0-9]{4}$"
+      }
+    },
+    "interpretation_owner": {
+      "type": "string"
+    },
+    "public_priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"]
+    },
+    "public_tier": {
+      "type": "string",
+      "enum": ["A", "B", "C", "do_not_publish"]
+    },
+    "triage": {
+      "type": "string",
+      "enum": ["Tier A", "Tier B", "Tier C", "Do not publish"]
+    },
+    "public_approved": {
+      "type": "boolean"
+    },
+    "clinician_review_status": {
+      "type": "string",
+      "enum": [
+        "not_reviewed",
+        "source_audited",
+        "patient_reviewed",
+        "clinician_reviewed",
+        "rejected"
+      ]
+    },
+    "last_checked": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["active", "retired", "superseded"],
+      "description": "Default active when omitted. Retired/superseded IDs remain traceable and are never reused."
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "pattern": "^CLM-[0-9]{4}$",
+      "description": "Replacement claim ID when lifecycle_status is superseded."
+    },
+    "supersedes": {
+      "type": ["string", "null"],
+      "pattern": "^CLM-[0-9]{4}$",
+      "description": "Prior claim ID this record replaces (optional forward pointer)."
+    },
+    "changelog_entry": {
+      "type": ["string", "null"],
+      "description": "Analysis version anchor for the material change (e.g. v0.1.3-rc.6)."
+    }
+  },
+  "$defs": {
+    "patientSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "path", "source_class"],
+      "properties": {
+        "source_id": { "type": "string" },
+        "path": { "type": "string" },
+        "source_class": {
+          "type": "string",
+          "description": "Independent of verification_status. Never infer clinician_document from prose tone.",
+          "enum": [
+            "primary_instrument_record",
+            "clinician_document",
+            "patient_compiled_summary",
+            "patient_reported_narrative",
+            "video_statement",
+            "unknown"
+          ]
+        },
+        "is_transcription": { "type": "boolean" },
+        "page_or_lines": { "type": "string" },
+        "record_date": { "type": "string" },
+        "public_allowed": { "type": "boolean" }
+      }
+    }
+  }
+}

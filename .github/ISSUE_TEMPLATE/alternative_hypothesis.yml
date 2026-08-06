@@ -1,0 +1,45 @@
+name: Alternative hypothesis or research idea
+description: Propose an alternative research framing (not a clinical order).
+title: "[hypothesis] "
+labels: ["hypothesis", "research-idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.** Do **not** write treatment protocols, dosing, or “order this test now” language.
+
+        Frame a **research hypothesis or open question**. Clinician review has not been performed; permission is not endorsement.
+  - type: input
+    id: short_title
+    attributes:
+      label: Short title for the idea
+    validations:
+      required: true
+  - type: textarea
+    id: statement
+    attributes:
+      label: Research statement (hypothesis or question)
+      description: Use tentative language. Not a diagnosis.
+    validations:
+      required: true
+  - type: textarea
+    id: supports
+    attributes:
+      label: What public evidence would support it
+  - type: textarea
+    id: fails
+    attributes:
+      label: What it would fail to explain / counterevidence
+  - type: textarea
+    id: citations
+    attributes:
+      label: Key citations (DOI/PMID if available)
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: This is not personal medical advice, a treatment instruction, or an unsupported diagnosis stated as clinical fact.
+          required: true
+        - label: I am not posting private medical records or personal identifiers.
+          required: true

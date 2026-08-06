@@ -1,0 +1,28 @@
+{
+  "card_title": "Thiamine deficiency disorders: diagnosis, prevalence, and a roadmap for global control programs",
+  "card_year": 2018,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC6392124",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0021",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.1111/nyas.13919",
+    "pmcid": "PMC6392124",
+    "pmid": "30151974",
+    "source": "Ann N Y Acad Sci",
+    "title": "Thiamine deficiency disorders: diagnosis, prevalence, and a roadmap for global control programs.",
+    "year": 2018
+  },
+  "resolved_container": "Ann N Y Acad Sci",
+  "resolved_title": "Thiamine deficiency disorders: diagnosis, prevalence, and a roadmap for global control programs.",
+  "resolved_year": 2018,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-05T20:21:56Z",
+  "year_delta": 0
+}

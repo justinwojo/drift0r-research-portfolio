@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContributionCta from '../components/ContributionCta.astro';
+import { withBase } from '../lib/paths';
+---
+
+<BaseLayout
+  title="How this could be wrong"
+  currentPath="/how-this-could-be-wrong/"
+  description="Project-level failure modes for this research portfolio. Research only — not medical advice."
+>
+  <section class="hero">
+    <div class="legend-label">Epistemic limits</div>
+    <h1>How this could be wrong</h1>
+    <p class="lede">
+      Per-hypothesis “what would change this” lists exist on the working model. This page states how the
+      <em>whole approach</em> can fail. It is not a disclaimer substitute and not a diagnosis of error.
+    </p>
+  </section>
+
+  <section class="page-section wrap-prose">
+    <div class="callout caution">
+      <strong class="legend-label">Primary-record limit</strong>
+      <p style="margin: 8px 0 0;">
+        No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by
+        this project. Nearly every numeric and interpretive claim rests on patient-compiled specialty summaries,
+        an evidence pack, and a video transcript.
+      </p>
+    </div>
+
+    <h2 class="sec">1. Transcription error</h2>
+    <p>
+      Specialty summaries and pack tables can mis-copy values, dates, units, or assay names from the
+      underlying reports. Known surface conflicts (for example forearm T-score and lumbar anchors that
+      differ between video and compiled summary) show that the present record is not self-consistent at
+      every cell. If a key number is wrong, hypotheses that depend on it are wrong even when the reasoning
+      is careful.
+    </p>
+
+    <h2 class="sec">2. Missing primary records</h2>
+    <p>
+      Without facility DXA printouts and LSC/precision data, longitudinal BMD comparisons across scanners
+      or sites cannot be treated as reliable improvement or decline. Without method and limit-of-detection
+      detail for assays such as KIT, “negative” results cannot be graded. Missing formation markers leave
+      turnover classification open. Absence of a record is not evidence for or against a disease.
+    </p>
+
+    <h2 class="sec">3. Shared model scaffolding</h2>
+    <p>
+      Round-1 analyses used independent model families, but they shared the same compiled inputs, claim
+      inventory, and research questions. Agreement under shared scaffolding is not independent clinical
+      validation. Models can be wrong and can agree on errors. Multi-model “agreement” language on this
+      site means cross-checking under shared inputs, not voting and not medical authority.
+    </p>
+
+    <h2 class="sec">4. Literature-summary error</h2>
+    <p>
+      Cards may be abstract-only. Identifier resolution (DOI/PMID) is not proof that a card’s summary
+      accurately represents the paper. Applicability to this case can be overstated. A corrected or
+      mismatched identifier can silently remove the intended support for a claim.
+    </p>
+
+    <h2 class="sec">4b. Published errata and post-publication updates</h2>
+    <p>
+      Cited works can later carry corrigenda, expressions of concern, or retractions that this portfolio
+      has not yet reflected. Identity verification does not track the full post-publication amendment
+      record. Known published corrigenda at launch (check the publisher record for any card you rely on):
+    </p>
+    <ul>
+      <li>
+        <span class="mono">lit-0015</span> — Shuhart et al. 2023 ISCD Adult PDC executive summary (J Clin Densitom)
+        (J Clin Densitom 2025; doi <span class="mono">10.1016/j.jocd.2024.101548</span>, PMID 39706737).
+      </li>
+      <li>
+        <span class="mono">lit-0057</span> — IDSA 2020 babesiosis guideline (PMID 33252652)
+        (Clin Infect Dis 2021; doi <span class="mono">10.1093/cid/ciab275</span>, Erratum PMID 33960362).
+      </li>
+      <li>
+        <span class="mono">lit-0205</span> — Perez et al. 2017 Specific Antibody Deficiency
+        (PMID 28588580) (Front Immunol 2018; doi <span class="mono">10.3389/fimmu.2018.00450</span>,
+        Erratum PMID 29576764).
+      </li>
+    </ul>
+
+    <h2 class="sec">5. Anchoring bias</h2>
+    <p>
+      A ranked differential and a polished evidence atlas can narrow a clinician’s search—the same failure
+      mode that can delay recognition of ordinary or modular explanations. That is why the clinician
+      handout leads with gaps and open questions before ranked hypotheses, and why the atlas ends in open
+      questions rather than a diagnosis band.
+    </p>
+
+    <h2 class="sec">6. Selection bias</h2>
+    <p>
+      The public corpus was assembled for research packaging. Tests that were ordered, summarized, or
+      highlighted may over-represent certain domains; unperformed or unsummarized work is invisible. Topic
+      literature search was targeted, not an exhaustive systematic review of every specialty.
+    </p>
+
+    <h2 class="sec">7. Coexisting common processes</h2>
+    <p>
+      Several common or semi-independent processes may coexist without a single rare unifier. The null
+      model <span class="mono">H-NULL</span> on the
+      <a href={withBase('/working-model/')}>working model</a> exists for that baseline honesty. Preferring
+      an elegant stack can under-weight ordinary multi-morbidity.
+    </p>
+
+    <h2 class="sec">What still helps</h2>
+    <p>
+      Structured claim types, source-class badges, two-channel specialty testing, open-question registers,
+      and pre-registered qualitative outcomes for clinician questions reduce—but do not eliminate—these
+      risks. A licensed clinician must verify underlying records.
+    </p>
+    <p>
+      Related surfaces: <a href={withBase('/methods/')}>Methods</a> ·
+      <a href={withBase('/for-clinicians/')}>For clinicians</a> ·
+      <a href={withBase('/questions-for-clinicians/prediction-matrix/')}>Prediction / outcome matrix</a>
+    </p>
+    <ContributionCta heading="Found an error or counterevidence?" />
+  </section>
+  <div style="padding-bottom: 48px;"></div>
+</BaseLayout>

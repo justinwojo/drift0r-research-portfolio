@@ -10,13 +10,14 @@
 | Research / implementation | Grok (xAI) | Primary execution agent for publication-readiness roadmap |
 | Independent analysis (Round 1) | Claude, Codex, Grok | 2026-08-05 swarm |
 | Adversarial critique (Round 1) | Claude, Codex, Grok | Same date |
-| Planned independent review | Codex | Checkpoint reviews |
+| Adversarial multi-model audit (overnight) | Claude, Grok, Codex | 2026-08-06 private research run; cross-model attack, citation fidelity, and remediation planning |
+| Remediation implementation | Grok (xAI) | Applied COR-0022…COR-0032 from verified primary-source defects (working tree; not a clinical review) |
 
-Exact model build numbers for Round 1 were not always recorded beyond agent family names and dates.
-A detailed private run log may exist at `audits/2026-08-publication-readiness/00_RUN.md` in the
-**private monorepo** only; that file is **not** part of the sanitized public export. Public
-disclosure is limited to agent families, dates, and the methods statements on this page and
-`/methods/`.
+Exact model build numbers for Round 1 and the 2026-08-06 run were not always recorded beyond agent family names and dates.
+A detailed private run log may exist at `audits/2026-08-publication-readiness/00_RUN.md` and under
+`private/research-runs/2026-08-06-overnight/` in the **private monorepo** only; those files are **not**
+part of the sanitized public export. Public disclosure is limited to agent families, dates, and the
+methods statements on this page and `/methods/`.
 
 ## What AI may do
 

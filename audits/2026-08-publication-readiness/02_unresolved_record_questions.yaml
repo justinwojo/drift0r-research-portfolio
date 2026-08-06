@@ -125,7 +125,7 @@ questions:
       What is the facility-authored precision assessment document supporting LSC = 0.027 g/cm²
       (total hip) and 0.022 g/cm² (L3–L4 subregion), including software version?
     why_it_matters: Independent audit of "real loss" claim beyond patient-compiled footnote.
-    related_claims: [CLM-0006]
+    related_claims: [CLM-0006, CLM-0077]
     related_corrections: [COR-0001]
     closest_available_record: Bone density summary LSC footnotes.
     status: open

@@ -92,7 +92,7 @@ Full rationale: synthesis §5 · one-pager: [`04_clinician_onepager.md`](swarm-r
 | Bartonella IgM +→indet (T049) | Bartonella PCR/FISH **negative** (T050) |
 | — | Lyme multi-method **negative** |
 
-Confirmed/objective examples: extreme DXA phenotype, serial 24h urine calcium values (see CLM-0015 thresholds), historical T~34, thiamine 7 nmol/L with response, HαT genotype, IgG subclass/titer pattern, structural spine disease.
+Confirmed/objective examples: extreme DXA phenotype, serial 24h urine calcium values (see CLM-0015 thresholds), historical T~34, thiamine 7 nmol/L with response, IgG subclass/titer pattern, structural spine disease. Reported (not genotype-confirmed in public pack): HαT positive narrative only — no TPSAB1 CNV instrument report (CLM-0031; UQ-0014).
 
 ---
 

@@ -37,7 +37,7 @@ Print/PDF and social previews must retain a research-only label.
 | osteoporosis (unqualified, male <50) | markedly low BMD for age; report Z-scores; WHO T-score thresholds only if labeled scanner/summary language | ISCD-aligned caution |
 | fragility fracture (pars) | imaging-documented pars defects/fractures; formal fragility-fracture criterion **not adjudicated in public pack** | UQ-0006 |
 | dry beriberi confirmed | documented thiamine deficiency with neuropathy phenotype; dry-beriberi used as interpretive label unless clinician diagnosis recovered | COR-0012 |
-| gene panel high yield | modest pathogenic yield in related cohorts (~single-digit to low-teens %); high VUS rate | COR-0009 |
+| gene panel high yield | modest pathogenic yield in related cohorts (~single-digit to low-teens %); VUS may be returned and can complicate interpretation — do **not** claim a high VUS rate without a sourced numerator/denominator | COR-0009 (yield retained); COR-0030 supersedes COR-0009’s VUS-frequency clause |
 | multi-model agreement proves X | multi-model research agreement is **not** clinical validation | Evidence rule §3.1.5 |
 | treatment response proves cause | patient-reported or observed improvement; does **not** establish etiology | DEC-0014 |
 | always / never (medical) | on the available record / not supported in the available record | Prefer bounded claims |

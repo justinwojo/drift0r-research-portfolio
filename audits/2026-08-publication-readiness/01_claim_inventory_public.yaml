@@ -8,23 +8,23 @@ meta:
   inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
   release_content_commit_ref: site/src/data/release.yaml#base_commit
   evidence_pack_version: v1+v2
-  purpose: Public research-preview claim inventory (74 approved A/B/C rows; do_not_publish omitted)
+  purpose: Public research-preview claim inventory (75 approved A/B/C rows; do_not_publish omitted)
   not_medical_advice: true
-  claim_count: 74
+  claim_count: 75
   tier_counts:
-    Tier A: 61
+    Tier A: 62
     Tier B: 11
     Tier C: 2
   kind_counts:
     hypothesis: 8
     interpretation: 4
-    observed_fact: 34
-    reported_history: 7
+    observed_fact: 33
+    reported_history: 9
     research_question: 21
   verification_counts:
     contested: 1
     not_verified: 21
-    partially_verified: 52
+    partially_verified: 53
   schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
   public_export: true
   withheld_do_not_publish_count: 0
@@ -952,7 +952,7 @@ claims:
   triage: Tier A
 - id: CLM-0031
   statement: Hereditary alpha-tryptasemia (HαT) reported positive in patient materials.
-  kind: observed_fact
+  kind: reported_history
   verification_status: partially_verified
   medical_domain: mast_cell
   patient_sources:
@@ -980,8 +980,10 @@ claims:
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: TPSAB1 copy-number detail incomplete (T114).
+  last_checked: '2026-08-06'
+  notes: COR-0027. Narrative HαT-positive report only in specialty summaries/pack; no TPSAB1
+    genotype/CNV instrument report in public sources (TPSAB1 appears zero times in patient source
+    files). UQ-0014 tracks missing genotype/copy-number detail (T114).
   triage: Tier A
 - id: CLM-0032
   statement: KIT mutations reported negative; assay specimen, method, and limit of detection are not documented
@@ -1043,8 +1045,9 @@ claims:
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: Model consensus does not upgrade evidence status.
+  last_checked: '2026-08-06'
+  notes: Model consensus does not upgrade evidence status. COR-0029 — bare "is rejected" is rewritten
+    by site/src/lib/language.ts to guide-approved "is not supported by the presently available record".
   triage: Tier A
 - id: CLM-0034
   statement: Hib IgG titer non-protective (0.33 mcg/mL, ref ≥1.00) and many pneumococcal serotype IgG
@@ -1163,8 +1166,9 @@ claims:
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: ''
+  last_checked: '2026-08-06'
+  notes: Specialty LDTs not FDA-cleared per summary. COR-0007. COR-0024. Negative blood PCR/FISH does
+    not exclude all tissue-limited disease; also does not confirm specialty IgM. COR-0025.
   triage: Tier A
 - id: CLM-0038
   statement: Lyme / Borrelia multi-method testing negative by specialty and CDC/NYS criteria including
@@ -1191,12 +1195,16 @@ claims:
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: ''
+  last_checked: '2026-08-06'
+  notes: Negative multi-method Lyme/Borrelia testing does not exclude all disease. COR-0025.
   triage: Tier A
 - id: CLM-0039
-  statement: Patient-reported best systemic symptomatic improvement on two courses of atovaquone + clindamycin
-    (± azithromycin), non-durable after courses ended.
+  statement: Patient-reported joint pain, night sweats, nightmares, and REM sleep (~15 → ~90 min/night)
+    improved during two courses of atovaquone + clindamycin (± azithromycin); the specialty summaries
+    describe each course as producing sustained (≥6 month) improvement, with joint-pain relapse after
+    the first course and the second (6-week, + azithromycin) course described as larger and more
+    durable. Durability beyond the second course is not documented in the available summaries. This
+    does not by itself prove Babesia, Bartonella, or other infection.
   kind: reported_history
   verification_status: partially_verified
   medical_domain: infectious_disease
@@ -1219,14 +1227,24 @@ claims:
     is_transcription: true
     page_or_lines: Strong treatment signals
     record_date: ''
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_reported_narrative
+    is_transcription: true
+    page_or_lines: Mid 2023 / Early 2024 atovaquone lines
+    record_date: ''
   literature_refs: []
   interpretation_owner: research_team
   public_priority: P0
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: Not microbiologic confirmation; anti-inflammatory effects possible. DEC-0014.
+  last_checked: '2026-08-06'
+  notes: Not microbiologic confirmation; anti-inflammatory effects possible. DEC-0014. COR-0026 — four
+    domains verified in ID/thiamine/history summaries (joints, night sweats, nightmares, REM);
+    durability wording follows the ID summary ("each produced sustained (≥6 month) improvement") and
+    the ID/thiamine timelines ("large, more durable improvement" after the second course). The prior
+    blanket "non-durable after courses ended" was not supported by any available source.
   triage: Tier A
 - id: CLM-0040
   statement: 'MRI left humerus Feb 2026: mild periosteal edema/enhancement without marrow signal change;
@@ -1264,7 +1282,8 @@ claims:
   triage: Tier B
 - id: CLM-0041
   statement: Palpable left forearm nodules not visualized on MRI/ultrasound in available imaging summaries;
-    nodule biopsy refused.
+    patient was refused an exploratory biopsy (clinicians declined; imaging-negative / blind-biopsy concern
+    per patient video statement).
   kind: observed_fact
   verification_status: partially_verified
   medical_domain: msk
@@ -1287,14 +1306,22 @@ claims:
     is_transcription: true
     page_or_lines: T085 T069
     record_date: ''
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: ~00:43:44–00:43:55 patient was refused an exploratory biopsy
+    record_date: '2026-08-03'
   literature_refs: []
   interpretation_owner: research_team
   public_priority: P0
   public_tier: B
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: ''
+  last_checked: '2026-08-06'
+  notes: COR-0022. Agency corrected — patient was refused biopsy (clinicians declined), not patient
+    refusal. Biopsy-agency fact authority is patient video statement; imaging non-visualization from
+    specialty summaries.
   triage: Tier B
 - id: CLM-0042
   statement: Active babesiosis is considered low probability / near-closed as preferred research hypothesis
@@ -1329,8 +1356,8 @@ claims:
   triage: Tier A
 - id: CLM-0043
   statement: Bartonella-spectrum disease remains a low–medium residual contributor hypothesis (minority
-    medium) based on specialty IgM trajectory, periosteal/nodule clues, and non-durable antimicrobial
-    response without commercial confirmation.
+    medium) based on specialty IgM trajectory, periosteal/nodule clues, and an antimicrobial response
+    with documented joint-pain relapse after the first course, without commercial confirmation.
   kind: hypothesis
   verification_status: contested
   medical_domain: infectious_disease
@@ -1351,11 +1378,15 @@ claims:
   clinician_review_status: not_reviewed
   last_checked: '2026-08-05'
   notes: 'Specialty LDT author-ecosystem discount noted in synthesis. Pass4: lit-0049 weak NPV note; lit-0057
-    IDSA confirmation standard as counterweight to LDT overread.'
+    IDSA confirmation standard as counterweight to LDT overread. COR-0026 — durability descriptor
+    corrected: summaries document joint-pain relapse after the first course and describe the second
+    course as larger/more durable, so a blanket "non-durable" was not supported.'
   triage: Tier A
 - id: CLM-0044
-  statement: CRP and ESR repeatedly normal; broad seronegative CTD workup (ANA/ENA/RF/CCP etc.) unrevealing
-    on available panels.
+  statement: CRP normal on 3 documented draws (as-of latest 2025-08-05) and ESR normal on 3 documented
+    draws (as-of latest 2025-08-05) in available specialty summaries; no CRP/ESR values after 2025-08-05
+    in those summaries; broad seronegative CTD workup (ANA/ENA/RF/CCP etc.) unrevealing on available
+    panels.
   kind: observed_fact
   verification_status: partially_verified
   medical_domain: rheumatology
@@ -1364,8 +1395,20 @@ claims:
     path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
     source_class: patient_compiled_summary
     is_transcription: true
-    page_or_lines: Clinical snapshot + lupus panel
-    record_date: ''
+    page_or_lines: Inflammatory markers table (CRP/ESR 2021-03-01 and 2025-08-05)
+    record_date: 2021-03-01 / 2025-08-05
+  - source_id: endocrine_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Other chemistries CRP 0.43 on 03/15/2021
+    record_date: '2021-03-15'
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: ESR (sed rate) (09/2022) 2 mm/h
+    record_date: 2022-09
   - source_id: pack_v1
     path: evidence/evidence_pack.md
     source_class: patient_compiled_summary
@@ -1384,8 +1427,12 @@ claims:
   public_tier: A
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: ''
+  last_checked: '2026-08-06'
+  notes: >-
+    COR-0023. Denominator from primary specialty summaries only — CRP draws 2021-03-01 <0.3 (rheum),
+    2021-03-15 0.43 (endocrine), 2025-08-05 <1 (rheum); ESR draws 2021-03-01 1 mm/hr (rheum), 2022-09 2 mm/h
+    (urology), 2025-08-05 2 mm/hr (rheum). Rheum states normal on every occasion tested. Pack/ledger
+    not present in this tree for independent recount.
   triage: Tier A
 - id: CLM-0045
   statement: Non-inflammatory migratory then generalized polyarthralgia with joint fragility phenotype
@@ -2337,3 +2384,27 @@ claims:
   last_checked: '2026-08-05'
   notes: ''
   triage: Tier C
+- id: CLM-0077
+  statement: Same-scanner lumbar L3–L4 BMD 0.633 g/cm² (T−4.5) on 2025-06-16 to 0.640 g/cm² (T−4.4) on
+    2026-06-19 at Site 1; compiled summary states LSC=0.022 g/cm² and the +0.007 change is within noise
+    (not significant) — no detectable change over this interval within LSC.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Lumbar spine (L3–L4 subregion) table + LSC footnote
+    record_date: 2025-06-16 to 2026-06-19
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-06'
+  notes: COR-0028. Source language only — does not claim biological stability or improvement. Facility
+    precision report beyond summary not in repo. UQ-0009 (LSC source document).
+  triage: Tier A

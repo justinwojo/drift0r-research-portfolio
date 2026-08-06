@@ -293,3 +293,125 @@
   - Mild cytokine draw + normal CRP/ESR remains a nonspecific observation pending applicable sources and primary records — **not** re-derived from lit-0104
 - **Evidence:** PMID 15780075 / DOI `10.1111/j.1523-1755.2005.00200.x` title and abstract scope (uremia); PRE_PUBLICATION_REVIEW lit-0104 section; Checkpoint E2.1 remediation
 - **Residual uncertainty:** A future applicable non-CKD source could re-support the nonspecific interpretation; identity PASS still ≠ claim support
+
+### COR-0022 — Nodule biopsy agency reversed (patient was refused, did not refuse)
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** launch_blocker (public factual agency about the patient)
+- **Affected claims / paths:** CLM-0041; case surfaces rendering that claim
+- **Incorrect or unsafe form:** “nodule biopsy refused” (implies the patient declined biopsy)
+- **Corrected form:** “patient was refused an exploratory biopsy (clinicians declined; imaging-negative / blind-biopsy concern per patient video statement)”
+- **Evidence:** Patient video transcript `transcript-youtube-krP9EGyLCRE.txt`: “I was refused an exploratory biopsy because again, it's imaging negative and the doctor told me he'd just be going in blind…”; imaging/thiamine summaries for non-visualization of forearm nodules
+- **Residual uncertainty:** No signed clinic note in-repo; agency is patient-reported video statement, not an instrument record
+
+### COR-0023 — CRP/ESR “repeatedly normal” lacked denominator and as-of date
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0044
+- **Incorrect or unsafe form:** “CRP and ESR repeatedly normal” without count, dates, or bound
+- **Corrected form:** “CRP normal on 3 documented draws (as-of latest 2025-08-05) and ESR normal on 3 documented draws (as-of latest 2025-08-05) in available specialty summaries; no CRP/ESR values after 2025-08-05 in those summaries”
+- **Evidence:** Rheumatology lab summary CRP/ESR table (2021-03-01, 2025-08-05); endocrine summary CRP 0.43 (03/15/2021); urology/nephrology summary ESR 2 mm/h (09/2022)
+- **Residual uncertainty:** Pack/ledger files absent from this tree; original instrument printouts not in-repo; additional draws may exist off-record
+
+### COR-0024 — CLM-0037 missing specialty LDT contested / not-FDA-cleared label
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0037 notes (pattern from CLM-0036 / COR-0007)
+- **Incorrect or unsafe form:** Empty notes on a specialty immunoblot / LDT-positive Bartonella claim
+- **Corrected form:** Notes carry “Specialty LDTs not FDA-cleared per summary. COR-0007. COR-0024.” paired with negative-channel hedge (COR-0025)
+- **Evidence:** Infectious-disease summary LDT framing; public language guide §4.4; sibling CLM-0036 notes
+- **Residual uncertainty:** Clinical meaning of discordant LDTs remains open for clinicians
+
+### COR-0025 — CLM-0037 / CLM-0038 missing negative ≠ impossible hedge
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0037 notes; CLM-0038 notes
+- **Incorrect or unsafe form:** Empty notes allowing bare “negative” to read as full exclusion
+- **Corrected form:** CLM-0037: “Negative blood PCR/FISH does not exclude all tissue-limited disease; also does not confirm specialty IgM.” CLM-0038: “Negative multi-method Lyme/Borrelia testing does not exclude all disease.”
+- **Evidence:** Public language guide §4.3; existing site two-channel hedge at `site/src/lib/data.ts` specialty channel notes
+- **Residual uncertainty:** Tissue-limited or later disease cannot be excluded from blood-only pathways alone
+
+### COR-0026 — CLM-0039 collapsed treatment-response domains
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0039; CLM-0043 (same durability descriptor, reader-facing on the case page)
+- **Incorrect or unsafe form:** “best systemic symptomatic improvement” without named domains; and the durability qualifier “non-durable after courses ended” (CLM-0039) / “non-durable antimicrobial response” (CLM-0043), which no available source supports
+- **Corrected form:** “Patient-reported joint pain, night sweats, nightmares, and REM sleep (~15 → ~90 min/night) improved during two courses of atovaquone + clindamycin (± azithromycin); the specialty summaries describe each course as producing sustained (≥6 month) improvement, with joint-pain relapse after the first course and the second (6-week, + azithromycin) course described as larger and more durable. Durability beyond the second course is not documented in the available summaries. This does not by itself prove Babesia, Bartonella, or other infection.”
+- **Evidence:** Infectious-disease summary — “Two courses of anti-parasitic/antibacterial therapy each produced **sustained (≥6 month) improvement** in joint pain, night sweats, nightmares and REM sleep”, and timeline “Early 2024 Joint pain relapsed. Re-treated 6 weeks … → **large, more durable improvement**”; thiamine summary “REM sleep 15 → 90 min” and “larger, more durable improvement”; medical-psychological history narrative (“REM sleep increased from 15min to 1hr 30min per night”)
+- **Residual uncertainty:** Patient-reported; anti-inflammatory effects possible; not microbiologic confirmation (DEC-0014). No source documents symptom status after the second course, so persistence beyond it is unknown
+- **Amendment note:** The domain fix and the durability fix were applied in the same unreleased working-tree pass; this entry was completed before v0.2.0 was committed or published, so no published register text was rewritten (append-only applies to shipped entries)
+
+### COR-0027 — CLM-0031 typed as observed_fact without genotype instrument
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0031; `differentials/current_ranking.md` Confirmed/objective examples line
+- **Incorrect or unsafe form:** `kind: observed_fact` and ranking language “HαT genotype” under confirmed/objective examples
+- **Corrected form:** `kind: reported_history`; notes that narrative HαT-positive report only — TPSAB1 appears zero times in patient source files; UQ-0014 tracks missing genotype; ranking moves HαT to reported / not genotype-confirmed
+- **Evidence:** Thiamine/pack narrative HαT-positive strings; repo-wide TPSAB1 search = 0 hits in patient sources
+- **Residual uncertainty:** A held-but-unpublished TPSAB1 CNV report may exist; public pack has none
+
+### COR-0028 — Same-scanner L3–L4 DXA series missing from claim inventory
+
+- **Date identified:** 2026-08-06
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** new CLM-0077; UQ-0009 `related_claims`
+- **Incorrect or unsafe form:** L3–L4 serial BMD/T/LSC values present in bone summary but absent from public claim inventory
+- **Corrected form:** CLM-0077: “Same-scanner lumbar L3–L4 BMD 0.633 g/cm² (T−4.5) on 2025-06-16 to 0.640 g/cm² (T−4.4) on 2026-06-19 at Site 1; compiled summary states LSC=0.022 g/cm² and the +0.007 change is within noise (not significant) — no detectable change over this interval within LSC.” UQ-0009 links `[CLM-0006, CLM-0077]`
+- **Evidence:** `evidence/sources/Drift0r_BoneDensity_Summary.pdf` / extracted bone density summary L3–L4 table + LSC footnote
+- **Residual uncertainty:** Facility precision study not in-repo (UQ-0009); do not restate as demonstrated biological stability or improvement
+
+### COR-0029 — Bare “is rejected” passed public-language gate
+
+- **Date identified:** 2026-08-06
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `site/src/lib/language.ts`; public rendering of CLM-0033, CLM-0051
+- **Incorrect or unsafe form:** Transform matched only `hard reject(ed)`; plain “is rejected” reached public text
+- **Corrected form:** Added `/\bis rejected\b/gi` → “is not supported by the presently available record”; does **not** rewrite lone confidence token `rejected`
+- **Evidence:** Public language guide preferred replacement for hard reject; inventory statements using “is rejected”
+- **Residual uncertainty:** Internal ranking cells that use confidence vocabulary (`rejected as driver`) intentionally unchanged
+
+### COR-0030 — Unsourced “high VUS rate” / “VUS common” frequency claims removed
+
+- **Date identified:** 2026-08-06
+- **Status:** `applied_to_public_draft`
+- **Severity:** launch_blocker (evidence basis honesty)
+- **Affected claims / paths:** lit-0294 Collet card; H2.yaml; CQ-004.yaml; `03_public_language_guide.md` gene-panel row; supersedes **COR-0009’s VUS-frequency clause only** (yield language retained)
+- **Incorrect or unsafe form:** “high VUS rate” / “VUS common; needs expert molecular bone interpretation” / guide prescription of high VUS rate, with COR-0009 evidence cited as Round-1 synthesis
+- **Corrected form:** Delete unsourced frequency. Collet card states single-patient VUS only (no rate/denominator). H2/CQ-004 keep counter-consideration that VUS may complicate interpretation without claiming high rates. Guide no longer prescribes “high VUS rate.” Modest pathogenic yield numerators/denominators retained (COR-0010 / COR-0018 lineage).
+- **Evidence:** Collet et al. full text (`lit-0294`): VUS mentioned twice, both about one patient (COL1A2 p.(Pro471Leu)); no cohort VUS rate. COR-0009 Evidence was “Round-1 synthesis” — AI swarm output. `governance/AI_METHODS.md` prohibits inventing citations and upgrading evidence status from multi-model agreement alone. No acceptable substitute VUS-rate source found.
+- **Residual uncertainty:** A future sourced cohort VUS rate could be cited with N/D; none is published here. **Supersession:** this entry supersedes COR-0009’s VUS-frequency clause only; COR-0009 itself is not rewritten (append-only register).
+
+### COR-0031 — Printed clinician packet rendered bare literature IDs
+
+- **Date identified:** 2026-08-06
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `site/src/pages/questions-for-clinicians/packet.astro`
+- **Incorrect or unsafe form:** `lit: lit-0012, lit-0297` style bare ID join with no title or applicability
+- **Corrected form:** Per-ref lines via `getLitById`: `id: title (year)` plus `quality_notes` when literature applicability is approved for site mode
+- **Evidence:** Packet print surface inspection; catalog title/year fields
+- **Residual uncertainty:** Unknown lit IDs still fall back to bare id; applicability notes gated by release scope in publication mode
+
+### COR-0032 — lit-0206 miscategorized as support on H5
+
+- **Date identified:** 2026-08-06
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** H5.yaml `supporting_literature_ids` / `contradicting_literature_ids`; `literature/entries/2022-lawrence-sad-pearls-pitfalls.md` and `literature/catalog.yaml` polarity fields for lit-0206
+- **Incorrect or unsafe form:** lit-0206 (Lawrence & Borish 2022) listed as supporting H5 (possible SAD)
+- **Corrected form:** lit-0206 moved to `contradicting_literature_ids`; summary notes diagnostic-pitfalls reclassification; support remains lit-0205 / lit-0089 / lit-0096
+- **Evidence:** PubMed abstract PMID 35671934 — cautions include: document actual pyogenic infections before immune-deficiency diagnosis; wide variability of pneumococcal vaccine response in healthy individuals; laboratory variability in reporting; do not hinge diagnosis solely on strict cutoffs for “normal” polysaccharide response without global clinical assessment. Local full text / overnight `paper-text/lit-0206.txt` absent (abstract-only)
+- **Residual uncertainty:** Full-text nuances beyond abstract not verified in-repo (`access: abstract-only`, no local PDF). Card and catalog polarity for lit-0206 are now `supports: []` / `contradicts: [H-SAD]`, consistent with H5; note that “contradicts” here means the paper cautions against over-calling SAD, not that it disputes the entity’s existence

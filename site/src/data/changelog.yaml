@@ -8,6 +8,59 @@ not_medical_advice: true
 # IDs listed here are permanently reserved and must never be reassigned to new records.
 retired_or_reserved_ids: []
 entries:
+  - version: v0.2.0
+    date: "2026-08-06"
+    kind: minor
+    status: published
+    evidence_current_through: "2026-08-06"
+    summary: >-
+      Material corrections from the 2026-08-06 multi-model adversarial audit (Claude/Grok/Codex).
+      Fixes patient-agency reversal on nodule biopsy, bounds inflammatory-marker claims with
+      denominators, restores specialty-LDT and negative-test hedges, expands treatment-response
+      domains, retypes HαT as reported history without genotype, adds same-scanner L3–L4 DXA
+      within-LSC claim, tightens public “is rejected” language, removes unsourced high-VUS-rate
+      wording, renders literature titles on the clinician packet, and reclassifies lit-0206 as
+      caution/counterweight on H5. Not medical advice; clinician review still not performed.
+    added_evidence:
+      - "CLM-0077 — same-scanner L3–L4 BMD series with LSC (bone density summary)"
+    changed_interpretations:
+      - "CLM-0041 agency: patient was refused exploratory biopsy (not patient refusal)"
+      - "CLM-0044 CRP/ESR bounded to 3+3 documented draws as-of 2025-08-05"
+      - "CLM-0037/0038 LDT contested label + negative ≠ exclusion hedges"
+      - "CLM-0039 treatment response named domains (joints, night sweats, nightmares, REM); durability restated to the summaries' own wording (sustained ≥6 months; second course larger/more durable) — the prior blanket 'non-durable' was unsupported"
+      - "CLM-0043 same durability descriptor corrected to documented joint-pain relapse after the first course"
+      - "CLM-0031 kind reported_history; ranking no longer lists HαT genotype as confirmed"
+      - "Clinician packet literature lines show title/year (+ applicability notes when approved)"
+      - "Public language: bare 'is rejected' → not supported by the presently available record"
+    strengthened_or_weakened_hypotheses:
+      - "H2/CQ-004: remove unsourced high VUS rate; keep modest yield + VUS interpretation caution"
+      - "H5: lit-0206 moved from supporting to contradicting (diagnostic-pitfalls review)"
+    retired_or_superseded:
+      - id: COR-0009-vus-frequency-clause
+        status: superseded
+        replaced_by: COR-0030
+        note: >-
+          Only COR-0009’s VUS-frequency clause is superseded; yield language retained.
+          COR-0009 register entry itself is not rewritten (append-only).
+    corrections:
+      - COR-0022
+      - COR-0023
+      - COR-0024
+      - COR-0025
+      - COR-0026
+      - COR-0027
+      - COR-0028
+      - COR-0029
+      - COR-0030
+      - COR-0031
+      - COR-0032
+    git_tag_planned: null
+    github_release_planned: false
+    notes: >-
+      Working-tree remediation only; no git tag or push in this pass. evidence_current_through
+      advanced to 2026-08-06 for the adversarial audit and primary-source rechecks. Private
+      run materials remain gitignored.
+
   - version: v0.1.3
     date: "2026-08-06"
     kind: patch

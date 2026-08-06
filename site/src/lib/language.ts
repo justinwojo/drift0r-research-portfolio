@@ -22,6 +22,8 @@ export const REPLACEMENTS: Array<[RegExp, Replacement]> = [
   [/\bearly osteoporosis\b/gi, 'markedly low BMD for age'],
   [/\balmost certainly\b/gi, 'current working model favors'],
   [/\bhard reject(ed)?\b/gi, 'not supported by the presently available record'],
+  // Bare research "is rejected" (CLM-0033/CLM-0051); do not match lone "rejected" confidence tokens.
+  [/\bis rejected\b/gi, 'is not supported by the presently available record'],
   [/\bdangerous if missed\b/gi, 'clinician review priority'],
   [/\btop diagnostic tests\b/gi, 'questions to discuss with licensed clinicians'],
   [/\bconfirmed dry beriberi\b/gi, 'documented thiamine deficiency with beriberi-spectrum symptoms (interpretive label)'],

@@ -143,7 +143,8 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.doesNotMatch(html, /Approval status/i);
     // Compact provenance: region label + collapsed version + short review-status (not full wall)
     assert.match(html, /aria-label="Version and review status"|provenance--compact/i);
-    assert.match(html, /v0\.1\.3/);
+    // Analysis version from live release.yaml / changelog tip (v0.2.0+ after COR-0022…0032).
+    assert.match(html, /v0\.2\.0/);
     assert.match(html, /published/i);
     // Stable public release permits indexing while keeping the research caveat.
     assert.match(html, /name="robots"\s+content="index,\s*follow"/i);
@@ -472,7 +473,12 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.match(html, /property="og:title"/);
     assert.match(html, /property="og:description"/);
     assert.match(html, /name="twitter:card"/);
-    assert.match(html, /drift0rresearch\.org/);
+    // Assert the *configured* canonical host, so CI (DRIFT0R_SITE_URL=https://drift0rresearch.org)
+    // still fails on a wrong/placeholder origin. Local default builds use the example.invalid
+    // placeholder, which require-publication-mode.mjs blocks from ever deploying.
+    const expectedHost = new URL(process.env.DRIFT0R_SITE_URL || 'https://example.invalid/drift0r')
+      .hostname;
+    assert.match(html, new RegExp(expectedHost.replace(/\./g, '\\.')));
     // Unfurl description must not carry lab-dose medical detail.
     const og = html.match(/property="og:description"\s+content="([^"]*)"/i);
     assert.ok(og, 'og:description present');

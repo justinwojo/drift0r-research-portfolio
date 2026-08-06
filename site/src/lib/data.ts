@@ -273,21 +273,34 @@ const CORRECTIONS: CorrectionRef[] = [
   { id: 'COR-0019', title: 'Source class is independent of verification_status; no primary instrument records in repo', status: 'applied_to_public_draft' },
   { id: 'COR-0020', title: 'Defect-card # Links sections still carried old identifiers after frontmatter fix', status: 'applied_to_public_draft' },
   { id: 'COR-0021', title: 'lit-0104 applicability: uremia review must not support non-CKD patient cytokine inference', status: 'applied_to_public_draft' },
+  { id: 'COR-0022', title: 'Nodule biopsy agency reversed (patient was refused, did not refuse)', status: 'logged_in_inventory' },
+  { id: 'COR-0023', title: 'CRP/ESR “repeatedly normal” lacked denominator and as-of date', status: 'logged_in_inventory' },
+  { id: 'COR-0024', title: 'CLM-0037 missing specialty LDT contested / not-FDA-cleared label', status: 'logged_in_inventory' },
+  { id: 'COR-0025', title: 'CLM-0037 / CLM-0038 missing negative ≠ impossible hedge', status: 'logged_in_inventory' },
+  { id: 'COR-0026', title: 'CLM-0039 collapsed treatment-response domains', status: 'logged_in_inventory' },
+  { id: 'COR-0027', title: 'CLM-0031 typed as observed_fact without genotype instrument', status: 'logged_in_inventory' },
+  { id: 'COR-0028', title: 'Same-scanner L3–L4 DXA series missing from claim inventory', status: 'logged_in_inventory' },
+  { id: 'COR-0029', title: 'Bare “is rejected” passed public-language gate', status: 'applied_to_public_draft' },
+  { id: 'COR-0030', title: 'Unsourced “high VUS rate” / “VUS common” frequency claims removed', status: 'applied_to_public_draft' },
+  { id: 'COR-0031', title: 'Printed clinician packet rendered bare literature IDs', status: 'applied_to_public_draft' },
+  { id: 'COR-0032', title: 'lit-0206 miscategorized as support on H5', status: 'applied_to_public_draft' },
 ];
 
 /** Domain → correction IDs that should surface on matching records (real COR IDs only). */
 const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
-  bone: ['COR-0001', 'COR-0002', 'COR-0003', 'COR-0011'],
+  bone: ['COR-0001', 'COR-0002', 'COR-0003', 'COR-0011', 'COR-0028'],
   endocrine: ['COR-0004'],
-  mast_cell: ['COR-0005'],
+  mast_cell: ['COR-0005', 'COR-0027'],
   laboratory: ['COR-0006'],
-  infectious_disease: ['COR-0007'],
-  genetics: ['COR-0009', 'COR-0018'],
+  infectious_disease: ['COR-0007', 'COR-0024', 'COR-0025', 'COR-0026'],
+  genetics: ['COR-0009', 'COR-0018', 'COR-0030'],
   metabolic: ['COR-0012'],
   mental_health: ['COR-0008'],
-  immunology: ['COR-0015'],
-  literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021'],
-  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019'],
+  immunology: ['COR-0015', 'COR-0032'],
+  rheumatology: ['COR-0023'],
+  msk: ['COR-0022'],
+  literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021', 'COR-0030'],
+  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031'],
 };
 
 const CORRECTION_BY_CLAIM: Record<string, string[]> = {
@@ -296,12 +309,19 @@ const CORRECTION_BY_CLAIM: Record<string, string[]> = {
   'CLM-0009': ['COR-0015', 'COR-0002'],
   'CLM-0010': ['COR-0006'],
   'CLM-0018': ['COR-0004'],
+  'CLM-0031': ['COR-0027'],
   'CLM-0032': ['COR-0005'],
   'CLM-0036': ['COR-0007'],
-  'CLM-0037': ['COR-0007'],
+  'CLM-0037': ['COR-0007', 'COR-0024', 'COR-0025'],
+  'CLM-0038': ['COR-0025'],
+  'CLM-0039': ['COR-0026'],
+  'CLM-0043': ['COR-0026'],
+  'CLM-0041': ['COR-0022'],
+  'CLM-0044': ['COR-0023'],
   'CLM-0023': ['COR-0012'],
   'CLM-0046': ['COR-0008'],
   'CLM-0048': ['COR-0008'],
+  'CLM-0077': ['COR-0028'],
 };
 
 // ---------------------------------------------------------------------------

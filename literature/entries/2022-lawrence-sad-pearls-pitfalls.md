@@ -19,9 +19,9 @@ topics:
 - diagnostic-pitfalls
 relevance: high
 study_type: review
-supports:
+supports: []
+contradicts:
 - H-SAD
-contradicts: []
 patient_overlap:
 - low pneumococcal serotype titers
 - non-protective Hib

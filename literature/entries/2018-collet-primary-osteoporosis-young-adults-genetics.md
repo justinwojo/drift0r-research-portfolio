@@ -78,7 +78,7 @@ local_pdf: data/papers_local/lit-0294.pdf
 
 - Do not cite this card to support “high gene-panel yield in this phenotype” without the explicit subset math above.
 - Secondary causes must still be treated when found; genetics does not replace hypercalciuria management or endocrine care.
-- VUS common; needs expert molecular bone interpretation.
+- Do not invent a cohort VUS rate from this paper: Collet labels *COL1A2* p.(Pro471Leu) as a variant of unknown significance (VUS) in **one** patient only; no VUS rate or denominator is reported.
 - Identifier identity was verified; summary accuracy is a separate judgment.
 
 # Links

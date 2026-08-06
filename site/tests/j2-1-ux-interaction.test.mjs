@@ -80,6 +80,10 @@ function startStaticServer(root, port) {
   };
   const server = createServer((req, res) => {
     let urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
+    // Preview builds bake base_path=/drift0r into asset URLs; strip so dist/ root serves.
+    if (urlPath === '/drift0r' || urlPath.startsWith('/drift0r/')) {
+      urlPath = urlPath.slice('/drift0r'.length) || '/';
+    }
     if (urlPath.endsWith('/')) urlPath += 'index.html';
     if (urlPath === '') urlPath = '/index.html';
     const filePath = join(root, urlPath.replace(/^\//, ''));

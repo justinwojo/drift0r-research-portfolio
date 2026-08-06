@@ -54,12 +54,15 @@ entries:
       - COR-0030
       - COR-0031
       - COR-0032
-    git_tag_planned: null
-    github_release_planned: false
+    git_tag_planned: v0.2.0
+    github_release_planned: true
+    git_tag: v0.2.0
+    github_release_published: true
     notes: >-
-      Working-tree remediation only; no git tag or push in this pass. evidence_current_through
-      advanced to 2026-08-06 for the adversarial audit and primary-source rechecks. Private
-      run materials remain gitignored.
+      Remediation landed on main and was deployed to the live site on 2026-08-06; the annotated
+      tag and GitHub Release carry this summary. evidence_current_through advanced to 2026-08-06
+      for the adversarial audit and primary-source rechecks. Private run materials remain
+      gitignored.
 
   - version: v0.1.3
     date: "2026-08-06"
@@ -81,6 +84,8 @@ entries:
     corrections: []
     git_tag_planned: v0.1.3
     github_release_planned: true
+    git_tag: v0.1.3
+    github_release_published: true
     notes: >-
       Promoted after the quiet custom-domain deployment and live HTTPS verification. Clinician
       review remains not performed, and publication permission does not imply endorsement.

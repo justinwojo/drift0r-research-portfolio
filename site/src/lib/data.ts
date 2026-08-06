@@ -106,8 +106,14 @@ export interface ChangelogEntry {
   strengthened_or_weakened_hypotheses: string[];
   retired_or_superseded: ChangelogRetirement[];
   corrections: string[];
+  /** Intent recorded when the entry was written — never an assertion that the tag exists. */
   git_tag_planned?: string | null;
+  /** Intent only; does not assert a published Release. */
   github_release_planned?: boolean;
+  /** Annotated tag that actually exists on the public remote. */
+  git_tag?: string | null;
+  /** True only once a GitHub Release for git_tag is published. */
+  github_release_published?: boolean;
   notes?: string;
 }
 

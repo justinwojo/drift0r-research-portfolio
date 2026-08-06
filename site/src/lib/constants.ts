@@ -120,6 +120,21 @@ export function getPublicRepoContributionLinks(
   };
 }
 
+/**
+ * Public URL for a created annotated release tag, or null when the repo URL is not
+ * configured at build time. Derived — never store a full GitHub URL in changelog data,
+ * so the repo location stays single-sourced from PUBLIC_REPO_URL.
+ */
+export function getReleaseTagUrl(
+  tag: string,
+  url: string = PUBLIC_REPO_URL,
+): string | null {
+  const t = (tag || '').trim();
+  if (!t) return null;
+  if (!isPublicRepoConfigured(url)) return null;
+  return `${url.trim().replace(/\/+$/, '')}/releases/tag/${encodeURIComponent(t)}`;
+}
+
 /** Stable contribution CTA lead copy (rendered-output tests match these phrases). */
 export const CONTRIBUTION_CTA_LEAD =
   'Found incorrect data, a citation problem, contradictory evidence, new research, or another possible interpretation? Please raise a GitHub issue. Contributions are reviewed before they affect the published research.';

@@ -68,6 +68,34 @@ describe('analysis versioning', () => {
     }
   });
 
+  it('release packaging claims are honest (created vs merely planned)', () => {
+    const changelog = loadSiteYaml('src/data/changelog.yaml');
+    for (const e of changelog.entries) {
+      if (e.github_release_published) {
+        assert.ok(
+          e.git_tag,
+          `${e.version}: github_release_published requires git_tag (a Release needs a real tag)`,
+        );
+      }
+      if (e.git_tag) {
+        assert.equal(
+          e.git_tag,
+          e.version,
+          `${e.version}: git_tag must match the entry version`,
+        );
+      }
+    }
+    // The published tip must state its packaging explicitly rather than silently omitting it.
+    const release = loadSiteYaml('src/data/release.yaml');
+    const newest = changelog.entries[0];
+    if (newest.status === 'published' && release.review_status === 'published') {
+      assert.ok(
+        newest.git_tag || newest.git_tag_planned,
+        `${newest.version}: a published tip must record git_tag (created) or git_tag_planned (pending)`,
+      );
+    }
+  });
+
   it('allowlist includes RELEASE_VERSIONING.md and matches release allowlist_version', () => {
     const release = loadSiteYaml('src/data/release.yaml');
     const allow = loadYaml(

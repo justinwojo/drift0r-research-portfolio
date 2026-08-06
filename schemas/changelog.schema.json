@@ -92,10 +92,20 @@
           }
         },
         "git_tag_planned": {
-          "type": ["string", "null"]
+          "type": ["string", "null"],
+          "description": "Tag intended at the time this entry was written. Records intent only; it does not assert that the tag exists."
         },
         "github_release_planned": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "GitHub Release intended at the time this entry was written. Intent only; does not assert the Release exists."
+        },
+        "git_tag": {
+          "type": ["string", "null"],
+          "description": "Annotated tag that has actually been created and pushed for this version. Set only after the tag exists on the public remote."
+        },
+        "github_release_published": {
+          "type": "boolean",
+          "description": "True only after a GitHub Release for git_tag has actually been published. Requires git_tag to be set."
         },
         "notes": { "type": "string" }
       }

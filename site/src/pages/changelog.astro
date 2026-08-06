@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
 import { getChangelogEntries, getCorrections, getRelease, getCorrectionById } from '../lib/data';
+import { getReleaseTagUrl } from '../lib/constants';
 import { withBase } from '../lib/paths';
 
 const release = getRelease();
@@ -153,12 +154,23 @@ const corrections = getCorrections();
         )}
 
         {entry.notes ? <p class="record-note">{entry.notes}</p> : null}
-        {entry.git_tag_planned || entry.github_release_planned ? (
+        {entry.git_tag ? (
+          <p class="sec-note mono" style="font-size: 12.5px;">
+            Public release packaging: annotated git tag{' '}
+            {getReleaseTagUrl(entry.git_tag) ? (
+              <a href={getReleaseTagUrl(entry.git_tag)}>{entry.git_tag}</a>
+            ) : (
+              entry.git_tag
+            )}{' '}
+            created
+            {entry.github_release_published ? '; GitHub Release with this summary published' : ''}.
+          </p>
+        ) : entry.git_tag_planned || entry.github_release_planned ? (
           <p class="sec-note mono" style="font-size: 12.5px;">
             Public release packaging: annotated git tag planned
             {entry.git_tag_planned ? ` (${entry.git_tag_planned})` : ''}
-            {entry.github_release_planned ? '; GitHub Release with this summary planned' : ''}. Not created during
-            private remediation.
+            {entry.github_release_planned ? '; GitHub Release with this summary planned' : ''}. Not created — this
+            version was not packaged as a public release.
           </p>
         ) : null}
       </section>

@@ -150,6 +150,15 @@ Build output is written to `site/dist/` and is intentionally untracked.
 
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`governance/PUBLICATION_POLICY.md`](governance/PUBLICATION_POLICY.md), and [`governance/RELEASE_VERSIONING.md`](governance/RELEASE_VERSIONING.md).
 
+## Support this work (optional)
+
+This project is free to use and will stay free. Maintaining it is an ongoing commitment—keeping the analysis current, reviewing contributions, and covering AI tooling costs for literature work and publication prep.
+
+If the work is useful and you want to support that ongoing effort, you're welcome to contribute—no pressure either way.
+
+- [GitHub Sponsors](https://github.com/sponsors/justinwojo)
+- [PayPal](https://paypal.me/wojomojo)
+
 ## Project ownership and license
 
 Created and maintained by [Justin Wojciechowski](https://github.com/justinwojo), an independent community researcher who is not a clinician. The project is not operated by, affiliated with, or endorsed by Drift0r, and there is no financial relationship or compensation from Drift0r.

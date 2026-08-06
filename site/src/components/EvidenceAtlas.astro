@@ -296,7 +296,10 @@ function uqChipAttrs(id: string): Record<string, string> {
                 >
                   {n.label}
                 </text>
-                <title>{name}</title>
+                {/* No <title> here: it renders a native browser tooltip that duplicates the
+                    record-preview card on hover. The accessible name is supplied by aria-label
+                    on the wrapping <a>/<g role="img"> below. Edge <title> stays — edges have no
+                    preview card, so it is their only description. */}
               </g>
             );
             if (href) {

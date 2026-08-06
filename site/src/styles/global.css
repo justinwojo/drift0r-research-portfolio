@@ -1037,13 +1037,6 @@ section.page-section {
 
 .coverage .col.contra {
   border-left: 4px solid var(--contra);
-  background: repeating-linear-gradient(
-    45deg,
-    var(--card),
-    var(--card) 8px,
-    var(--contra-tint) 8px,
-    var(--contra-tint) 16px
-  );
 }
 
 .coverage h3 {
@@ -1052,6 +1045,23 @@ section.page-section {
   font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+/* Hatch is the colour-independent encoding for "contradicting" (see the Evidence Atlas
+   legend: contradicting band uses hatch fill). Confined to the header band — a full-panel
+   hatch ran diagonal stripes behind body text and made the claim list hard to read.
+   Negative margins bleed the band to the panel edges over .col's 14px/16px padding. */
+.coverage .col.contra h3 {
+  margin: -14px -16px 12px;
+  padding: 10px 16px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--card),
+    var(--card) 8px,
+    var(--contra-tint) 8px,
+    var(--contra-tint) 16px
+  );
+  border-bottom: 1px solid var(--contra);
 }
 
 .coverage ul {

@@ -23,7 +23,7 @@ describe('analysis versioning', () => {
     assert.ok(release.content_version, 'content_version required');
     assert.ok(release.evidence_current_through, 'evidence_current_through required');
     assert.match(release.evidence_current_through, /^\d{4}-\d{2}-\d{2}$/);
-    assert.equal(release.noindex, true);
+    assert.equal(release.noindex, false, 'published release must enable indexing');
     assert.ok(Array.isArray(changelog.entries) && changelog.entries.length > 0);
     const newest = changelog.entries[0];
     assert.equal(

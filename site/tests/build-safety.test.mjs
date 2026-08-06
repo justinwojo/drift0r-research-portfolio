@@ -91,7 +91,7 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.deepEqual(actual, manifest);
   });
 
-  it('every medical HTML page has disclaimer, version, noindex, patient approval status, and clinician negative', () => {
+  it('every medical HTML page has disclaimer, version, indexing status, patient approval status, and clinician negative', () => {
     const medical = htmlFiles.filter(
       (f) =>
         !f.includes('404') &&
@@ -109,7 +109,7 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.ok(medical.length >= 10);
     for (const f of medical) {
       const html = readFileSync(join(dist, f), 'utf8');
-      assert.match(html, /noindex,\s*nofollow/i, f);
+      assert.match(html, /name="robots"\s+content="index,\s*follow"/i, f);
       assert.match(html, /not medical advice/i, f);
       // Analysis version = content_version; accept legacy "content v…" or new "analysis version v…"
       assert.match(

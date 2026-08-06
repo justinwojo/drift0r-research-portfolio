@@ -639,7 +639,7 @@ describe('patient approval status rendering', () => {
     const rel = loadYaml(readFileSync(join(siteRoot, 'src/data/release.yaml'), 'utf8'));
     assert.equal(rel.patient_approval.status, 'obtained');
     assert.equal(rel.clinician_review_scope.status, 'not_reviewed');
-    assert.equal(rel.noindex, true);
+    assert.equal(rel.noindex, false);
   });
 });
 

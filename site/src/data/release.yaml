@@ -24,7 +24,9 @@ patient_approval:
     (including the exact v0.1 mental-health claims CLM-0046/0047/0048 under DEC-0030),
     persistent searchable publication, social previews, and public contribution surfaces at the
     repository owner's editorial discretion. Existing do-not-publish privacy exclusions remain in force.
-    Additional mental-health material beyond those three claims remains excluded by default (DEC-0022 residual).
+    Mental-health material beyond those three claims is published at the owner's editorial discretion
+    under the same broad grant (DEC-0036, extending DEC-0030 and superseding the DEC-0022 residual
+    default-exclusion), limited to plain results with no numeric values or verbatim clinical wording.
   date: "2026-08-05"
   notes: >-
     Drift0r replied to the owner's publication request: "You're welcome to post. Whatever you see fit."

@@ -19,3 +19,8 @@ open_question_ids:
 review_status: not_reviewed
 as_of: '2026-08-05'
 supersedes: null
+plain_title: No single unifying diagnosis
+plain_summary: >-
+  The baseline possibility that several ordinary problems coexist without one rare
+  disease tying them together. Kept on the record as a discipline against forcing the
+  findings into a single story.

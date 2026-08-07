@@ -1,14 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContributionCta from '../components/ContributionCta.astro';
 import EvidenceAtlas from '../components/EvidenceAtlas.astro';
-import TwoChannelReadout from '../components/TwoChannelReadout.astro';
 import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
+import TwoChannelReadout from '../components/TwoChannelReadout.astro';
+import ContributionCta from '../components/ContributionCta.astro';
 import { LANDING_OPENING_CAVEAT } from '../lib/constants';
-import { claimExcerpt } from '../lib/claimPreview';
 import {
-  getClaimById,
   getHypotheses,
+  getRuledOut,
   getSpecialtyChannels,
   metrics,
   type Hypothesis,
@@ -16,176 +15,225 @@ import {
 import { withBase } from '../lib/paths';
 
 const m = metrics();
+const ruledOut = getRuledOut();
 const channels = getSpecialtyChannels();
-// Marketing surfaces: no implementation-oriented "noindex" token in the lede.
-// Indexing remains accurate in HTML meta, compact provenance disclosure, legal/methods.
-const previewLegend = 'Public research preview';
 
 /**
- * Leading working hypotheses for the homepage synthesis (H1–H3 by stable ID order).
- * Excerpts are deterministic truncations of approved public fields only — no AI rewrite.
+ * Leading working hypotheses, lay-language surface.
+ *
+ * Landing page shows authored plain_title/plain_summary and *counts* of what each
+ * record does and does not account for. The CLM-xxxx cross-references stay on
+ * /working-model/ where a reader is set up to use them.
  */
-function synthesisLine(h: Hypothesis) {
-  const explainId = h.explains_claim_ids[0];
-  const gapId = h.does_not_explain_claim_ids[0];
-  const explainClaim = explainId ? getClaimById(explainId) : undefined;
-  const gapClaim = gapId ? getClaimById(gapId) : undefined;
+function plainLine(h: Hypothesis) {
   return {
     id: h.id,
-    title: h.title,
-    kind: h.kind.replace(/_/g, ' '),
+    title: h.plain_title,
+    technicalTitle: h.title,
     confidence: h.confidence,
-    overview: claimExcerpt(h.public_summary, 200),
-    mayExplain: explainClaim
-      ? { id: explainClaim.id, text: claimExcerpt(explainClaim.public_statement || '', 130) }
-      : null,
-    importantGap: gapClaim
-      ? { id: gapClaim.id, text: claimExcerpt(gapClaim.public_statement || '', 130) }
-      : null,
+    summary: h.plain_summary,
+    explains: h.explains_claim_ids.length,
+    gaps: h.does_not_explain_claim_ids.length,
   };
 }
 
-const leadingSynthesis = getHypotheses()
-  .filter((h) => h.id !== 'H-NULL')
-  .slice(0, 3)
-  .map(synthesisLine);
+/**
+ * Full working set, not a top-3 slice. H1 is the organizing architecture; H2–H5 are the
+ * modules and candidates inside it; H-NULL is the "maybe there is no unifier" baseline and
+ * is rendered separately because it is a discipline, not a theory.
+ */
+const allHypotheses = getHypotheses();
+const models = allHypotheses.filter((h) => h.id !== 'H-NULL');
+const lead = models.length ? plainLine(models[0]) : null;
+const alternates = models.slice(1).map(plainLine);
+const nullModelRecord = allHypotheses.find((h) => h.id === 'H-NULL');
+const nullModel = nullModelRecord ? plainLine(nullModelRecord) : null;
+
+/** AI systems disclosed for this cycle. Families are the durable fact; builds are best-effort. */
+const AI_SYSTEMS = [
+  { family: 'Claude', build: 'Opus 5', maker: 'Anthropic' },
+  { family: 'Codex', build: 'GPT-5.6 Sol', maker: 'OpenAI' },
+  { family: 'Grok', build: 'Grok 4.5', maker: 'xAI' },
+];
+
+/** Plain-language orientation. Draft copy — pending claim-approval pass before publication. */
+const CASE_IN_BRIEF = [
+  'A man in his thirties has bone density far below what is expected for his age — the kind of reading normally seen in elderly patients with advanced bone disease.',
+  'Alongside it: constant nerve pain and burning in the hands and feet, joint pain without inflammation, and structural problems in the lower spine.',
+  'A severe thiamine (vitamin B1) deficiency was documented in someone with no ordinary reason to have one — not an alcohol user, with normal digestion and absorption tests.',
+  'Two antibody measurements are persistently abnormal in opposite directions, repeatedly, across years of testing.',
+  'Symptoms trace back to roughly 2017. Dozens of specialists across many fields have not produced a unifying diagnosis.',
+];
 ---
 
-{/*
-  Homepage: omit the layout-level full Disclaimer block above the hero so the
-  project headline can enter the first mobile viewport. Status bar, sticky
-  strip, landing-opening caveat, and footer still carry research-only language.
-  J.2 / J.2.1: single polished hero disclaimer; full-width path columns;
-  contribution as compact horizontal section; no duplicate "open to correction" in lede.
-*/}
 <BaseLayout title="Home" currentPath="/" showDisclaimer={false}>
+  {/* ── 1. Hero ─────────────────────────────────────────────────────── */}
   <section class="hero landing-hero">
     <div class="landing-hero-top">
-      <div class="legend-label">{previewLegend}</div>
+      <div class="legend-label">Public research preview</div>
       <AnalysisVersionBadge compact />
     </div>
-    <h1 class="landing-h1">
-      What is documented.
-      <span class="q"> What was interpreted.</span>
-      <span class="q"> What is still unknown.</span>
-    </h1>
-    <p class="lede landing-lede">
-      Audited claims, working models, and open questions from publicly released materials.
-    </p>
-    <div
-      class="callout caution landing-opening"
-      role="note"
-      id="research-disclaimer"
-      aria-label="Opening research-preview caveat"
-    >
-      <p class="landing-opening-line">
-        <strong>{LANDING_OPENING_CAVEAT}</strong>
-      </p>
-      <p class="landing-opening-detail">
-        This is an <strong>AI-assisted research portfolio</strong>. It is <strong>not</strong> medical advice, a
-        diagnosis, or a treatment plan. <strong>Drift0r directly granted permission</strong> to publish the
-        repository, website, research, and approved public data. That permission does <strong>not</strong> imply that
-        Drift0r or any clinician endorses the findings, interpretations, or hypotheses. <strong
-          >Clinician review has not been performed.</strong
-        > Licensed clinicians must verify all records and interpret all findings.
-      </p>
-    </div>
 
-    {/*
-      Current working synthesis: plain-language overview + leading H1–H3 from approved
-      versioned hypothesis data. No extra disclaimer/status chrome (hero already carries it).
-    */}
-    <section id="current-working-synthesis" class="landing-synthesis" aria-labelledby="landing-synthesis-title">
-      <h2 class="landing-synthesis-title" id="landing-synthesis-title">Current working synthesis</h2>
-      <p class="landing-synthesis-lede">
-        The public draft organizes the audited multi-system presentation around versioned working hypotheses
-        ({m.hypotheses} records, including the H-NULL baseline). The three leading model records below are drawn
-        from approved hypothesis data in stable identifier order (H1–H3). Each line names one claim the record may
-        help organize and one named gap it does not cover.
-      </p>
-      <ul class="landing-synthesis-list">
+    <h1 class="landing-h1">
+      Drift0r's undiagnosed case, analyzed in the open — by AI models built to disagree.
+    </h1>
+
+    <p class="lede landing-lede">
+      Claude, Codex, and Grok each worked the medical record independently, then each attacked the
+      others' conclusions. What survived is published here with its counterevidence, its gaps, and every
+      correction logged. <strong>No diagnosis is offered.</strong> This is a research record built for clinicians
+      to challenge.
+    </p>
+
+    {/* ── 2. Method strip ──────────────────────────────────────────── */}
+    <div class="method-strip" aria-labelledby="method-strip-title">
+      <h2 class="method-strip-title" id="method-strip-title">How this was produced</h2>
+
+      <ol class="method-flow">
+        <li><span class="method-step-n">1</span><span class="method-step-t">Independent analysis ×3</span></li>
+        <li><span class="method-step-n">2</span><span class="method-step-t">Adversarial critique ×3</span></li>
+        <li><span class="method-step-n">3</span><span class="method-step-t">Human audit</span></li>
+        <li class="method-flow-out">
+          <span class="method-step-n">→</span>
+          <span class="method-step-t">{m.corrections} corrections logged</span>
+        </li>
+      </ol>
+
+      <ul class="method-models">
         {
-          leadingSynthesis.map((item) => (
-            <li class="landing-synthesis-item">
-              <div class="landing-synthesis-head">
-                <a class="mono landing-synthesis-id" href={withBase(`/working-model/#${item.id}`)}>
-                  {item.id}
-                </a>
-                <span class="landing-synthesis-meta mono">
-                  {item.kind} · confidence: <strong>{item.confidence}</strong>
-                </span>
-              </div>
-              <h3 class="landing-synthesis-h-title">{item.title}</h3>
-              {item.overview ? <p class="landing-synthesis-overview">{item.overview}</p> : null}
-              <dl class="landing-synthesis-dl">
-                <div>
-                  <dt>May help explain</dt>
-                  <dd>
-                    {item.mayExplain ? (
-                      <>
-                        <a class="mono claim-link" href={withBase(`/case/#${item.mayExplain.id}`)}>
-                          {item.mayExplain.id}
-                        </a>
-                        {item.mayExplain.text ? (
-                          <span class="landing-synthesis-claim-text"> — {item.mayExplain.text}</span>
-                        ) : null}
-                      </>
-                    ) : (
-                      <span class="mono">— none listed —</span>
-                    )}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Important gap</dt>
-                  <dd>
-                    {item.importantGap ? (
-                      <>
-                        <a class="mono claim-link" href={withBase(`/case/#${item.importantGap.id}`)}>
-                          {item.importantGap.id}
-                        </a>
-                        {item.importantGap.text ? (
-                          <span class="landing-synthesis-claim-text"> — {item.importantGap.text}</span>
-                        ) : null}
-                      </>
-                    ) : (
-                      <span class="mono">— none listed —</span>
-                    )}
-                  </dd>
-                </div>
-              </dl>
+          AI_SYSTEMS.map((s) => (
+            <li>
+              <strong>{s.family}</strong>
+              <span class="mono method-model-build">{s.build}</span>
+              <span class="method-model-maker">{s.maker}</span>
             </li>
           ))
         }
       </ul>
-      <p class="landing-synthesis-more">
-        <a href={withBase('/working-model/')}>Full working model — all hypotheses, support, and counterevidence →</a>
-      </p>
-    </section>
 
-    <div class="landing-paths" aria-label="Reading paths">
-      <a class="path primary" href={withBase('/case/')}>
-        <div class="k">Path A</div>
-        <div class="t">Start with the evidence</div>
-        <div class="d">Audited case anchors separated by evidence type, with source trails.</div>
-      </a>
-      <a class="path" href={withBase('/for-clinicians/')}>
-        <div class="k">Path B</div>
-        <div class="t">I am a clinician — one page</div>
-        <div class="d">Printable research handout. Discussion questions, not orders.</div>
-      </a>
+      <p class="method-counterweight">
+        <strong>Multi-model agreement is not validation.</strong> No licensed clinician has reviewed these pages.
+        Where the models disagreed, both positions stay on the record.
+        <a href={withBase('/methods/')}>How this works →</a>
+      </p>
     </div>
 
-    <div class="landing-contribute">
-      <ContributionCta variant="home" heading="Help improve this research preview" />
+    {/* ── 3. Compact caveat ────────────────────────────────────────── */}
+    <div class="callout caution landing-opening" role="note" id="research-disclaimer">
+      <p class="landing-opening-line">
+        <strong>{LANDING_OPENING_CAVEAT}</strong>
+      </p>
+      <p class="landing-opening-detail">
+        Not medical advice, a diagnosis, or a treatment plan. Drift0r granted permission to publish this
+        research; permission is not endorsement. <a href="#limits">Full limits and disclosures ↓</a>
+      </p>
     </div>
   </section>
 
-  <section class="metrics" aria-label="Honest metrics">
-    <div class="legend-label">Register metrics (negatives first)</div>
-    <div class="metrics-grid">
+  {/* ── 4. The case in brief ───────────────────────────────────────── */}
+  <section class="page-section case-brief" aria-labelledby="case-brief-title">
+    <h2 class="sec" id="case-brief-title">What this case is</h2>
+    <p class="sec-note">Plain-language orientation. Every point below traces to a documented record.</p>
+    <ul class="case-brief-list">
+      {CASE_IN_BRIEF.map((line) => <li>{line}</li>)}
+    </ul>
+    <p class="section-more">
+      <a href={withBase('/case/')}>See the documented findings, separated by evidence type →</a>
+    </p>
+  </section>
+
+  {/* ── 5. Leading theories ────────────────────────────────────────── */}
+  <section class="page-section theories" aria-labelledby="theories-title">
+    <h2 class="sec" id="theories-title">What we think is going on</h2>
+    <p class="sec-note">
+      Working research models, not diagnoses. Each is published with a count of what it accounts for and what
+      it fails to explain.
+    </p>
+
+    {
+      lead ? (
+        <article class="theory theory--lead">
+          <div class="theory-kicker">
+            <span class="theory-role">The organizing frame</span>
+            <span class="chip chip--conf">confidence: {lead.confidence}</span>
+          </div>
+          <h3 class="theory-title">{lead.title}</h3>
+          <p class="theory-summary">{lead.summary}</p>
+          <p class="theory-counts">
+            <span class="theory-count theory-count--fits">Fits {lead.explains} documented findings</span>
+            <span class="theory-count theory-count--gaps">Doesn't account for {lead.gaps}</span>
+          </p>
+          <p class="theory-technical mono">
+            {lead.id} · {lead.technicalTitle}
+          </p>
+          <a class="theory-link" href={withBase(`/working-model/#${lead.id}`)}>
+            Full record, support, and counterevidence →
+          </a>
+        </article>
+      ) : null
+    }
+
+    {
+      alternates.length ? (
+        <>
+          <h3 class="theory-subhead">The layers inside that frame</h3>
+          <div class="theory-grid">
+            {alternates.map((t) => (
+              <article class="theory">
+                <div class="theory-kicker">
+                  <span class="chip chip--conf">confidence: {t.confidence}</span>
+                </div>
+                <h4 class="theory-title theory-title--sm">{t.title}</h4>
+                <p class="theory-summary">{t.summary}</p>
+                <p class="theory-counts">
+                  <span class="theory-count theory-count--fits">Fits {t.explains}</span>
+                  <span class="theory-count theory-count--gaps">Doesn't account for {t.gaps}</span>
+                </p>
+                <p class="theory-technical mono">
+                  {t.id} · {t.technicalTitle}
+                </p>
+                <a class="theory-link" href={withBase(`/working-model/#${t.id}`)}>
+                  Full record →
+                </a>
+              </article>
+            ))}
+          </div>
+        </>
+      ) : null
+    }
+
+    {
+      nullModel ? (
+        <article class="theory theory--null">
+          <div class="theory-kicker">
+            <span class="theory-role">The baseline we keep on the record</span>
+            <span class="chip chip--conf">confidence: {nullModel.confidence}</span>
+          </div>
+          <h3 class="theory-title theory-title--sm">{nullModel.title}</h3>
+          <p class="theory-summary">{nullModel.summary}</p>
+          <p class="theory-technical mono">
+            {nullModel.id} · {nullModel.technicalTitle}
+          </p>
+          <a class="theory-link" href={withBase(`/working-model/#${nullModel.id}`)}>
+            Full record →
+          </a>
+        </article>
+      ) : null
+    }
+
+    <p class="section-more">
+      <a href={withBase('/working-model/')}>
+        All {m.hypotheses} working models with their support and counterevidence →
+      </a>
+    </p>
+  </section>
+
+  {/* ── 6. Honest numbers ──────────────────────────────────────────── */}
+  <section class="metrics headline-metrics" aria-label="Honest metrics">
+    <div class="metrics-grid metrics-grid--headline">
       <div class="metric">
         <div class="n zero">{m.diagnoses}</div>
-        <div class="l"><b>diagnoses</b> on this site</div>
+        <div class="l"><b>diagnoses</b> offered on this site</div>
       </div>
       <div class="metric">
         <div class="n zero">{m.clinicianReviews}</div>
@@ -193,93 +241,166 @@ const leadingSynthesis = getHypotheses()
       </div>
       <div class="metric">
         <div class="n zero">{m.verifiedPrimary}</div>
-        <div class="l">
-          of {m.claimCount} claims <b>verified against a primary instrument record</b>
-        </div>
-      </div>
-      <div class="metric">
-        <div class="n">{m.claimCount}</div>
-        <div class="l">audited claims in public draft set</div>
-      </div>
-      <div class="metric">
-        <div class="n">{m.openQuestions}</div>
-        <div class="l">open record questions</div>
+        <div class="l">of {m.claimCount} claims verified against a <b>primary instrument record</b></div>
       </div>
       <div class="metric">
         <div class="n">{m.corrections}</div>
-        <div class="l">logged corrections</div>
-      </div>
-      <div class="metric">
-        <div class="n">{m.literatureCards}</div>
-        <div class="l">literature cards ({m.uniqueWorks} unique works)</div>
-      </div>
-      <div class="metric">
-        <div class="n">{m.hypotheses}</div>
-        <div class="l">working hypotheses</div>
+        <div class="l">errors <b>found and logged</b>, not quietly fixed</div>
       </div>
     </div>
   </section>
 
+  {/* ── 7. Evidence atlas ──────────────────────────────────────────── */}
   <section class="page-section">
     <EvidenceAtlas />
   </section>
 
-  <section class="page-section">
-    <h2 class="sec">Specialty LDT vs independent testing</h2>
+  {/* ── 8. Commonly suggested ──────────────────────────────────────── */}
+  <section class="page-section ruled-out" aria-labelledby="ruled-out-title">
+    <h2 class="sec" id="ruled-out-title">Commonly suggested — and already tested</h2>
+    <p class="sec-note">{ruledOut.standing_caveat}</p>
+
+    <div class="ruled-out-table-wrap">
+      <table class="ruled-out-table">
+        <thead>
+          <tr>
+            <th scope="col">Suggestion</th>
+            <th scope="col">What was run</th>
+            <th scope="col">Result</th>
+            <th scope="col">Still open</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ruledOut.entries.map((e) => (
+              <tr>
+                <th scope="row" class="ruled-out-name">
+                  {e.suggestion}
+                </th>
+                <td>
+                  {e.tested}
+                  <span class="ruled-out-when mono">{e.when}</span>
+                </td>
+                <td>{e.result}</td>
+                <td class="ruled-out-open">
+                  {e.still_open ? e.still_open : <span class="ruled-out-none">—</span>}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {/* ── 8b. Contested positives ────────────────────────────────────── */}
+  {
+    channels.length > 0 && (
+      <section class="page-section" aria-labelledby="two-channel-title">
+        <h2 class="sec" id="two-channel-title">A positive result that did not hold up</h2>
+        <p class="sec-note">
+          One specialty laboratory returned a positive signal. Independent testing did not confirm it. Both
+          results stay on the record side by side and are never merged into a single answer — the same
+          provenance rule applied to DXA and every other value on this site.
+        </p>
+        {channels.map((ch) => (
+          <TwoChannelReadout channel={ch} />
+        ))}
+      </section>
+    )
+  }
+
+  {/* ── 9. Limits ──────────────────────────────────────────────────── */}
+  <section class="page-section limits" id="limits" aria-labelledby="limits-title">
+    <h2 class="sec" id="limits-title">How solid is this, honestly</h2>
+
     <p class="sec-note">
-      Contested specialty laboratory-developed tests are never merged with independent or commercial results. Dual-energy
-      X-ray absorptiometry (DXA) and other values elsewhere use the same provenance discipline.
+      The method is auditable. The conclusions are not established. Those are different things, so they are
+      listed separately.
     </p>
-    {channels.map((ch) => <TwoChannelReadout channel={ch} />)}
+
+    <div class="limits-grid">
+      <div class="solidity solidity--is">
+        <h3 class="limits-h">What is solid</h3>
+        <ul class="solidity-list">
+          <li>
+            <strong>Every claim carries a source trail.</strong>
+            Nothing on this site is asserted without pointing at the document it came from.
+          </li>
+          <li>
+            <strong>Claim types are never blended.</strong>
+            What an instrument recorded, what the patient reported, what someone interpreted, and what is only
+            a hypothesis are labelled separately and stay separate.
+          </li>
+          <li>
+            <strong>Counterevidence ships with the claim.</strong>
+            Every working model publishes what it fails to explain, not only what it fits.
+          </li>
+          <li>
+            <strong>{m.corrections} errors found and published.</strong>
+            Corrections are logged with identifiers and kept visible, not quietly edited away.
+          </li>
+          <li>
+            <strong>{m.literatureCards} literature cards, all real and retrievable.</strong>
+            Every card resolves to an identifiable published work — no invented citations.
+          </li>
+          <li>
+            <strong>Disputed lab results are quarantined.</strong>
+            Specialty-lab signals are never merged with standard commercial results, and where they conflict
+            both stay on the record.
+          </li>
+        </ul>
+      </div>
+
+      <div class="solidity solidity--isnt">
+        <h3 class="limits-h">What is not solid</h3>
+        <ul class="solidity-list">
+          <li>
+            <strong>No clinician has reviewed any of this.</strong>
+            Not one page, not one hypothesis. Clinician review has not been performed, and that is the
+            single largest gap on the site. This is an AI-assisted research portfolio:
+            licensed clinicians must verify all records before any of it informs care.
+          </li>
+          <li>
+            <strong>{m.verifiedPrimary} of {m.claimCount} claims are verified against an original instrument
+              record.</strong>
+            The underlying sources are specialist summary documents, not the raw scan and analyser output they
+            were written from.
+          </li>
+          <li>
+            <strong>Hypotheses are research models, not diagnoses.</strong>
+            Do not start, stop, or change any treatment based on this site.
+          </li>
+          <li>
+            <strong>Three models agreeing is not evidence.</strong>
+            It means three models agreed. They can be confidently wrong together.
+          </li>
+        </ul>
+
+        <h3 class="limits-h">Permission and consent</h3>
+        <p class="limits-p">
+          Drift0r directly granted permission to publish this repository, website, and approved data. That
+          permission does <strong>not</strong> imply that Drift0r or any clinician endorses the findings.
+        </p>
+      </div>
+    </div>
+
+    <p class="limits-links">
+      <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+      <a href={withBase('/methods/')}>Methods</a>
+      <a href={withBase('/legal/')}>Legal</a>
+      <a href={withBase('/changelog/')}>Changelog</a>
+    </p>
   </section>
 
-  <section class="page-section">
-    <h2 class="sec">What this is not</h2>
-    <ul class="notlist">
-      <li>
-        <strong>Not a diagnosis</strong>
-        Working hypotheses are research models. None is a clinical determination.
-      </li>
-      <li>
-        <strong>Not treatment advice</strong>
-        Do not start, stop, or change medication or treatment based on this site.
-      </li>
-      <li>
-        <strong>Not independent lab confirmation</strong>
-        Specialty LDT signals remain contested until independently established.
-      </li>
-      <li>
-        <strong>Not clinician-reviewed</strong>
-        No licensed clinician has reviewed or endorsed these pages. Clinician review has not been performed.
-      </li>
-      <li>
-        <strong>Not a clinical product</strong>
-        Patient permission for repository and website publication was obtained; this remains a research preview, not
-        medical advice or clinician-validated content.
-      </li>
-      <li>
-        <strong>Not AI validation</strong>
-        Multi-model agreement is not clinical validation.
-      </li>
-    </ul>
-  </section>
-
-  <section class="page-section" style="padding-bottom: 48px;">
-    <h2 class="sec">Shareable status statements</h2>
-    <p class="sec-note">Dated research status — not claims about a diagnosis.</p>
-    <ul class="notlist">
-      <li>
-        <strong class="mono">Zero of {m.claimCount} claims</strong>
-        verified against a primary instrument record (as of content version on this page).
-      </li>
-      <li>
-        <strong class="mono">{m.hypotheses} working hypotheses</strong>
-        (including H-NULL baseline) published with what each fails to explain where listed.
-      </li>
-      <li>
-        <strong class="mono">{m.openQuestions} open questions</strong>
-        the present public record cannot answer.
-      </li>
-    </ul>
-  </section>
+  {/*
+    ── 10. Contribute ─────────────────────────────────────────────────
+    Rendered through ContributionCta, never hand-rolled: it is the single
+    source of truth for repo hrefs (build-time PUBLIC_REPO_URL, no invented
+    URLs, explicit unconfigured branch) and it carries the correction /
+    privacy / removal path this project commits to in governance.
+  */}
+  <div class="contribute-strip">
+    <ContributionCta variant="home" heading="Found an error, a bad citation, or contradictory evidence?" />
+  </div>
 </BaseLayout>

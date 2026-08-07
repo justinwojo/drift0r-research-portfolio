@@ -1,38 +1,77 @@
 ---
+/**
+ * Site footer. Deliberately does NOT restate the header chrome.
+ *
+ * The status-notice strip, the provenance bar (version / dates / review status /
+ * patient approval / clinician review / indexing) and the full research disclaimer
+ * all render above the fold on every route. Repeating them here made ~70% of the
+ * footer a second copy of the top of the page, which dilutes rather than reinforces.
+ *
+ * The footer therefore carries only what the header does not: how to contribute,
+ * who built this, the build SHA, and navigation. The one exception is
+ * `showFullDisclaimer` — routes that suppress the top-of-main <Disclaimer /> (the
+ * landing page uses a compact caveat instead) get the full text here, so every
+ * non-print route still states it exactly once.
+ */
 import { DISCLAIMER_FULL } from '../lib/constants';
 import { getRelease } from '../lib/data';
-import { indexingProvenanceLabel } from '../lib/indexing';
 import { withBase } from '../lib/paths';
 import ContributionCta from './ContributionCta.astro';
 
+interface Props {
+  /** Render the full disclaimer here because this route has none at the top of main. */
+  showFullDisclaimer?: boolean;
+}
+const { showFullDisclaimer = false } = Astro.props;
+
 const release = getRelease();
-const indexingLabel = indexingProvenanceLabel(Boolean(release.noindex));
 ---
 
 <footer class="site-footer" data-site-footer>
   <div class="wrap">
-    <aside class="disclaimer" role="note" aria-label="Research-only medical disclaimer (footer)">
-      <p class="disclaimer-title">Research only — not medical advice</p>
-      <p>{DISCLAIMER_FULL}</p>
-    </aside>
-    <aside class="creator-disclosure" role="note" aria-label="Creator and independence disclosure">
-      <p>
-        Created and maintained by <strong>Justin Wojciechowski</strong> (
-        <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
-        ). Independent community research project. Justin is not a clinician. Not operated by, affiliated with, or
-        endorsed by Drift0r. Published with Drift0r’s permission; permission is not endorsement. No financial
-        relationship with or compensation from Drift0r. AI-assisted portfolio — licensed clinicians must verify all
-        findings.
-        <a href={withBase('/about/')}>About the project</a>
-      </p>
-    </aside>
-    <ContributionCta variant="footer" />
-    <p class="foot-meta">
-      analysis version {release.content_version} · evidence current through {release.evidence_current_through} · as of{' '}
-      {release.as_of} · review: {release.review_status.replace(/_/g, ' ')} · patient approval:{' '}
-      {release.patient_approval.status.replace(/_/g, ' ')} · clinician review: not performed · indexing:{' '}
-      {indexingLabel} · base commit {release.base_commit.slice(0, 7)}
-    </p>
+    {
+      showFullDisclaimer && (
+        <aside class="disclaimer" role="note" aria-label="Research-only medical disclaimer">
+          <p class="disclaimer-title">Research only — not medical advice</p>
+          <p>{DISCLAIMER_FULL}</p>
+        </aside>
+      )
+    }
+    <div class="foot-grid">
+      <section class="foot-col" aria-labelledby="foot-contribute-title">
+        <h2 class="legend-label foot-col-title" id="foot-contribute-title">
+          Contribute or report a problem
+        </h2>
+        <ContributionCta variant="footer" />
+      </section>
+
+      <section class="foot-col" aria-labelledby="foot-about-title">
+        <h2 class="legend-label foot-col-title" id="foot-about-title">About this project</h2>
+        <p class="creator-disclosure">
+          Created and maintained by <strong>Justin Wojciechowski</strong> (
+          <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
+          ). Independent community research project. Justin is not a clinician. Not operated by,
+          affiliated with, or endorsed by Drift0r. Published with Drift0r’s permission; permission is
+          not endorsement. No financial relationship with or compensation from Drift0r. AI-assisted
+          portfolio — licensed clinicians must verify all findings.{' '}
+          <a href={withBase('/about/')}>About the project</a>
+        </p>
+        <p class="foot-build mono">
+          <span class="foot-build-item">analysis <b>{release.content_version}</b></span>
+          <span class="foot-build-sep">·</span>
+          <span class="foot-build-item">build <b>{release.base_commit.slice(0, 7)}</b></span>
+          <span class="foot-build-sep">·</span>
+          <span class="foot-build-item">
+            <a href={withBase('/changelog/')}>what changed</a>
+          </span>
+          <span class="foot-build-sep">·</span>
+          <span class="foot-build-item">
+            <a href="#site-provenance">version and review status ↑</a>
+          </span>
+        </p>
+      </section>
+    </div>
+
     <nav class="foot-nav" aria-label="Footer">
       <a href={withBase('/about/')}>About</a>
       <a href={withBase('/changelog/')}>Changelog</a>
@@ -46,19 +85,50 @@ const indexingLabel = indexingProvenanceLabel(Boolean(release.noindex));
 </footer>
 
 <style>
+  /* Two columns on desktop so the required disclosure copy stops reading as a wall. */
+  .foot-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 32px 48px;
+  }
+  @media (max-width: 860px) {
+    .foot-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+  }
+  .foot-col-title {
+    display: block;
+    margin: 0 0 10px;
+    font-size: 11px;
+  }
   .creator-disclosure {
-    margin: var(--s5, 24px) 0;
-    padding: var(--s4, 16px);
-    border: var(--b-hair, 1px solid #c9c2b4);
-    background: var(--card, #fbfaf7);
-    font-size: var(--t-sm, 0.8125rem);
+    margin: 0;
+    font-size: 12px;
     line-height: 1.5;
     color: var(--muted, #4c5a63);
-  }
-  .creator-disclosure p {
-    margin: 0;
+    max-width: 62ch;
   }
   .creator-disclosure a {
     color: var(--link, #0b4f73);
+  }
+  /* Only the two facts the top provenance bar does not carry, plus a way back to it. */
+  .foot-build {
+    margin: 14px 0 0;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--muted, #4c5a63);
+  }
+  .foot-build b {
+    color: var(--ink, #1a1814);
+  }
+  /* Keep each fragment whole so a SHA or the trailing arrow never orphans onto its own line. */
+  .foot-build-item {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .foot-build-sep {
+    padding: 0 6px;
+    opacity: 0.55;
   }
 </style>

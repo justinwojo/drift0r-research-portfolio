@@ -7,13 +7,14 @@
 
 | Role | System | Notes |
 |------|--------|-------|
-| Research / implementation | Grok (xAI) | Primary execution agent for publication-readiness roadmap |
-| Independent analysis (Round 1) | Claude, Codex, Grok | 2026-08-05 swarm |
-| Adversarial critique (Round 1) | Claude, Codex, Grok | Same date |
-| Adversarial multi-model audit (overnight) | Claude, Grok, Codex | 2026-08-06 private research run; cross-model attack, citation fidelity, and remediation planning |
-| Remediation implementation | Grok (xAI) | Applied COR-0022…COR-0032 from verified primary-source defects (working tree; not a clinical review) |
+| Research / implementation | Grok 4.5 (xAI) | Primary execution agent for publication-readiness roadmap |
+| Independent analysis (Round 1) | Claude Opus 5, Codex GPT-5.6 Sol, Grok 4.5 | 2026-08-05 swarm |
+| Adversarial critique (Round 1) | Claude Opus 5, Codex GPT-5.6 Sol, Grok 4.5 | Same date |
+| Adversarial multi-model audit (overnight) | Claude Opus 5, Grok 4.5, Codex GPT-5.6 Sol | 2026-08-06 private research run; cross-model attack, citation fidelity, and remediation planning |
+| Remediation implementation | Grok 4.5 (xAI) | Applied COR-0022…COR-0032 from verified primary-source defects (working tree; not a clinical review) |
 
-Exact model build numbers for Round 1 and the 2026-08-06 run were not always recorded beyond agent family names and dates.
+Exact builds are recorded: every AI contribution to this portfolio used Claude Opus 5, Codex GPT-5.6 Sol, or
+Grok 4.5. No other model or variant was used for any task.
 A detailed private run log may exist at `audits/2026-08-publication-readiness/00_RUN.md` and under
 `private/research-runs/2026-08-06-overnight/` in the **private monorepo** only; those files are **not**
 part of the sanitized public export. Public disclosure is limited to agent families, dates, and the

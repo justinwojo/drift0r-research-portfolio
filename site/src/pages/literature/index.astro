@@ -19,6 +19,28 @@ const uniqueCount = new Set(all.map((e) => e.canonical_id || e.id)).size;
 const mode = getSiteMode();
 const identityCoverage = getLitIdentityCoverage();
 
+/**
+ * License honesty figure, computed rather than hardcoded so it cannot drift as cards
+ * are added. "Restricted or unstated" = no usable license signal on the card.
+ */
+const restrictedLicenseCount = all.filter((e) => {
+  const l = (e.license || '').trim().toLowerCase();
+  return !l || l === 'unknown' || l === 'all-rights-reserved';
+}).length;
+const restrictedLicensePct = all.length
+  ? Math.round((restrictedLicenseCount / all.length) * 100)
+  : 0;
+
+/**
+ * Identity coverage, stated as the fact that matters: whether every launch-cited card
+ * has been resolved. Falls back to raw counts if the two ever diverge.
+ */
+const allLaunchCitedVerified =
+  identityCoverage.launch_cited_count > 0 &&
+  identityCoverage.identity_verified_count === identityCoverage.launch_cited_count;
+const uncheckedCardCount =
+  identityCoverage.catalog_card_count - identityCoverage.identity_verified_count;
+
 function topicSlug(t: string): string {
   return t
     .toLowerCase()
@@ -68,24 +90,39 @@ for (const e of launch) {
     <div class="legend-label">Literature</div>
     <h1>Launch-critical bibliography</h1>
     <p class="lede">
-      Sources cited by working hypotheses and clinician questions (launch subset below —
-      <span class="mono">{launch.length}</span> website routes). Full catalog holds
-      <span class="mono">{all.length}</span> cards (
-      <span class="mono">{uniqueCount}</span> unique works) as data in the public GitHub repository; website detail
+      Sources cited by working hypotheses and clinician questions (launch subset below —{' '}
+      <span class="mono">{launch.length}</span> website routes). Full catalog holds{' '}
+      <span class="mono">{all.length}</span> cards (<span class="mono">{uniqueCount}</span>{' '}
+      unique works) as data in the public GitHub repository; website detail
       routes are limited to this launch set so every route has inbound navigation. Paywalled PDFs and local research
       PDFs are never hosted or linked as files — use DOI or publisher landing pages only.
     </p>
     <p class="record-note">
-      Identity coverage (catalog-wide, bibliographic only): verified
-      <span class="mono">{identityCoverage.identity_verified_count}</span> /
-      <span class="mono">{identityCoverage.catalog_card_count}</span> cards; semantic verification
-      <span class="mono">{identityCoverage.semantic_verified_count}</span> (always identity-only — not medical
-      verification). Launch-cited count in coverage:
-      <span class="mono">{identityCoverage.launch_cited_count}</span>.
+      <strong>Identity checks are bibliographic only.</strong>{' '}
+      {
+        allLaunchCitedVerified ? (
+          <>
+            All <span class="mono">{identityCoverage.launch_cited_count}</span> cards cited by
+            launch-critical content have had their identifiers resolved to a real published work.
+          </>
+        ) : (
+          <>
+            <span class="mono">{identityCoverage.identity_verified_count}</span> of{' '}
+            <span class="mono">{identityCoverage.launch_cited_count}</span> launch-cited cards have
+            had their identifiers resolved to a real published work.
+          </>
+        )
+      }{' '}
+      The remaining <span class="mono">{uncheckedCardCount}</span> catalog cards have not been
+      checked. Semantic verification stands at{' '}
+      <span class="mono">{identityCoverage.semantic_verified_count}</span> and always will —
+      resolving an identifier proves a work exists, never that its contents support a medical claim.
     </p>
     <p class="record-note">
-      Third-party license metadata honesty: about <span class="mono">75%</span> of catalog cards currently
-      record license as <span class="mono">unknown</span> or <span class="mono">all-rights-reserved</span>.
+      Third-party license metadata honesty: <span class="mono">{restrictedLicenseCount}</span> of{' '}
+      <span class="mono">{all.length}</span> catalog cards (<span class="mono">{restrictedLicensePct}%</span>)
+      currently record license as <span class="mono">unknown</span> or{' '}
+      <span class="mono">all-rights-reserved</span>.
       This portfolio ships bibliographic metadata and own-words applicability notes only — it does not
       redistribute paywalled full texts. License fields are incomplete and must not be read as clearance to
       reuse the underlying works.

@@ -33,23 +33,28 @@ describe('F.1.1 preview language contracts', () => {
     assert.match(src, /Drift0r directly granted permission/);
     assert.match(src, /does\s*<strong>not<\/strong>\s*imply|does not imply/);
     assert.match(src, /Clinician review has\s*\n?\s*<strong>not<\/strong>\s*been\s*performed|Clinician review has not been performed/i);
-    assert.match(src, /Licensed clinicians must verify all records/);
+    assert.match(src, /Licensed clinicians must verify all records/i);
     // J.2: no duplicate patient-permission callout; no marketing noindex lede token
     assert.doesNotMatch(src, /legend-label">Approval status|Approval status<\/strong>/);
     assert.doesNotMatch(src, /ledeIndexing|indexingLedeClause|indexingApprovalSentence/);
     assert.doesNotMatch(src, /landing-lede[\s\S]{0,200}noindex/i);
-    // J.2.1: full-width paths + home contribution variant; lede does not repeat open-to-correction
-    assert.match(src, /landing-paths/);
-    assert.match(src, /landing-contribute/);
+    // Contribution surface must come from the shared component, never hand-rolled hrefs.
+    assert.match(src, /ContributionCta/);
     assert.match(src, /variant="home"/);
     assert.doesNotMatch(src, /landing-lede[\s\S]{0,300}incomplete and open to correction/i);
-    // Pre-launch UX: working synthesis after disclaimer, before paths
-    assert.match(src, /landing-synthesis|Current working synthesis/);
-    assert.match(src, /May help explain|Important gap/);
-    assert.match(src, /Full working model/);
-    // Synthesis must not introduce a second disclaimer/status strip
-    assert.doesNotMatch(src, /landing-synthesis[\s\S]{0,400}LANDING_OPENING_CAVEAT/);
-    assert.doesNotMatch(src, /landing-synthesis[\s\S]{0,400}StatusNotice|ProvenanceBar/);
+    /*
+     * Working hypotheses are surfaced on the landing page with, for each record, what it
+     * accounts for AND what it does not, plus a link into the full working model. The
+     * section was renamed from "Current working synthesis" (.landing-synthesis) to
+     * "What we think is going on" (.theories) in the plain-language rewrite; assert the
+     * substance, which did not change, rather than the old class names.
+     */
+    assert.match(src, /theories|landing-synthesis|Current working synthesis/);
+    assert.match(src, /Doesn't account for|May help explain|Important gap/);
+    assert.match(src, /withBase\('\/working-model\/'\)|Full working model/);
+    // The hypothesis section must not introduce a second disclaimer/status strip.
+    assert.doesNotMatch(src, /theories-title[\s\S]{0,400}LANDING_OPENING_CAVEAT/);
+    assert.doesNotMatch(src, /theories-title[\s\S]{0,400}StatusNotice|ProvenanceBar/);
   });
 
   it('BaseLayout injects StatusNotice on every route', () => {

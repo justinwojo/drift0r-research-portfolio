@@ -146,8 +146,13 @@ if (publicationRequiresApprovedClaims || publicationRequiresRouteApproval) {
         <slot />
       </div>
     </main>
+    {/*
+      The footer no longer restates the header chrome (disclaimer + provenance).
+      Routes that suppress the top-of-main disclaimer get the full text in the
+      footer instead, so every non-print route still carries it exactly once.
+    */}
     <div class={isPrintRoute ? 'no-print' : undefined}>
-      <SiteFooter />
+      <SiteFooter showFullDisclaimer={!effectiveShowDisclaimer && !isPrintRoute} />
     </div>
     {/*
       Non-print routes: Cmd+P must NOT emit multi-page medical content without

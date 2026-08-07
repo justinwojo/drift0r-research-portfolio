@@ -11,7 +11,6 @@ import {
   getUnresolvedQuestions,
 } from '../lib/data';
 import { withBase } from '../lib/paths';
-import { PERSISTENT_STATUS_NOTICE, PRINT_PAGE_DISCLAIMER_COMPACT } from '../lib/constants';
 import { indexingStatusCompact } from '../lib/indexing';
 import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
 
@@ -38,7 +37,12 @@ const reviewStatus = release.review_status.replace(/_/g, ' ');
 
 /** Compact status line used on every print page (must stay accurate to release.yaml). */
 const statusLine = `analysis ${release.content_version} · evidence through ${release.evidence_current_through} · as of ${release.as_of} · review: ${reviewStatus} · patient approval: ${patientStatus} · clinician review: ${clinicianStatus}`;
-const pageEndLine = `${PRINT_PAGE_DISCLAIMER_COMPACT} · Patient approval: ${patientStatus} · Clinician review: ${clinicianStatus} · analysis ${release.content_version} · evidence through ${release.evidence_current_through}`;
+/**
+ * Page-end stamp. Deliberately short: the top-of-page banner already carries the full
+ * PRINT_PAGE_DISCLAIMER_COMPACT text, so repeating all seven phrases here only served to
+ * overflow the sheet and drag a near-blank physical page after each section.
+ */
+const pageEndLine = `Research only — not medical advice · Not clinician-reviewed · analysis ${release.content_version}`;
 ---
 
 <BaseLayout
@@ -71,15 +75,6 @@ const pageEndLine = `${PRINT_PAGE_DISCLAIMER_COMPACT} · Patient approval: ${pat
         <div class="legend-label">Research evidence portfolio · clinician handout</div>
         <h1>For clinicians — case research snapshot</h1>
         <p class="mono print-meta">{statusLine} · indexing: {indexingStatus}</p>
-        <p class="print-status-notice mono" role="status">{PERSISTENT_STATUS_NOTICE}</p>
-        <p class="print-disclaimer">
-          <strong>Research only — not medical advice.</strong> A licensed clinician must verify underlying records,
-          interpret findings, and decide on testing or treatment. Do not start, stop, or change treatment based on this
-          site. Published with Drift0r’s permission — permission is not endorsement. Patient approval:{' '}
-          <span class="mono">{patientStatus}</span>. Clinician review: <span class="mono">{clinicianStatus}</span>.{' '}
-          Analysis version {release.content_version} · evidence current through {release.evidence_current_through} · as
-          of {release.as_of}.
-        </p>
         <p class="print-primary-limit">
           <strong>
             No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by this
@@ -151,12 +146,7 @@ const pageEndLine = `${PRINT_PAGE_DISCLAIMER_COMPACT} · Patient approval: ${pat
 
     <section class="print-page print-page-2" aria-label="Clinician handout page 2">
       <PrintPageDisclaimer variant="banner" />
-      <p class="print-status-notice mono" role="status">{PERSISTENT_STATUS_NOTICE}</p>
-      <p class="print-disclaimer mono">
-        <strong>Research only — not medical advice.</strong> Licensed clinicians must verify underlying records. Do not
-        start, stop, or change treatment based on this material. Permission is not endorsement. Patient approval:{' '}
-        {patientStatus}. Clinician review: {clinicianStatus}. {release.content_version} · {release.as_of}.
-      </p>
+      <p class="mono print-meta">{statusLine}</p>
 
       <h2>Working hypotheses (research index — not diagnoses)</h2>
       <p class="print-note">

@@ -1,0 +1,99 @@
+# Commonly suggested explanations and what was actually tested.
+#
+# Scope rule: this file carries test NAME, DATE, and PLAIN RESULT only.
+# It deliberately does not carry numeric lab values — those live in the private
+# tests ledger and have not been cleared for publication.
+#
+# Honesty rule: every entry must be answerable as "what was run / what it showed /
+# what is still open". An entry with nothing in `still_open` is asserting the
+# question is closed on the present record — use that sparingly.
+#
+# `still_open: null` renders as "—" (nothing further flagged on the present record).
+
+as_of: '2026-08-06'
+
+standing_caveat: >-
+  A negative test is not the same as an impossibility. These entries record what was run
+  and what it showed — they are not clinical exclusions, and no licensed clinician has
+  reviewed them.
+
+entries:
+  - suggestion: Celiac disease
+    tested: Antibody panel (tTG, DGP, EMA) plus total IgA
+    when: '2025-10'
+    result: All negative. Total IgA sufficient, so the usual false-negative route does not apply.
+    still_open: >-
+      No duodenal biopsy and no HLA-DQ2/DQ8 typing. Gluten intake before the draw is not
+      documented, and a negative result on a reduced-gluten diet is hard to interpret.
+    literature_id: lit-0185
+
+  - suggestion: Lyme disease
+    tested: Multi-method serology and PCR across several labs
+    when: '2023 onward'
+    result: All negative by every method run.
+    still_open: null
+
+  - suggestion: Mold illness / CIRS
+    tested: Mold toxicity and allergy testing
+    when: '~2026'
+    result: Negative.
+    still_open: >-
+      An extended away-from-home environmental trial has been discussed but not carried out.
+
+  - suggestion: Mast cell activation / mastocytosis
+    tested: KIT mutation testing and urine mast-cell mediators
+    when: '2025 – 2026'
+    result: KIT negative; urine mediators normal; no classic activation pattern.
+    still_open: >-
+      Bone marrow biopsy deferred until bone density makes the procedure safer.
+
+  - suggestion: Lupus, rheumatoid arthritis, Sjögren's, scleroderma
+    tested: Full autoantibody panel (ANA, dsDNA, ENA, C3/C4), rheumatoid factor, anti-CCP
+    when: '2021 – 2026'
+    result: Completely negative. Inflammatory markers have been normal on every draw.
+    still_open: null
+
+  - suggestion: Ehlers-Danlos syndrome
+    tested: Prior clinical assessment
+    when: 'reported history'
+    result: Reported by the patient as previously cleared.
+    still_open: >-
+      Patient-reported only — no assessment document is in the public record.
+
+  - suggestion: Thyroid disease
+    tested: Thyroid panel with antibodies, repeated
+    when: '2021 – 2026'
+    result: Euthyroid throughout; antibodies negative.
+    still_open: null
+
+  - suggestion: Parathyroid disease
+    tested: Intact PTH with serum calcium and vitamin D, repeated
+    when: '2021 – 2026'
+    result: Calcium normal, PTH low-normal — the opposite of the expected pattern.
+    still_open: null
+
+  - suggestion: Heavy metal toxicity
+    tested: Heavy metals panel
+    when: '2026-06'
+    result: All below reporting cutoffs.
+    still_open: null
+
+  - suggestion: Myeloma or a blood-protein disorder
+    tested: Serum protein electrophoresis and free light chains
+    when: '2022 and 2026'
+    result: Polyclonal, no abnormal clone, normal light-chain ratio.
+    still_open: null
+
+  - suggestion: COVID-19 vaccine injury
+    tested: Symptom-onset timeline against vaccination dates
+    when: 'timeline'
+    result: Documented onset is around 2017, several years before COVID-19 vaccines existed.
+    still_open: null
+
+  - suggestion: It is psychological / somatic symptom disorder
+    tested: Multiple psychiatric and psychological evaluations
+    when: 'through 2025'
+    result: >-
+      A previously applied somatic symptom disorder label was formally reversed in 2025.
+      The bone density, imaging, and laboratory findings are objective and instrument-recorded.
+    still_open: null

@@ -186,6 +186,9 @@
   .print-page-end {
     margin-top: 8pt !important;
     margin-bottom: 0 !important;
+    /* Never let the stamp split across the page boundary and drag a blank sheet. */
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   /*

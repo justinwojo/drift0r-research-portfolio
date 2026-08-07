@@ -1431,22 +1431,19 @@ figcaption {
   font-size: 14.5px;
 }
 
+/* Only rendered on routes with no top-of-main disclaimer (landing page). */
 .site-footer .disclaimer {
   margin-top: 0;
-}
-
-.site-footer .foot-meta {
-  margin-top: 18px;
-  font-family: var(--mono);
-  font-size: 12.5px;
-  color: var(--muted);
+  margin-bottom: 28px;
 }
 
 .site-footer .foot-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 20px;
-  margin-top: 16px;
+  gap: 8px 20px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule, #c8bfb0);
 }
 
 .site-footer .foot-nav a {
@@ -1702,5 +1699,1038 @@ a.mono,
     padding: 0;
     margin: 0;
     max-width: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Landing page rebuild (draft — iterating on layout before test fixes)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.landing-h1 {
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.landing-lede {
+  max-width: 62ch;
+}
+
+/* ── Method strip ─────────────────────────────────────────────────── */
+.method-strip {
+  margin: var(--s6) 0 var(--s5);
+  padding: var(--s5);
+  background: var(--card);
+  border: var(--b-hair);
+  border-left: var(--b-strong);
+}
+
+.method-strip-title {
+  margin: 0 0 var(--s4);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.method-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: 0 0 var(--s4);
+  padding: 0;
+  list-style: none;
+  align-items: center;
+}
+
+.method-flow li {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.method-flow li:not(:last-child)::after {
+  content: '→';
+  margin-left: var(--s3);
+  color: var(--hairline);
+  font-size: var(--t-base);
+}
+
+.method-step-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.method-flow-out .method-step-n {
+  background: var(--support);
+}
+
+.method-step-t {
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.method-flow-out .method-step-t {
+  color: var(--support);
+}
+
+.method-models {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+  margin: 0 0 var(--s4);
+  padding: var(--s3) 0 0;
+  border-top: var(--b-hair);
+  list-style: none;
+}
+
+.method-models li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  font-size: var(--t-sm);
+}
+
+.method-model-build {
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+.method-model-maker {
+  font-size: var(--t-xs);
+  color: var(--firm);
+}
+
+.method-model-maker::before {
+  content: '· ';
+}
+
+.method-counterweight {
+  margin: 0;
+  padding-top: var(--s3);
+  border-top: var(--b-hair);
+  font-size: var(--t-sm);
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.method-counterweight strong {
+  color: var(--contra);
+}
+
+.method-counterweight a {
+  margin-left: var(--s2);
+  white-space: nowrap;
+}
+
+/* ── Case in brief ────────────────────────────────────────────────── */
+.case-brief-list {
+  margin: var(--s4) 0 var(--s4);
+  padding: 0;
+  list-style: none;
+  max-width: 68ch;
+}
+
+.case-brief-list li {
+  position: relative;
+  padding: 0 0 var(--s3) var(--s5);
+  font-size: var(--t-body);
+  line-height: 1.62;
+}
+
+.case-brief-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 10px;
+  height: 1px;
+  background: var(--firm);
+}
+
+.section-more {
+  margin: var(--s4) 0 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+/* ── Theories ─────────────────────────────────────────────────────── */
+.theory {
+  background: var(--card);
+  border: var(--b-hair);
+  padding: var(--s5);
+}
+
+.theory--lead {
+  border-left: var(--b-strong);
+  margin-bottom: var(--s6);
+}
+
+.theory-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.theory-role {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.chip--conf {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  padding: 2px 8px;
+  border: var(--b-hair);
+  border-radius: 2px;
+  background: var(--parchment);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.theory-title {
+  margin: 0 0 var(--s3);
+  font-family: var(--serif);
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.theory-title--sm {
+  font-size: 1.15rem;
+}
+
+.theory-summary {
+  margin: 0 0 var(--s4);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: 58ch;
+}
+
+.theory-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: 0 0 var(--s3);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.theory-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theory-count--fits::before {
+  content: '+';
+  font-family: var(--mono);
+  color: var(--support);
+  font-weight: 700;
+}
+
+.theory-count--gaps::before {
+  content: '−';
+  font-family: var(--mono);
+  color: var(--contra);
+  font-weight: 700;
+}
+
+.theory-count--fits {
+  color: var(--support);
+}
+
+.theory-count--gaps {
+  color: var(--contra);
+}
+
+.theory-technical {
+  margin: 0 0 var(--s3);
+  font-size: var(--t-xs);
+  color: var(--firm);
+  line-height: 1.4;
+}
+
+.theory-link {
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.theory-subhead {
+  margin: 0 0 var(--s4);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/*
+ * Layer cards: 2×2 on desktop rather than one wide row. Collapsed to a single
+ * column by the max-width:860px block below — do not re-declare the two-column
+ * value after that block or the mobile collapse silently stops applying.
+ */
+.theory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+
+/* ── Headline metrics ─────────────────────────────────────────────── */
+.headline-metrics {
+  border-top: var(--b-hair);
+  border-bottom: var(--b-hair);
+}
+
+.metrics-grid--headline {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ── Ruled out ────────────────────────────────────────────────────── */
+.ruled-out-table-wrap {
+  margin-top: var(--s4);
+  overflow-x: auto;
+}
+
+.ruled-out-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+}
+
+.ruled-out-table th,
+.ruled-out-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--s3) var(--s4) var(--s3) 0;
+  border-bottom: var(--b-hair);
+}
+
+.ruled-out-table thead th {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: var(--b-firm);
+  white-space: nowrap;
+}
+
+.ruled-out-name {
+  font-family: var(--serif);
+  font-size: var(--t-base);
+  font-weight: 600;
+  width: 20%;
+}
+
+.ruled-out-when {
+  display: block;
+  margin-top: 3px;
+  font-size: var(--t-xs);
+  color: var(--firm);
+}
+
+.ruled-out-open {
+  color: var(--contra);
+  width: 30%;
+}
+
+.ruled-out-none {
+  color: var(--hairline);
+}
+
+/* ── Limits ───────────────────────────────────────────────────────── */
+.limits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s6);
+  margin-top: var(--s4);
+}
+
+.limits-h {
+  margin: 0 0 var(--s3);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.limits-grid > div > .limits-h ~ .limits-h {
+  margin-top: var(--s5);
+}
+
+.limits-p {
+  margin: 0 0 var(--s3);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.notlist--tight li {
+  font-size: var(--t-sm);
+}
+
+.limits-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: var(--s4) 0 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+/* ── Contribute strip ─────────────────────────────────────────────── */
+/* Positioning wrapper only — the band itself is ContributionCta variant="home". */
+.contribute-strip {
+  max-width: var(--w-page);
+  /* Sits outside .limits, so it needs its own separation from that section's links. */
+  margin: var(--s6) auto var(--s7);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .theory-grid,
+  .limits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid--headline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .landing-h1 {
+    max-width: none;
+  }
+
+  .method-strip {
+    padding: var(--s4);
+  }
+
+  .method-flow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s2);
+  }
+
+  .method-flow li:not(:last-child)::after {
+    content: none;
+  }
+
+  .theory {
+    padding: var(--s4);
+  }
+
+  .contribute-strip {
+    margin-left: var(--s4);
+    margin-right: var(--s4);
+  }
+
+  /* Ruled-out table → stacked cards */
+  .ruled-out-table,
+  .ruled-out-table thead,
+  .ruled-out-table tbody,
+  .ruled-out-table tr,
+  .ruled-out-table th,
+  .ruled-out-table td {
+    display: block;
+    width: auto;
+  }
+
+  .ruled-out-table thead {
+    display: none;
+  }
+
+  .ruled-out-table tr {
+    padding: var(--s4) 0;
+    border-bottom: var(--b-hair);
+  }
+
+  .ruled-out-table th,
+  .ruled-out-table td {
+    border-bottom: 0;
+    padding: 0 0 var(--s2);
+  }
+
+  .ruled-out-name {
+    font-size: var(--t-h3);
+    margin-bottom: var(--s2);
+  }
+
+  .ruled-out-table td::before {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--firm);
+    margin-bottom: 2px;
+  }
+
+  .ruled-out-table td:nth-of-type(1)::before {
+    content: 'What was run';
+  }
+
+  .ruled-out-table td:nth-of-type(2)::before {
+    content: 'Result';
+  }
+
+  .ruled-out-table td:nth-of-type(3)::before {
+    content: 'Still open';
+  }
+}
+
+/* Landing: tighten the gap between the hero caveat and the first content section. */
+.landing-hero + .page-section {
+  padding-top: var(--s5);
+}
+
+.landing-hero .landing-opening {
+  margin-bottom: 0;
+}
+
+/* Null model reads as a discipline, not a competing theory. */
+.theory--null {
+  margin-top: var(--s5);
+  background: transparent;
+  border: 1px dashed var(--hairline);
+}
+
+.theory--null .theory-role {
+  color: var(--firm);
+}
+
+/* ── Solidity columns: what holds up vs what does not ─────────────── */
+.solidity {
+  padding-left: var(--s4);
+  border-left: 3px solid var(--hairline);
+}
+
+.solidity--is {
+  border-left-color: var(--support);
+}
+
+.solidity--isnt {
+  border-left-color: var(--contra);
+}
+
+.solidity--is .limits-h {
+  color: var(--support);
+}
+
+.solidity--isnt .limits-h {
+  color: var(--contra);
+}
+
+.solidity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.solidity-list li {
+  margin-bottom: var(--s3);
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.solidity-list li strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.solidity--isnt .limits-h + .solidity-list + .limits-h {
+  margin-top: var(--s5);
+}
+
+/* ── Working model: tightened openers ─────────────────────────────── */
+.hero--tight {
+  padding-bottom: 0;
+}
+
+.hero--tight .lede {
+  margin-bottom: var(--s3);
+}
+
+.hero--tight .analysis-version-badge--compact {
+  margin-top: var(--s3);
+}
+
+/* Model index — the records, visible before any preamble. */
+.model-index {
+  list-style: none;
+  margin: var(--s4) 0 0;
+  padding: 0;
+  border-top: var(--b-hair);
+}
+
+.model-index-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s2) var(--s4);
+  padding: var(--s3) 0;
+  border-bottom: var(--b-hair);
+}
+
+.model-index-row--null {
+  border-left: var(--b-strong);
+  margin-left: calc(-1 * var(--s3));
+  padding-left: var(--s3);
+  background: var(--card);
+}
+
+.model-index-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  flex: 1 1 20rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.model-index-link:hover .model-index-title,
+.model-index-link:focus-visible .model-index-title {
+  text-decoration: underline;
+}
+
+.model-index-id {
+  flex: none;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 4.2rem;
+}
+
+.model-index-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+.model-index-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex: none;
+}
+
+.model-index-counts {
+  font-size: var(--t-xs);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.model-index-fits {
+  color: var(--support);
+  font-weight: 700;
+}
+
+.model-index-gaps {
+  color: var(--contra);
+  font-weight: 700;
+}
+
+.model-index-key {
+  margin: var(--s3) 0 0;
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .model-index-link {
+    flex: 1 1 100%;
+  }
+
+  .model-index-meta {
+    padding-left: 4.2rem;
+  }
+}
+
+/* Collapsed reading apparatus */
+.how-to-read {
+  border: var(--b-hair);
+  background: var(--card);
+  padding: var(--s3) var(--s4);
+}
+
+.how-to-read > summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.how-to-read[open] > summary {
+  margin-bottom: var(--s3);
+}
+
+.how-to-read-body > p {
+  margin: 0 0 var(--s3);
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  max-width: 66ch;
+}
+
+.how-to-read-body .badge-row {
+  margin: 0 0 var(--s3);
+}
+
+.how-to-read-links {
+  margin: 0 !important;
+  font-weight: 600;
+}
+
+.record-formal-title {
+  margin: 0 0 var(--s3);
+  font-size: var(--t-xs);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  line-height: 1.4;
+  max-width: 62ch;
+}
+
+/* ── Questions for clinicians ─────────────────────────────────────── */
+.domain-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.domain-nav-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: 6px 10px;
+  border: var(--b-hair);
+  background: var(--card);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: var(--t-sm);
+  text-transform: capitalize;
+}
+
+.domain-nav-item:hover,
+.domain-nav-item:focus-visible {
+  border-color: var(--ink);
+}
+
+.domain-nav-count {
+  font-size: var(--t-xs);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Reference rail on each question card — linked, previewable IDs. */
+.record-refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+  margin: var(--s3) 0 0;
+  padding-top: var(--s3);
+  border-top: var(--b-hair);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.record-refs-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.record-refs-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.record-refs-sep {
+  color: var(--muted);
+}
+
+.record-refs-none {
+  color: var(--muted);
+}
+
+/* Packet print entry — one intro block, no repeated version lines. */
+.packet-intro {
+  margin: 10px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #bbb;
+  break-inside: avoid;
+}
+
+.packet-intro-title {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.packet-intro-body {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.packet-intro-meta {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #444;
+}
+
+@media print {
+  .packet-intro {
+    border-color: #999;
+  }
+  .packet-intro-body {
+    font-size: 9.5pt;
+  }
+  .packet-intro-meta {
+    font-size: 8pt;
+  }
+}
+
+/* ── Methods ──────────────────────────────────────────────────────── */
+.sub {
+  margin: var(--s6) 0 var(--s3);
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+/* Claim kinds — glyph, plain gloss, live count. */
+.kind-list {
+  list-style: none;
+  margin: var(--s4) 0 var(--s3);
+  padding: 0;
+  border-top: var(--b-hair);
+}
+
+.kind-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  padding: var(--s3) 0;
+  border-bottom: var(--b-hair);
+}
+
+.kind-glyph {
+  flex: none;
+  min-width: 1.9rem;
+  justify-content: center;
+}
+
+.kind-main {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kind-label {
+  display: block;
+  font-weight: 700;
+  font-size: var(--t-sm);
+}
+
+.kind-note {
+  display: block;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.kind-count {
+  flex: none;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+/* Verification tiers — count first, so the scale reads at a glance. */
+.verify-list {
+  list-style: none;
+  margin: var(--s4) 0 var(--s3);
+  padding: 0;
+}
+
+.verify-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  padding: 5px 0;
+}
+
+.verify-count {
+  flex: none;
+  min-width: 2.5rem;
+  text-align: right;
+  font-weight: 700;
+  font-size: var(--t-sm);
+}
+
+.verify-row:first-child .verify-count {
+  color: var(--contra);
+}
+
+.verify-label {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+}
+
+/* Model roles */
+.model-roles {
+  list-style: none;
+  margin: var(--s4) 0;
+  padding: 0;
+  border-top: var(--b-hair);
+}
+
+.model-role {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s2) var(--s4);
+  padding: var(--s3) 0;
+  border-bottom: var(--b-hair);
+}
+
+.model-role-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+@media (max-width: 560px) {
+  .model-role {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.model-role-build {
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+
+.model-role-maker {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+.model-role-what {
+  flex: 1 1 18rem;
+  font-size: var(--t-sm);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* Verbatim disclosure */
+.raw-disclosure {
+  margin: var(--s4) 0 0;
+  border: var(--b-hair);
+  background: var(--card);
+  padding: var(--s3) var(--s4);
+}
+
+.raw-disclosure > summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.raw-disclosure[open] > summary {
+  margin-bottom: var(--s3);
+}
+
+.raw-disclosure-list {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.raw-disclosure-list li {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+
+/* Pointer rail to the pages that own the other topics */
+.elsewhere {
+  list-style: none;
+  margin: var(--s4) 0 0;
+  padding: 0;
+  border-top: var(--b-hair);
+}
+
+.elsewhere li {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s2) var(--s4);
+  padding: var(--s3) 0;
+  border-bottom: var(--b-hair);
+}
+
+.elsewhere li > a {
+  font-weight: 700;
+}
+
+.elsewhere li > span {
+  font-size: var(--t-sm);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .elsewhere li {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

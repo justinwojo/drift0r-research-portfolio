@@ -16,40 +16,91 @@ const hypotheses = all.filter((h) => h.id !== 'H-NULL');
   currentPath="/working-model/"
   description="Current working hypotheses with supporting and contradicting evidence. Research only — not medical advice."
 >
-  <section class="hero">
+  <section class="hero hero--tight">
     <div class="legend-label">Working model</div>
     <h1>Hypotheses with what they fail to explain</h1>
     <p class="lede">
-      Ordered by stable identifier (H1–H5), not as a leaderboard. Each record shows support and
-      contradiction with equal visual weight, plus what would change the assessment. H-NULL is a qualitative
-      baseline, not a competing disease label.
+      Five working explanations, each shown with the findings it accounts for and the findings it
+      does not. None is a diagnosis.
     </p>
-    <AnalysisVersionBadge />
+    <AnalysisVersionBadge compact />
   </section>
 
   <section class="page-section">
-    <h2 class="sec">Confidence vocabulary</h2>
+    <h2 class="sec">The models on the record</h2>
     <p class="sec-note">
-      Five words only — never a percentage, score, or continuous bar. Dual architecture / module buckets
-      are shown separately and never averaged.
+      Ordered by stable identifier, not as a leaderboard. Jump to any full record.
     </p>
-    <div class="badge-row">
+    <ol class="model-index">
       {
-        CONFIDENCE_ORDER.map((c) => (
-          <span class="badge mono">{CONFIDENCE_LABELS[c]}</span>
+        hypotheses.map((h) => (
+          <li class="model-index-row">
+            <a class="model-index-link" href={`#${h.id}`}>
+              <span class="model-index-id mono">{h.id}</span>
+              <span class="model-index-title">{h.plain_title}</span>
+            </a>
+            <span class="model-index-meta">
+              <span class="chip--conf">{CONFIDENCE_LABELS[h.confidence] ?? h.confidence}</span>
+              <span class="model-index-counts mono">
+                <span class="model-index-fits">+{h.explains_claim_ids.length}</span>
+                {' / '}
+                <span class="model-index-gaps">−{h.does_not_explain_claim_ids.length}</span>
+              </span>
+            </span>
+          </li>
         ))
       }
-    </div>
-    <p class="record-note">
-      Rankings reflect multi-model research synthesis (Round 1, 2026-08-05), not a clinical diagnosis.
-      Models can be wrong and can agree on errors.
-    </p>
-    <p>
-      <a href={withBase('/working-model/evidence-table/')}>Printable evidence table</a>
+      {
+        nullHyp && (
+          <li class="model-index-row model-index-row--null">
+            <a class="model-index-link" href={`#${nullHyp.id}`}>
+              <span class="model-index-id mono">{nullHyp.id}</span>
+              <span class="model-index-title">{nullHyp.plain_title}</span>
+            </a>
+            <span class="model-index-meta">
+              <span class="chip--conf">baseline, not a rival</span>
+            </span>
+          </li>
+        )
+      }
+    </ol>
+    <p class="model-index-key mono">
+      <span class="model-index-fits">+</span> findings the model would explain
       {' · '}
-      <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+      <span class="model-index-gaps">−</span> findings it would not
     </p>
   </section>
+
+  <section class="page-section">
+    <details class="how-to-read">
+      <summary>How to read these records</summary>
+      <div class="how-to-read-body">
+        <p>
+          Each record shows support and contradiction with equal visual weight, plus what would
+          change the assessment. Counts are not weights, and the two columns are never netted
+          against each other.
+        </p>
+        <p class="how-to-read-sub">
+          <strong>Confidence is five words only</strong> — never a percentage, score, or continuous
+          bar. Dual architecture / module buckets are shown separately and never averaged.
+        </p>
+        <div class="badge-row">
+          {CONFIDENCE_ORDER.map((c) => <span class="badge mono">{CONFIDENCE_LABELS[c]}</span>)}
+        </div>
+        <p class="record-note">
+          Rankings reflect multi-model research synthesis (Round 1, 2026-08-05), not a clinical
+          diagnosis. Models can be wrong and can agree on errors.
+        </p>
+        <p class="how-to-read-links">
+          <a href={withBase('/working-model/evidence-table/')}>Printable evidence table</a>
+          {' · '}
+          <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+        </p>
+      </div>
+    </details>
+  </section>
+
+  {hypotheses.map((h) => <HypothesisRecord hypothesis={h} />)}
 
   {
     nullHyp && (
@@ -61,25 +112,20 @@ const hypotheses = all.filter((h) => h.id !== 'H-NULL');
           </h2>
           <p style="margin: 0 0 10px;">{nullHyp.public_summary}</p>
           <p class="record-note" style="margin: 0;">
-            A defensible numeric population prior for this exact multi-system presentation is
-            <strong> not available</strong> from the sources currently cited on this site. Stating a
-            false-precision percentage would overclaim. H-NULL is Bayesian discipline: several common or
-            semi-independent processes may coexist without one rare unifier. It is not a diagnosis and not
-            a vote against H1–H5.
+            H-NULL exists for Bayesian discipline when weighing H1–H5. It is not a diagnosis and
+            not a vote against them.
           </p>
         </div>
       </section>
     )
   }
 
-  {hypotheses.map((h) => <HypothesisRecord hypothesis={h} />)}
-
   <section class="page-section" style="padding-bottom: 48px;">
     <div class="callout">
       <strong class="legend-label">What this page does not say</strong>
       <p style="margin: 8px 0 0;">
-        No hypothesis here is a diagnosis. Infection limbs are detachable pending adjudication. Specialty
-        laboratory-developed tests remain not independently confirmed.
+        No hypothesis here is a diagnosis. Infection limbs are detachable pending adjudication.
+        Specialty laboratory-developed tests remain not independently confirmed.
       </p>
     </div>
   </section>

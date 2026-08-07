@@ -243,6 +243,38 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     }
   });
 
+  /**
+   * The footer deliberately does not restate the header chrome. Guard both directions:
+   * the full disclaimer must appear exactly once per rendered page (never zero, never a
+   * second footer copy), and the provenance bar anchor must exist everywhere, since the
+   * fragment scan whitelists #site-provenance.
+   */
+  it('full disclaimer renders exactly once per page and provenance anchor is global', () => {
+    const htmlFiles = readdirSync(dist, { recursive: true }).filter((f) => String(f).endsWith('.html'));
+    assert.ok(htmlFiles.length > 10, 'expected a built dist');
+    for (const f of htmlFiles) {
+      const html = readFileSync(join(dist, String(f)), 'utf8');
+      assert.equal(
+        (html.match(/id="site-provenance"/g) || []).length,
+        1,
+        `${f}: expected exactly one #site-provenance anchor`,
+      );
+      const full = (html.match(/AI-assisted research summary for educational purposes only/g) || [])
+        .length;
+      // Print routes carry the equivalent notice per printed page instead of the aside.
+      const isPrintRoute = /class="print-sheet|print-route/.test(html);
+      // /legal/ quotes the disclaimer a second time as the governing text itself.
+      const isLegal = String(f) === 'legal/index.html';
+      if (isPrintRoute) {
+        assert.match(html, /Licensed clinicians must verify underlying records/i, String(f));
+      } else if (isLegal) {
+        assert.ok(full >= 1, `${f}: legal page must state the full disclaimer`);
+      } else {
+        assert.equal(full, 1, `${f}: expected the full disclaimer exactly once, got ${full}`);
+      }
+    }
+  });
+
   it('working model includes what would change this and polarity structure', () => {
     const html = readFileSync(join(dist, 'working-model/index.html'), 'utf8');
     assert.match(html, /What would change this/i);
@@ -515,17 +547,24 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.match(html, /data-atlas-verb|atlas-edge|Complete table equivalent/i);
   });
 
-  it('homepage current working synthesis uses approved hypothesis records', () => {
+  /*
+   * The landing page must surface the working hypotheses with both sides of each record —
+   * what it accounts for and what it does not — and link into the full working model.
+   * Section renamed from "Current working synthesis" to "What we think is going on" in the
+   * plain-language rewrite; the requirement is the content, not the heading.
+   */
+  it('homepage surfaces working hypotheses with their gaps and links into the working model', () => {
     const html = readFileSync(join(dist, 'index.html'), 'utf8');
-    assert.match(html, /Current working synthesis/i);
-    assert.match(html, /landing-synthesis/);
-    assert.match(html, /May help explain/i);
-    assert.match(html, /Important gap/i);
+    assert.match(html, /What we think is going on|Current working synthesis/i);
+    assert.match(html, /Working research models, not diagnoses|research models/i);
+    // Each record states what it fits and what it fails to explain — never one without the other.
+    assert.match(html, /Fits\s|May help explain/i);
+    assert.match(html, /account for|Important gap/i);
     // Leading H1–H3 present with links into working model
     assert.match(html, /working-model\/#H1/);
     assert.match(html, /working-model\/#H2/);
     assert.match(html, /working-model\/#H3/);
-    assert.match(html, /Full working model/i);
+    assert.match(html, /working models with their support and counterevidence|Full working model/i);
   });
 
   it('internal route and fragment scan of dist has zero failures', () => {
@@ -572,8 +611,9 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
           const ids = pageIds.get(pathKey) || pageIds.get(path) || new Set();
           // Same-page fragments resolved against target page
           if (!ids.has(hash) && !ids.has(decodeURIComponent(hash))) {
-            // Allow research-disclaimer and main
-            if (hash === 'main' || hash === 'research-disclaimer') continue;
+            // Global chrome anchors present on every rendered page (verified separately below)
+            if (hash === 'main' || hash === 'research-disclaimer' || hash === 'site-provenance')
+              continue;
             failures.push(`${f}: missing fragment #${hash} on ${pathKey}`);
           }
         }
@@ -586,7 +626,8 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
       const selfIds = pageIds.get(selfRoute) || pageIds.get(selfRoute.replace(/\/$/, '') || '/') || new Set();
       for (const m of html.matchAll(/href=["']#([^"']+)["']/g)) {
         const hash = m[1];
-        if (hash === 'main' || hash === 'research-disclaimer') continue;
+        if (hash === 'main' || hash === 'research-disclaimer' || hash === 'site-provenance')
+          continue;
         if (!selfIds.has(hash) && !selfIds.has(decodeURIComponent(hash))) {
           failures.push(`${f}: missing same-page fragment #${hash}`);
         }

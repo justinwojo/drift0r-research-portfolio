@@ -44,14 +44,14 @@ if (pages.length === 0) pages.push([]);
   description="Printable clinician question packet. Research only — not medical advice."
   isPrintRoute={true}
 >
-  <section class="hero no-print">
+  <section class="hero hero--tight no-print">
     <div class="legend-label">Printable route</div>
     <h1>Questions for clinicians — packet</h1>
     <p class="lede">
       Printable packet with rationale and citation identifiers. Discussion questions only — not orders.
     </p>
-    <AnalysisVersionBadge />
-    <p class="no-print"><PrintButton /></p>
+    <AnalysisVersionBadge compact />
+    <p class="no-print" style="margin-top: var(--s4);"><PrintButton /></p>
   </section>
 
   <div class="print-sheet">
@@ -60,17 +60,20 @@ if (pages.length === 0) pages.push([]);
         <section class="print-page" aria-label={`Clinician questions packet page ${pageIdx + 1}`}>
           <PrintPageDisclaimer variant="banner" />
           {pageIdx === 0 && (
-            <>
-              <AnalysisVersionBadge compact />
-              <p class="mono" style="font-size: 12px;">
-                analysis {release.content_version} · evidence through {release.evidence_current_through} · as of {release.as_of} · clinician review: not performed · patient
-                approval: {release.patient_approval.status.replace(/_/g, ' ')} · Research only — not medical advice.
+            <div class="packet-intro">
+              <h2 class="packet-intro-title">About this packet</h2>
+              <p class="packet-intro-body">
+                {questions.length} research questions raised by an AI-assisted review of Drift0r's
+                records. <strong>They are discussion prompts, not orders.</strong> A licensed clinician
+                may accept, modify, or reject any item. Nothing here is a protocol or a consumer
+                instruction, and no clinician has reviewed this material. Do not start, stop, or change
+                treatment based on it.
               </p>
-              <p style="font-size: 14px;">
-                A licensed clinician may accept, modify, or reject any item. Nothing here is a protocol or consumer
-                instruction. Do not start, stop, or change treatment based on this material.
+              <p class="packet-intro-meta mono">
+                analysis {release.content_version} · evidence through {release.evidence_current_through} · as of {release.as_of} · clinician review: not performed · patient approval:{' '}
+                {release.patient_approval.status.replace(/_/g, ' ')}
               </p>
-            </>
+            </div>
           )}
           {chunk.map((q) => {
             const litLines = (q.literature_refs || []).map((id) => litPrintLines(id));

@@ -53,7 +53,8 @@ function litLine(id: string): string {
           </div>
         ) : null
       }
-      <h2 id={`${h.id}-title`} style="font-size: var(--t-h2); margin: 8px 0 12px;">{h.title}</h2>
+      <h2 id={`${h.id}-title`} style="font-size: var(--t-h2); margin: 8px 0 6px;">{h.plain_title}</h2>
+      <p class="record-formal-title mono">{h.title}</p>
       <p class="lede" style="font-size: 17px;">{h.public_summary}</p>
       <p class="record-note">
         This is a <strong>working research hypothesis</strong>, not a diagnosis. Rankings reflect multi-model

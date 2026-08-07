@@ -1,11 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
-import { getClinicianQuestions, reviewMeta } from '../../lib/data';
+import ClaimLink from '../../components/ClaimLink.astro';
+import { getClinicianQuestions, getHypotheses, reviewMeta } from '../../lib/data';
+import { hypothesisPreviewFromHypothesis, recordPreviewDataAttrs } from '../../lib/claimPreview';
 import { withBase } from '../../lib/paths';
 import Badge from '../../components/Badge.astro';
 
 const questions = getClinicianQuestions();
+
+/** Preview attrs by hypothesis id, so H-chips get the same tooltip as CLM links. */
+const hypothesisAttrs = new Map<string, Record<string, string>>();
+for (const h of getHypotheses()) {
+  hypothesisAttrs.set(h.id, recordPreviewDataAttrs(hypothesisPreviewFromHypothesis(h)));
+}
+
 const byDomain = new Map<string, typeof questions>();
 for (const q of questions) {
   const d = q.medical_domain || 'general';
@@ -22,6 +31,9 @@ for (const [k, arr] of byDomain) {
   );
   byDomain.set(k, arr);
 }
+
+const domains = [...byDomain.entries()];
+const domainLabel = (d: string) => d.replace(/_/g, ' ');
 ---
 
 <BaseLayout
@@ -29,23 +41,29 @@ for (const [k, arr] of byDomain) {
   currentPath="/questions-for-clinicians/"
   description="Discussion questions for licensed clinicians. Research only — not medical advice."
 >
-  <section class="hero">
+  <section class="hero hero--tight">
     <div class="legend-label">Questions for clinicians</div>
     <h1>Discussion questions, not orders</h1>
     <p class="lede">
-      These are research questions for a licensed clinician to accept, modify, or reject. They are not a
+      {questions.length} research questions for a licensed clinician to accept, modify, or reject. Not a
       protocol, not consumer instructions, and not something the patient has been advised to demand.
+      Priority means <strong>research priority</strong>, never clinical urgency.
     </p>
-    <AnalysisVersionBadge />
-    <div class="callout caution">
-      <strong class="legend-label">Standing statement</strong>
-      <p style="margin: 8px 0 0;">
-        Priority chips mean <strong>research priority</strong>, never clinical urgency. Forbidden phrasings
-        such as “Order this test now”, “You must start”, or “Self-experiment protocol” do not appear as
-        labels or advice.
-      </p>
-    </div>
-    <p>
+    <AnalysisVersionBadge compact />
+  </section>
+
+  <section class="page-section">
+    <nav class="domain-nav" aria-label="Question domains">
+      {
+        domains.map(([domain, qs]) => (
+          <a class="domain-nav-item" href={`#dom-${domain}`}>
+            <span class="domain-nav-name">{domainLabel(domain)}</span>
+            <span class="domain-nav-count mono">{qs.length}</span>
+          </a>
+        ))
+      }
+    </nav>
+    <p class="section-more">
       <a href={withBase('/questions-for-clinicians/packet/')}>Printable packet</a>
       {' · '}
       <a href={withBase('/questions-for-clinicians/prediction-matrix/')}>Prediction / outcome matrix</a>
@@ -53,10 +71,10 @@ for (const [k, arr] of byDomain) {
   </section>
 
   {
-    [...byDomain.entries()].map(([domain, qs]) => (
+    domains.map(([domain, qs]) => (
       <section class="page-section domain-group" aria-labelledby={`dom-${domain}`}>
         <h2 class="sec" id={`dom-${domain}`}>
-          {domain.replace(/_/g, ' ')}
+          {domainLabel(domain)}
         </h2>
         {qs.map((q) => {
           const review = reviewMeta(q.review_status);
@@ -74,16 +92,55 @@ for (const [k, arr] of byDomain) {
               <p class="record-note">
                 <strong>Rationale.</strong> {q.rationale}
               </p>
-              <p class="record-note mono" style="font-size: 12.5px;">
-                Related claims: {q.related_claim_ids.join(', ') || '—'} · Hypotheses:{' '}
-                {q.related_hypothesis_ids.join(', ') || '—'} · Literature:{' '}
-                {q.literature_refs.map((id, i) => (
-                  <>
-                    {i > 0 && ', '}
-                    <a href={withBase(`/literature/${id}/`)}>{id}</a>
-                  </>
-                ))}
-              </p>
+              <div class="record-refs">
+                <span class="record-refs-group">
+                  <span class="record-refs-label mono">Claims</span>
+                  {q.related_claim_ids.length ? (
+                    q.related_claim_ids.map((id, i) => (
+                      <>
+                        {i > 0 && <span class="record-refs-sep">·</span>}
+                        <ClaimLink id={id} />
+                      </>
+                    ))
+                  ) : (
+                    <span class="mono record-refs-none">—</span>
+                  )}
+                </span>
+                <span class="record-refs-group">
+                  <span class="record-refs-label mono">Hypotheses</span>
+                  {q.related_hypothesis_ids.length ? (
+                    q.related_hypothesis_ids.map((id, i) => (
+                      <>
+                        {i > 0 && <span class="record-refs-sep">·</span>}
+                        <a
+                          class="mono claim-link"
+                          href={withBase(`/working-model/#${id}`)}
+                          {...(hypothesisAttrs.get(id) || {})}
+                        >
+                          {id}
+                        </a>
+                      </>
+                    ))
+                  ) : (
+                    <span class="mono record-refs-none">—</span>
+                  )}
+                </span>
+                <span class="record-refs-group">
+                  <span class="record-refs-label mono">Literature</span>
+                  {q.literature_refs.length ? (
+                    q.literature_refs.map((id, i) => (
+                      <>
+                        {i > 0 && <span class="record-refs-sep">·</span>}
+                        <a class="mono claim-link" href={withBase(`/literature/${id}/`)}>
+                          {id}
+                        </a>
+                      </>
+                    ))
+                  ) : (
+                    <span class="mono record-refs-none">—</span>
+                  )}
+                </span>
+              </div>
             </article>
           );
         })}
@@ -91,5 +148,10 @@ for (const [k, arr] of byDomain) {
     ))
   }
 
-  <section class="page-section" style="padding-bottom: 48px;"></section>
+  <section class="page-section" style="padding-bottom: 48px;">
+    <p class="record-note">
+      Every question carries a recorded list of forbidden phrasings — “Order this test now”, “You must
+      start”, “Self-experiment protocol” — which are excluded from labels and advice by construction.
+    </p>
+  </section>
 </BaseLayout>

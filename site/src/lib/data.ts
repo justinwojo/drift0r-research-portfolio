@@ -172,6 +172,10 @@ export interface Hypothesis {
   module_confidence: string | null;
   summary: string;
   public_summary: string;
+  /** Authored lay-audience title. Falls back to `title` when absent. */
+  plain_title: string;
+  /** Authored lay-audience summary (~35 words). Falls back to `public_summary`. */
+  plain_summary: string;
   explains_claim_ids: string[];
   does_not_explain_claim_ids: string[];
   supporting_literature_ids: string[];
@@ -557,10 +561,12 @@ const WHAT_WOULD_NOT_CHANGE: Record<string, string[]> = {
 
 function loadHypothesesRaw(): Hypothesis[] {
   if (_hypothesesRaw) return _hypothesesRaw;
-  const raw = loadYamlDir<Omit<Hypothesis, 'public_summary' | 'what_would_change' | 'what_would_not_change'>>(
-    join(REPO_ROOT, 'differentials/hypotheses'),
-    'H',
-  );
+  const raw = loadYamlDir<
+    Omit<
+      Hypothesis,
+      'public_summary' | 'plain_title' | 'plain_summary' | 'what_would_change' | 'what_would_not_change'
+    > & { plain_title?: string; plain_summary?: string }
+  >(join(REPO_ROOT, 'differentials/hypotheses'), 'H');
   const uqs = loadUnresolvedQuestionsRaw();
   _hypothesesRaw = raw
     .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }))
@@ -580,6 +586,8 @@ function loadHypothesesRaw(): Hypothesis[] {
         contradicting_literature_ids: h.contradicting_literature_ids || [],
         open_question_ids: h.open_question_ids || [],
         public_summary: toPublicLanguage(h.summary),
+        plain_title: h.plain_title || h.title,
+        plain_summary: toPublicLanguage(h.plain_summary || h.summary),
         what_would_change: what_would_change.map((w) => ({
           ...w,
           text: toPublicLanguage(w.text),
@@ -601,6 +609,47 @@ function loadHypothesesRaw(): Hypothesis[] {
  * publication: explicit hypothesis (or null_model) release-scope approval AND claim refs.
  * Claim public_approved alone never surfaces a hypothesis.
  */
+export interface RuledOutEntry {
+  suggestion: string;
+  tested: string;
+  when: string;
+  result: string;
+  still_open: string | null;
+  literature_id?: string;
+}
+
+export interface RuledOutRegister {
+  as_of: string;
+  standing_caveat: string;
+  entries: RuledOutEntry[];
+}
+
+let _ruledOut: RuledOutRegister | null = null;
+
+/**
+ * Commonly suggested explanations and what was actually tested.
+ *
+ * Source file carries test name / date / plain result only — never numeric lab
+ * values. Text is passed through the public-language transform like every other
+ * rendered medical surface.
+ */
+export function getRuledOut(): RuledOutRegister {
+  if (_ruledOut) return _ruledOut;
+  const raw = loadRepoYaml<RuledOutRegister>('evidence/ruled_out.yaml');
+  _ruledOut = {
+    as_of: raw.as_of,
+    standing_caveat: toPublicLanguage(raw.standing_caveat),
+    entries: (raw.entries || []).map((e) => ({
+      ...e,
+      suggestion: toPublicLanguage(e.suggestion),
+      tested: toPublicLanguage(e.tested),
+      result: toPublicLanguage(e.result),
+      still_open: e.still_open ? toPublicLanguage(e.still_open) : null,
+    })),
+  };
+  return _ruledOut;
+}
+
 export function getHypotheses(): Hypothesis[] {
   const mode = getSiteMode();
   const raw = loadHypothesesRaw();

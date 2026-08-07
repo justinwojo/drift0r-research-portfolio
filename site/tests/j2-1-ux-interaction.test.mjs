@@ -525,10 +525,12 @@ describe('J.2.1 rendered UX interaction regression', {
         const overflow = Math.max(0, Math.max(d.scrollWidth, document.body.scrollWidth) - d.clientWidth);
         const h1 = document.querySelector('h1.landing-h1, .landing-hero h1, h1');
         const hr = h1 && h1.getBoundingClientRect();
-        const paths = document.querySelector('.landing-paths');
-        const synthesis = document.querySelector('.landing-synthesis');
-        const synthTitle = document.querySelector('#landing-synthesis-title, .landing-synthesis-title');
-        const contrib = document.querySelector('.landing-contribute, [data-contribution-variant="home"]');
+        // Renamed in the plain-language rewrite: .landing-synthesis -> .theories,
+        // .landing-paths -> the evidence atlas. Selectors accept either.
+        const paths = document.querySelector('.atlas, .evidence-atlas, [data-evidence-atlas], .landing-paths');
+        const synthesis = document.querySelector('.theories, .landing-synthesis');
+        const synthTitle = document.querySelector('#theories-title, #landing-synthesis-title, .landing-synthesis-title');
+        const contrib = document.querySelector('[data-contribution-variant="home"], .landing-contribute');
         const provSummary = document.querySelector('.provenance--compact summary, .prov-compact summary');
         const provText = provSummary ? provSummary.innerText.replace(/\\s+/g, ' ').trim() : '';
         const lede = document.querySelector('.landing-lede')?.textContent || '';
@@ -556,21 +558,21 @@ describe('J.2.1 rendered UX interaction regression', {
         await page.screenshot(join(shotDir, `home__${vp.id}.png`));
       }
       assert.ok(m.overflow <= 1, `${vp.id} overflow ${m.overflow}`);
-      assert.ok(m.hasSynthesis, `${vp.id} working synthesis section`);
-      assert.ok(m.synthBeforePaths, `${vp.id} synthesis before path cards`);
+      assert.ok(m.hasSynthesis, `${vp.id} working hypotheses section`);
+      assert.ok(m.synthBeforePaths, `${vp.id} hypotheses before the evidence atlas`);
     }
     // Homepage structure + calm chrome checks at 390
     const m390 = overflows.find((x) => x.id === '390x844');
     assert.ok(m390.hasPaths);
     assert.ok(m390.hasSynthesis);
-    assert.match(m390.synthTitle, /Current working synthesis/i);
+    assert.match(m390.synthTitle, /What we think is going on|Current working synthesis/i);
     assert.ok(m390.hasContrib);
     assert.equal(m390.ledeHasOpenToCorrection, false, 'lede must not duplicate open-to-correction');
     assert.equal(m390.openingHasOpenToCorrection, true, 'hero disclaimer keeps opening caveat');
     // Collapsed provenance: version + short review label, not full wall
     assert.ok(m390.provText, 'compact provenance summary present');
     assert.doesNotMatch(m390.provText, /allowlist|patient approval|evidence current through/i);
-    assert.match(m390.provText, /v0\.1\.3|published/i);
+    assert.match(m390.provText, /v\d+\.\d+\.\d+|published/i);
 
     writeFileSync(
       join(shotDir, 'overflow-report.json'),

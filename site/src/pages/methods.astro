@@ -1,10 +1,94 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
-import { getRelease } from '../lib/data';
+import { getClaims, getRelease, metrics } from '../lib/data';
+import { KIND_LABELS, VERIFICATION_LABELS } from '../lib/constants';
 import { withBase } from '../lib/paths';
 
 const release = getRelease();
+const m = metrics();
+const claims = getClaims();
+
+/** Plain-language gloss for each claim kind, alongside the live count on this release. */
+const KIND_NOTES: Record<string, string> = {
+  observed_fact: 'A number or finding that appears in a document. Nobody drew a conclusion from it yet.',
+  reported_history: 'Something the patient stated. Recorded as testimony, never promoted to a measurement.',
+  interpretation: 'A reading of what one or more findings mean. This is where analysis begins.',
+  hypothesis: 'A candidate explanation. Never a diagnosis.',
+  research_question: 'A gap written as a question for a licensed clinician to answer.',
+};
+
+const kindRows = Object.entries(KIND_LABELS).map(([key, meta]) => ({
+  key,
+  label: meta.label,
+  glyph: meta.glyph,
+  css: meta.css,
+  note: KIND_NOTES[key] || '',
+  count: claims.filter((c) => c.kind === key).length,
+}));
+
+/** Verification tiers, strongest first, with the live count of claims sitting at each. */
+const VERIFICATION_ORDER = [
+  'verified',
+  'partially_verified',
+  'contested',
+  'not_verified',
+  'unsupported',
+] as const;
+
+const verificationRows = VERIFICATION_ORDER.map((key) => ({
+  key,
+  label: VERIFICATION_LABELS[key].label,
+  count: claims.filter((c) => c.verification_status === key).length,
+}));
+
+/**
+ * Model roles. These three builds account for every AI contribution to the portfolio —
+ * no other model or variant was used for any task (governance/AI_METHODS.md).
+ */
+const MODEL_ROLES = [
+  {
+    family: 'Claude',
+    build: 'Opus 5',
+    maker: 'Anthropic',
+    role: 'Round-1 swarm analysis, design package, final go/no-go audit',
+  },
+  {
+    family: 'Codex',
+    build: 'GPT-5.6 Sol',
+    maker: 'OpenAI',
+    role: 'Independent findings pass, dispositions, adversarial audit',
+  },
+  {
+    family: 'Grok',
+    build: 'Grok 4.5',
+    maker: 'xAI',
+    role: 'Prelaunch remediation, adversarial audit remediation',
+  },
+];
+
+const CANNOT_DO = [
+  {
+    head: 'Cannot diagnose or prescribe',
+    body: 'Licensed clinicians interpret records and decide care. Nothing here is an instruction.',
+  },
+  {
+    head: 'Cannot read a primary record',
+    body: `No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by this project. ${m.verifiedPrimary} of ${m.claimCount} claims are verified against an original instrument record.`,
+  },
+  {
+    head: 'Cannot invent missing records',
+    body: 'When a primary instrument report is absent, the question stays open rather than being filled in.',
+  },
+  {
+    head: 'Cannot upgrade evidence by consensus',
+    body: 'Agreement among models does not change a verification status. Three models liking a claim is not a source.',
+  },
+  {
+    head: 'Cannot publish excluded files',
+    body: 'Local papers, raw community dumps, and patient source PDFs never reach the build artifact.',
+  },
+];
 ---
 
 <BaseLayout
@@ -13,133 +97,159 @@ const release = getRelease();
   currentPath="/methods/"
   description="How this research portfolio was produced and what the process cannot do."
 >
-  <section class="hero">
+  <section class="hero hero--tight">
     <div class="legend-label">Methods</div>
     <h1>How this was produced</h1>
     <p class="lede">
-      This page describes a research method. It does not sell a product, brand a model family as medical
-      authority, or claim that agreement between models is clinical validation.
+      Every statement on this site is a typed record with a source trail and a verification status.
+      This page explains how a document becomes a claim, how the models were used, and where the
+      method runs out.
     </p>
-    <AnalysisVersionBadge />
-    <div class="callout caution">
-      <strong class="legend-label">Primary-record limit</strong>
-      <p style="margin: 8px 0 0;">
-        No original laboratory report, DXA printout, radiology report, or clinic note has been reviewed by
-        this project.
-      </p>
-    </div>
+    <AnalysisVersionBadge compact />
   </section>
 
   <section class="page-section wrap-prose">
-    <h2 class="sec">Analysis versioning</h2>
+    <h2 class="sec">How a record becomes a claim</h2>
     <p>
-      The live site is the <strong>current best understanding</strong>. Analysis version{' '}
-      <span class="mono">{release.content_version}</span> is current through evidence dated{' '}
-      <span class="mono">{release.evidence_current_through}</span>. Material changes are summarized on the{' '}
-      <a href={withBase('/changelog/')}>changelog</a> under added evidence, changed interpretations, hypothesis
-      strength changes, retired/superseded findings, and corrections. Stable IDs are never reused. See repository{' '}
-      <span class="mono">governance/RELEASE_VERSIONING.md</span> for patch/minor/major policy and the expectation that
-      public releases receive an annotated Git tag and GitHub Release. Rendered historical archives such as{' '}
-      <span class="mono">/releases/v0.1/</span> are intentionally not built in v0.1.
+      Nothing is written as free prose. Every material statement is filed as one of five kinds, and
+      the kinds are never blended — an interpretation cannot quietly become a fact because it was
+      repeated often enough.
     </p>
-  </section>
-
-  <section class="page-section wrap-prose">
-    <h2 class="sec">Evidence model</h2>
-    <p>
-      Material statements are typed as <span class="mono">observed_fact</span>,
-      <span class="mono">reported_history</span>, <span class="mono">interpretation</span>,
-      <span class="mono">hypothesis</span>, or <span class="mono">research_question</span>, with a
-      verification status. Public wording is constrained by an audited language guide. This research preview
-      loads the public claim inventory (approved A/B/C claims with accurate verification status displayed).
-      Site mode <span class="mono">DRIFT0R_SITE_MODE</span> is <span class="mono">preview</span> by default;
-      <span class="mono">publication</span> mode includes only <span class="mono">public_approved===true</span>
-      claims and explicitly release-scoped hypotheses, questions, and routes.
-    </p>
-    <p>
-      Every patient source carries a <span class="mono">source_class</span> (for example patient-compiled
-      summary, video statement). Specialty PDF summaries are never labeled as clinician documents or primary
-      instrument records solely because the prose sounds clinical. Original source PDFs are not redistributed
-      by this repository; see the external patient-hosted source folder link below.
-    </p>
-
-    <h2 class="sec">AI workflow</h2>
-    <p>
-      Round-1 analysis (2026-08-05) used independent model families for primary analyses and adversarial
-      critique, then a synthesis chair. Publication-readiness milestones (M0–M3) audited claims,
-      literature, and governance. M4 implements this static site from structured records.
-    </p>
+    <ul class="kind-list">
+      {
+        kindRows.map((k) => (
+          <li class="kind-row">
+            <span class={`kind-glyph badge ${k.css}`} aria-hidden="true">
+              {k.glyph}
+            </span>
+            <span class="kind-main">
+              <span class="kind-label">{k.label}</span>
+              <span class="kind-note">{k.note}</span>
+            </span>
+            <span class="kind-count mono">{k.count}</span>
+          </li>
+        ))
+      }
+    </ul>
     <p class="record-note">
-      Disclosed roles for this content version: {(release.ai_models_disclosed || []).join('; ')}.
+      Counts are the claims carried in analysis version {release.content_version}. The machine-readable
+      kind names are <span class="mono">observed_fact</span>, <span class="mono">reported_history</span>,{' '}
+      <span class="mono">interpretation</span>, <span class="mono">hypothesis</span>, and{' '}
+      <span class="mono">research_question</span>.
     </p>
+
+    <h3 class="sub">Then it gets a verification status</h3>
+    <p>
+      Separately from its kind, each claim records how close it sits to an original instrument record.
+      This is the number that matters most, and it is the one the project scores worst on.
+    </p>
+    <ul class="verify-list">
+      {
+        verificationRows.map((v) => (
+          <li class="verify-row">
+            <span class="verify-count mono">{v.count}</span>
+            <span class="verify-label">{v.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="record-note">
+      Public wording is additionally constrained by an audited language guide, so a claim cannot be
+      restated more strongly on a page than its record supports. In{' '}
+      <span class="mono">publication</span> mode the site ships only explicitly approved claims and
+      release-scoped routes; <span class="mono">preview</span> mode — what you are reading — shows the
+      wider inventory with accurate statuses attached.
+    </p>
+  </section>
+
+  <section class="page-section wrap-prose">
+    <h2 class="sec">How the models were used</h2>
+    <p>
+      Round 1 (2026-08-05) ran three model families independently on the same records, without sight
+      of each other's output, then turned them against each other: each family was instructed to
+      attack the others' work for overstatement, missing counterevidence, and provenance gaps. A
+      synthesis chair reconciled what survived. A follow-on adversarial audit on 2026-08-06 repeated
+      the exercise against the assembled site and produced the corrections logged in the changelog.
+    </p>
+    <ul class="model-roles">
+      {
+        MODEL_ROLES.map((r) => (
+          <li class="model-role">
+            <span class="model-role-name">
+              <strong>{r.family}</strong>
+              <span class="mono model-role-build">{r.build}</span>
+              <span class="model-role-maker">{r.maker}</span>
+            </span>
+            <span class="model-role-what">{r.role}</span>
+          </li>
+        ))
+      }
+    </ul>
     <div class="callout caution">
       <strong class="legend-label">Hard limit</strong>
       <p style="margin: 8px 0 0;">
-        Multi-model agreement is <strong>not</strong> clinical validation. Models can be wrong and can
-        agree on errors. No AI system is listed as a clinician, investigator, or medical reviewer.
+        Multi-model agreement is <strong>not</strong> clinical validation. Models share training data
+        and failure modes, so they can be wrong together and confident together. No AI system is
+        listed anywhere on this site as a clinician, investigator, or medical reviewer, and
+        adversarial AI review does not substitute for patient or licensed clinician review.
       </p>
     </div>
-
-    <h2 class="sec">Adversarial rounds</h2>
-    <p>
-      Adversarial passes were instructed to seek overstatement, missing counterevidence, and provenance
-      gaps. Adversarial AI review does not replace patient review or licensed clinician review.
+    <p class="record-note">
+      These three builds account for every AI contribution to this portfolio. No other model or
+      variant was used for any task, in any round.
     </p>
+    <details class="raw-disclosure">
+      <summary>Verbatim disclosure record for {release.content_version}</summary>
+      <ul class="raw-disclosure-list">
+        {(release.ai_models_disclosed || []).map((line) => <li class="mono">{line}</li>)}
+      </ul>
+      <p class="record-note" style="margin: 8px 0 0;">
+        Internal milestone codes are retained here unedited so the disclosure is not smoothed over in
+        summary.
+      </p>
+    </details>
+  </section>
 
+  <section class="page-section wrap-prose">
     <h2 class="sec">What this process cannot do</h2>
     <ul class="notlist">
-      <li>
-        <strong>Cannot diagnose or prescribe</strong>
-        Licensed clinicians interpret records and decide care.
-      </li>
-      <li>
-        <strong>Cannot invent missing records</strong>
-        Open questions stay open when primary instrument reports are absent.
-      </li>
-      <li>
-        <strong>Cannot upgrade evidence by consensus</strong>
-        Agreement among models does not change verification status.
-      </li>
-      <li>
-        <strong>Cannot publish excluded files</strong>
-        Local papers, raw community dumps, and patient source PDFs stay off the artifact.
-      </li>
+      {
+        CANNOT_DO.map((item) => (
+          <li>
+            <strong>{item.head}</strong>
+            {item.body}
+          </li>
+        ))
+      }
     </ul>
-
-    <h2 class="sec">Search and literature limits</h2>
-    <p>
-      Targeted specialty passes used a research cutoff of 2026-08-05. Literature cards may be abstract-only;
-      access and license fields are recorded. Duplicate DOI/PMID records are aliased, not deleted.
+    <p class="section-more">
+      <a href={withBase('/how-this-could-be-wrong/')}>Seven specific ways this analysis could be wrong →</a>
     </p>
+  </section>
 
-    <h2 class="sec">Patient-hosted source documents</h2>
+  <section class="page-section wrap-prose">
+    <h2 class="sec">Sources and literature</h2>
     <p>
-      A Google Drive folder linked below is publicly/anonymously accessible and is under Drift0r’s external
-      control. Drift0r granted broad publish permission for this research portfolio; the owner continues linking
-      the folder for provenance. This repository does not claim independent documentary proof of the original
-      intent to publish the folder beyond its present accessibility and that permission. Source medical materials
-      are not copied into this public repository or the static site artifact.
+      Targeted specialty search passes used a research cutoff of 2026-08-05. The catalog holds{' '}
+      <span class="mono">{m.literatureCards}</span> cards covering{' '}
+      <span class="mono">{m.uniqueWorks}</span> unique works. Cards may be abstract-only; access and
+      license fields are recorded on each one, and duplicate DOI/PMID records are aliased rather than
+      deleted so a citation never silently disappears.
+    </p>
+    <p>
+      Patient source documents live in a Google Drive folder under Drift0r's own control — not this
+      project's. This site describes and cites those materials but never rehosts them: no original
+      patient PDF is shipped in the repository or the static build.
     </p>
     <ul class="notlist">
       <li>
-        <strong>Anonymously accessible / world-readable when the patient elects that.</strong> Access control is
-        controlled by Drift0r, not by this site.
+        <strong>Externally controlled</strong>
+        Contents may change, be restricted, or be removed at any time. This site does not mirror them,
+        and access is Drift0r's to grant or revoke.
       </li>
       <li>
-        <strong>Externally controlled by Drift0r.</strong> Contents may change, be restricted, or be removed without
-        notice; this site does not mirror them.
-      </li>
-      <li>
-        <strong>May include sensitive records</strong>, including mental-health specialty summaries and other
-        medical documents. Treat any externally viewed document as private medical information.
-      </li>
-      <li>
-        <strong>This site does not redistribute PDFs.</strong> No original patient source PDFs are shipped in the
-        repository or the static build.
-      </li>
-      <li>
-        <strong>Permission is not endorsement.</strong> Patient permission to publish this research portfolio does not
-        endorse folder contents, any finding, or any clinical action. Clinician review has not been performed.
+        <strong>Treat as private medical information</strong>
+        The folder may include sensitive records, including mental-health specialty summaries.
       </li>
     </ul>
     <p>
@@ -152,36 +262,35 @@ const release = getRelease();
       </a>
     </p>
     <p class="record-note">
-      This repository describes and cites those materials; it does not rehost original PDFs. Patient permission
-      for publication was obtained; clinician review has not been performed. Licensed clinicians must verify
-      underlying records. Do not start, stop, or change treatment based on this site.
-    </p>
-
-    <h2 class="sec">Creator and independence</h2>
-    <p>
-      Created and maintained by <strong>Justin Wojciechowski</strong> (
-      <a href="https://github.com/justinwojo" rel="noopener noreferrer">@justinwojo</a>
-      ). Independent community research project. Justin is not a clinician. Not operated by, affiliated with, or
-      endorsed by Drift0r. Published with Drift0r’s permission; permission is not endorsement. No financial
-      relationship with or compensation from Drift0r. Full statement:{' '}
-      <a href={withBase('/about/')}>About</a>.
-    </p>
-
-    <h2 class="sec">Corrections and contact</h2>
-    <p>
-      Material corrections are logged and shown on affected records and in the changelog. Historical swarm
-      outputs are not silently rewritten. Correction, privacy, or removal requests use a dedicated GitHub issue
-      template (see <a href={withBase('/about/contribute/')}>How to contribute</a>) — do not post private medical
-      records. Sensitive consent or withdrawal from Drift0r may continue through the existing private
-      correspondence channel with the repository owner. There is no published privacy@ email address.
-    </p>
-
-    <h2 class="sec">Models disclosed</h2>
-    <p>
-      Research assistance for this portfolio has used <strong>Grok</strong>, <strong>Claude</strong>, and
-      <strong>Codex</strong> (among other tools). Multi-model agreement is not clinical validation. See the legal
-      page for the release-specific model list.
+      Drift0r granted permission to publish this research portfolio. Permission is not endorsement of
+      any finding or of the folder's contents, and clinician review has not been performed. Full
+      consent and privacy terms are on the <a href={withBase('/legal/')}>legal page</a>.
     </p>
   </section>
-  <div style="padding-bottom: 48px;"></div>
+
+  <section class="page-section wrap-prose" style="padding-bottom: 48px;">
+    <h2 class="sec">Where the rest lives</h2>
+    <ul class="elsewhere">
+      <li>
+        <a href={withBase('/about/')}>About</a>
+        <span>Who built this, and the independence statement — not a clinician, not affiliated with Drift0r.</span>
+      </li>
+      <li>
+        <a href={withBase('/legal/')}>Legal</a>
+        <span>Medical disclaimer, consent and privacy, copyright, and withdrawal of consent.</span>
+      </li>
+      <li>
+        <a href={withBase('/how-this-could-be-wrong/')}>How this could be wrong</a>
+        <span>Seven named failure modes, with published errata.</span>
+      </li>
+      <li>
+        <a href={withBase('/changelog/')}>Changelog</a>
+        <span>Every material change by version, including {m.corrections} logged corrections.</span>
+      </li>
+      <li>
+        <a href={withBase('/about/contribute/')}>How to contribute</a>
+        <span>Correction, privacy, and removal requests. Do not post private medical records.</span>
+      </li>
+    </ul>
+  </section>
 </BaseLayout>

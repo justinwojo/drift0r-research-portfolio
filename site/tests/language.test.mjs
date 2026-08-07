@@ -236,8 +236,8 @@ describe('corrections register exact equality (P1-01)', () => {
       id: m[1],
       title: m[2].trim(),
     }));
-    assert.equal(mdIds.length, 32, 'register must list 32 corrections');
-    assert.equal(site.length, 32, 'site must publish 32 corrections');
+    assert.equal(mdIds.length, 40, 'register must list 40 corrections');
+    assert.equal(site.length, 40, 'site must publish 40 corrections');
     assert.deepEqual(
       site.map((c) => c.id),
       mdIds.map((c) => c.id),

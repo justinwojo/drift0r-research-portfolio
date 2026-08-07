@@ -415,3 +415,91 @@
 - **Corrected form:** lit-0206 moved to `contradicting_literature_ids`; summary notes diagnostic-pitfalls reclassification; support remains lit-0205 / lit-0089 / lit-0096
 - **Evidence:** PubMed abstract PMID 35671934 — cautions include: document actual pyogenic infections before immune-deficiency diagnosis; wide variability of pneumococcal vaccine response in healthy individuals; laboratory variability in reporting; do not hinge diagnosis solely on strict cutoffs for “normal” polysaccharide response without global clinical assessment. Local full text / overnight `paper-text/lit-0206.txt` absent (abstract-only)
 - **Residual uncertainty:** Full-text nuances beyond abstract not verified in-repo (`access: abstract-only`, no local PDF). Card and catalog polarity for lit-0206 are now `supports: []` / `contradicts: [H-SAD]`, consistent with H5; note that “contradicts” here means the paper cautions against over-calling SAD, not that it disputes the entity’s existence
+
+### COR-0033 — Mast-cell ruled-out entry published as a clean negative
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** must_fix_before_launch
+- **Affected claims / paths:** `evidence/ruled_out.yaml` mast-cell entry (rendered on `/`); CLM-0030, CLM-0031, CLM-0032, CLM-0065
+- **Incorrect or unsafe form:** "KIT negative; urine mediators normal; no classic activation pattern." with `still_open` limited to the deferred marrow biopsy
+- **Corrected form:** Entry states the result is mixed and not a clean negative — tryptase above the reference range on both documented draws, attributed by the record to patient-reported hereditary alpha-tryptasemia, with KIT negative and urine mediators normal; `still_open` names the undocumented KIT specimen/method/limit of detection and that incomplete systemic-mastocytosis exclusion is on the project's own don't-miss list
+- **Evidence:** CLM-0030 (tryptase elevated on 2025-10-01 and the 2026-06 panel, ref <11); CLM-0031 (HαT reported positive, `kind: reported_history`); CLM-0032 (KIT negative, assay specimen/method/LOD not documented); CLM-0065 (`Don't-miss research priority: incomplete SM exclusion given unknown KIT method`, P0)
+- **Residual uncertainty:** Whether the elevated tryptase is fully explained by HαT is itself an open clinical question the record cannot settle; the entry does not assert it is.
+
+### COR-0034 — Autoimmune ruled-out entry dropped its documented denominator and as-of boundary
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `evidence/ruled_out.yaml` autoimmune entry; CLM-0044
+- **Incorrect or unsafe form:** "Completely negative. Inflammatory markers have been normal on every draw." dated `2021 – 2026`
+- **Corrected form:** "Unrevealing on every panel run. Inflammatory markers were normal on the three documented CRP draws and the three documented ESR draws," with `still_open` recording that no CRP or ESR value after 2025-08-05 appears in the summaries
+- **Evidence:** CLM-0044 — three documented CRP draws, three documented ESR draws, none after 2025-08-05; "broad seronegative CTD workup … unrevealing on available panels"
+- **Residual uncertainty:** The inflammatory picture is not current; a later draw could change it.
+
+### COR-0035 — Mold/CIRS patient-reported result presented as objective
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `evidence/ruled_out.yaml` mold entry; CLM-0052
+- **Incorrect or unsafe form:** "Negative."
+- **Corrected form:** "Reported by the patient as negative, with no clear symptom change after the mold was removed from the home. The underlying lab reports are not in the public record."
+- **Evidence:** CLM-0052 `kind: hypothesis` — "patient reports mold toxicity/allergy labs negative and household mold removal without clear symptom change"
+- **Residual uncertainty:** No lab report is in the record to check the reported result against.
+
+### COR-0036 — Psychiatric ruled-out entry asserted the question closed
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** must_fix_before_launch
+- **Affected claims / paths:** `evidence/ruled_out.yaml` psychiatric entry; CLM-0046, CLM-0047, CLM-0048
+- **Incorrect or unsafe form:** "Multiple psychiatric and psychological evaluations" listed under `tested` with `still_open: null`, which by the file's own rule asserts the question is closed on the present record
+- **Corrected form:** `still_open` records that the evaluation history other than the MMPI-2-RF is patient-reported, that what the record supports is reversal of that specific label rather than a finding that no psychiatric factor plays any part, and that treating the medical findings as primary is this project's research position rather than a clinical adjudication
+- **Evidence:** CLM-0046 `kind: reported_history`, scoped to "SSD reversal + secondary anxiety framing — not 'all psych absent'"; CLM-0048 "this is a research-team hypothesis, not a clinical adjudication"
+- **Residual uncertainty:** None beyond what the entry now states.
+
+### COR-0037 — Reported history rendered as documented fact on the landing page
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `site/src/pages/index.astro` CASE_IN_BRIEF and its section note; `evidence/ruled_out.yaml` COVID entry; CLM-0045, CLM-0051
+- **Incorrect or unsafe form:** "joint pain that moves around and comes without swelling or heat, and **documented** lower-spine defects"; "Symptoms trace back to roughly 2017"; register: "**Documented onset** is around 2017"; section note: "Every point below traces to a documented record."
+- **Corrected form:** "he reports joint pain … and **imaging documents** lower-spine defects"; "He reports symptoms going back to roughly 2017"; register: "Onset is **reported** as around 2017", with `still_open` naming the patient-compiled timeline; section note now says where something is the patient's own account it says so
+- **Evidence:** CLM-0045 `kind: reported_history`; CLM-0051 `kind: hypothesis`, sourced to `timeline.yaml` "onset ~2017" as a patient-compiled summary; contrast CLM-0013 `kind: observed_fact`
+- **Residual uncertainty:** None — the onset year itself is unchanged, only its epistemic status.
+
+### COR-0038 — Hypothesis plain titles overstated their claim rows
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** `differentials/hypotheses/H2.yaml`, `H3.yaml`, `H4.yaml` `plain_title` / `plain_summary` (rendered first on the landing theory cards); CLM-0011, CLM-0050, CLM-0043
+- **Incorrect or unsafe form:** H3 "Calcium handling never properly measured, and **bone tests never run**"; H2 "An inherited bone condition present from birth"; H4 "A lingering bacterial infection"
+- **Corrected form:** H3 "…and the bone-building markers are missing", summary restated to "do not appear anywhere in the test record, though that is not proof they were never drawn"; H2 and H4 made interrogative
+- **Evidence:** CLM-0011 covers bone *formation* markers only and its own note reads "Absence of documentation is not proof never drawn outside public pack" — DXA (CLM-0003), CTX (CLM-0010) and serial 24h urine calcium (CLM-0015) are documented bone workup; CLM-0050 `not_verified`, "best single-primary research alternative"; CLM-0043 `contested`, "low–medium residual contributor hypothesis … without commercial confirmation"
+- **Residual uncertainty:** None.
+
+### COR-0039 — Ruled-out register bypassed the publication gate and the site's source-trail promise
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** must_fix_before_launch
+- **Affected claims / paths:** `evidence/ruled_out.yaml`; `site/src/lib/data.ts` `RuledOutEntry` / `getRuledOut`; `site/src/pages/index.astro`; `governance/public_allowlist.yaml`; `site/src/pages/methods.astro`
+- **Incorrect or unsafe form:** Register entries carried no claim ids, approval field, or verification status; `getRuledOut()` returned every row regardless of site mode, so approving `/` as a hardcoded route implicitly published whatever the file contained. `/methods/` simultaneously told visitors "Every statement on this site is a typed record with a source trail and a verification status" and "Nothing is written as free prose". The file was absent from the public allowlist, so a sanitized export would omit a required homepage build input.
+- **Corrected form:** `claim_ids` required on every entry and rendered as a visible source trail; publication mode drops any entry whose claims are not all approved; four new claim rows (CLM-0078…CLM-0081) added for entries previously sourced only from the private tests ledger; `evidence/ruled_out.yaml` added to `v1_public_repository` and `medical_page_body_sources` (allowlist 1.10.0); methods copy narrowed to material statements and now states that plain-language summaries are hand-written but name the claim rows they rest on; `site/tests/ruled-out-register.test.mjs` locks the contract
+- **Evidence:** Codex findings 1, 7 and 9; Grok finding 5 (paired pre-publication review, 2026-08-07); DEC-0038
+- **Residual uncertainty:** The four new claim rows are sourced from a gitignored private ledger, so a public reader cannot independently check them — the same limitation that already applies to the source PDFs.
+
+### COR-0040 — Public documents asserted indexing was disabled while the site shipped indexable
+
+- **Date identified:** 2026-08-07
+- **Status:** `applied_to_public_draft`
+- **Severity:** must_fix_before_launch
+- **Affected claims / paths:** `governance/PRIVACY_AND_CONSENT.md` item 6 and checklist framing; `governance/LEGAL_BASELINE.md`; `governance/PUBLICATION_POLICY.md`; `docs/public/FIRST_72_HOURS_ISSUE_MONITORING.md`; `docs/public/LAUNCH_FAQ.md`; `README.md`; `audits/2026-08-publication-readiness/DECISIONS.md`
+- **Incorrect or unsafe form:** "noindex research preview", "indexing remains disabled", "Indexing disabled (`noindex`) until a separate owner decision", and a launch checklist item instructing the operator to confirm the site still shows noindex — all while `release.yaml:noindex` was `false` and the robots meta rendered `index, follow`. No decision authorized the flip: DEC-0023 deferred it and DEC-0027 recorded enabling indexing at launch as rejected.
+- **Corrected form:** DEC-0037 records the owner's decision to ship indexable, with DEC-0023 and DEC-0027 marked superseded; the six public documents restated to say indexing is enabled; the monitoring checklist now asks the operator to confirm the robots meta matches `release.yaml:noindex`
+- **Evidence:** Codex finding 8 and Grok finding 1 (paired pre-publication review, 2026-08-07); `site/src/lib/indexing.ts` `STUCK_NOINDEX_BODY_PATTERNS` already classifies "indexing remains disabled" as a false-polarity defect
+- **Residual uncertainty:** DEC-0023 framed removal of `noindex` as requiring Drift0r's decision on search indexing separately from the general publication grant. DEC-0037 records the owner's reading that the broad grant covers it as **owner editorial judgment, not a documented patient statement about indexing**. This remains open until Drift0r is asked about indexing specifically.

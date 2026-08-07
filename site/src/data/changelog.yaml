@@ -8,6 +8,69 @@ not_medical_advice: true
 # IDs listed here are permanently reserved and must never be reassigned to new records.
 retired_or_reserved_ids: []
 entries:
+  - version: v0.3.0
+    date: "2026-08-07"
+    kind: minor
+    status: published
+    evidence_current_through: "2026-08-07"
+    summary: >-
+      Plain-language landing rewrite plus a new public register of commonly suggested
+      explanations and what was actually tested. A paired Codex/Grok pre-publication review
+      then corrected several places where public copy read more strongly than its claim rows:
+      the mast-cell entry shipped as a clean negative despite elevated tryptase and an
+      incomplete mastocytosis exclusion, the autoimmune entry dropped its documented
+      denominator, and reported history was rendered as documented fact on the landing page.
+      The register now carries visible claim ids and passes the same publication gate as every
+      other medical surface. Search indexing is recorded as enabled by owner decision.
+      Not medical advice; clinician review still not performed.
+    added_evidence:
+      - "CLM-0078 — celiac panel (tTG/DGP/EMA) negative 2025-10-01 with total IgA sufficient"
+      - "CLM-0079 — thyroid panel with antibodies euthyroid across draws 2021–2025"
+      - "CLM-0080 — heavy metals panel below reporting cutoffs 2026-06-19"
+      - "CLM-0081 — Ehlers-Danlos reported by the patient as previously cleared (reported history)"
+      - "evidence/ruled_out.yaml — public register of twelve commonly suggested explanations, test name / date / plain result only"
+    changed_interpretations:
+      - "Mast-cell entry no longer reads as a clean negative: tryptase was above range on both documented draws (CLM-0030), the record attributes that to patient-reported hereditary alpha-tryptasemia (CLM-0031), and the KIT assay's method and limit of detection are undocumented, so systemic mastocytosis is not fully excluded (CLM-0032, CLM-0065)"
+      - "Autoimmune entry restated to three documented CRP and three documented ESR draws with no value after 2025-08-05, and 'unrevealing on the panels run' rather than 'completely negative' (CLM-0044)"
+      - "Mold/CIRS marked as a patient-reported negative rather than an objective one (CLM-0052)"
+      - "Psychiatric entry no longer asserts the question closed: the evaluation history other than the MMPI-2-RF is patient-reported, the record supports reversal of the SSD label specifically, and treating the medical findings as primary is a research position not a clinical adjudication (CLM-0046, CLM-0047, CLM-0048)"
+      - "Thyroid entry bounded to 2021–2025; COVID entry restated from 'documented onset' to reported onset from a patient-compiled timeline (CLM-0051)"
+      - "Landing case-in-brief attributes the joint-pain narrative (CLM-0045) and the 2017 onset (CLM-0051) to the patient rather than presenting them as documented"
+      - "AI methods disclosure no longer claims exact-build completeness — model families are recorded, exact builds are not recoverable for the earliest rounds"
+    strengthened_or_weakened_hypotheses:
+      - "H3 plain title/summary: the gap is missing bone-formation markers in the documented record, not 'bone tests never run' — DXA, CTX and serial 24h urine calcium are all documented, and CLM-0011 notes absence of documentation is not proof never drawn"
+      - "H2 plain title made interrogative: CLM-0050 is not_verified and calls a monogenic/constitutional cause only the best single-primary research alternative"
+      - "H4 plain title made interrogative: CLM-0043 is contested and puts Bartonella-spectrum disease at a low–medium residual contributor without commercial confirmation"
+    retired_or_superseded:
+      - id: DEC-0023
+        status: superseded
+        replaced_by: DEC-0037
+        note: >-
+          DEC-0023 deferred removal of noindex to a separate patient decision and DEC-0027
+          rejected enabling indexing at launch. The site was already shipping noindex: false
+          with no decision recording it. DEC-0037 records the owner's indexing decision, and
+          the open item that DEC-0023 wanted Drift0r's separate say-so on indexing specifically.
+    corrections:
+      - COR-0033
+      - COR-0034
+      - COR-0035
+      - COR-0036
+      - COR-0037
+      - COR-0038
+      - COR-0039
+      - COR-0040
+    git_tag_planned: v0.3.0
+    github_release_planned: true
+    git_tag: null
+    github_release_published: false
+    notes: >-
+      Content landed on main as e278d54. At the time this entry was written the v0.3.0 tag had
+      not been created, no GitHub Release had been published, and the site had not been
+      redeployed — Pages deployment is manual dispatch only. Rewrite these packaging fields and
+      this note when the tag and Release actually exist. Private run materials and the private
+      tests ledger remain gitignored; the four new claim rows are sourced from it but publish
+      test name, date, and plain result only.
+
   - version: v0.2.0
     date: "2026-08-06"
     kind: minor

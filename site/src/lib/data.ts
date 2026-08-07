@@ -294,23 +294,31 @@ const CORRECTIONS: CorrectionRef[] = [
   { id: 'COR-0030', title: 'Unsourced “high VUS rate” / “VUS common” frequency claims removed', status: 'applied_to_public_draft' },
   { id: 'COR-0031', title: 'Printed clinician packet rendered bare literature IDs', status: 'applied_to_public_draft' },
   { id: 'COR-0032', title: 'lit-0206 miscategorized as support on H5', status: 'applied_to_public_draft' },
+  { id: 'COR-0033', title: 'Mast-cell ruled-out entry published as a clean negative', status: 'applied_to_public_draft' },
+  { id: 'COR-0034', title: 'Autoimmune ruled-out entry dropped its documented denominator and as-of boundary', status: 'applied_to_public_draft' },
+  { id: 'COR-0035', title: 'Mold/CIRS patient-reported result presented as objective', status: 'applied_to_public_draft' },
+  { id: 'COR-0036', title: 'Psychiatric ruled-out entry asserted the question closed', status: 'applied_to_public_draft' },
+  { id: 'COR-0037', title: 'Reported history rendered as documented fact on the landing page', status: 'applied_to_public_draft' },
+  { id: 'COR-0038', title: 'Hypothesis plain titles overstated their claim rows', status: 'applied_to_public_draft' },
+  { id: 'COR-0039', title: "Ruled-out register bypassed the publication gate and the site's source-trail promise", status: 'applied_to_public_draft' },
+  { id: 'COR-0040', title: 'Public documents asserted indexing was disabled while the site shipped indexable', status: 'applied_to_public_draft' },
 ];
 
 /** Domain → correction IDs that should surface on matching records (real COR IDs only). */
 const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
   bone: ['COR-0001', 'COR-0002', 'COR-0003', 'COR-0011', 'COR-0028'],
   endocrine: ['COR-0004'],
-  mast_cell: ['COR-0005', 'COR-0027'],
+  mast_cell: ['COR-0005', 'COR-0027', 'COR-0033'],
   laboratory: ['COR-0006'],
   infectious_disease: ['COR-0007', 'COR-0024', 'COR-0025', 'COR-0026'],
   genetics: ['COR-0009', 'COR-0018', 'COR-0030'],
   metabolic: ['COR-0012'],
-  mental_health: ['COR-0008'],
+  mental_health: ['COR-0008', 'COR-0036'],
   immunology: ['COR-0015', 'COR-0032'],
-  rheumatology: ['COR-0023'],
-  msk: ['COR-0022'],
+  rheumatology: ['COR-0023', 'COR-0034'],
+  msk: ['COR-0022', 'COR-0037'],
   literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021', 'COR-0030'],
-  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031'],
+  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031', 'COR-0035', 'COR-0038', 'COR-0039', 'COR-0040'],
 };
 
 const CORRECTION_BY_CLAIM: Record<string, string[]> = {

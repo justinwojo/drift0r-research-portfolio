@@ -143,8 +143,15 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
     assert.doesNotMatch(html, /Approval status/i);
     // Compact provenance: region label + collapsed version + short review-status (not full wall)
     assert.match(html, /aria-label="Version and review status"|provenance--compact/i);
-    // Analysis version from live release.yaml / changelog tip (v0.2.0+ after COR-0022…0032).
-    assert.match(html, /v0\.2\.0/);
+    /*
+     * The landing page must surface the live analysis version. Assert it matches
+     * release.yaml rather than a literal — pinning the literal here just means every
+     * version promotion trips a build-safety failure that has nothing to do with safety.
+     */
+    const releaseYaml = readFileSync(join(siteRoot, 'src/data/release.yaml'), 'utf8');
+    const contentVersion = releaseYaml.match(/^content_version:\s*(\S+)/m)?.[1];
+    assert.ok(contentVersion, 'release.yaml must declare content_version');
+    assert.match(html, new RegExp(contentVersion.replace(/\./g, '\\.')));
     assert.match(html, /published/i);
     // Stable public release permits indexing while keeping the research caveat.
     assert.match(html, /name="robots"\s+content="index,\s*follow"/i);

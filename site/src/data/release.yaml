@@ -1,4 +1,4 @@
-# Live release metadata — v0.2.0 correction release (COR-0022…COR-0032).
+# Live release metadata — v0.3.0 plain-language landing + public ruled-out register.
 # Search indexing is enabled; patient publication approval obtained; clinician review not performed.
 # Permission is not endorsement. Research preview limitations remain in force.
 # Schema: schemas/release.schema.json
@@ -9,11 +9,11 @@
 # 2) Record that tip SHA here (last reviewed content commit before this metadata-only update).
 # 3) Commit this release.yaml (+ packet) as a separate provenance commit that must NOT be used as
 #    its own base_commit. Never set base_commit to the hash of the commit that only edits this field.
-content_version: v0.2.0
-as_of: "2026-08-06"
-last_reviewed: "2026-08-06"
+content_version: v0.3.0
+as_of: "2026-08-07"
+last_reviewed: "2026-08-07"
 # Date through which patient records and literature were considered for this analysis snapshot.
-evidence_current_through: "2026-08-06"
+evidence_current_through: "2026-08-07"
 disclaimer_id: legal-baseline-2026-08
 review_status: published
 patient_approval:
@@ -27,6 +27,9 @@ patient_approval:
     Mental-health material beyond those three claims is published at the owner's editorial discretion
     under the same broad grant (DEC-0036, extending DEC-0030 and superseding the DEC-0022 residual
     default-exclusion), limited to plain results with no numeric values or verbatim clinical wording.
+    Search indexing is enabled (DEC-0037). DEC-0023 treated removal of noindex as a patient decision
+    separate from this grant; the owner judges the broad grant to cover it, and DEC-0037 records that
+    as owner editorial judgment rather than a documented patient statement about indexing specifically.
   date: "2026-08-05"
   notes: >-
     Drift0r replied to the owner's publication request: "You're welcome to post. Whatever you see fit."
@@ -44,10 +47,12 @@ clinician_review_scope:
   label_must_not_imply_global: true
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "d8d9727457e25eadb320e190a826a894a2acaab1"
+base_commit: "e278d544afb78519b4b8ce10d31f1c5413f6a10a"
 allowlist_version: "1.10.0"
 noindex: false
 ai_models_disclosed:
   - Grok (M4 / M4R / E2.x / Checkpoint F / F.1 / F.1.1 / G.1 / G.2 / G.2.1 / G.2.2 / H.1 / I / I.1 / I.1.1 / J.1 prelaunch remediation; 2026-08-06 adversarial audit remediation COR-0022…COR-0032)
   - Claude (design package / Round-1 swarm / G audit / H final audit / J go-no-go; 2026-08-06 overnight adversarial multi-model audit)
-  - Codex (Checkpoint E / E2 / F dispositions / G.2 independent findings; 2026-08-06 overnight adversarial multi-model audit)
+  - Codex (Checkpoint E / E2 / F dispositions / G.2 independent findings; 2026-08-06 overnight adversarial multi-model audit; 2026-08-07 paired pre-publication review)
+  - Grok (2026-08-07 paired pre-publication review)
+  - Claude (2026-08-07 plain-language landing rewrite, ruled-out register, review triage and remediation)

@@ -77,15 +77,21 @@ const contributePolicyHref = withBase('/about/contribute/');
               >
                 Correction / privacy / removal
               </a>
+              {/*
+                Same wording as the callout variant. The compact variants used to
+                shorten these to "View on GitHub" / "Browse issues", which reads as a
+                different destination and drops the only assertion that the homepage
+                offers a repo and an issue-list path (build-safety.test.mjs:212).
+              */}
               <a href={links.repoUrl} rel="noopener noreferrer" data-contribution-link="repo">
-                View on GitHub
+                View project on GitHub
               </a>
               <a
                 href={links.issuesListUrl}
                 rel="noopener noreferrer"
                 data-contribution-link="issues-list"
               >
-                Browse issues
+                Browse existing issues
               </a>
               <a href={contributePolicyHref} data-contribution-link="contribute-policy">
                 How to contribute safely

@@ -28,8 +28,11 @@ open_question_ids:
 review_status: source_audited
 as_of: '2026-08-05'
 supersedes: null
+# Sources: CLM-0027 (IgG1 persistently low, IgG4 persistently high across repeated
+# 2025-2026 draws), CLM-0035 (formal SAD label stays low confidence until a same-lab
+# pre/post polysaccharide vaccine challenge is completed).
 plain_title: An unusual antibody pattern
 plain_summary: >-
   One antibody subclass is persistently low and another persistently high, across
-  repeated draws. The pattern is real; what it means is unresolved. A vaccine-response
+  repeated draws. The pattern repeats; what it means is unresolved. A vaccine-response
   test would be needed to interpret it.

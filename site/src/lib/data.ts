@@ -611,6 +611,12 @@ function loadHypothesesRaw(): Hypothesis[] {
  */
 export interface RuledOutEntry {
   suggestion: string;
+  /**
+   * Rows in the public claim inventory that support this entry. Required — the register
+   * is a medical surface and must pass the same approval gate as every other one. In
+   * publication mode an entry is dropped unless *all* of its claims are approved.
+   */
+  claim_ids: string[];
   tested: string;
   when: string;
   result: string;
@@ -632,15 +638,28 @@ let _ruledOut: RuledOutRegister | null = null;
  * Source file carries test name / date / plain result only — never numeric lab
  * values. Text is passed through the public-language transform like every other
  * rendered medical surface.
+ *
+ * Fails closed like the other derived medical surfaces: in publication mode an entry
+ * ships only if it names claim ids AND every one of them is in the approved inventory.
+ * Approving `/` as a hardcoded route must not implicitly publish an ungrounded row —
+ * that was the gap this filter closes.
  */
 export function getRuledOut(): RuledOutRegister {
   if (_ruledOut) return _ruledOut;
   const raw = loadRepoYaml<RuledOutRegister>('evidence/ruled_out.yaml');
+  const mode = getSiteMode();
+  const approved = mode === 'publication' ? new Set(getClaims().map((c) => c.id)) : null;
+  const entries = (raw.entries || []).filter((e) => {
+    const ids = e.claim_ids || [];
+    if (ids.length === 0) return false;
+    return approved === null || ids.every((id) => approved.has(id));
+  });
   _ruledOut = {
     as_of: raw.as_of,
     standing_caveat: toPublicLanguage(raw.standing_caveat),
-    entries: (raw.entries || []).map((e) => ({
+    entries: entries.map((e) => ({
       ...e,
+      claim_ids: [...(e.claim_ids || [])],
       suggestion: toPublicLanguage(e.suggestion),
       tested: toPublicLanguage(e.tested),
       result: toPublicLanguage(e.result),

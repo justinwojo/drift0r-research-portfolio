@@ -82,7 +82,7 @@ describe('publication mode mutation (shipped publication.ts)', () => {
     assert.ok(out.every((c) => c.public_approved === true));
     // Public inventory omits do_not_publish rows; ensure withheld IDs are absent
     assert.ok(!out.some((c) => c.id === 'CLM-0075' || c.id === 'CLM-0076'));
-    assert.equal(out.length, 75);
+    assert.equal(out.length, 79);
   });
 
   it('site claim inventory resolution prefers public inventory (source contract)', () => {

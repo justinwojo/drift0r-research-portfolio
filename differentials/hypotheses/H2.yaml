@@ -33,7 +33,13 @@ open_question_ids:
 review_status: source_audited
 as_of: '2026-08-05'
 supersedes: null
-plain_title: An inherited bone condition present from birth
+# Sources: CLM-0050 (monogenic / constitutional early-onset osteoporosis spectrum is
+# the best single-primary research alternative), CLM-0056 (gene panel not yet done).
+# plain_title must stay interrogative: CLM-0050 is kind `hypothesis`, verification_status
+# `not_verified`, and calls this only the *best single-primary research alternative*. The
+# landing theory card renders this line first, so a declarative title would read as a
+# finding. CLM-0056: the gene panel that would test it has not been done.
+plain_title: Could an inherited bone condition have been there from birth?
 plain_summary: >-
   A single gene affecting how bone is built could account for bone loss this marked at
   this age. The genetic panel that would test this has not been done, and a negative

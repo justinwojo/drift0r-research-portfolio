@@ -28,7 +28,7 @@ There is **no published privacy@ email**. Public issues are public.
 
 ## 5. Why is there no clinician review?
 
-**Response:** Clinician review has **not been performed** and that status is stated prominently. The owner accepted a **noindex research preview** before clinician review solely because the absence of review is unambiguous and cannot be mistaken for endorsement. **Scoped licensed clinician review remains the highest-priority post-launch task.** Until then, treat all rankings and interpretations as unaudited research.
+**Response:** Clinician review has **not been performed** and that status is stated prominently. The owner accepted publishing a **research preview** before clinician review solely because the absence of review is unambiguous and cannot be mistaken for endorsement. **Scoped licensed clinician review remains the highest-priority post-launch task.** Until then, treat all rankings and interpretations as unaudited research.
 
 ## 6. Can I get personal medical advice here?
 

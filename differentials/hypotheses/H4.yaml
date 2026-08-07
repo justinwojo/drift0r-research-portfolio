@@ -32,7 +32,14 @@ open_question_ids:
 review_status: source_audited
 as_of: '2026-08-05'
 supersedes: null
-plain_title: A lingering bacterial infection
+# Sources: CLM-0037 (specialty immunoblot IgM positive Jul 2023, later
+# indeterminate/negative; Bartonella PCR and FISH negative), CLM-0043 (contested;
+# low-medium residual contributor), CLM-0040 (mild periosteal edema, left humerus MRI).
+# plain_title must stay interrogative: CLM-0043 is `contested` and puts Bartonella-spectrum
+# disease at a low–medium *residual contributor* hypothesis without commercial confirmation.
+# A declarative title on the landing theory card would assert an infection the record does
+# not establish — the specialty positive was never independently confirmed (CLM-0037).
+plain_title: Could a lingering bacterial infection still be contributing?
 plain_summary: >-
   A Bartonella-type infection could contribute to the joint and bone-surface findings.
   Specialty lab results are disputed and standard testing was negative, so this stays

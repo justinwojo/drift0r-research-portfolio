@@ -19,7 +19,7 @@ Use this when the sanitized repository and/or site first become reachable by str
 - [ ] Watch for issues containing **attachments** or pasted lab/imaging content → remove content, close, cite policy  
 - [ ] Watch for doxxing / third-party identifiers  
 - [ ] Watch for “diagnose me” / treatment-request threads → close with scope reply  
-- [ ] Confirm site still shows **noindex** and clinician review **not performed**  
+- [ ] Confirm clinician review still shows **not performed**, and that the robots meta matches `release.yaml:noindex` (currently indexing **enabled**, DEC-0037)  
 - [ ] Skim first external shares (if any) for misquoted “diagnosis” framing  
 
 ## Hours 6–24

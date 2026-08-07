@@ -1,7 +1,7 @@
 # Machine-readable public allowlist — deny by default.
 # Validated by scripts/validate_all.py. Human narrative: PUBLIC_FILE_ALLOWLIST.md
-version: "1.9.1"
-as_of: "2026-08-05"
+version: "1.10.0"
+as_of: "2026-08-07"
 not_medical_advice: true
 
 # ---------------------------------------------------------------------------
@@ -50,6 +50,9 @@ v1_public_repository:
   - literature/attestations/
   - literature/search/index.json
   - differentials/hypotheses/
+  # Homepage build input: getRuledOut() in site/src/lib/data.ts loads this unconditionally.
+  # Deny-by-default means omitting it breaks the sanitized export's landing build.
+  - evidence/ruled_out.yaml
   - differentials/clinician_questions/
   - differentials/current_ranking.md
   - differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
@@ -88,6 +91,9 @@ medical_page_body_sources:
   - audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml
   - audits/2026-08-publication-readiness/03_public_language_guide.md
   - differentials/hypotheses/
+  # Homepage build input: getRuledOut() in site/src/lib/data.ts loads this unconditionally.
+  # Deny-by-default means omitting it breaks the sanitized export's landing build.
+  - evidence/ruled_out.yaml
   - differentials/clinician_questions/
   - differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
   - differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md

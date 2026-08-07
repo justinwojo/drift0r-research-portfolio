@@ -23,7 +23,7 @@ Define what may be published, who approves it, and how public content relates to
 | Decision | Approver | Cannot establish |
 |----------|----------|------------------|
 | Scope of website | Repository owner + patient | Medical validity |
-| Launch of medical pages | Owner after patient review + scoped clinician review **by default**. **v0.1 noindex research-preview exception:** [DEC-0027](../audits/2026-08-publication-readiness/DECISIONS.md) authorizes openly shareable sanitized repository + static site with `noindex` remaining true and clinician review status **`not_reviewed` / not performed**, provided that status is displayed prominently on every launch-critical route. Qualified clinician review remains the highest-priority post-launch task and is not waived. | Absolute clinical truth |
+| Launch of medical pages | Owner after patient review + scoped clinician review **by default**. **Public research-preview exception:** [DEC-0027](../audits/2026-08-publication-readiness/DECISIONS.md) authorizes an openly shareable sanitized repository + static site with clinician review status **`not_reviewed` / not performed**; [DEC-0037](../audits/2026-08-publication-readiness/DECISIONS.md) subsequently enabled search indexing, provided that status is displayed prominently on every launch-critical route. Qualified clinician review remains the highest-priority post-launch task and is not waived. | Absolute clinical truth |
 | Claim public_approved=true | Owner following REVIEW_POLICY | Diagnosis |
 | Adding paths to allowlist | Owner | Copyright clearance for third-party full text without license check |
 | Emergency takedown | Owner or patient request | — |
@@ -54,8 +54,8 @@ Each **public** release should receive an **annotated Git tag** and a **GitHub R
 
 ## Preview vs production
 
-- Preview: `noindex` until approval gates pass.
-- Production: remove `noindex` only after M5–M6 checklist.
+- Indexing is single-sourced from `release.yaml:noindex` and is currently **enabled** (DEC-0037).
+- Turning it back off is a release-record change, not a code change; record the decision first.
 
 ## Related
 

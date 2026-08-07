@@ -34,8 +34,22 @@ open_question_ids:
 review_status: source_audited
 as_of: '2026-08-05'
 supersedes: null
-plain_title: Calcium handling, and bone tests never completed
+# plain_summary must not assert hypercalciuria: CLM-0015 records 24h urine calcium of
+# 283 / 254 / 333 mg per 24h, two of the three below the common 300 mg/day threshold,
+# with high urine sodium on the latest panel. The finding is an unfinished measurement,
+# not an established abnormality. CLM-0055 (controlled calcium-flux phenotyping still
+# to be done).
+#
+# Neither field may say bone tests were "never run". The gap is narrower and softer than
+# that on two counts. Narrower: CLM-0011 is specifically about bone *formation* markers
+# (P1NP, bone-specific ALP, osteocalcin) — DXA (CLM-0003), CTX (CLM-0010) and serial 24h
+# urine calcium (CLM-0015) are all documented bone workup and are lead findings on this
+# site. Softer: CLM-0011's own note reads "Absence of documentation is not proof never
+# drawn outside public pack." The claim is about the ledger, not about the patient's life.
+plain_title: Calcium handling never measured under controlled conditions, and the bone-building markers are missing
 plain_summary: >-
-  More calcium than expected is leaving the body through urine, and the tests that show
-  whether bone is being built have never been run. This may be part of the picture, but
-  it is too small on its own to explain bone loss of this size.
+  Urine calcium has been collected three times with mixed results — two of the three
+  below the usual threshold — and never under the controlled conditions needed to read
+  it. The markers that show whether new bone is being built do not appear anywhere in
+  the test record, though that is not proof they were never drawn. This is a gap in the
+  documented workup rather than an established finding.

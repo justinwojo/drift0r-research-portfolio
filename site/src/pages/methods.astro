@@ -2,10 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AnalysisVersionBadge from '../components/AnalysisVersionBadge.astro';
 import { getClaims, getRelease, metrics } from '../lib/data';
+import { getSiteMode } from '../lib/publication';
 import { KIND_LABELS, VERIFICATION_LABELS } from '../lib/constants';
 import { withBase } from '../lib/paths';
 
 const release = getRelease();
+// Rendered to visitors — must reflect the build, not a hardcoded assumption.
+const mode = getSiteMode();
 const m = metrics();
 const claims = getClaims();
 
@@ -101,9 +104,9 @@ const CANNOT_DO = [
     <div class="legend-label">Methods</div>
     <h1>How this was produced</h1>
     <p class="lede">
-      Every statement on this site is a typed record with a source trail and a verification status.
-      This page explains how a document becomes a claim, how the models were used, and where the
-      method runs out.
+      Every material statement on this site is a typed record with a source trail and a verification
+      status. This page explains how a document becomes a claim, how the models were used, and where
+      the method runs out.
     </p>
     <AnalysisVersionBadge compact />
   </section>
@@ -111,9 +114,10 @@ const CANNOT_DO = [
   <section class="page-section wrap-prose">
     <h2 class="sec">How a record becomes a claim</h2>
     <p>
-      Nothing is written as free prose. Every material statement is filed as one of five kinds, and
-      the kinds are never blended — an interpretation cannot quietly become a fact because it was
-      repeated often enough.
+      Material statements are not free prose. Every one is filed as one of five kinds, and the kinds
+      are never blended — an interpretation cannot quietly become a fact because it was repeated often
+      enough. Plain-language summaries and orientation copy are written by hand, but each one names the
+      claim rows it rests on and may not state more than they support.
     </p>
     <ul class="kind-list">
       {
@@ -157,8 +161,8 @@ const CANNOT_DO = [
       Public wording is additionally constrained by an audited language guide, so a claim cannot be
       restated more strongly on a page than its record supports. In{' '}
       <span class="mono">publication</span> mode the site ships only explicitly approved claims and
-      release-scoped routes; <span class="mono">preview</span> mode — what you are reading — shows the
-      wider inventory with accurate statuses attached.
+      release-scoped routes; <span class="mono">preview</span> mode shows the wider inventory with
+      accurate statuses attached. You are reading <span class="mono">{mode}</span> mode.
     </p>
   </section>
 
@@ -194,9 +198,15 @@ const CANNOT_DO = [
         adversarial AI review does not substitute for patient or licensed clinician review.
       </p>
     </div>
+    {/*
+      Must not claim exact-build completeness. The retained run record states that model build
+      identity is unrecoverable for the earliest rounds — they logged the CLI/app version, not the
+      served build. Families are known; builds are not, for all of it.
+    */}
     <p class="record-note">
-      These three builds account for every AI contribution to this portfolio. No other model or
-      variant was used for any task, in any round.
+      These three model families account for every AI contribution to this portfolio. Exact build
+      identity is not recoverable for all of it: the earliest rounds recorded the tool version rather
+      than the served model build, and providers update builds behind a stable name.
     </p>
     <details class="raw-disclosure">
       <summary>Verbatim disclosure record for {release.content_version}</summary>

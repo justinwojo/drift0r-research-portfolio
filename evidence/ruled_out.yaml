@@ -4,13 +4,24 @@
 # It deliberately does not carry numeric lab values — those live in the private
 # tests ledger and have not been cleared for publication.
 #
+# Grounding rule: every entry carries `claim_ids` naming the rows in
+# audits/2026-08-publication-readiness/01_claim_inventory_public.yaml that support it.
+# Those ids are rendered to visitors, and in publication mode an entry whose claims are
+# not all approved is dropped (see getRuledOut in site/src/lib/data.ts). Do not add an
+# entry without claim rows — the register would then assert more than the gate allows.
+#
+# Epistemic rule: an entry may not read more strongly than its claim rows. If the claim
+# is `reported_history`, the entry says who reported it. If the claim carries an as-of
+# boundary or a documented denominator, the entry carries it too. "Negative" is not a
+# synonym for "unrevealing on the panels that were run".
+#
 # Honesty rule: every entry must be answerable as "what was run / what it showed /
 # what is still open". An entry with nothing in `still_open` is asserting the
 # question is closed on the present record — use that sparingly.
 #
 # `still_open: null` renders as "—" (nothing further flagged on the present record).
 
-as_of: '2026-08-06'
+as_of: '2026-08-07'
 
 standing_caveat: >-
   A negative test is not the same as an impossibility. These entries record what was run
@@ -19,6 +30,7 @@ standing_caveat: >-
 
 entries:
   - suggestion: Celiac disease
+    claim_ids: [CLM-0078]
     tested: Antibody panel (tTG, DGP, EMA) plus total IgA
     when: '2025-10'
     result: All negative. Total IgA sufficient, so the usual false-negative route does not apply.
@@ -28,72 +40,116 @@ entries:
     literature_id: lit-0185
 
   - suggestion: Lyme disease
+    claim_ids: [CLM-0038]
     tested: Multi-method serology and PCR across several labs
     when: '2023 onward'
-    result: All negative by every method run.
+    result: Negative by every method documented in the summaries, on both specialty and CDC/NYS criteria.
     still_open: null
 
   - suggestion: Mold illness / CIRS
-    tested: Mold toxicity and allergy testing
+    claim_ids: [CLM-0052]
+    tested: Mold toxicity and allergy testing, plus household mold removal
     when: '~2026'
-    result: Negative.
+    result: >-
+      Reported by the patient as negative, with no clear symptom change after the mold was
+      removed from the home. The underlying lab reports are not in the public record.
     still_open: >-
       An extended away-from-home environmental trial has been discussed but not carried out.
 
+  # Not a clean negative, and the entry must not read as one. Tryptase is elevated on both
+  # documented draws (CLM-0030); the record attributes that to hereditary alpha-tryptasemia,
+  # itself patient-reported (CLM-0031). KIT is negative but the assay method and limit of
+  # detection are undocumented (CLM-0032), which is why incomplete exclusion of systemic
+  # mastocytosis is on the project's own don't-miss list (CLM-0065).
   - suggestion: Mast cell activation / mastocytosis
-    tested: KIT mutation testing and urine mast-cell mediators
+    claim_ids: [CLM-0030, CLM-0031, CLM-0032, CLM-0065]
+    tested: KIT mutation testing, serial serum tryptase, urine mast-cell mediators
     when: '2025 – 2026'
-    result: KIT negative; urine mediators normal; no classic activation pattern.
+    result: >-
+      Mixed, and not a clean negative. Tryptase was above the reference range on both
+      documented draws; the record attributes that to hereditary alpha-tryptasemia, a
+      genetic trait the patient reports testing positive for. KIT was negative and urine
+      mediators were normal.
     still_open: >-
-      Bone marrow biopsy deferred until bone density makes the procedure safer.
+      The KIT assay's specimen, method, and limit of detection are not documented, so
+      systemic mastocytosis is not fully excluded — this is on the project's own list of
+      things a clinician should not miss. Bone marrow biopsy is deferred until bone density
+      makes the procedure safer.
 
   - suggestion: Lupus, rheumatoid arthritis, Sjögren's, scleroderma
+    claim_ids: [CLM-0044]
     tested: Full autoantibody panel (ANA, dsDNA, ENA, C3/C4), rheumatoid factor, anti-CCP
     when: '2021 – 2026'
-    result: Completely negative. Inflammatory markers have been normal on every draw.
-    still_open: null
+    result: >-
+      Unrevealing on every panel run. Inflammatory markers were normal on the three
+      documented CRP draws and the three documented ESR draws.
+    still_open: >-
+      No CRP or ESR value after 2025-08-05 appears in the summaries, so the inflammatory
+      picture is not current.
 
   - suggestion: Ehlers-Danlos syndrome
-    tested: Prior clinical assessment
+    claim_ids: [CLM-0081]
+    tested: Genetic and clinical assessment
     when: 'reported history'
-    result: Reported by the patient as previously cleared.
+    result: Reported by the patient as previously cleared on both genetic and clinical grounds.
     still_open: >-
-      Patient-reported only — no assessment document is in the public record.
+      Patient-reported only — no assessment document is in the public record, and which
+      genes were on the panel is not documented.
 
   - suggestion: Thyroid disease
-    tested: Thyroid panel with antibodies, repeated
-    when: '2021 – 2026'
-    result: Euthyroid throughout; antibodies negative.
-    still_open: null
+    claim_ids: [CLM-0079]
+    tested: Thyroid panel with antibodies (TSH, free T4, T3, reverse T3, TPO, thyroglobulin), repeated
+    when: '2021 – 2025'
+    result: Euthyroid across every draw; antibodies negative.
+    still_open: >-
+      One isolated uptake value sat slightly outside its reference range in 2022, which
+      carries little weight on its own. No thyroid panel after 2025 appears in the summaries.
 
   - suggestion: Parathyroid disease
+    claim_ids: [CLM-0017]
     tested: Intact PTH with serum calcium and vitamin D, repeated
     when: '2021 – 2026'
     result: Calcium normal, PTH low-normal — the opposite of the expected pattern.
     still_open: null
 
   - suggestion: Heavy metal toxicity
-    tested: Heavy metals panel
+    claim_ids: [CLM-0080]
+    tested: Heavy metals panel (arsenic, cadmium, cobalt, lead, mercury)
     when: '2026-06'
-    result: All below reporting cutoffs.
+    result: All below reporting cutoffs or undetectable.
     still_open: null
 
   - suggestion: Myeloma or a blood-protein disorder
+    claim_ids: [CLM-0028]
     tested: Serum protein electrophoresis and free light chains
     when: '2022 and 2026'
     result: Polyclonal, no abnormal clone, normal light-chain ratio.
     still_open: null
 
   - suggestion: COVID-19 vaccine injury
+    claim_ids: [CLM-0051]
     tested: Symptom-onset timeline against vaccination dates
     when: 'timeline'
-    result: Documented onset is around 2017, several years before COVID-19 vaccines existed.
-    still_open: null
+    result: >-
+      Onset is reported as around 2017, several years before COVID-19 vaccines existed.
+    still_open: >-
+      The onset date comes from a patient-compiled timeline rather than a dated clinical
+      record.
 
+  # CLM-0046 is reported_history and is explicitly scoped to the SSD reversal and the
+  # secondary-anxiety framing — not to "all psychiatric explanation absent". CLM-0048 is a
+  # research-team hypothesis, not a clinical adjudication. still_open must therefore not be
+  # null: this entry cannot claim the question is closed.
   - suggestion: It is psychological / somatic symptom disorder
-    tested: Multiple psychiatric and psychological evaluations
+    claim_ids: [CLM-0046, CLM-0047, CLM-0048]
+    tested: Psychiatric and psychological evaluation history, including MMPI-2-RF
     when: 'through 2025'
     result: >-
-      A previously applied somatic symptom disorder label was formally reversed in 2025.
-      The bone density, imaging, and laboratory findings are objective and instrument-recorded.
-    still_open: null
+      A somatic symptom disorder label applied in 2021 was formally reversed in 2025, and the
+      2025 MMPI-2-RF found no evidence of over-reporting of somatic symptoms. The bone
+      density, imaging, and laboratory findings are objective and instrument-recorded.
+    still_open: >-
+      The evaluation history other than the MMPI-2-RF result is patient-reported. What the
+      record supports is the reversal of that specific label — not a finding that no
+      psychiatric factor plays any part. Treating the medical findings as primary is this
+      project's research position, not a clinical adjudication.

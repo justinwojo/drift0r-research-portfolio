@@ -8,23 +8,23 @@ meta:
   inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
   release_content_commit_ref: site/src/data/release.yaml#base_commit
   evidence_pack_version: v1+v2
-  purpose: Public research-preview claim inventory (75 approved A/B/C rows; do_not_publish omitted)
+  purpose: Public research-preview claim inventory (79 approved A/B/C rows; do_not_publish omitted)
   not_medical_advice: true
-  claim_count: 75
+  claim_count: 79
   tier_counts:
-    Tier A: 62
+    Tier A: 66
     Tier B: 11
     Tier C: 2
   kind_counts:
     hypothesis: 8
     interpretation: 4
-    observed_fact: 33
-    reported_history: 9
+    observed_fact: 36
+    reported_history: 10
     research_question: 21
   verification_counts:
     contested: 1
     not_verified: 21
-    partially_verified: 53
+    partially_verified: 57
   schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
   public_export: true
   withheld_do_not_publish_count: 0
@@ -2407,4 +2407,129 @@ claims:
   last_checked: '2026-08-06'
   notes: COR-0028. Source language only — does not claim biological stability or improvement. Facility
     precision report beyond summary not in repo. UQ-0009 (LSC source document).
+  triage: Tier A
+- id: CLM-0078
+  statement: Celiac serology negative on a multi-antibody panel (tTG, DGP, EMA) on 2025-10-01 with total
+    IgA sufficient, so selective IgA deficiency does not explain the negative result; no duodenal biopsy
+    and no HLA-DQ2/DQ8 typing are documented, and gluten intake before the draw is not recorded.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: gastroenterology
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: celiac panel all negative; IgA sufficient
+    record_date: '2025-10-01'
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T042
+    record_date: '2025-10-01'
+  literature_refs:
+  - lit-0185
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-07'
+  notes: Added for the public ruled-out register (DEC-0038). Negative serology on a reduced-gluten diet
+    is uninterpretable per lit-0185; dietary status at the draw is not documented.
+  triage: Tier A
+- id: CLM-0079
+  statement: Thyroid panel with antibodies (TSH, free T4, free/total T3, reverse T3, TPO, thyroglobulin
+    Ab) euthyroid across repeated draws 2021–2025 with negative antibodies; one isolated T3-uptake value
+    slightly outside its reference range in 2022 carries low significance alone; no thyroid panel after
+    2025 is documented in the summaries.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: thyroid panel across draws
+    record_date: 2021–2025
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T015
+    record_date: 2021–2025
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-07'
+  notes: Added for the public ruled-out register (DEC-0038). As-of boundary is 2025 — do not state a
+    2026 endpoint for thyroid testing.
+  triage: Tier A
+- id: CLM-0080
+  statement: Heavy metals panel (arsenic, cadmium, cobalt, lead, mercury) all below reporting cutoffs
+    or undetectable on 2026-06-19.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: toxicology
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: heavy metals all below cutoff
+    record_date: '2026-06-19'
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: heavy metals
+    record_date: 2026-06
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T026
+    record_date: '2026-06-19'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-07'
+  notes: Added for the public ruled-out register (DEC-0038).
+  triage: Tier A
+- id: CLM-0081
+  statement: Ehlers-Danlos syndrome reported by the patient as previously cleared on both genetic and
+    clinical grounds; no assessment document is in the public record and the panel gene list is not documented.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: genetics
+  patient_sources:
+  - source_id: pack_v1
+    path: evidence/evidence_pack.md
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: EDS cleared
+    record_date: ''
+  - source_id: ledger
+    path: evidence/facts/tests_ledger.yaml
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: T067
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-07'
+  notes: Added for the public ruled-out register (DEC-0038). Patient-reported clearance only — must not
+    be rendered as a documented genetic exclusion.
   triage: Tier A

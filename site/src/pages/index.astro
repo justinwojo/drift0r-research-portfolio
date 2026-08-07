@@ -56,13 +56,32 @@ const AI_SYSTEMS = [
   { family: 'Grok', build: 'Grok 4.5', maker: 'xAI' },
 ];
 
-/** Plain-language orientation. Draft copy — pending claim-approval pass before publication. */
+/**
+ * Plain-language orientation. Every clause here traces to a row in the public claim
+ * inventory (audits/2026-08-publication-readiness/01_claim_inventory_public.yaml) and
+ * the source ids are listed per bullet. Nothing may be added to this list that the
+ * inventory does not support — lay phrasing is allowed to simplify, never to assert
+ * more than the record does. Patient-reported items say so.
+ */
 const CASE_IN_BRIEF = [
-  'A man in his thirties has bone density far below what is expected for his age — the kind of reading normally seen in elderly patients with advanced bone disease.',
-  'Alongside it: constant nerve pain and burning in the hands and feet, joint pain without inflammation, and structural problems in the lower spine.',
-  'A severe thiamine (vitamin B1) deficiency was documented in someone with no ordinary reason to have one — not an alcohol user, with normal digestion and absorption tests.',
-  'Two antibody measurements are persistently abnormal in opposite directions, repeatedly, across years of testing.',
-  'Symptoms trace back to roughly 2017. Dozens of specialists across many fields have not produced a unifying diagnosis.',
+  // CLM-0001 (male born 1987, ~38), CLM-0003 (L3 Z-score −4.3, 2025-06-16),
+  // CLM-0009 (males <50: emphasize Z-scores, not T-score as a standalone label).
+  'A man in his late thirties has bone density far below the range expected for his age — a lumbar Z-score of −4.3 in June 2025.',
+  // CLM-0045 (kind: reported_history — the pain narrative is patient-reported, so this
+  // clause must say so and must not sit unmarked beside an observed_fact),
+  // CLM-0013 (kind: observed_fact — L5–S1 bilateral pars defects, grade 1 spondylolisthesis,
+  // right L5 root impingement, imaging-documented).
+  'Alongside it: he reports joint pain that moves around and comes without swelling or heat, and imaging documents lower-spine defects — bilateral L5–S1 pars defects with slippage and nerve-root impingement.',
+  // CLM-0023 (serum thiamine 7 nmol/L, ref 8–30, 2022-09-29),
+  // CLM-0025 (patient-reported relief of burning neuropathy on repletion).
+  'Thiamine (vitamin B1) measured below the reference range in 2022, and he reports the burning nerve pain eased within days of repletion, with fuller recovery over the following year.',
+  // CLM-0027 (IgG1 persistently low, IgG4 persistently high across repeated 2025–2026 draws),
+  // CLM-0028 (no monoclonal band on SPEP; normal free light chain ratio).
+  'Two antibody subclasses are persistently abnormal in opposite directions across repeated draws — IgG1 low, IgG4 high — with no monoclonal band found to explain it.',
+  // CLM-0051 (kind: hypothesis; onset is *reported* ~2017 from a patient-compiled
+  // timeline, not an instrument-dated start — the copy must not upgrade it to documented),
+  // CLM-0049 (preferred research architecture is a multi-disease stack, not a single unifier).
+  'He reports symptoms going back to roughly 2017, before COVID vaccines existed. No single diagnosis has been established that accounts for the findings.',
 ];
 ---
 
@@ -133,7 +152,16 @@ const CASE_IN_BRIEF = [
   {/* ── 4. The case in brief ───────────────────────────────────────── */}
   <section class="page-section case-brief" aria-labelledby="case-brief-title">
     <h2 class="sec" id="case-brief-title">What this case is</h2>
-    <p class="sec-note">Plain-language orientation. Every point below traces to a documented record.</p>
+    {/*
+      Must not say "every point traces to a documented record" — three of the five
+      bullets rest on reported_history / hypothesis rows (CLM-0025, CLM-0045, CLM-0051).
+      Saying "documented" over a patient-reported clause is the blend the site elsewhere
+      promises never to make.
+    */}
+    <p class="sec-note">
+      Plain-language orientation. Every point below traces to a row in the claim record; where
+      something is the patient's own account rather than an instrument's, it says so.
+    </p>
     <ul class="case-brief-list">
       {CASE_IN_BRIEF.map((line) => <li>{line}</li>)}
     </ul>
@@ -276,6 +304,13 @@ const CASE_IN_BRIEF = [
               <tr>
                 <th scope="row" class="ruled-out-name">
                   {e.suggestion}
+                  {/*
+                    The site promises every statement carries a source trail
+                    (see "What is solid" below, and /methods/). This register is a
+                    medical surface like any other, so it shows the claim rows it
+                    rests on rather than asking the visitor to take it on trust.
+                  */}
+                  <span class="ruled-out-claims mono">{e.claim_ids.join(' · ')}</span>
                 </th>
                 <td>
                   {e.tested}

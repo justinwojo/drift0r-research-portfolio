@@ -34,6 +34,8 @@ open_question_ids:
 review_status: source_audited
 as_of: '2026-08-05'
 supersedes: null
+# Source: CLM-0049 (preferred research architecture is a multi-disease
+# skeletal-metabolic-neurologic-immune stack rather than a single rare unifier).
 plain_title: Several separate problems stacked together
 plain_summary: >-
   Rather than one rare disease explaining everything, the record may reflect several

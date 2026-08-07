@@ -114,9 +114,9 @@ describe('claim inventory safety for site body sources', () => {
   );
   const inv = loadYaml(readFileSync(publicPath, 'utf8'));
 
-  it('public inventory has 75 approved A/B/C claims and accurate meta', () => {
-    assert.equal(inv.claims.length, 75);
-    assert.equal(inv.meta.claim_count, 75);
+  it('public inventory has 79 approved A/B/C claims and accurate meta', () => {
+    assert.equal(inv.claims.length, 79);
+    assert.equal(inv.meta.claim_count, 79);
     assert.ok(inv.claims.every((c) => c.public_approved === true));
     assert.ok(!inv.claims.some((c) => c.public_tier === 'do_not_publish'));
     assert.ok(!('Do not publish' in (inv.meta.tier_counts || {})));

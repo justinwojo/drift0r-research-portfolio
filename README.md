@@ -146,7 +146,7 @@ Build output is written to `site/dist/` and is intentionally untracked.
 - The Pages workflow builds only in publication mode and validates the rendered repository/domain links and artifact digests before upload.
 - The deploy artifact is generated from `site/dist/` only.
 - The current repository must never be replaced by the private development repository's Git history.
-- `noindex` is controlled by the release record and remains a separate launch decision.
+- `noindex` is controlled by the release record. Search indexing is currently **enabled** (DEC-0037).
 
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`governance/PUBLICATION_POLICY.md`](governance/PUBLICATION_POLICY.md), and [`governance/RELEASE_VERSIONING.md`](governance/RELEASE_VERSIONING.md).
 

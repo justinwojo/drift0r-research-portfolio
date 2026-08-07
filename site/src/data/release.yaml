@@ -45,7 +45,7 @@ clinician_review_scope:
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
 base_commit: "d8d9727457e25eadb320e190a826a894a2acaab1"
-allowlist_version: "1.9.1"
+allowlist_version: "1.10.0"
 noindex: false
 ai_models_disclosed:
   - Grok (M4 / M4R / E2.x / Checkpoint F / F.1 / F.1.1 / G.1 / G.2 / G.2.1 / G.2.2 / H.1 / I / I.1 / I.1.1 / J.1 prelaunch remediation; 2026-08-06 adversarial audit remediation COR-0022…COR-0032)

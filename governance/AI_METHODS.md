@@ -13,8 +13,10 @@
 | Adversarial multi-model audit (overnight) | Claude Opus 5, Grok 4.5, Codex GPT-5.6 Sol | 2026-08-06 private research run; cross-model attack, citation fidelity, and remediation planning |
 | Remediation implementation | Grok 4.5 (xAI) | Applied COR-0022…COR-0032 from verified primary-source defects (working tree; not a clinical review) |
 
-Exact builds are recorded: every AI contribution to this portfolio used Claude Opus 5, Codex GPT-5.6 Sol, or
-Grok 4.5. No other model or variant was used for any task.
+Model **families** are recorded for every AI contribution: Claude, Codex, and Grok, in the builds named
+above. Exact build identity is **not** recoverable for all of it — the earliest rounds recorded the CLI or
+app version rather than the served model build, and providers update builds behind a stable name. Read the
+table as "which model families did what, and when", not as a byte-exact build manifest.
 A detailed private run log may exist at `audits/2026-08-publication-readiness/00_RUN.md` and under
 `private/research-runs/2026-08-06-overnight/` in the **private monorepo** only; those files are **not**
 part of the sanitized public export. Public disclosure is limited to agent families, dates, and the

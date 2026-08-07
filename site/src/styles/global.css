@@ -2049,6 +2049,17 @@ a.mono,
   color: var(--firm);
 }
 
+/* Claim ids backing each row — the register's source trail, same as every other surface. */
+.ruled-out-claims {
+  display: block;
+  margin-top: var(--s1);
+  font-size: var(--t-xs);
+  font-weight: 400;
+  color: var(--muted);
+  /* Ids are unbreakable tokens; let the list wrap rather than widen the column. */
+  overflow-wrap: anywhere;
+}
+
 .ruled-out-open {
   color: var(--contra);
   width: 30%;

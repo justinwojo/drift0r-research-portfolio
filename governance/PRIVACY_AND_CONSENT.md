@@ -23,15 +23,15 @@ This permission covers patient consent for a public repository and hosted websit
 
 ## Consent checklist (v0.1 research preview) — satisfied 2026-08-05
 
-Documented approval obtained 2026-08-05 covers the following for this **noindex research preview**
-(see `site/src/data/release.yaml` and DEC-0026 / DEC-0027 / DEC-0030):
+Documented approval obtained 2026-08-05 covers the following for this **public research preview**
+(see `site/src/data/release.yaml` and DEC-0026 / DEC-0027 / DEC-0030 / DEC-0037):
 
 1. Website scope and intended audience — **satisfied**  
 2. Case summary / timeline accuracy — **satisfied within published scope** (open to correction)  
 3. Quotations and attributed experiences — **satisfied**  
 4. Public source inventory — **satisfied** (compiled summaries; originals not redistributed by this repo)  
 5. Images/embeds (if any) — **satisfied** (no consent screenshots published)  
-6. Consent to persistent searchable web publication — **satisfied for repository + site; indexing remains disabled**  
+6. Consent to persistent searchable web publication — **satisfied for repository + site; search indexing is enabled** (DEC-0037). The site ships `index, follow`, so this material about a named living person is search-discoverable. DEC-0023 originally treated removal of `noindex` as a patient decision separate from the general publication grant; the owner's position is that the DEC-0026 broad grant covers it, and DEC-0037 records that as an **owner editorial judgment rather than a documented patient statement about indexing specifically**. Drift0r may ask for indexing to be turned off, or for removal, through the existing correction/privacy channel or private correspondence.  
 7. Correction/contact process — **satisfied** (GitHub issue template for correction/privacy/removal; no privacy@ email; Drift0r consent/withdrawal may continue via existing private correspondence)  
 8. Launch-copy review of actual pages to be published — **owner editorial discretion under broad grant; clinician review not performed**  
 9. Special-category mental-health content — **satisfied at owner editorial discretion under the broad grant**. DEC-0030 covers the v0.1 exact claims **CLM-0046**, **CLM-0047**, and **CLM-0048** (DSM-5 SSD assessment history, MMPI-2-RF results framing, and rejection of a primary psychiatric default) with their **exact published wording** and locators on `/case/` and related medical surfaces. DEC-0036 extends the same judgment to the ruled-out register (`evidence/ruled_out.yaml`), including its psychiatric-evaluation entry. Mental-health material is therefore no longer excluded by default; it is published only where the owner judges it accurate and materially informative, and it remains bound by the standing limits below — **plain results only, never numeric values or verbatim clinical wording**, and no material covered by an existing do-not-publish exclusion. Drift0r may narrow or withdraw any of it through existing private correspondence.

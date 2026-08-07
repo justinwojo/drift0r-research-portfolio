@@ -61,13 +61,14 @@ entries:
       - COR-0040
     git_tag_planned: v0.3.0
     github_release_planned: true
-    git_tag: null
-    github_release_published: false
+    git_tag: v0.3.0
+    github_release_published: true
     notes: >-
-      Content landed on main as e278d54. At the time this entry was written the v0.3.0 tag had
-      not been created, no GitHub Release had been published, and the site had not been
-      redeployed — Pages deployment is manual dispatch only. Rewrite these packaging fields and
-      this note when the tag and Release actually exist. Private run materials and the private
+      Content landed on main as e278d54, which is what release.yaml records as base_commit.
+      The v0.3.0 tag was created on db3b105, one commit later: db3b105 restores the full
+      contribution link labels on the compact CTA variants, a presentation-only fix that
+      carries no version bump. The deployed site is therefore not byte-identical to e278d54;
+      content_version labels the analysis, not the build. Private run materials and the private
       tests ledger remain gitignored; the four new claim rows are sourced from it but publish
       test name, date, and plain result only.
 

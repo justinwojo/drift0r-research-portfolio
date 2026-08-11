@@ -54,7 +54,7 @@ clinician_review_scope:
   label_must_not_imply_global: true
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "d997b510f7cad01e5c151904e4ffc2c3d3941736"
+base_commit: "b3f864de19c537ba05dc8b87002e0b71f9ca2c7a"
 allowlist_version: "1.10.0"
 noindex: false
 ai_models_disclosed:
@@ -67,3 +67,6 @@ ai_models_disclosed:
   - Claude (2026-08-10 audit of that run, source re-verification, DEC-0039 scope decision, v0.4.0 promotion)
   - Codex (2026-08-10 paired pre-publication review of the v0.4.0 content and language gates, three rounds)
   - Grok (2026-08-10 paired pre-publication review of the v0.4.0 content and language gates, three rounds)
+  - Claude Fable (2026-08-10 adjudication of community issue #3 against the public and private record; publication of the HPA, iron, acetylcholine-receptor and serum-CO2 evidence; dRTA bounding in H3)
+  - Codex (2026-08-10 paired review of the issue #3 evidence additions)
+  - Grok (2026-08-10 paired review of the issue #3 evidence additions)

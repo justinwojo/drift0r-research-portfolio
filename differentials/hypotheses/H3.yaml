@@ -10,11 +10,20 @@ summary: Ongoing calcium-flux research module (serial 24h urine Ca 283→254→3
   plus high urine Na and missing formation markers; module not unifier. CTX alone
   upper-normal without paired P1NP/BSAP does not prove uncoupling. Cited IH literature
   (lit-0152/lit-0153) describes mild BMD reduction and rate-of-loss association in
-  stone formers — it does not account for spine T −4.3 magnitude; record has no stones
-  on CT urogram 2026-02-27. No dedicated contradicting literature card is filed; the
-  empty contradicting_literature_ids list reflects that gap, not proof the module
-  is unopposed — magnitude mismatch and incomplete mechanism classification are the
-  named counters.
+  stone formers — it does not account for spine T −4.3 magnitude. On stone status the
+  record says two things and both belong here. The CT urogram of 2026-02-27 found no
+  stones, and the urology summary records one lifetime stone, passed spontaneously in
+  his late twenties after about a week of heavy energy-drink and fast-food intake. So
+  this is a stone-forming history at its mildest end, not an absence of one, and the
+  stone-former literature applies weakly rather than not at all. Three contradicting
+  cards are now filed (lit-0337, lit-0338, lit-0339) covering whether urinary calcium
+  tracks bone-density severity at all and whether stone-related fracture excess is
+  site-selective. The last of those counts fractures rather than measuring bone density,
+  so it bears on this module only through a specific step, stated here rather than left
+  to be inferred — the excess it reports is confined to the spine, while the low
+  readings in this record appear at spine, hip and forearm at once, which is more than a
+  stone-and-calcium mechanism has been shown to produce. Magnitude mismatch and incomplete
+  mechanism classification remain the other named counters.
 explains_claim_ids:
 - CLM-0015
 - CLM-0010
@@ -27,12 +36,15 @@ supporting_literature_ids:
 - lit-0152
 - lit-0014
 - lit-0153
-contradicting_literature_ids: []
+contradicting_literature_ids:
+- lit-0337
+- lit-0338
+- lit-0339
 open_question_ids:
 - UQ-0002
 - UQ-0005
 review_status: source_audited
-as_of: '2026-08-05'
+as_of: '2026-08-10'
 supersedes: null
 # plain_summary must not assert hypercalciuria: CLM-0015 records 24h urine calcium of
 # 283 / 254 / 333 mg per 24h, two of the three below the common 300 mg/day threshold,

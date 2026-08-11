@@ -2,8 +2,8 @@
 # Claim public_approved=true does NOT auto-approve these lists — each surface is listed.
 # Patient publication permission obtained 2026-08-05 (REV-0005 / DEC-0026).
 # Clinician review has NOT been performed — do not imply clinical validation.
-version: "1.1.1"
-as_of: "2026-08-06"
+version: "1.2.0"
+as_of: "2026-08-10"
 notes: >
   v0.1 openly shared and indexed research preview. Scope derived from repository IDs
   for all launch medical surfaces. Clinician review remains not_reviewed. Primary
@@ -49,6 +49,8 @@ approved_uq_ids:
   - UQ-0015
   - UQ-0016
   - UQ-0017
+  - UQ-0018
+  - UQ-0019
 
 approved_specialty_pathogens:
   - Babesia
@@ -93,6 +95,11 @@ approved_literature_applicability_ids:
   - lit-0293
   - lit-0294
   - lit-0297
+  - lit-0337
+  - lit-0338
+  - lit-0339
+  - lit-0340
+  - lit-0341
 
 approved_hardcoded_routes:
   - /

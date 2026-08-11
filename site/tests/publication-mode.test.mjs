@@ -10,10 +10,12 @@ import {
   readdirSync,
   writeFileSync,
   mkdirSync,
+  mkdtempSync,
   rmSync,
   existsSync,
   statSync,
 } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -82,7 +84,7 @@ describe('publication mode mutation (shipped publication.ts)', () => {
     assert.ok(out.every((c) => c.public_approved === true));
     // Public inventory omits do_not_publish rows; ensure withheld IDs are absent
     assert.ok(!out.some((c) => c.id === 'CLM-0075' || c.id === 'CLM-0076'));
-    assert.equal(out.length, 79);
+    assert.equal(out.length, 103);
   });
 
   it('site claim inventory resolution prefers public inventory (source contract)', () => {
@@ -259,10 +261,18 @@ describe('strict unknown-mode build must fail', () => {
 describe('zero-approval publication build must fail', () => {
   it('DRIFT0R_SITE_MODE=publication with empty release_scope fails closed', () => {
     // Live inventory may have public_approved claims for the release candidate.
-    // Fail-closed is proven by emptying release_scope (no routes authorized).
+    // Fail-closed is proven by pointing the build at an empty scope (no routes authorized).
+    //
+    // The empty scope is a temp fixture reached through DRIFT0R_RELEASE_SCOPE — never a
+    // rewrite of the tracked src/data/release_scope.yaml. `node --test` runs test files in
+    // parallel, so an earlier version of this test that clobbered the live file for the
+    // length of a full astro build raced every other nested publication build in the suite;
+    // they read the emptied file and failed with "route /about/snapshot/ is not in
+    // release_scope.approved_hardcoded_routes" — a load-time symptom, not a missing route.
+    //
     // Use scratch outDir so a failed/partial build cannot clobber site/dist (P0-4).
-    const scopePath = join(siteRoot, 'src/data/release_scope.yaml');
-    const backup = readFileSync(scopePath, 'utf8');
+    const fixtureDir = mkdtempSync(join(tmpdir(), 'drift0r-empty-scope-'));
+    const scopePath = join(fixtureDir, 'release_scope.yaml');
     const scratch = join(siteRoot, '.test-scratch-fail-dist');
     try {
       writeFileSync(
@@ -282,7 +292,11 @@ describe('zero-approval publication build must fail', () => {
       );
       const r = spawnSync('npx', ['astro', 'build', '--outDir', scratch], {
         cwd: siteRoot,
-        env: { ...process.env, DRIFT0R_SITE_MODE: 'publication' },
+        env: {
+          ...process.env,
+          DRIFT0R_SITE_MODE: 'publication',
+          DRIFT0R_RELEASE_SCOPE: scopePath,
+        },
         encoding: 'utf8',
         timeout: 180000,
       });
@@ -290,7 +304,7 @@ describe('zero-approval publication build must fail', () => {
       const out = `${r.stdout || ''}\n${r.stderr || ''}`;
       assert.match(out, /fail-closed|approved_hardcoded_routes|zero public_approved/i);
     } finally {
-      writeFileSync(scopePath, backup, 'utf8');
+      rmSync(fixtureDir, { recursive: true, force: true });
     }
   });
 

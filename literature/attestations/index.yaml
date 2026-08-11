@@ -1,8 +1,8 @@
 version: 1.0.0
-as_of: '2026-08-05'
-count: 106
-identity_only_disclaimer: Identifier resolution proves bibliographic identity only;
-  it does not prove that the card summary supports any medical claim.
+as_of: '2026-08-10'
+count: 111
+identity_only_disclaimer: Identifier resolution proves bibliographic identity only; it does
+  not prove that the card summary supports any medical claim.
 attestations:
 - literature_id: lit-0001
   identifier_type: doi
@@ -640,3 +640,33 @@ attestations:
   comparison_result: match
   verified_at: '2026-08-05T05:26:42Z'
   file: lit-0297.pmid.json
+- literature_id: lit-0337
+  identifier_type: pmid
+  identifier_value: '28063842'
+  comparison_result: match
+  verified_at: '2026-08-10T22:16:16Z'
+  file: lit-0337.pmid.json
+- literature_id: lit-0338
+  identifier_type: pmid
+  identifier_value: '21441130'
+  comparison_result: match
+  verified_at: '2026-08-10T22:16:16Z'
+  file: lit-0338.pmid.json
+- literature_id: lit-0339
+  identifier_type: pmid
+  identifier_value: '9461107'
+  comparison_result: match
+  verified_at: '2026-08-10T22:16:16Z'
+  file: lit-0339.pmid.json
+- literature_id: lit-0340
+  identifier_type: pmid
+  identifier_value: '35252483'
+  comparison_result: match
+  verified_at: '2026-08-10T22:16:16Z'
+  file: lit-0340.pmid.json
+- literature_id: lit-0341
+  identifier_type: pmid
+  identifier_value: '18799088'
+  comparison_result: match
+  verified_at: '2026-08-10T22:16:16Z'
+  file: lit-0341.pmid.json

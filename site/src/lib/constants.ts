@@ -187,23 +187,101 @@ export const FORBIDDEN_PHRASES = [
 ] as const;
 
 /**
- * Treatment / dosing patterns forbidden in public medical fields (especially patient_overlap).
- * Matched case-insensitively; publication build fails if any remain after language transform.
+ * Dose-figure patterns: a number, a mass unit, and regimen/frequency language around it.
  *
- * Lab measurement contexts (mg/24h, µg/L, mcg/mL, mg/kg, mg/day) are NOT forbidden — only
- * prescription-style dose/frequency and care-plan sequencing language.
+ * Lab measurement contexts (mg/24h, µg/L, mcg/mL, mg/kg, mg/day) are NOT matched — the
+ * negative lookahead on the denominator keeps them literal.
+ *
+ * DEC-0039 (v0.4.0) makes this set *conditional*: where the sentence carrying the figure is
+ * written as attributed record, the figure is publishable history and these do not fire.
+ * Where it is not so written — or is written prescriptively — they still do.
+ *
+ * The gate and the redaction transform ask the same two questions (isHistoricalRecord /
+ * isPrescriptive in language.ts) about the same sentence, per figure. That is what stops them
+ * disagreeing: any figure the transform kept is one the gate also reads as attributed, and any
+ * figure it redacted is gone before the gate runs.
  */
-export const FORBIDDEN_TREATMENT_PATTERNS: RegExp[] = [
+export const FORBIDDEN_DOSE_PATTERNS: RegExp[] = [
   // Prescription-style: number + mass unit + dosing frequency (not lab denominators).
   /\d+(?:\.\d+)?\s*(mg|mcg|µg|ug|iu)\b(?!\s*\/\s*(?:L|mL|ml|dL|24h|kg|day|h)\b)\s*(?:daily|weekly|bid|tid|qid|prn|when needed|eod|every)\b/i,
   // Bare patient-regimen dose near drug names (historical leakage pattern).
   /\b(?:regimen|dose|dosing)\b[^.\n]{0,40}\d+(?:\.\d+)?\s*(mg|mcg|µg|ug|iu)\b/i,
-  /\d+(?:\.\d+)?\s*(mg|mcg|µg|ug|iu)\b(?!\s*\/\s*(?:L|mL|ml|dL|24h|kg|day|h)\b)[^.\n]{0,40}\b(?:regimen|daily|weekly)\b/i,
-  /\b(needing|considering|consider|plan)\s+[a-z0-9/-]*(therapy|teriparatide|forteo|anabolic|thiazide)\b/i,
+  // "every other day" is spelled out here as well as abbreviated: the first pattern only sees a
+  // frequency sitting immediately after the unit, so "25 mg of compound every other day" reached
+  // neither pattern and published as a bare prescription-shaped dose.
+  /\d+(?:\.\d+)?\s*(mg|mcg|µg|ug|iu)\b(?!\s*\/\s*(?:L|mL|ml|dL|24h|kg|day|h)\b)[^.\n]{0,40}\b(?:regimen|daily|weekly|eod|every other day|every \d+ (?:days?|weeks?|hours?))\b/i,
+];
+
+/**
+ * Care-plan and recommendation constructions. These are **absolute** and DEC-0039 does not
+ * touch them: the decision relaxed publication of what the patient is recorded as having
+ * taken, not of what a reader should do. "He took 25 mg daily in 2021" is record;
+ * "consider teriparatide" is advice however it is framed, so historical wording must never
+ * buy it passage.
+ */
+// Drugs this project may name. clomiphene/anastrozole are here because DEC-0039 newly permits
+// printing them as record — which means the care-plan bar has to cover them too. Before v0.4.0
+// they were generalised on every path, so "consider clomiphene" came out as generic wording and
+// no care-plan pattern was needed; now that the real name can survive, its absence from this
+// list would have been the one drug you could recommend by name.
+// The generic class wording toPublicLanguage() substitutes for clomiphene and anastrozole.
+// The gate runs on the *output* of that transform, so listing only the real names left a hole:
+// "consider clomiphene" was generalised to "consider a selective estrogen-receptor modulator"
+// and then read as clean, because the string the pattern was looking for no longer existed.
+// Redaction laundered the recommendation instead of blocking it. Teriparatide never had this
+// problem only because its real name is kept. Keep these in step with the drugNameReplacer
+// generics in language.ts.
+const GENERIC_DRUG_CLASSES = 'selective estrogen-receptor modulator|aromatase inhibitor';
+
+const NAMED_DRUGS = `teriparatide|forteo|anabolic|thiazide|clomiphene|clomifene|anastrozole|${GENERIC_DRUG_CLASSES}`;
+
+/**
+ * Where a clause can begin, for the purpose of spotting an instruction.
+ *
+ * Exported and shared rather than written out in each place that needs it. Both this file's
+ * care-plan patterns and isPrescriptive() in language.ts have to agree on what an instruction
+ * looks like, and twice now they have drifted apart instead: first over the semicolon, then over
+ * the comma, and each time the disagreement was invisible because both sides still passed their
+ * own tests. A comma is a clause opener here for the same reason a semicolon is a boundary in
+ * sentenceAround — "Per the record, start clomiphene 25 mg daily" is an instruction wearing an
+ * attribution as a hat, and the attribution does not reach past the comma to license it.
+ */
+export const CLAUSE_OPENER = '(?:^|[.;:!?]\\s+|,\\s+|[—–]\\s*|\\s-+\\s+|\\n\\s*)';
+
+export const FORBIDDEN_CARE_PLAN_PATTERNS: RegExp[] = [
+  // Recommend/suggest sit alongside consider/plan because the transform can now redact its way
+  // out of this pattern: "recommended clomiphene 25 mg daily" becomes "recommended a selective
+  // estrogen-receptor modulator [dose withheld] daily", which loses the figure but still reads as
+  // a recommendation of a drug class. Withholding the number is not the same as not advising.
+  new RegExp(
+    `\\b(needing|considering|consider|plan|planning|recommend|recommends|recommended|recommending|suggest|suggests|suggested|suggesting)\\s+(?:(?:to|starting|start|adding|add)\\s+)?(?:an?\\s+|the\\s+)?[a-z0-9/-]*\\s*(therapy|${NAMED_DRUGS})\\b`,
+    'i',
+  ),
   // Sequenced care-plan arrow constructions naming bone-building drugs.
-  /→\s*consider\s+[a-z0-9/-]*(teriparatide|forteo|anabolic)/i,
+  new RegExp(`→\\s*consider\\s+(?:an?\\s+)?[a-z0-9/-]*\\s*(${NAMED_DRUGS})`, 'i'),
+  // Bare imperative naming a drug, with no dose attached. isPrescriptive() catches the shape,
+  // but the gate only ever consulted it while walking dose matches — so "Take teriparatide."
+  // was prescriptive, unredacted and unflagged all at once, because it had no figure to walk.
+  // Anchored to a clause opening so ordinary past-tense prose ("taking at the time was …",
+  // the one collocation of this kind in the published corpus) is not swept up.
+  new RegExp(
+    `${CLAUSE_OPENER}(?:take|start|stop|switch to|add|continue|try)\\s+(?:an?\\s+|the\\s+)?[a-z0-9/-]*\\s*(therapy|${NAMED_DRUGS})\\b`,
+    'i',
+  ),
   /\bstart\/stop\b/i,
   /\byou should (start|stop)\b/i,
+];
+
+/**
+ * Treatment / dosing patterns forbidden in public medical fields (especially patient_overlap).
+ * Matched case-insensitively; publication build fails if any remain after language transform.
+ *
+ * The union of both sets above. Callers that need DEC-0039's historical exemption must go
+ * through findForbiddenTreatmentPatterns() rather than testing this array directly.
+ */
+export const FORBIDDEN_TREATMENT_PATTERNS: RegExp[] = [
+  ...FORBIDDEN_DOSE_PATTERNS,
+  ...FORBIDDEN_CARE_PLAN_PATTERNS,
 ];
 
 /** Evidence-type public labels (language guide §3). */

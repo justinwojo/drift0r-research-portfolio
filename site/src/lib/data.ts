@@ -302,12 +302,14 @@ const CORRECTIONS: CorrectionRef[] = [
   { id: 'COR-0038', title: 'Hypothesis plain titles overstated their claim rows', status: 'applied_to_public_draft' },
   { id: 'COR-0039', title: "Ruled-out register bypassed the publication gate and the site's source-trail promise", status: 'applied_to_public_draft' },
   { id: 'COR-0040', title: 'Public documents asserted indexing was disabled while the site shipped indexable', status: 'applied_to_public_draft' },
+  { id: 'COR-0041', title: 'Two hormone results were grouped as if one reference-interval artefact explained both', status: 'logged_in_inventory' },
+  { id: 'COR-0042', title: 'Published pages described the case as having no stone history when the record documents one stone', status: 'applied_to_public_draft' },
 ];
 
 /** Domain → correction IDs that should surface on matching records (real COR IDs only). */
 const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
   bone: ['COR-0001', 'COR-0002', 'COR-0003', 'COR-0011', 'COR-0028'],
-  endocrine: ['COR-0004'],
+  endocrine: ['COR-0004', 'COR-0041'],
   mast_cell: ['COR-0005', 'COR-0027', 'COR-0033'],
   laboratory: ['COR-0006'],
   infectious_disease: ['COR-0007', 'COR-0024', 'COR-0025', 'COR-0026'],
@@ -317,7 +319,18 @@ const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
   immunology: ['COR-0015', 'COR-0032'],
   rheumatology: ['COR-0023', 'COR-0034'],
   msk: ['COR-0022', 'COR-0037'],
-  literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021', 'COR-0030'],
+  renal: ['COR-0042'],
+  // Compound domains are matched exactly, not split on the underscore, so each one a claim
+  // actually uses needs its own key — otherwise the claim silently shows no corrections at all.
+  //
+  // The reverse also holds and is easy to miss: `laboratory`, `literature` and `publication`
+  // below are not the medical_domain of any current claim, so their entries render nowhere.
+  // This map is only ever read as CORRECTION_BY_DOMAIN[claim.medical_domain]; listing a
+  // correction here does not surface it on a literature card or anywhere outside a claim record.
+  renal_bone: ['COR-0042'],
+  endocrine_bone: ['COR-0004', 'COR-0001', 'COR-0011'],
+  endocrine_mental_health: ['COR-0004', 'COR-0008', 'COR-0036'],
+  literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021', 'COR-0030', 'COR-0042'],
   publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031', 'COR-0035', 'COR-0038', 'COR-0039', 'COR-0040'],
 };
 
@@ -643,9 +656,14 @@ let _ruledOut: RuledOutRegister | null = null;
 /**
  * Commonly suggested explanations and what was actually tested.
  *
- * Source file carries test name / date / plain result only — never numeric lab
- * values. Text is passed through the public-language transform like every other
- * rendered medical surface.
+ * Source file carries test name / date / plain result, and since DEC-0039 (v0.4.0) may
+ * also carry a numeric value with its reference interval where the number is what makes
+ * the result interpretable. Text is passed through the public-language transform like
+ * every other rendered medical surface.
+ *
+ * Note the separate, still-absolute rule that confidence language is never numeric
+ * (see constants.ts CONFIDENCE_VOCAB) — that bars invented probabilities and is
+ * unaffected by the lab-value relaxation here.
  *
  * Fails closed like the other derived medical surfaces: in publication mode an entry
  * ships only if it names claim ids AND every one of them is in the approved inventory.

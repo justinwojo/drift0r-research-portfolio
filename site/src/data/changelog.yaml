@@ -8,6 +8,77 @@ not_medical_advice: true
 # IDs listed here are permanently reserved and must never be reassigned to new records.
 retired_or_reserved_ids: []
 entries:
+  - version: v0.4.0
+    date: "2026-08-10"
+    kind: minor
+    status: published
+    evidence_current_through: "2026-08-10"
+    summary: >-
+      The largest single expansion of the public record so far. A publication limit that had been
+      written in terms of content type — no numeric values, no verbatim clinical wording — is
+      replaced by a provenance test (DEC-0039): material drawn from the documents Drift0r himself
+      provided or published may be relayed as attributed historical record, numbers included, while
+      material that cannot be traced to them stays out. Nothing about the bar on prescriptive
+      content changes; it is restated as absolute. Twenty-four new claim rows follow from that,
+      carrying the bone-density detail, the full 24-hour stone-risk panel, blood counts and hormone
+      values that previously existed only as plain-language summaries. Five contradicting literature
+      cards are filed against H2 and H3, which until now listed none. Two corrections: one hormone
+      value was wrongly grouped with a reference-interval artefact, and six public locations
+      described the case as having no stone history when the record documents one.
+      Not medical advice; clinician review still not performed.
+    added_evidence:
+      - "CLM-0082…CLM-0086 — DXA detail the public set never carried: femoral neck 0.713 g/cm² (T −1.6), total hip T-scores −1.3→−1.5, the Site 2 lowest-hip row at T −2.0, four forearm subregions with both T and Z, and per-vertebra L1–L4 with the 1.2 SD step between L2 and L3"
+      - "CLM-0087…CLM-0091 — the 24-hour urine record in full: weight-indexed calcium 4.1 mg/kg/24h, the complete stone-risk panel including its in-range analytes, collection volumes against the adequacy target, the two-point sodium rise with chloride, and urine pH 6.53"
+      - "CLM-0092…CLM-0095 — thiamine 158 (78–185), PTH 16 pg/mL (15–65), IGF-1 110 and 97 ng/mL, and luteinising hormone 9.8 mIU/mL"
+      - "CLM-0096…CLM-0099 — history the patient recorded himself: the thiamine repletion regimen, the current and previous testosterone prescriptions, the pre-diagnosis symptom picture, and intermittent measured temperatures of 95.8–96.8 °F"
+      - "CLM-0100…CLM-0103 — three complete blood counts with every value inside its printed interval, the same draw appearing under two different reference intervals, globulin 1.8 g/dL below its printed 1.9–3.7 floor, and the albumin-to-globulin ratio printed against two different intervals"
+      - "CLM-0104 — the three bone numbers the patient reads aloud in the public video, reconciled against the instrument record; two of the three match once the scan is identified, the arm figure does not"
+      - "CLM-0105 — the on-camera change from clomiphene to injectable testosterone replacement during the making of the video (reported history)"
+      - "lit-0337, lit-0338, lit-0339 — contradicting cards for H3 on whether urinary calcium tracks bone-density severity and whether stone-related fracture excess is site-selective"
+      - "lit-0340, lit-0341 — contradicting cards for H2 on bone-fragility panel yield in unexplained early osteoporosis and on how often male osteoporosis has identifiable, and multiple, secondary causes"
+      - "UQ-0018, UQ-0019 — the testosterone change carries no date, so the record cannot say whether any blood count postdates it; and the globulin value is glossed as low-normal by the same document that prints it below range"
+    changed_interpretations:
+      - "Publication scope is now decided by provenance rather than content type (DEC-0039). Historical material from Drift0r's own documents — numbers, dosing history, mental-health content — may be published as attributed record; material not traceable to them may not. The prescriptive bar is unchanged and absolute: no surface may suggest a reader take, start, stop or adjust anything"
+      - "evidence/ruled_out.yaml may now carry a numeric value and its reference interval where the number is what makes the result interpretable. Numbers are permitted, not required, and any number added must carry its units — or say so where the source prints none"
+      - "H2 and H3 no longer report empty contradicting-literature lists as a documentation gap; both now carry filed counters, and their summaries say what those counters do and do not reach"
+      - "H3 restates stone status as the record actually has it: one lifetime stone passed spontaneously, and no stones on the CT urogram of 2026-02-27 — the mildest end of a stone-forming history rather than an absence of one"
+      - "The stone-former literature (lit-0152, lit-0153, lit-0226) moves from 'does not apply' to 'applies weakly' on that same basis"
+      - "Total hip is stated as sitting in the osteopenic band against the WHO thresholds the source prints, because the site's headline bone figures are all osteoporotic-range and a reader meeting only those would over-read the hip"
+    strengthened_or_weakened_hypotheses:
+      - "H3 weakened as a unifier and better bounded as a module: the full stone-risk panel shows high urine calcium without low citrate, high oxalate or raised oxalate supersaturation, which is a narrower finding than high urine calcium alone; the counters filed against it are now literature rather than an admission that no literature was filed"
+      - "H3's magnitude mismatch is unchanged — the cited hypercalciuria literature describes mild BMD reduction and does not account for a spine T-score of −4.3"
+      - "H2 unchanged in direction and better bounded: panel yield in unexplained early osteoporosis is partial, and male osteoporosis series commonly show identifiable and often multiple secondary causes, so a genetic cause cannot be assumed from presentation. No panel has been performed, so nothing in the record argues for one either"
+      - "CLM-0055 (controlled calcium-flux phenotyping not yet done) stays open, and two of the new rows are direct reasons why: the middle collection fell below its volume adequacy target, and sodium and calcium rise together across the same two collections"
+    retired_or_superseded:
+      - id: DEC-0036-numeric-value-limit
+        status: superseded
+        replaced_by: DEC-0039
+        note: >-
+          Only DEC-0036's "plain results only, no numeric values or verbatim clinical wording" limit
+          is superseded; the decision itself is not rewritten. Its grant of owner editorial
+          discretion over mental-health material stands. The numeric-value revisit trigger DEC-0036
+          named has now fired and been answered.
+      - id: DEC-0030-per-claim-wording-approval
+        status: superseded
+        replaced_by: DEC-0039
+        note: >-
+          Only DEC-0030's residual requiring explicit separate approval of exact wording for each
+          new mental-health claim is superseded, replaced by a class-level provenance rule.
+          DEC-0030's bar on presenting AI multi-model agreement as clinical validation of a
+          psychiatric framing is untouched and still applies.
+    corrections:
+      - COR-0041
+      - COR-0042
+    git_tag_planned: v0.4.0
+    github_release_planned: true
+    notes: >-
+      Prepared but not yet packaged. No v0.4.0 tag has been created and no GitHub Release has been
+      published at the time this entry was written; git_tag and github_release_published are
+      deliberately absent rather than set false, and are filled in only once those steps actually
+      run. Private run materials and the private tests ledger remain gitignored. The new numeric
+      rows are transcribed from the compiled summaries Drift0r provided, and the original documents
+      are not redistributed.
+
   - version: v0.3.0
     date: "2026-08-07"
     kind: minor

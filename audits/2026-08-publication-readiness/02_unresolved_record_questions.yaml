@@ -232,3 +232,47 @@ questions:
     status: open
     owner: patient_or_treating_clinicians
     blocks_launch_critical_wording: true
+
+  - id: UQ-0018
+    topic: Blood count after the change of testosterone treatment
+    question: >
+      Is there a complete blood count drawn after the patient switched from clomiphene to
+      injectable testosterone, and if so what are the hematocrit and hemoglobin values and their
+      dates?
+    why_it_matters: >
+      Raised hematocrit is the parameter the treatment guidelines already catalogued in this
+      project name as the one to watch on testosterone therapy, and the most recent documented
+      hematocrit sits near the top of its reference interval. The switch carries no date in
+      either compiled summary, so the record cannot say whether any of the three documented
+      blood counts was drawn after it. This is a gap in the record, not a finding: no documented
+      value is abnormal, and nothing here suggests anything is wrong. The question is simply
+      that the record does not establish whether it covers the period those guidelines watch.
+    related_claims: [CLM-0100, CLM-0097, CLM-0105]
+    related_corrections: []
+    closest_available_record: >
+      Blood counts dated 2021-03-15, 2025-08-05 and 2026-06-19. The switch itself is described on
+      camera and is placed only before the video's publication on 2026-08-03; neither compiled
+      summary carries a date for it, and neither does the video.
+    status: open
+    owner: patient_or_treating_clinicians
+    blocks_launch_critical_wording: false
+
+  - id: UQ-0019
+    topic: Globulin below its printed reference floor, unflagged and glossed as low-normal
+    question: >
+      Was the globulin value of 1.8 g/dL reviewed against its printed 1.9-3.7 g/dL interval, and
+      is there a protein electrophoresis or immunoglobulin panel from the same period that would
+      show whether it reflects anything or is simply run-to-run variation?
+    why_it_matters: >
+      The source document's table and its narrative disagree about this value. Resolving it needs
+      either the underlying laboratory report or a clinician's read; it cannot be settled from the
+      compiled summaries, because they are what disagree.
+    related_claims: [CLM-0102, CLM-0103]
+    related_corrections: []
+    closest_available_record: >
+      Endocrine summary comparison table (values 1.8, 1.9, 2.1 against 1.9-3.7) and the same
+      document's narrative gloss "low-normal globulin". Rheumatology summary states globulin within
+      range on its own later draws without printing the value.
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false

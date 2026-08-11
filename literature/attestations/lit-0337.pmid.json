@@ -1,0 +1,27 @@
+{
+  "card_title": "Relationship between Urinary Calcium and Bone Mineral Density in Patients with Calcium Nephrolithiasis",
+  "card_year": 2017,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "28063842",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0337",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1016/j.juro.2017.01.002",
+    "pmid": "28063842",
+    "pubdate": "2017 Jun",
+    "source": "J Urol",
+    "title": "Relationship between Urinary Calcium and Bone Mineral Density in Patients with Calcium Nephrolithiasis."
+  },
+  "resolved_container": "J Urol",
+  "resolved_title": "Relationship between Urinary Calcium and Bone Mineral Density in Patients with Calcium Nephrolithiasis.",
+  "resolved_year": 2017,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-10T22:16:16Z",
+  "year_delta": 0
+}

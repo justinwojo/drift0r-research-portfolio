@@ -9,11 +9,11 @@
 # 2) Record that tip SHA here (last reviewed content commit before this metadata-only update).
 # 3) Commit this release.yaml (+ packet) as a separate provenance commit that must NOT be used as
 #    its own base_commit. Never set base_commit to the hash of the commit that only edits this field.
-content_version: v0.3.0
-as_of: "2026-08-07"
-last_reviewed: "2026-08-07"
+content_version: v0.4.0
+as_of: "2026-08-10"
+last_reviewed: "2026-08-10"
 # Date through which patient records and literature were considered for this analysis snapshot.
-evidence_current_through: "2026-08-07"
+evidence_current_through: "2026-08-10"
 disclaimer_id: legal-baseline-2026-08
 review_status: published
 patient_approval:
@@ -26,7 +26,13 @@ patient_approval:
     repository owner's editorial discretion. Existing do-not-publish privacy exclusions remain in force.
     Mental-health material beyond those three claims is published at the owner's editorial discretion
     under the same broad grant (DEC-0036, extending DEC-0030 and superseding the DEC-0022 residual
-    default-exclusion), limited to plain results with no numeric values or verbatim clinical wording.
+    default-exclusion). From v0.4.0 the limit on that material is scoped by provenance rather than
+    by content type (DEC-0039, superseding the DEC-0036 "plain results only, no numeric values or
+    verbatim clinical wording" limit): historical material drawn from the documents Drift0r himself
+    provided or published — including numeric values, dosing history and mental-health content — may
+    be published as attributed historical record. Material not traceable to those documents remains
+    outside the grant, and no content may recommend that a reader take, start, stop or adjust
+    anything (03_public_language_guide.md 4.5).
     Search indexing is enabled (DEC-0037). DEC-0023 treated removal of noindex as a patient decision
     separate from this grant; the owner judges the broad grant to cover it, and DEC-0037 records that
     as owner editorial judgment rather than a documented patient statement about indexing specifically.
@@ -56,3 +62,5 @@ ai_models_disclosed:
   - Codex (Checkpoint E / E2 / F dispositions / G.2 independent findings; 2026-08-06 overnight adversarial multi-model audit; 2026-08-07 paired pre-publication review)
   - Grok (2026-08-07 paired pre-publication review)
   - Claude (2026-08-07 plain-language landing rewrite, ruled-out register, review triage and remediation)
+  - Grok (2026-08-09 overnight research run over the compiled source documents; findings register and unknowns)
+  - Claude (2026-08-10 audit of that run, source re-verification, DEC-0039 scope decision, v0.4.0 promotion)

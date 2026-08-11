@@ -1,0 +1,27 @@
+{
+  "card_title": "Fracture risk among patients with urolithiasis: a population-based cohort study",
+  "card_year": 1998,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "9461107",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0339",
+  "manual_override_reason": null,
+  "notes": "Card title punctuation corrected to the PubMed form (colon, not hyphen) after this attestation was written; title_similarity recomputed against the unchanged registry response with scripts/lit_identity.py compare. No registry field was re-fetched or edited.",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1046/j.1523-1755.1998.00779.x",
+    "pmid": "9461107",
+    "pubdate": "1998 Feb",
+    "source": "Kidney Int",
+    "title": "Fracture risk among patients with urolithiasis: a population-based cohort study."
+  },
+  "resolved_container": "Kidney Int",
+  "resolved_title": "Fracture risk among patients with urolithiasis: a population-based cohort study.",
+  "resolved_year": 1998,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-10T22:16:16Z",
+  "year_delta": 0
+}

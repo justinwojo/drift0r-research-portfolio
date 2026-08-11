@@ -2,29 +2,32 @@ meta:
   run_id: 2026-08-publication-readiness
   created: '2026-08-05'
   base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
-  # Inventory extraction base (when claims were first inventoried). Distinct from
-  # site/src/data/release.yaml base_commit (release content tip, currently b368809…).
+  # Inventory extraction base: the private monorepo commit the claims were first inventoried at.
+  # It does not resolve in this repository, and is not meant to — the public tree is a sanitized
+  # export with its own history. Distinct from site/src/data/release.yaml base_commit, which is a
+  # commit in THIS repository and moves every release; read it there rather than copying a SHA
+  # into this comment, which is how the SHA that used to sit here went stale.
   # Do not treat meta.base_commit as the public release content commit.
   inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
   release_content_commit_ref: site/src/data/release.yaml#base_commit
   evidence_pack_version: v1+v2
-  purpose: Public research-preview claim inventory (79 approved A/B/C rows; do_not_publish omitted)
+  purpose: Public research-preview claim inventory (103 approved A/B/C rows; do_not_publish omitted)
   not_medical_advice: true
-  claim_count: 79
+  claim_count: 103
   tier_counts:
-    Tier A: 66
-    Tier B: 11
+    Tier A: 87
+    Tier B: 14
     Tier C: 2
   kind_counts:
     hypothesis: 8
     interpretation: 4
-    observed_fact: 36
-    reported_history: 10
+    observed_fact: 55
+    reported_history: 15
     research_question: 21
   verification_counts:
     contested: 1
     not_verified: 21
-    partially_verified: 57
+    partially_verified: 81
   schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
   public_export: true
   withheld_do_not_publish_count: 0
@@ -443,6 +446,12 @@ claims:
     is_transcription: true
     page_or_lines: Trend table + stone-risk panel
     record_date: 2025-07 to 2026-05
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: '24-h urine Ca & cortisol row (09/30/2025), reference column'
+    record_date: '2025-09-30'
   - source_id: pack_v1
     path: evidence/evidence_pack.md
     source_class: patient_compiled_summary
@@ -463,8 +472,10 @@ claims:
   clinician_review_status: not_reviewed
   last_checked: '2026-08-05'
   notes: Inter-lab reference ranges differ (performing lab 100–300 vs Litholink 40–250). Do not label
-    as 'serial hypercalciuria' without stating values and male threshold context. Not a stone-former
-    narrative (CT urogram 2026-02-27 without stones).
+    as 'serial hypercalciuria' without stating values and male threshold context. The record documents
+    one lifetime stone, passed spontaneously during a documented period of dehydration, and no stones
+    on the CT urogram of 2026-02-27 — the mildest end of a stone-forming history rather than an absence
+    of one, so stone-former literature applies weakly rather than not at all (COR-0042).
   triage: Tier A
 - id: CLM-0016
   statement: Heterozygous SLC7A9 (cystinuria carrier) documented with 2022 urine cystine/lysine elevation;
@@ -1397,7 +1408,7 @@ claims:
     is_transcription: true
     page_or_lines: Inflammatory markers table (CRP/ESR 2021-03-01 and 2025-08-05)
     record_date: 2021-03-01 / 2025-08-05
-  - source_id: endocrine_pdf
+  - source_id: endo_pdf
     path: evidence/sources/Drift0r_Endocrine_Summary.pdf
     source_class: patient_compiled_summary
     is_transcription: true
@@ -2284,7 +2295,9 @@ claims:
   notes: ''
   triage: Tier C
 - id: CLM-0072
-  statement: Sustained low basal body temperature ~97.2–97.7°F reported.
+  statement: Baseline body temperature is reported to have fallen from about 98°F to a
+    current range of roughly 97.2–97.7°F. The range is given rather than a single figure
+    because the source documents give both values as the current baseline.
   kind: reported_history
   verification_status: partially_verified
   medical_domain: autonomic
@@ -2293,7 +2306,25 @@ claims:
     path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
     source_class: patient_compiled_summary
     is_transcription: true
-    page_or_lines: core body temperature
+    page_or_lines: 'core body temperature row (~97.2°F vs ~98.6°F stated comparison)'
+    record_date: ''
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'body temperature narrative (both 97.2°F and 97.7°F given as current baseline)'
+    record_date: ''
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: '00:09:04 — "a little bit less than normal at 97.7 Fahrenheit"'
+    record_date: '2026-08-03'
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'temperature dysregulation row (~98°F → ~97.2°F)'
     record_date: ''
   - source_id: pack_v1
     path: evidence/evidence_pack.md
@@ -2313,8 +2344,15 @@ claims:
   public_tier: B
   public_approved: true
   clinician_review_status: not_reviewed
-  last_checked: '2026-08-05'
-  notes: ''
+  last_checked: '2026-08-10'
+  notes: 'v0.4.0 (F-083): the range was previously carried on a single under-specified
+    locator. Each endpoint is now bound to source. The range is deliberate — the personal
+    history document states both "my current normal of 97.2F" and "my current normal body
+    temperature is 97.7F" one sentence apart, so reporting either alone would silently pick
+    one of two statements the document makes with equal force. Distinct from the acute 2021
+    episode described in the video (temperature dropping to ~97°F with hallucinations), which
+    is episodic and must not be read as a baseline. Self-measured; instrument, site and time
+    of day are not recorded anywhere in the pack.'
   triage: Tier B
 - id: CLM-0073
   statement: Post-SCS multi-joint symptom flare ~4 weeks after implant is patient-reported; causal link
@@ -2533,3 +2571,810 @@ claims:
   notes: Added for the public ruled-out register (DEC-0038). Patient-reported clearance only — must not
     be rendered as a documented genetic exclusion.
   triage: Tier A
+- id: CLM-0082
+  statement: >-
+    Left femoral neck bone density 0.713 g/cm² with a T-score of -1.6 on 2025-06-16 at Site 1. The femoral
+    neck is reported separately from the total hip figure carried by CLM-0006. The source's hip table
+    prints no Z-score column, so no femoral-neck Z-score exists in this record.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: left hip table, line 48
+    record_date: '2025-06-16'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Adds the standard femoral neck site, which the public claim set previously covered only through total
+    hip. The no-Z-score sentence is deliberate and applies to every hip row in this record - unlike the
+    forearm and per-vertebra tables, the hip table has no Z column, so a reader should not expect one and
+    its absence is not an omission by this project.
+  triage: Tier A
+- id: CLM-0083
+  statement: >-
+    A 2025-12-23 scan at Site 2 records a lowest-hip bone density of 0.811 g/cm² with a T-score of -2.0. The
+    compiled summary marks this a different scanner and states it is not used for percent-change comparison;
+    per CLM-0007 it must not be trended against Site 1 values.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 52-56
+    record_date: '2025-12-23'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    The non-comparability caveat is inseparable from the number: the source itself states the Site 2 row is
+    not used for percent change. Never present alongside the Site 1 series as a trend point. This is also
+    the row most likely to be quoted out of context, because it is the number that reconciles the spoken
+    hip figure in CLM-0104; quoting it without the scanner caveat would imply a Site 1 decline the record
+    does not support. The region label is the source's own ("lowest hip"), not a standardised site name.
+  triage: Tier A
+- id: CLM-0084
+  statement: >-
+    Left forearm subregions on 2026-06-19 at Site 1: ultra-distal bone density 0.354 g/cm² with T-score -3.2
+    and Z-score -2.9, mid 0.539 with T-score -3.1 and Z-score -3.0, and one-third radius 0.677 with T-score
+    -2.6 and Z-score -2.5, against a total forearm 0.516 with T-score -3.3 and Z-score -3.1 (CLM-0005). The
+    one-third radius is the least reduced of the three, reading 0.7 standard deviations above the total.
+    Unlike the hip table, this table does print Z-scores.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: forearm table, lines 59-68
+    record_date: '2026-06-19'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Numbers only. The 0.7 SD figure is arithmetic on the two printed T-scores, not a source statement. Any
+    cortical-versus-trabecular reading of the subregion pattern is a hypothesis and is not asserted here -
+    the source does not describe any region that way. The subregions are worth carrying separately because
+    a reader comparing forearm against spine needs to know which forearm number is in use.
+  triage: Tier A
+- id: CLM-0085
+  statement: >-
+    Per-vertebra lumbar values on 2025-06-16 at Site 1: L1 bone density 0.709 g/cm² at -3.3, L2 0.758 at
+    -3.1, L3 0.631 at -4.3 (CLM-0003), L4 0.635 at -4.1, and L1-L4 total 0.681 at -3.7 (CLM-0004). The step
+    between adjacent L2 and L3 is 1.2 standard deviations. The source table prints the same figure for
+    T-score and Z-score on every vertebral row, so each score above is both.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: appendix, lines 79-90
+    record_date: '2025-06-16'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    The identical T and Z values are what the compiled table prints; this claim reports that fact rather
+    than explaining it. The 1.2 SD step is arithmetic on the two printed scores, not a source statement -
+    the same distinction CLM-0084 draws about its own 0.7 SD figure, and it is drawn here for the same
+    reason: a reader checking the record should be able to tell which numbers were read off it and which
+    were computed from it. Causal readings of the L2-to-L3 gradient are hypothesis, not record, and whether an
+    adjacent-level step of that size warrants any particular follow-up is not adjudicated here. Serial
+    L3-L4 tracking is CLM-0077; this is the static gradient, and this table is what shows why L3-L4 was the
+    pair chosen for subregion tracking - they are the two lowest vertebrae.
+  triage: Tier A
+- id: CLM-0086
+  statement: >-
+    Total hip T-score -1.3 on 2025-06-16 and -1.5 on 2026-06-19 at Site 1 - the T-score pair accompanying
+    the bone-density change recorded in CLM-0006 (0.836 to 0.802 g/cm²). Against the WHO thresholds the
+    source itself prints, both values sit in the osteopenic band rather than the osteoporotic one, and the
+    source's own footnote describes the total hip that way. CLM-0008 carries the compiled summary's own
+    classification language.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 50, 54
+    record_date: '2025-2026'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Completes CLM-0006, which carried density and percent change but not the T-scores - an
+    under-specification fix rather than a new finding, since the numbers were already in the same source
+    table. The osteopenic-band sentence matters because the site's headline bone numbers are all in the
+    osteoporotic range; a reader who meets only those would over-read the hip.
+  triage: Tier A
+- id: CLM-0087
+  statement: >-
+    Weight-indexed 24-hour urine calcium of 4.1 mg/kg/24h on 2026-05-26, flagged high against the panel's
+    reference of under 4.0. CLM-0015 cites 4 mg/kg only as a threshold convention; this is the measured
+    value. The body weight used is not printed in the summary.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal_bone
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 39-41, 103
+    record_date: '2026-05-26'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Second hypercalciuria metric on the peak collection (333 mg/24h), and a second independent way of
+    reading the collection CLM-0015 already covers by absolute amount. The missing body weight is a real
+    limit on independent recomputation and is stated rather than glossed - it is the one input a reader
+    cannot check. The same panel prints a creatinine per kg of 21.5 mg/kg/24h inside its 11.9-24.4
+    reference, which shows a weight was applied consistently across the indexed rows even though the weight
+    itself is not printed.
+  triage: Tier A
+- id: CLM-0088
+  statement: >-
+    The 2026-05-26 24-hour stone-risk panel records citrate 784 mg/24h (reference above 400), oxalate 24
+    mg/24h (reference under 46), calcium-oxalate supersaturation 3.20 (reference under 7.50),
+    calcium-phosphate supersaturation 1.30 (reference under 1.50), uric-acid supersaturation 0.16 (reference
+    under 1.00), uric acid 697 mg/24h (reference 460-800), magnesium 146 mg/24h (reference 62-173), a
+    protein catabolic rate of 1.2 g/kg/24h (reference 0.8-1.4) and a negative qualitative cystine screen,
+    alongside the high urine calcium of 333 mg/24h (reference 40-250). Calcium, pH, sodium and chloride are
+    the only values the panel flags; every other analyte carrying a printed reference falls inside it, and
+    total creatinine is printed without one. The laboratory's own note records the calcium-phosphate
+    supersaturation as borderline and names urine calcium and pH as its principal contributors.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal_bone
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: full panel, lines 80-108
+    record_date: '2026-05-26'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Shows high urine calcium without high oxalate and without low citrate. The point of carrying the whole
+    panel rather than only the abnormal rows is that the in-range results are what bound the
+    interpretation - high urine calcium without low citrate, high oxalate or raised oxalate supersaturation
+    is a narrower finding than high urine calcium alone. The borderline/protective/reassuring
+    characterisations are the source laboratory's own wording and are attributed as such, not adopted. The
+    same lab page carries management suggestions; those are deliberately not carried forward, because this
+    project publishes what was measured and not what to do about it.
+  triage: Tier A
+- id: CLM-0089
+  statement: >-
+    24-hour urine volumes across the three collections are 2800, 1950 and 3120 mL, against the panel's
+    stated adequacy target of more than 2500 mL. The middle collection, on 2025-09-30 - the same one
+    carrying the lowest urine calcium at 254 mg/24h - falls below that target.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: trend table, line 70
+    record_date: '2025-2026'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Collection adequacy bears on how much weight the middle urine calcium can carry. This claim states the
+    volumes and the target and stops there; it does not assert that the low volume caused the low calcium,
+    and it does not assert the collection was incomplete. Whether an under-target volume changes how that
+    collection should be read is a question for a clinician, and is one reason CLM-0055 stays open.
+  triage: Tier A
+- id: CLM-0090
+  statement: >-
+    24-hour urine sodium of 115 mmol/24h on 2025-07-03 rises to 174 mmol/24h on 2026-05-26 against a 50-120
+    reference, with chloride 186 mmol/24h (reference 50-120) on the later collection. The 2025-09-30
+    collection carries no sodium value in the source trend table, so this is a series of two points and not
+    three.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 44-48, 72, 92-97
+    record_date: '2025-2026'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    CLM-0015 states the latest sodium only. The two-point bound is stated explicitly so that no reader or
+    later pass fills the 2025-09-30 gap by interpolation: the source leaves it blank and this record leaves
+    it blank. Sodium and calcium rise together across the same two collections, which is the observation
+    that keeps a dietary contribution live alongside the other explanations and is a direct reason CLM-0055
+    stays open. The source's own note attributes the rise to dietary sodium; that is its reading, not a
+    measured fact, and a dietary reading of the rise remains interpretation here.
+  triage: Tier A
+- id: CLM-0091
+  statement: >-
+    24-hour urine pH 6.53 on 2026-05-26, flagged high against a reference of 5.70-6.30.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 42, 89
+    record_date: '2026-05-26'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Named by the source laboratory as one of the two principal contributors to calcium-phosphate
+    supersaturation, together with urine calcium (CLM-0088).
+  triage: Tier A
+- id: CLM-0092
+  statement: >-
+    Blood thiamine is reported as 158 against a printed reference interval of 78-185, described in the
+    infectious-disease summary as normal following prior deficiency. The source table prints no units column
+    and names no assay method, so the value is reproduced here exactly as printed and its units are not
+    stated.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: micronutrient panel, line 184
+    record_date: '2026-06'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Published with the units gap stated rather than suppressed or inferred - the interval is consistent with
+    more than one whole-blood convention and the source settles none of them. This value must never be
+    rendered as a trend line with the earlier thiamine results: the thiamine summary states at its lines
+    11-12 that the assays use different specimens and methods with different reference ranges and are not
+    directly comparable.
+  triage: Tier A
+- id: CLM-0093
+  statement: >-
+    Parathyroid hormone (intact) of 16 pg/mL against a 15-65 reference appears in both the
+    urology/nephrology and rheumatology summaries, just above the lower bound. The endocrine summary prints
+    a different reference interval for the same analyte (16-77) with values of 22 and 26, so the interval
+    differs by report.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine_bone
+  patient_sources:
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: line 145
+    record_date: '2026'
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: line 284
+    record_date: '2026'
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: line 120
+    record_date: '2026'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Supplies the numeric behind CLM-0017's low-normal parathyroid wording. Two independent summaries carry
+    the 16. Caution when confirming: the endocrine summary's PTH row also shows a 16, but there it is the
+    lower bound of the reference interval and not a result.
+  triage: Tier A
+- id: CLM-0094
+  statement: >-
+    The endocrine summary prints one IGF-1 reference interval, 53-331 ng/mL, across two values taken five
+    years apart: 110 on 2021-03-15 and 97 on 2026-06-26. Its own footnote records that the interval differed
+    by report - 95-290 in 2021, 53-331 in 2026. Read against the interval its own report used, the 2021 value
+    of 110 sits near the floor of 95-290; the 2026 value of 97 is the one the summary calls normal, at a
+    Z-score of -0.8. The same 97 would have sat barely above the floor of the earlier interval.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 119, 121-122
+    record_date: '2021-2026'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    The inventory previously carried no IGF-1 statement at all. Any characterisation of either value as low
+    or normal must name which interval it is judged against, and must not read one value against the other
+    value's interval - the whole point of the row is that the interval moved. The summary's own normal
+    reading, and the Z-score it prints, both cite the 2026 interval.
+  triage: Tier A
+- id: CLM-0095
+  statement: >-
+    Luteinising hormone of 9.8 mIU/mL on 2021-03-15 sits above both reference intervals printed in the
+    compiled record - 1.7-8.6 on the reporting platform and 1.5-9.3 on the other draws in the same table.
+    Prolactin of 15.9 ng/mL on the same date behaves differently: it is above the 4.0-15.2 interval on that
+    platform and within the interval used on the other draws.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: abnormal-findings LH and prolactin rows; methodology note, lines 219-220
+    record_date: '2021-03-15'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Correction COR-0041. An internal extract previously grouped these two results together as
+    platform-relative and described the luteinising hormone value as within the second interval. That was
+    arithmetically wrong (9.8 exceeds 9.3); only the prolactin result is platform-relative. Which laboratory
+    issued the 1.5-9.3 interval is not established in this repository, so it is described here as the
+    interval used on the other draws rather than named.
+  triage: Tier A
+- id: CLM-0096
+  statement: >-
+    The thiamine summary records the repletion regimen previously taken: thiamine mononitrate first, then
+    approximately 1000 mg benfotiamine daily together with a methylated B-complex every other day. This is a
+    record of what was taken historically and is not a course of action for any reader; the compiled summary
+    is not a pharmacy record.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: line 13
+    record_date: '2022-2023'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Published as historical record under DEC-0039. The approximation, the attribution and the
+    not-a-pharmacy-record caveat are all in the source framing and are retained.
+  triage: Tier A
+- id: CLM-0097
+  statement: >-
+    The medical-psychological history lists Xyosted 75 mg weekly as a current prescription and files
+    clomiphene under previous medications, while the thiamine summary lists clomiphene citrate 25 mg daily
+    as current. The change of regimen is described in the publicly released video, but neither document
+    carries an authoring date, so which of them describes the present is unresolved on the available record.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: header, lines 1-6
+    record_date: 'undated'
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: line 4
+    record_date: 'undated'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Recorded as a dating gap rather than a conflict between sources: the direction of the change is
+    documented twice, but both documents assert a current regimen and neither is dated. Acquisition ask 9
+    seeks the date, not a winner.
+  triage: Tier A
+- id: CLM-0098
+  statement: >-
+    Describing the period before his low testosterone was identified, the patient's own history records high
+    energy, aggression, disturbed sleep and being sexually active three to four times a day - and states
+    explicitly that these were paradoxically the opposite of what would be expected. A primary care doctor
+    proposed treating for bipolar disorder; a testosterone check requested instead returned 34 ng/dL, with a
+    second test roughly the same. Clomiphene was then prescribed and is recorded as raising the level within
+    six weeks.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: endocrine_mental_health
+  patient_sources:
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: lines 111-121
+    record_date: 'circa 2017'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P0
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    First-person patient narrative, published as attributed historical record under DEC-0039. The
+    paradoxical framing is the patient's own characterisation, not an interpretation added here. The
+    clinical value is that a testosterone level this low did not present with the textbook picture, which is
+    why the initial workup moved toward psychiatry. Must not be presented as a symptom checklist for
+    readers.
+  triage: Tier A
+- id: CLM-0099
+  statement: >-
+    Alongside the lowered baseline, the patient reports intermittent episodes of feeling cold in which a
+    measured temperature fell to 95.8-96.8 degrees Fahrenheit. These are described as not uncommon rather
+    than as a one-off, and are recorded independently in two of the compiled summaries.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: autonomic
+  patient_sources:
+  - source_id: history_pdf
+    path: evidence/sources/medical-psychological-history.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: >-
+      body temperature narrative - "It was not uncommon that I get a cold feeling, take my temperature and
+      find that it is 95.8F-96.8F"
+    record_date: ''
+  - source_id: thiamine_pdf
+    path: evidence/sources/Drift0r_Thiamine_Deficiency_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'core body temperature row - "~97.2 degrees F (lows 95.8-96.8 degrees F)"'
+    record_date: ''
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'temperature dysregulation row - "sometimes 95.8-96.8F"'
+    record_date: ''
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0 (F-083); these values were documented twice and carried by no claim. Deliberately
+    filed as a separate row from the baseline range rather than widening that range to 95.8-97.7, which
+    would misrepresent an episodic low as a sustained baseline. All measurements are self-taken; no
+    instrument, body site or time of day is recorded anywhere in the pack, and no episode is dated, so the
+    frequency implied by "not uncommon" cannot be quantified. Distinct again from the acute 2021 crash
+    described on camera. Recorded here as what the patient reports measuring, not as a clinical finding of
+    hypothermia - that inference would need instrumented measurement this record does not contain.
+  triage: Tier B
+- id: CLM-0100
+  statement: >-
+    A complete blood count is documented at three dates, and every reported value falls inside the
+    reference interval printed next to it. The 2025-08-05 and 2026-06-19 draws give white cell count 8.4
+    then 6.5 K/uL (reference 3.4-10.8), hemoglobin 16.5 then 16.1 g/dL (13.0-17.7), hematocrit 50.1 then
+    48.7 percent (37.5-51.1), platelets 208 then 173 K/uL (140-450) and absolute eosinophils 200 then 221
+    /uL (15-500). An earlier 2021-03-15 draw gives white cell count 6.8 K/uL (3.4-10.8), hemoglobin 15.3
+    g/dL (13.0-17.7), hematocrit 46.3 percent (37.5-51.0) and platelets 202 K/uL (150-450). The metabolic
+    panel drawn alongside the 2025 sample is also within range throughout (creatinine 1.09 mg/dL against
+    0.76-1.27, eGFR 90 mL/min against a printed floor of >59, calcium 9.7 mg/dL, total protein 7.2 g/dL,
+    AST and ALT both 19 IU/L).
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'CBC and complete metabolic panel section (2025-08-05 and 2026-06-19 columns)'
+    record_date: '2026-06-19'
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'CBC (03/15/2021) block'
+    record_date: '2021-03-15'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0. These numbers were documented all along but had never been carried onto this site,
+    because the transcription step kept the source summary's own one-line conclusion - "No anemia,
+    leukocytosis, thrombocytopenia, renal, hepatic or electrolyte abnormality across draws" - in place of
+    the values it was summarising. That sentence is accurate. It is published here as numbers anyway,
+    because a reader cannot check a conclusion and can check a value, and because the 2025 timepoint
+    exists in only one document, so losing it would have left no series at all. Nothing in this row is
+    outside its reference interval, no abnormality is claimed, and none should be read in. The hematocrit
+    of 50.1 percent is noted only because it is the highest value in the set and sits near the top of its
+    interval; on its own that is an ordinary result and not a finding.
+  triage: Tier A
+- id: CLM-0101
+  statement: >-
+    The same 2026-06-19 blood draw appears in two different compiled summaries under different reference
+    intervals. White cell count is printed against 3.4-10.8 K/uL in one and 3.8-10.8 in the other,
+    hemoglobin against 13.0-17.7 g/dL versus 13.2-17.1, and platelets against 140-450 K/uL versus 140-400.
+    The measured values are identical in both documents. The endocrine summary, printing the older 2021
+    draw, gives the hematocrit ceiling as 51.0 percent where the rheumatology summary prints 51.1.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'CBC table reference column'
+    record_date: '2026-06-19'
+  - source_id: id_pdf
+    path: evidence/sources/Drift0r_infectious_disease_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'section 3a blood count and lymphocyte subsets (Jun 2026)'
+    record_date: '2026-06-19'
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'CBC (03/15/2021) block, hematocrit row'
+    record_date: '2021-03-15'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0. Reference intervals are set by the testing laboratory and platform, so different
+    intervals for the same analyte are normal and are not an error by anyone. It is recorded because it
+    changes how a reader should treat any value sitting near a boundary: whether a result reads as
+    in-range or out-of-range can depend on which document it is read in. This is the third documented
+    instance of the pattern in this record, alongside the luteinising hormone value discussed at CLM-0095
+    and the two thresholds in use for 24-hour urine calcium at CLM-0015, which is why it is filed as a
+    pattern rather than an incident. None of the values involved here changes status between the two
+    intervals.
+  triage: Tier A
+- id: CLM-0102
+  statement: >-
+    In the endocrine summary's comparison table, globulin is printed against a reference interval of
+    1.9-3.7 g/dL with measured values of 1.8, 1.9 and 2.1 g/dL. The first sits below that interval and the
+    second exactly on its lower bound, and neither carries an abnormal flag in the table. The same
+    document's narrative describes the pattern as "low-normal globulin", a description that does not fit a
+    value below the interval. A separate rheumatology summary records globulin as within range on its own
+    later draws.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'comparison table globulin row, and the narrative row glossing it as low-normal'
+    record_date: '2021-03-15'
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'CMP components stated within range'
+    record_date: '2025-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0, and it is the only promotion in this release that contradicts a source document
+    rather than extending one. What is being published is the disagreement, not a conclusion: the
+    document's table and the document's prose do not say the same thing about the same value. This is
+    deliberately not framed as a finding that globulin is low. A single value 0.1 below a reference floor
+    is a small difference, laboratories differ on where that floor sits, and low globulin has many
+    ordinary causes - none of which is being asserted here. It is surfaced because a reader working from
+    the prose alone would never learn that the table disagrees with it, and because the value was
+    previously lost from the internal extract entirely when its reference interval was replaced with the
+    words "see table".
+  triage: Tier A
+- id: CLM-0103
+  statement: >-
+    The albumin-to-globulin ratio is recorded at 2.6, 2.4 and 2.6 across the three draws. The document
+    prints two different reference intervals for it, 1.2-2.2 on one row and 1.0-2.5 in the comparison
+    table, and both 2.6 values sit above both intervals, so the raised status does not depend on which
+    interval is applied. The source labels the finding non-specific and raises possible dehydration as an
+    explanation.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: 'A/G ratio narrative row and comparison table row'
+    record_date: '2021-03-15'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P2
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0 alongside CLM-0102, since the ratio is arithmetically tied to the globulin value
+    and reading either alone is misleading. Recorded as raised but not as raised by a stated amount - the
+    two printed intervals put the value different distances above the ceiling, so any degree of elevation
+    would be an artefact of which row was consulted. The source's own reading, that this is non-specific
+    and possibly reflects hydration, is carried forward as the source's reading rather than endorsed.
+  triage: Tier B
+- id: CLM-0104
+  statement: >-
+    In the public video the patient reads three bone numbers aloud between 00:23:55 and 00:24:11 - a
+    lumbar figure of −4.5, a hip that is "close to −2", and an arm that is "almost exactly negative −2".
+    Two of the three match documented instrument values once the scan is identified. The −4.5 is the
+    L3-L4 subregion baseline recorded in CLM-0077, and −2.0 is the Site 2 lowest hip T-score in
+    CLM-0083, which is a different scanner. The arm figure matches no forearm measurement in the record.
+    Per CLM-0084 the four forearm regions read −3.2, −3.1, −2.6 and −3.3, so the closest documented
+    value is 0.6 SD away from the spoken one.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: bone
+  patient_sources:
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: 00:23:55 to 00:24:11
+    record_date: '2026-08-03'
+  - source_id: bone_pdf
+    path: evidence/sources/Drift0r_BoneDensity_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Left hip table and left forearm table
+    record_date: '2025-06-16 to 2026-06-19'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0. Recorded because a viewer who arrives from the video and then reads this site
+    will meet two different sets of bone numbers, and the honest account is that most of the gap is
+    explained by which scan each figure came from rather than by anyone being wrong. The arm figure is
+    the one that does not resolve, and this claim states that it does not rather than guessing at a
+    cause - a spoken approximation, a Z-score read as a T-score, and an older or different-site forearm
+    scan are all consistent with the record as it stands. The 0.6 SD figure is arithmetic. Retrieving
+    the underlying forearm printouts would settle it; see the acquisition asks.
+  triage: Tier A
+- id: CLM-0105
+  statement: >-
+    The patient's testosterone treatment changed direction during the making of the public video. Early
+    in the recording he states that the only prescription medication he was taking at the time was
+    clomiphene citrate for low testosterone, and near the end he states that over the course of making
+    the video he came off clomiphene and went onto injectable testosterone replacement. Neither compiled summary in the
+    public pack carries a date for that change, so the video is the only record of its direction and the
+    only record that places it before publication.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: 00:09:18 and 00:59:47
+    record_date: '2026-08-03'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P2
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Promoted in v0.4.0 as reported history because the source is the patient speaking, not a pharmacy or
+    clinic record. It matters for reading every lab drawn around that period, since the two treatments
+    act on the hormone axis differently, and no dated medication list exists to say which labs fall on
+    which side of the change. The video's automatic captions render the drug name as "clomophene"; it is
+    given here by its correct spelling. No dose, schedule or product name is recorded, because none is
+    stated. Nothing here is a recommendation about either treatment. See UQ-0018 and the acquisition
+    asks for the dated medication list that would close this.
+  triage: Tier B

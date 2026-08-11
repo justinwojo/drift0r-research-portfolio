@@ -1,19 +1,19 @@
 version: 1.0.0
-as_of: '2026-08-05'
-identity_only_disclaimer: Identifier resolution proves bibliographic identity only;
-  it does not prove that the card summary supports any medical claim.
+as_of: '2026-08-10'
+identity_only_disclaimer: Identifier resolution proves bibliographic identity only; it does
+  not prove that the card summary supports any medical claim.
 semantic_verification_note: 'This coverage file records bibliographic identity verification
-  only. semantic_verified is always 0: identifier resolution does not prove that a
-  card summary supports any medical claim.'
-catalog_card_count: 334
+  only. semantic_verified is always 0: identifier resolution does not prove that a card summary
+  supports any medical claim.'
+catalog_card_count: 339
 alias_count: 10
-launch_cited_count: 44
-identity_verified_count: 44
+launch_cited_count: 49
+identity_verified_count: 49
 identity_unverified_count: 280
 identity_unresolvable_count: 0
 identity_mismatch_count: 0
 semantic_verified_count: 0
-semantic_unverified_count: 324
+semantic_unverified_count: 329
 identity_verified:
 - lit-0001
 - lit-0012
@@ -59,6 +59,11 @@ identity_verified:
 - lit-0293
 - lit-0294
 - lit-0297
+- lit-0337
+- lit-0338
+- lit-0339
+- lit-0340
+- lit-0341
 identity_unverified:
 - lit-0002
 - lit-0003
@@ -678,3 +683,8 @@ by_status:
   lit-0334: identity_unverified
   lit-0335: identity_unverified
   lit-0336: identity_unverified
+  lit-0337: identity_verified
+  lit-0338: identity_verified
+  lit-0339: identity_verified
+  lit-0340: identity_verified
+  lit-0341: identity_verified

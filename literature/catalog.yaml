@@ -1,7 +1,7 @@
-version: 0.1.1
-count: 324
-card_count: 334
-unique_work_count: 324
+version: 0.1.2
+count: 329
+card_count: 339
+unique_work_count: 329
 duplicate_alias_count: 10
 entries:
 - id: lit-0001
@@ -5485,11 +5485,13 @@ entries:
   - ongoing bone loss research framing
   - IH literature describes mild BMD reduction / rate-of-loss association, not spine
     T −4.3 magnitude
-  - no stones on CT urogram 2026-02-27
+  - one lifetime stone, passed spontaneously; no stones on CT urogram 2026-02-27 —
+    a stone-forming history at its mildest end, not an absence of one
   quality_notes: Longitudinal BMD data in IH stone formers; links magnitude of calciuria
     to femoral-neck rate of loss. Cited IH literature describes mild BMD reduction
-    / rate-of-loss association; does not account for spine T −4.3 magnitude. Record
-    has no stones on CT urogram 2026-02-27.
+    / rate-of-loss association; does not account for spine T −4.3 magnitude. The record
+    documents one lifetime stone, passed spontaneously, and no stones on CT urogram
+    2026-02-27, so this cohort applies weakly rather than not at all (COR-0042).
   local_pdf: ''
   _file: literature/entries/2006-urine-calcium-predicts-bone-loss-ih.md
 - id: lit-0153
@@ -5522,10 +5524,12 @@ entries:
   - calcium stone risk research framing
   - bone mineral loss — source describes often mildly decreased BMD; does not account
     for spine T −4.3
-  - no stones on CT urogram 2026-02-27
+  - one lifetime stone, passed spontaneously; no stones on CT urogram 2026-02-27 —
+    a stone-forming history at its mildest end, not an absence of one
   quality_notes: Authoritative Coe/Worcester pathogenesis review; PMC full text available.
     States BMD is often mildly decreased in IH; does not account for spine T −4.3
-    magnitude.
+    magnitude. The record documents one lifetime stone, passed spontaneously, and no
+    stones on CT urogram 2026-02-27 (COR-0042).
   local_pdf: ''
   _file: literature/entries/2008-pathogenesis-idiopathic-hypercalciuria.md
 - id: lit-0154
@@ -8297,8 +8301,9 @@ entries:
   - metabolic calcium-flux research framing (not a stone-former workup order)
   quality_notes: 'AUA medical management guideline for adult kidney stone formers.
     Free full text. Statement 6 supports sodium-aware 24-h urine panels in the stone-former
-    population. Extrapolation to a non-stone-former with low BMD is the project''s
-    own inference, not a guideline claim. Not "directly portable." Statement 7: do
+    population. Extrapolation to this record — a minimal-burden stone-former with low
+    BMD, one lifetime stone passed spontaneously — is the project''s own inference,
+    not a guideline claim. Not "directly portable." Statement 7: do
     NOT routinely perform fast-and-calcium-load testing.'
   local_pdf: ''
   _file: literature/entries/2014-aua-kidney-stone-metabolic.md
@@ -12630,3 +12635,210 @@ entries:
     for formal exclusion scoring.
   local_pdf: ''
   _file: literature/entries/1990-isg-behcet-diagnostic-criteria.md
+- id: lit-0337
+  title: Relationship between Urinary Calcium and Bone Mineral Density in Patients
+    with Calcium Nephrolithiasis
+  authors:
+  - Sakhaee K
+  - Maalouf NM
+  - Poindexter J
+  - Adams-Huet B
+  - Moe OW
+  year: 2017
+  journal: Journal of Urology
+  doi: 10.1016/j.juro.2017.01.002
+  pmid: '28063842'
+  pmcid: PMC5514609
+  url: https://pubmed.ncbi.nlm.nih.gov/28063842/
+  access: open
+  license: unknown
+  topics:
+  - hypercalciuria
+  - bone-mineral-density
+  - nephrolithiasis
+  - urinary-calcium
+  - male-osteoporosis
+  relevance: high
+  study_type: cohort
+  supports: []
+  contradicts:
+  - H3
+  patient_overlap:
+  - 24-hour urine calcium measured across three collections
+  - markedly low BMD for age
+  quality_notes: Filed in v0.4.0 to give H3 a named counter rather than an empty list.
+    Examines how far urinary calcium alone tracks bone density in calcium stone formers.
+    Cited for the magnitude question - whether urinary calcium excretion can carry the
+    weight of explaining a bone density this low on its own - and not for any statement
+    about this case. Used at abstract level only; no figure or table value is carried
+    across. That is a limit on how this card is used, not on what is available - the full
+    text is open in PMC.
+  local_pdf: ''
+  _file: literature/entries/2017-sakhaee-urinary-calcium-bmd.md
+- id: lit-0338
+  title: Determinants of osteopenia in male renal-stone-disease patients with idiopathic
+    hypercalciuria
+  authors:
+  - Letavernier E
+  - Traxer O
+  - Daudon M
+  - Tligui M
+  - Hubert-Brierre J
+  - Guerrot D
+  - Sebag A
+  - Baud L
+  - Haymann JP
+  year: 2011
+  journal: Clinical Journal of the American Society of Nephrology
+  doi: 10.2215/CJN.10191110
+  pmid: '21441130'
+  pmcid: PMC3087782
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3087782/
+  access: open
+  license: unknown
+  topics:
+  - idiopathic-hypercalciuria
+  - osteopenia
+  - male-stone-formers
+  - urinary-calcium
+  relevance: high
+  study_type: cohort
+  supports: []
+  contradicts:
+  - H3
+  patient_overlap:
+  - male with idiopathic-range hypercalciuria
+  - markedly low BMD for age
+  quality_notes: Filed in v0.4.0 as a second named counter for H3, in a cohort closer
+    to this case than most - male stone formers with idiopathic hypercalciuria. Relevant
+    to whether the 24-hour urine calcium figure predicts the severity of bone loss, which
+    is the specific step the working model needs and the one least supported.
+  local_pdf: ''
+  _file: literature/entries/2011-letavernier-male-ih-osteopenia.md
+- id: lit-0339
+  title: 'Fracture risk among patients with urolithiasis: a population-based cohort
+    study'
+  authors:
+  - Melton LJ 3rd
+  - Crowson CS
+  - Khosla S
+  - Wilson DM
+  - O'Fallon WM
+  year: 1998
+  journal: Kidney International
+  doi: 10.1046/j.1523-1755.1998.00779.x
+  pmid: '9461107'
+  pmcid: ''
+  url: https://pubmed.ncbi.nlm.nih.gov/9461107/
+  access: abstract-only
+  license: unknown
+  topics:
+  - urolithiasis
+  - fracture-risk
+  - vertebral-fracture
+  - population-cohort
+  relevance: medium
+  study_type: cohort
+  supports: []
+  contradicts:
+  - H3
+  patient_overlap:
+  - one lifetime stone documented
+  - low BMD at spine, hip and forearm
+  quality_notes: Filed in v0.4.0. Population cohort reporting that excess fracture risk
+    in stone disease was confined to the spine, with no increase at hip, pelvis, humerus
+    or forearm. Cited as a limit on how much a stone-and-calcium mechanism can explain
+    when low readings appear at several sites at once. Applicability here is weak in a
+    specific and stated way - this is a cohort of symptomatic stone formers, and the
+    documented history is a single stone in one episode, so the comparison is to the
+    mildest end of that cohort. Do not read it as evidence that stones are harmless to
+    bone; the vertebral signal it reports is real.
+  local_pdf: ''
+  _file: literature/entries/1998-melton-urolithiasis-fracture-risk.md
+- id: lit-0340
+  title: Diagnostic yield of bone fragility gene panel sequencing in children and young
+    adults referred for idiopathic primary osteoporosis at a single regional reference
+    centre
+  authors:
+  - Rouleau C
+  - Malorie M
+  - Collet C
+  - Porquet-Bordes V
+  - Gennero I
+  - Eddiry S
+  - Laroche M
+  - Salles JP
+  - Couture G
+  - Edouard T
+  year: 2022
+  journal: Bone Reports
+  doi: 10.1016/j.bonr.2022.101176
+  pmid: '35252483'
+  pmcid: PMC8892094
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8892094/
+  access: open
+  license: unknown
+  topics:
+  - monogenic-osteoporosis
+  - gene-panel
+  - diagnostic-yield
+  - early-onset-osteoporosis
+  relevance: high
+  study_type: cohort
+  supports: []
+  contradicts:
+  - H2
+  patient_overlap:
+  - early-onset low BMD without an established cause
+  - no gene panel documented in the record
+  quality_notes: Filed in v0.4.0 to give H2 a named counter. Reports what a bone fragility
+    gene panel actually finds in people referred for unexplained early osteoporosis.
+    The reason it counts against a genetic explanation rather than for one is that the
+    yield is partial - most people referred do not get an answer from the panel - so a
+    genetic cause cannot be assumed from presentation alone. Complements the existing
+    card lit-0294 rather than repeating it.
+  local_pdf: ''
+  _file: literature/entries/2022-rouleau-eoop-panel-yield.md
+- id: lit-0341
+  title: Aetiology and clinical characteristics of male osteoporosis. Have they changed
+    in the last few years?
+  authors:
+  - Peris P
+  - Martínez-Ferrer A
+  - Monegal A
+  - Martínez de Osaba MJ
+  - Alvarez L
+  - Ros I
+  - Muxí A
+  - Reyes R
+  - Guañabens N
+  year: 2008
+  journal: Clinical and Experimental Rheumatology
+  doi: ''
+  pmid: '18799088'
+  pmcid: ''
+  url: https://pubmed.ncbi.nlm.nih.gov/18799088/
+  access: abstract-only
+  license: unknown
+  topics:
+  - male-osteoporosis
+  - secondary-causes
+  - idiopathic-osteoporosis
+  - aetiology
+  relevance: medium
+  study_type: cohort
+  supports: []
+  contradicts:
+  - H2
+  patient_overlap:
+  - male with markedly low BMD for age
+  - several candidate contributing causes documented at once
+  quality_notes: Filed in v0.4.0 as a second named counter for H2. A consecutive series
+    describing what actually underlies male osteoporosis in practice, where identifiable
+    secondary causes account for a large share and more than one cause is often present
+    in the same person. Cited against the expectation of a single explanation. No DOI
+    exists on the PubMed record for this article, which is why the field is empty rather
+    than filled with a guess. Abstract-level only - the full text was not obtained, so
+    no proportion or subgroup figure is carried across.
+  local_pdf: ''
+  _file: literature/entries/2008-peris-male-osteoporosis-aetiology.md

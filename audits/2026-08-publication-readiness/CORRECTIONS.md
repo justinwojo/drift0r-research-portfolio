@@ -503,3 +503,25 @@
 - **Corrected form:** DEC-0037 records the owner's decision to ship indexable, with DEC-0023 and DEC-0027 marked superseded; the six public documents restated to say indexing is enabled; the monitoring checklist now asks the operator to confirm the robots meta matches `release.yaml:noindex`
 - **Evidence:** Codex finding 8 and Grok finding 1 (paired pre-publication review, 2026-08-07); `site/src/lib/indexing.ts` `STUCK_NOINDEX_BODY_PATTERNS` already classifies "indexing remains disabled" as a false-polarity defect
 - **Residual uncertainty:** DEC-0023 framed removal of `noindex` as requiring Drift0r's decision on search indexing separately from the general publication grant. DEC-0037 records the owner's reading that the broad grant covers it as **owner editorial judgment, not a documented patient statement about indexing**. This remains open until Drift0r is asked about indexing specifically.
+
+### COR-0041 — Two hormone results were grouped as if one reference-interval artefact explained both
+
+- **Date identified:** 2026-08-10
+- **Status:** `logged_in_inventory`
+- **Severity:** should_fix_before_launch
+- **Affected claims / paths:** CLM-0095; internal endocrine extract feeding it
+- **Incorrect or unsafe form:** The luteinising hormone value of 9.8 mIU/mL and the prolactin value of 15.9 ng/mL from 2021-03-15 were described together as high only against one platform's reference interval, which implied that reading either on the other interval would return it to normal
+- **Corrected form:** CLM-0095 separates them. Prolactin is genuinely platform-relative — 15.9 is above the 4.0–15.2 interval on one platform and inside the other. Luteinising hormone is not: 9.8 exceeds **both** printed intervals (1.7–8.6 and 1.5–9.3), so its raised status does not depend on which ruler is applied
+- **Evidence:** Arithmetic on the two intervals printed in the same compiled document — 9.8 > 9.3. Found by re-deriving the values rather than reading the summary of them (2026-08-09 overnight audit, F-025)
+- **Residual uncertainty:** Which laboratory issued the 1.5–9.3 interval is not established in this repository, so CLM-0095 describes it as the interval used on the other draws rather than naming it. This is a reference-interval question, not a clinical one; whether either value is clinically meaningful is unaddressed here.
+
+### COR-0042 — Published pages described the case as having no stone history when the record documents one stone
+
+- **Date identified:** 2026-08-10
+- **Status:** `applied_to_public_draft`
+- **Severity:** must_fix_before_launch
+- **Affected claims / paths:** `differentials/hypotheses/H3.yaml` `summary` (rendered on `/working-model/` and `/working-model/evidence-table/`); `literature/entries/2006-urine-calcium-predicts-bone-loss-ih.md` and `2008-pathogenesis-idiopathic-hypercalciuria.md` and `2014-aua-kidney-stone-metabolic.md`; the mirrored `applicability` and `quality_notes` fields in `literature/catalog.yaml` (lit-0152, lit-0153, lit-0226); `differentials/clinician_questions/CQ-003.yaml` rationale (rendered on `/questions-for-clinicians/` and its packet)
+- **Incorrect or unsafe form:** "no stones on CT urogram 2026-02-27" stated as the case's stone status; "this record is not primarily a stone-former narrative"; "extrapolation to a **non-stone-former** with low BMD". Together these told visitors the case had no stone history and used that to discount stone-former literature
+- **Corrected form:** Every location now states that the record documents **one lifetime stone**, passed spontaneously, alongside the negative 2026-02-27 CT urogram, and reads the two together as a stone-forming history at its mildest end rather than an absence of one. The applicability conclusion changes from "does not apply" to "applies weakly"
+- **Evidence:** The urology/nephrology summary states the stone history in three separate places — the overview ("The clinical stone burden is minimal (one lifetime stone)"), the cystinuria note ("has formed only one stone in his lifetime: a single small stone in his late twenties … It passed spontaneously. No stones before or since"), and the trends summary ("One lifetime stone, under extreme dehydration/diet conditions"). The CT urogram of 2026-02-27 reports "No calculi" bilaterally with an impression of "No urolithiasis" — that is the absence of a **current** stone, which is a different fact
+- **Residual uncertainty:** The stone was never analysed, so its composition is unknown and no inference about stone type is available. Whether a single provoked stone should shift how the stone-former literature is weighted is a judgement for a clinician; the pages now present both facts and the weak-applicability reading rather than asserting a conclusion. See the acquisition asks for stone composition.

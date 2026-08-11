@@ -29,9 +29,12 @@ patient_overlap:
 - calcium stone risk research framing
 - bone mineral loss — source describes often mildly decreased BMD; does not account
   for spine T −4.3
-- no stones on CT urogram 2026-02-27
+- one lifetime stone, passed spontaneously; no stones on CT urogram 2026-02-27 — a
+  stone-forming history at its mildest end, not an absence of one
 quality_notes: Authoritative Coe/Worcester pathogenesis review; PMC full text available.
   States BMD is often mildly decreased in IH; does not account for spine T −4.3 magnitude.
+  The record documents one lifetime stone, passed spontaneously, and no stones on CT
+  urogram 2026-02-27 (COR-0042).
 local_pdf: ''
 ---
 # Summary
@@ -53,7 +56,7 @@ local_pdf: ''
 
 **Score:** 5
 
-**Why:** Provides the pathophysiologic scaffold for normal-serum-Ca elevated urine calcium with bone-mineral loss research framing. Source states BMD is often **mildly** decreased in IH — does not account for spine T −4.3. Serial urine Ca 283→254→333 mg/24h (male threshold often 300); no stones on CT urogram 2026-02-27.
+**Why:** Provides the pathophysiologic scaffold for normal-serum-Ca elevated urine calcium with bone-mineral loss research framing. Source states BMD is often **mildly** decreased in IH — does not account for spine T −4.3. Serial urine Ca 283→254→333 mg/24h (male threshold often 300). The record documents **one lifetime stone**, passed spontaneously, and no stones on the CT urogram of 2026-02-27 — minimal stone burden, not an absence of it.
 
 # Caveats
 

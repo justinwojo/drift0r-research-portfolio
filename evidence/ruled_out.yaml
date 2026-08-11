@@ -1,8 +1,22 @@
 # Commonly suggested explanations and what was actually tested.
 #
-# Scope rule: this file carries test NAME, DATE, and PLAIN RESULT only.
-# It deliberately does not carry numeric lab values — those live in the private
-# tests ledger and have not been cleared for publication.
+# Scope rule: every entry carries test NAME, DATE, and PLAIN RESULT. A numeric value
+# and its reference interval MAY be carried in addition, where the number is what makes
+# the result interpretable (DEC-0039, v0.4.0). Numbers are permitted, not required — an
+# entry whose point is "this was run and was unremarkable" does not need one.
+#
+# Amended 2026-08-10. This header previously read that the file "deliberately does not
+# carry numeric lab values — those live in the private tests ledger and have not been
+# cleared for publication." The second half of that was a permission statement and is
+# now false: DEC-0039 scopes publication by provenance, so values traceable to the
+# documents Drift0r himself provided may be published as attributed historical record.
+#
+# Any number added here must carry its reference interval and its units. If the source
+# document does not print units, say so rather than inferring them.
+#
+# Unrelated rule, still absolute: the five-word confidence vocabulary is never numeric.
+# "Never numeric" in that context means no invented probabilities ("73% likely") and is
+# untouched by DEC-0039 — do not read this relaxation across to it.
 #
 # Grounding rule: every entry carries `claim_ids` naming the rows in
 # audits/2026-08-publication-readiness/01_claim_inventory_public.yaml that support it.

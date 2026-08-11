@@ -106,7 +106,19 @@ Template:
 
 > Patient-reported [symptom domains] improved during [intervention]; effect was [durable/non-durable]. This does not by itself prove [disease].
 
-No dosing, protocols, or “start this drug” language.
+**Never** recommend, suggest, or imply that a reader should take, start, stop, or adjust
+anything: no protocols, no “start this drug” language, no dosing offered as guidance. This
+bar is absolute and is not softened by anything below.
+
+**Historical dosing is a different thing and is permitted** (DEC-0039). Where Drift0r's own
+provided documents record a medication, dose, or regimen he took, that fact may be published
+as historical record — attributed, past-tense, and locator-cited. The test is direction, not
+subject matter: *what he took* is record; *what you should take* is barred.
+
+> Permitted: “Clomiphene citrate 25 mg daily is recorded as a previous prescription
+> (`medical-psychological-history.txt:6`); the record describes T normalising within six weeks.”
+>
+> Barred: any phrasing that presents that dose as a course of action for a reader.
 
 ### 4.6 AI consensus
 
@@ -127,6 +139,34 @@ For stacks, show **two** chips:
 
 Never invent numeric percentages (“73%”).
 
+### 5.1 Ranking language is conditional — *would*, never *is*
+
+Ranking says what a result **would** do to the working model if it came back a particular way. It
+never says what the model **is**. The two readings are one verb apart, and the conditional wrapper is
+usually the first thing lost when a line is quoted, summarised, or lifted into a headline.
+
+| Write this | Not this |
+|---|---|
+| “A positive panel **would raise** confidence in this branch” | “A positive panel raises this branch” |
+| “A negative screen **would not close** the question” | “Closed — negative screen” |
+| “This branch **would be demoted** if the test returned negative” | “Demote this branch” |
+| “Ranked highest **if resolved**” | “Near-closed as the preferred explanation” |
+| “**Under discussion** as a research branch” | “Live research diagnosis” |
+
+Two rules follow from this:
+
+1. **Every ranking statement carries its condition in the same sentence.** A conditional that lives
+   in a heading, a table caption, or a preceding paragraph is not carried — write it where it will
+   travel with the words.
+2. **“Diagnosis” never appears unqualified in this project’s public voice.** Nothing here is
+   diagnosed. Where the word is needed, it is attached to a document that used it (“the summary
+   records a diagnosis of …”) or to a question (“whether this meets the diagnostic definition is
+   unresolved”).
+
+This rule applies at the moment material is written up for the public site, not only at final
+review — internal working notes that are correctly wrapped today become assertions the moment they
+are summarised without their wrapper.
+
 ---
 
 ## 6. Clinician page tone
@@ -146,6 +186,11 @@ Never invent numeric percentages (“73%”).
 - cure, proven cause, definitely, undeniable  
 - boss fight, achievement unlocked (defer gaming metaphors off medical pages for v1)  
 - you should start / stop / switch medication  
+- consider / plan / needing **any named drug or therapy** — care-plan constructions are barred
+  whatever tense they are in, and are enforced in code by `FORBIDDEN_CARE_PLAN_PATTERNS`
+  (`site/src/lib/constants.ts`). DEC-0039 relaxed publication of what the patient is **recorded as
+  having taken**; it did not relax anything about what a reader should do. Where a source document
+  itself recommends a treatment, that recommendation is not carried forward — the measurement is.  
 - confirmed Bartonella/Babesia (unless independent confirmation exists)  
 - catastrophic, dying of, doomed (sensational)
 

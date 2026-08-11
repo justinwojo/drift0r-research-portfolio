@@ -1,0 +1,27 @@
+{
+  "card_title": "Diagnostic yield of bone fragility gene panel sequencing in children and young adults referred for idiopathic primary osteoporosis at a single regional reference centre",
+  "card_year": 2022,
+  "comparison_result": "match",
+  "identifier_type": "pmid",
+  "identifier_value": "35252483",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0340",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pubmed",
+  "registry_response_excerpt": {
+    "doi": "10.1016/j.bonr.2022.101176",
+    "pmid": "35252483",
+    "pubdate": "2022 Jun",
+    "source": "Bone Rep",
+    "title": "Diagnostic yield of bone fragility gene panel sequencing in children and young adults referred for idiopathic primary osteoporosis at a single regional reference centre."
+  },
+  "resolved_container": "Bone Rep",
+  "resolved_title": "Diagnostic yield of bone fragility gene panel sequencing in children and young adults referred for idiopathic primary osteoporosis at a single regional reference centre.",
+  "resolved_year": 2022,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-10T22:16:16Z",
+  "year_delta": 0
+}

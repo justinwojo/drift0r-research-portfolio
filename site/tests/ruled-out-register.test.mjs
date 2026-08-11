@@ -47,18 +47,40 @@ describe('ruled-out register grounding (DEC-0038)', () => {
   });
 
   /*
-   * Scope rule from the file header. Numeric lab values live in the private tests ledger
-   * and have not been cleared for publication. Dates and year ranges are fine; a number
-   * bound to a lab unit is not.
+   * Scope rule from the file header, as amended by DEC-0039 (2026-08-10).
+   *
+   * This assertion used to bar numeric lab values outright, on the ground that they "have
+   * not been cleared for publication". That was a permission claim and it is now false —
+   * DEC-0039 scopes publication by provenance, so values traceable to the documents
+   * Drift0r provided may be published as attributed historical record.
+   *
+   * Deleting the assertion would have traded a real guard for nothing, so it is inverted
+   * instead: a bare number is less honest than no number, and the failure mode worth
+   * catching is now an unanchored value. Any unit-bound lab value must therefore appear
+   * with a reference interval — or, where the source document prints none, with that gap
+   * stated explicitly (the blood-thiamine 158 case, whose source table has no units column).
+   *
+   * Unrelated and still absolute: confidence language is never numeric. That bars invented
+   * probabilities ("73% likely") and is untouched here — see constants.ts CONFIDENCE_VOCAB.
    */
-  it('carries no numeric lab values', () => {
+  it('anchors every numeric lab value to a reference interval or a stated gap', () => {
     const LAB_VALUE = /\d+(\.\d+)?\s*(nmol|pmol|mmol|mcg|µg|ug|mg|ng|pg|g)\s*\/\s*(L|dL|mL|g|24h)|\d+(\.\d+)?\s*(mm\/h|g\/cm|%|IU\/L|U\/L)/i;
+    // An interval printed as a range, a bounded threshold, or named in prose. ISO dates are
+    // stripped first: "2025-10-01" contains "2025-10", which reads as a numeric range and would
+    // otherwise satisfy this test on nothing more than a draw date sitting beside the value.
+    const withoutDates = (s) => s.replace(/\b\d{4}-\d{2}-\d{2}\b|\b\d{4}-\d{2}\b/g, ' ');
+    const HAS_INTERVAL = /referen|\bref\b|\d+(\.\d+)?\s*[–—-]\s*\d+(\.\d+)?|[<>≤≥]\s*\d/i;
+    // Or an explicit disclosure that the source prints no interval/units.
+    const GAP_STATED = /not stated|not printed|not given|no reference interval|units? (are|is) not/i;
+
     for (const e of register.entries) {
-      for (const field of ['tested', 'result', 'still_open']) {
-        const text = e[field];
-        if (!text) continue;
-        assert.doesNotMatch(text, LAB_VALUE, `${e.suggestion}.${field} carries a lab value`);
-      }
+      const joined = ['tested', 'result', 'still_open'].map((f) => e[f] || '').join(' ');
+      if (!LAB_VALUE.test(joined)) continue;
+      assert.ok(
+        HAS_INTERVAL.test(withoutDates(joined)) || GAP_STATED.test(joined),
+        `${e.suggestion}: carries a lab value with no reference interval and no stated gap — ` +
+          'an unanchored number is not interpretable; print the interval or say the source omits it',
+      );
     }
   });
 

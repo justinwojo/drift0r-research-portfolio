@@ -1,6 +1,6 @@
 # Machine-readable public allowlist — deny by default.
 # Validated by scripts/validate_all.py. Human narrative: PUBLIC_FILE_ALLOWLIST.md
-version: "1.10.0"
+version: "1.10.1"
 as_of: "2026-08-07"
 not_medical_advice: true
 
@@ -23,6 +23,7 @@ v1_public_repository:
   - docs/public/COMMUNITY_MODERATION.md
   - docs/public/LAUNCH_FAQ.md
   - docs/public/FIRST_72_HOURS_ISSUE_MONITORING.md
+  - docs/public/info.md
   - .github/ISSUE_TEMPLATE/
   - .github/CODEOWNERS
   - .github/dependabot.yml

@@ -54,11 +54,11 @@ Stable identifiers make the analysis reviewable:
 
 The project distinguishes documented findings, patient-reported history, interpretations, hypotheses, counterevidence, and open questions. Counts of citations are never treated as evidence weights.
 
-## Status (v0.4.0)
+## Status (v0.4.1)
 
 | Item | Current status |
 |---|---|
-| Analysis version | `v0.4.0` current public research release |
+| Analysis version | `v0.4.1` current public research release |
 | Evidence current through | 2026-08-10 |
 | Drift0r publication permission | Obtained 2026-08-05 |
 | Drift0r or clinician endorsement | None claimed |

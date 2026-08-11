@@ -8,6 +8,51 @@ not_medical_advice: true
 # IDs listed here are permanently reserved and must never be reassigned to new records.
 retired_or_reserved_ids: []
 entries:
+  - version: v0.4.1
+    date: "2026-08-11"
+    kind: patch
+    status: published
+    evidence_current_through: "2026-08-10"
+    summary: >-
+      No new evidence, and no claim, hypothesis or question changes its content or its
+      confidence in this version. What changes is what a reader can find and cite. The full
+      20-entry unresolved-record-question register — until now public only as
+      machine-readable repository YAML, with a three-item excerpt on /for-clinicians/ —
+      renders at /questions/ alongside the ten clinician questions, every entry with a
+      stable anchor so an external reviewer can cite a specific open question directly,
+      and with cross-links to its related claims, corrections and hypotheses. Each
+      unresolved question now also shows its topic and its closest-available-record note,
+      both newly passed through the same public-language gate as the question text. This is
+      a patch release: no evidence enters or leaves the record and no interpretation moves,
+      which is why every section below is empty. It is versioned at all — rather than
+      shipped silently — because it changes what a visitor can see of the evidence's
+      limits: seventeen documented record gaps that were previously visible only to readers
+      of the raw YAML are now first-class, linkable public pages.
+      The two question registers remain deliberately distinct:
+      clinician questions are discussion questions for a licensed clinician to accept,
+      modify, or reject; unresolved record questions are gaps in the documentary record,
+      and the absence of a record is never a negative finding.
+      Not medical advice; clinician review still not performed.
+    added_evidence: []
+    changed_interpretations: []
+    strengthened_or_weakened_hypotheses: []
+    retired_or_superseded: []
+    corrections: []
+    git_tag_planned: v0.4.1
+    github_release_planned: true
+    notes: >-
+      Packaging is planned but not yet performed at the time this entry was written: no
+      v0.4.1 tag or GitHub Release exists yet, which is why this entry carries only the
+      planned fields. Content landed on main as 4f54236, which is what release.yaml records
+      as base_commit; this entry ships in the metadata-only promotion commit that follows
+      it. /questions-for-clinicians/ keeps its route, all ten CQ anchors, and its full
+      clinician framing, so existing external citations continue to resolve unchanged. One
+      wording artefact was fixed in the language-generalisation layer rather than in any
+      record: where a drug name followed a determiner, the generalised phrase previously
+      rendered a doubled article ("the an aromatase inhibitor") — visible in one claim's
+      rendered text and one question topic. The underlying records are unchanged; the
+      rendered sentences now read grammatically. Question register content, claims,
+      hypotheses and evidence_current_through are all untouched in this version.
   - version: v0.4.0
     date: "2026-08-10"
     kind: minor

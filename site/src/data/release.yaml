@@ -1,9 +1,8 @@
-# Live release metadata — v0.4.0 stone-risk panel, DXA subregions, blood-count series,
-# counter-literature for H2/H3, and the DEC-0039 provenance-scoped publication policy;
-# plus the Round-2 Fable solo blinded review layered into this version before packaging:
-# aromatase-inhibitor exposure wired into the record (CLM-0112, UQ-0020), ranking
-# provenance correction (COR-0043), ledger post-abx FISH correction (COR-0044), Round-2
-# synthesis and methods/limitations pages updated.
+# Live release metadata — v0.4.1 unified questions surface: the full 20-entry unresolved-
+# record-question register and the ten clinician questions render together at /questions/
+# with a stable anchor per entry and cross-links to related claims, corrections and
+# hypotheses. No evidence, claim, hypothesis or question content changed; evidence remains
+# current through 2026-08-10.
 # Search indexing is enabled; patient publication approval obtained; clinician review not performed.
 # Permission is not endorsement. Research preview limitations remain in force.
 # Schema: schemas/release.schema.json
@@ -14,9 +13,9 @@
 # 2) Record that tip SHA here (last reviewed content commit before this metadata-only update).
 # 3) Commit this release.yaml (+ packet) as a separate provenance commit that must NOT be used as
 #    its own base_commit. Never set base_commit to the hash of the commit that only edits this field.
-content_version: v0.4.0
-as_of: "2026-08-10"
-last_reviewed: "2026-08-10"
+content_version: v0.4.1
+as_of: "2026-08-11"
+last_reviewed: "2026-08-11"
 # Date through which patient records and literature were considered for this analysis snapshot.
 evidence_current_through: "2026-08-10"
 disclaimer_id: legal-baseline-2026-08
@@ -58,7 +57,7 @@ clinician_review_scope:
   label_must_not_imply_global: true
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "d93f4bc4bb5d3fffe20acacde92ef06448fc046e"
+base_commit: "4f54236bdc194bddd4eafc9c48970dd0282f239b"
 allowlist_version: "1.12.0"
 noindex: false
 ai_models_disclosed:
@@ -77,3 +76,6 @@ ai_models_disclosed:
   - Claude Fable (2026-08-10 Round-2 solo blinded round — blinded independent re-derivation from the evidence pack, adversarial cross-examination of the blinded output and the published ranking, chair synthesis re-verified against the compiled source documents; CLM-0112/UQ-0020 aromatase-inhibitor exposure wiring; COR-0043, COR-0044; layered into v0.4.0 pre-packaging)
   - Codex (2026-08-10 paired pre-packaging review of the Round-2 layering, two rounds; caught the lit-0308 polarity misfiling and the launch-citation attestation gap)
   - Grok (2026-08-10 paired pre-packaging review of the Round-2 layering, two rounds)
+  - Claude Fable (2026-08-11 orchestration of the unified questions surface; Claude Opus design survey and implementation of /questions/, the extended public-language gating, and the fail-closed cross-links)
+  - Codex (2026-08-11 paired review of the questions surface; caught the partial-approval dangling-link class)
+  - Grok (2026-08-11 paired review of the questions surface; caught the determiner-grammar defect in drug-name generalisation)

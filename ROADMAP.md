@@ -1,4 +1,4 @@
-# Drift0r public roadmap (post-v0.4.0)
+# Drift0r public roadmap (post-v0.4.1)
 
 > **Research only — not medical advice, diagnosis, or treatment.**  
 > **Patient publication permission:** obtained (2026-08-05). Permission is **not** endorsement.  
@@ -26,7 +26,7 @@ An independent, AI-assisted research evidence portfolio that organizes publicly 
 
 | Item | Status |
 |------|--------|
-| Analysis version | `v0.4.0` (evidence current through 2026-08-10) |
+| Analysis version | `v0.4.1` (evidence current through 2026-08-10) |
 | Website | Live and publicly indexed |
 | Clinician review | **Not performed** (REV-0006 pending; still the highest priority) |
 | Legal / privacy review | **Not engaged** (REV-0007 pending) |

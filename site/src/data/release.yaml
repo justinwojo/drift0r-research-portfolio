@@ -1,5 +1,9 @@
 # Live release metadata — v0.4.0 stone-risk panel, DXA subregions, blood-count series,
-# counter-literature for H2/H3, and the DEC-0039 provenance-scoped publication policy.
+# counter-literature for H2/H3, and the DEC-0039 provenance-scoped publication policy;
+# plus the Round-2 Fable solo blinded review layered into this still-unpackaged version:
+# aromatase-inhibitor exposure wired into the record (CLM-0112, UQ-0020), ranking
+# provenance correction (COR-0043), ledger post-abx FISH correction (COR-0044), Round-2
+# synthesis and methods/limitations pages updated.
 # Search indexing is enabled; patient publication approval obtained; clinician review not performed.
 # Permission is not endorsement. Research preview limitations remain in force.
 # Schema: schemas/release.schema.json
@@ -54,7 +58,7 @@ clinician_review_scope:
   label_must_not_imply_global: true
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "b3f864de19c537ba05dc8b87002e0b71f9ca2c7a"
+base_commit: "d93f4bc4bb5d3fffe20acacde92ef06448fc046e"
 allowlist_version: "1.10.0"
 noindex: false
 ai_models_disclosed:
@@ -70,3 +74,6 @@ ai_models_disclosed:
   - Claude Fable (2026-08-10 adjudication of community issue #3 against the public and private record; publication of the HPA, iron, acetylcholine-receptor and serum-CO2 evidence; dRTA bounding in H3)
   - Codex (2026-08-10 paired review of the issue #3 evidence additions)
   - Grok (2026-08-10 paired review of the issue #3 evidence additions)
+  - Claude Fable (2026-08-10 Round-2 solo blinded round — blinded independent re-derivation from the evidence pack, adversarial cross-examination of the blinded output and the published ranking, chair synthesis re-verified against the compiled source documents; CLM-0112/UQ-0020 aromatase-inhibitor exposure wiring; COR-0043, COR-0044; layered into v0.4.0 pre-packaging)
+  - Codex (2026-08-10 paired pre-packaging review of the Round-2 layering, two rounds; caught the lit-0308 polarity misfiling and the launch-citation attestation gap)
+  - Grok (2026-08-10 paired pre-packaging review of the Round-2 layering, two rounds)

@@ -104,6 +104,8 @@ entries:
       - COR-0044
     git_tag_planned: v0.4.0
     github_release_planned: true
+    git_tag: v0.4.0
+    github_release_published: true
     notes: >-
       Packaging state is carried by the git_tag and github_release_published fields rather than
       restated here: they are deliberately absent until the tag and Release actually exist, and

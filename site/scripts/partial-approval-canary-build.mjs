@@ -154,6 +154,7 @@ function main() {
         '/case/',
         '/working-model/',
         '/working-model/evidence-table/',
+        '/questions/',
         '/questions-for-clinicians/',
         '/questions-for-clinicians/packet/',
         '/questions-for-clinicians/prediction-matrix/',

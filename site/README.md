@@ -58,6 +58,7 @@ It does **not** require the private monorepo inventory. Override for tests/canar
 | `/case/` | Four-register claim cards |
 | `/working-model/` | H1–H5 with apparatus |
 | `/working-model/evidence-table/` | Printable matrix |
+| `/questions/` | Every question register whole — CQ + UQ, one anchor per entry |
 | `/questions-for-clinicians/` | Discussion questions |
 | `/questions-for-clinicians/packet/` | Printable packet |
 | `/questions-for-clinicians/prediction-matrix/` | Hypothesis prediction matrix |

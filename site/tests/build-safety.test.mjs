@@ -16,6 +16,7 @@ const REQUIRED_ROUTES = [
   'case/index.html',
   'working-model/index.html',
   'working-model/evidence-table/index.html',
+  'questions/index.html',
   'questions-for-clinicians/index.html',
   'questions-for-clinicians/packet/index.html',
   'questions-for-clinicians/prediction-matrix/index.html',
@@ -98,6 +99,9 @@ describe('post-build artifact (requires npm run build)', { skip: !hasDist }, () 
         (f === 'index.html' ||
           f.startsWith('case/') ||
           f.startsWith('working-model/') ||
+          // 'questions/index.html'.startsWith('questions-for-clinicians/') is false, so the
+          // unified questions surface needs its own clause or it escapes every assertion below.
+          f.startsWith('questions/') ||
           f.startsWith('questions-for-clinicians/') ||
           f.startsWith('for-clinicians/') ||
           f.startsWith('literature/') ||

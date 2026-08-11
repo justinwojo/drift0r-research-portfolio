@@ -75,12 +75,14 @@ already published. Highest-value targets:
 Others include facility least-significant-change documentation, copper / ceruloplasmin, vaccine-history
 detail, and KIT method/limit-of-detection specifics.
 
-**Known surfacing gap:** the full 20-entry UQ register is public today only as machine-readable
-YAML — [`02_unresolved_record_questions.yaml`](audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml).
-The website shows just a three-item launch-critical excerpt on
-[`/for-clinicians/`](https://drift0rresearch.org/for-clinicians/), without per-entry anchors, and
-[`/questions-for-clinicians/`](https://drift0rresearch.org/questions-for-clinicians/) renders the
-**CQ** register, not the UQs. A unified, linkable questions surface is planned (§7).
+**Surfacing (gap closed, §7):** the full 20-entry UQ register now renders on
+[`/questions/`](https://drift0rresearch.org/questions/), alongside the ten clinician questions, with
+a stable anchor on every entry (`/questions/#UQ-0001`). It was previously public only as
+machine-readable YAML — [`02_unresolved_record_questions.yaml`](audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml) —
+with a three-item, unanchored launch-critical excerpt on
+[`/for-clinicians/`](https://drift0rresearch.org/for-clinicians/).
+[`/questions-for-clinicians/`](https://drift0rresearch.org/questions-for-clinicians/) still renders
+the **CQ** register only, in its full clinician framing.
 
 ### 3. Owner adjudications owed from the Round-2 review (2026-08-10)
 
@@ -138,16 +140,19 @@ human verified that a card summary is an accurate reading of the paper, and it n
 Only while safety, correction, and moderation processes stay healthy — features never take priority
 over the review and record work above.
 
-- **Unified questions surface** — the question registers are currently fragmented and easy to
-  confuse: CQ entries render on `/questions-for-clinicians/` with per-entry anchors, the
-  20-entry UQ register is public only as repository YAML (three launch-critical items excerpted
-  on `/for-clinicians/`, unanchored), and hypotheses reference UQs indirectly via
-  `open_question_ids`. Planned: a single questions page listing every register with a filter by
-  question type (clinician question, unresolved record question, future types), a stable anchor
-  for every id so external reviewers can cite questions directly, and cross-links to related
-  claims and hypotheses. Supersedes the previously planned standalone UQ (record-gap) register
-  page. First candidate when feature work next opens up (external reviewers citing open
-  questions — e.g. PR #4 — are the audience this serves).
+- **Unified questions surface** — **landed** at [`/questions/`](https://drift0rresearch.org/questions/).
+  The registers used to be fragmented and easy to confuse: CQ entries rendered on
+  `/questions-for-clinicians/` with per-entry anchors, the 20-entry UQ register was public only as
+  repository YAML (three launch-critical items excerpted on `/for-clinicians/`, unanchored), and
+  hypotheses referenced UQs indirectly via `open_question_ids` with nowhere to link. `/questions/`
+  lists both registers whole — ten clinician questions and all twenty unresolved record questions —
+  with a stable `#CQ-00X` / `#UQ-000X` anchor on every entry so external reviewers can cite a
+  question directly (external reviewers citing open questions — e.g. PR #4 — are the audience this
+  serves), and with cross-links to the related claims, corrections and hypotheses. The register
+  chips **navigate**; they never hide or reorder entries, so a citation to any anchor always
+  resolves. `/questions-for-clinicians/` keeps its route, its ten anchors, and its full clinician
+  framing. Supersedes the previously planned standalone UQ (record-gap) register page.
+  Still open: further question types beyond CQ/UQ as they are introduced.
 - Browsable **ruled-out register** page
 - Literature browsing / filtering and detail routes beyond the 42 launch-cited cards
 - Site search

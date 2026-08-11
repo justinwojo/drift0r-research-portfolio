@@ -147,7 +147,10 @@ export const CONTRIBUTION_CTA_ACCOUNT_NOTE =
 export const PRIMARY_NAV = [
   { href: '/case/', label: 'Case & evidence' },
   { href: '/working-model/', label: 'Working model' },
-  { href: '/questions-for-clinicians/', label: 'Questions for clinicians' },
+  // The unified questions surface is the nav slot; /questions-for-clinicians/ keeps its
+  // route, its anchors, and a pointer from here. isCurrent() uses startsWith, and
+  // '/questions-for-clinicians/'.startsWith('/questions/') is false — no highlight bleed.
+  { href: '/questions/', label: 'Questions' },
   { href: '/literature/', label: 'Literature' },
   { href: '/methods/', label: 'Methods' },
   { href: '/for-clinicians/', label: 'For clinicians' },

@@ -1,6 +1,6 @@
 # Machine-readable public allowlist — deny by default.
 # Validated by scripts/validate_all.py. Human narrative: PUBLIC_FILE_ALLOWLIST.md
-version: "1.11.0"
+version: "1.12.0"
 as_of: "2026-08-11"
 not_medical_advice: true
 
@@ -126,6 +126,7 @@ v1_site_artifact:
   - methods/
   - case/
   - working-model/
+  - questions/
   - questions-for-clinicians/
   - for-clinicians/
   - how-this-could-be-wrong/

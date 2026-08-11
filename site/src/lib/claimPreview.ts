@@ -132,13 +132,16 @@ export function relatedHypothesisIdsForUq(uqId: string): string[] {
 }
 
 export function uqPreviewFromUq(q: UnresolvedQuestion): RecordPreview {
-  // No stable public UQ fragment route — chip is focusable without inventing a destination.
+  // /questions/ renders every UQ with a stable per-entry anchor, so the chip has a real
+  // destination. The payload still carries only id/excerpt/status/category/related-H —
+  // PREVIEW_FORBIDDEN_PAYLOAD_KEYS is unchanged, and the page rendering a field is not
+  // the same as the serialized preview carrying it.
   return {
     id: q.id,
     record_type: 'unresolved_question',
     type_label: 'Open research question — not a test order or treatment recommendation.',
     excerpt: claimExcerpt(q.question || '', 180),
-    href: null,
+    href: withBase(`/questions/#${q.id}`),
     status: (q.status || '').replace(/_/g, ' '),
     category: (q.topic || '').replace(/_/g, ' '),
     related_hypothesis_ids: relatedHypothesisIdsForUq(q.id),

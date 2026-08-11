@@ -1,0 +1,407 @@
+---
+/**
+ * Unified questions surface (ROADMAP §7).
+ *
+ * Every question register renders whole, in full, with a stable `id` anchor on every
+ * entry so an external reviewer can cite a single question by URL. Registers are
+ * sections, not filters: the chips at the top NAVIGATE, and the record finder (shared
+ * with /case/) only scrolls — nothing on this page is ever hidden, reordered, or
+ * interleaved by a control.
+ *
+ * Two registers ship today:
+ *  - CQ (clinician questions) — the curated set whose full framing lives on
+ *    /questions-for-clinicians/ (printable packet, prediction matrix, forbidden phrasings).
+ *  - UQ (unresolved record questions) — gaps in the documentary record, split into the
+ *    launch-critical-wording bucket and the rest. The blocking flag renders as that
+ *    section split rather than as a raw boolean badge on each card.
+ *
+ * `owner` is deliberately never rendered: it names who would hold a missing document,
+ * which is an internal acquisition detail and not a public statement about the record.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnalysisVersionBadge from '../../components/AnalysisVersionBadge.astro';
+import Badge from '../../components/Badge.astro';
+import ClaimLink from '../../components/ClaimLink.astro';
+import RecordFinder from '../../components/RecordFinder.astro';
+import {
+  getClinicianQuestions,
+  getCorrectionById,
+  getHypotheses,
+  getUnresolvedQuestions,
+  reviewMeta,
+  type UnresolvedQuestion,
+} from '../../lib/data';
+import {
+  correctionPreviewFromCorrection,
+  hypothesisPreviewFromHypothesis,
+  recordPreviewDataAttrs,
+  relatedHypothesisIdsForUq,
+} from '../../lib/claimPreview';
+import { withBase } from '../../lib/paths';
+
+const clinicianQuestions = getClinicianQuestions();
+const uqs = getUnresolvedQuestions();
+
+/**
+ * Preview attrs by hypothesis id, so H-chips get the same tooltip as CLM links.
+ *
+ * Membership of this map is also the link test. getHypotheses() is mode-filtered, so a
+ * hypothesis missing from it is a hypothesis /working-model/ does not render, and linking
+ * to its fragment would point at nothing. A CQ's related_hypothesis_ids is a raw list off
+ * the question record and is not filtered with it, so under a partial approval the two
+ * disagree; where they do, the id renders as plain text rather than as a broken link.
+ * (UQ hypothesis refs come from relatedHypothesisIdsForUq, which is derived from
+ * getHypotheses() itself and so cannot dangle.)
+ */
+const hypothesisAttrs = new Map<string, Record<string, string>>();
+for (const h of getHypotheses()) {
+  hypothesisAttrs.set(h.id, recordPreviewDataAttrs(hypothesisPreviewFromHypothesis(h)));
+}
+const rendersHypothesis = (id: string) => hypothesisAttrs.has(id);
+
+/** CQ presentation lifted from /questions-for-clinicians/: domain groups, priority order. */
+const byDomain = new Map<string, typeof clinicianQuestions>();
+for (const q of clinicianQuestions) {
+  const d = q.medical_domain || 'general';
+  const arr = byDomain.get(d) || [];
+  arr.push(q);
+  byDomain.set(d, arr);
+}
+const priorityOrder = { high: 0, medium: 1, low: 2 };
+for (const [k, arr] of byDomain) {
+  arr.sort(
+    (a, b) =>
+      (priorityOrder[a.priority as keyof typeof priorityOrder] ?? 9) -
+      (priorityOrder[b.priority as keyof typeof priorityOrder] ?? 9),
+  );
+  byDomain.set(k, arr);
+}
+const domains = [...byDomain.entries()];
+const domainLabel = (d: string) => d.replace(/_/g, ' ');
+
+/** The blocking flag is a section split, never a boolean badge on a card. */
+const uqBlocking = uqs.filter((q) => q.blocks_launch_critical_wording);
+const uqOpen = uqs.filter((q) => !q.blocks_launch_critical_wording);
+
+const uqBuckets: Array<{
+  key: string;
+  anchor: string;
+  title: string;
+  note: string;
+  entries: UnresolvedQuestion[];
+}> = [
+  {
+    key: 'uq-blocking',
+    anchor: 'uq-blocking',
+    title: 'Still blocks launch-critical wording',
+    note:
+      'Until the named document is retrieved, these questions constrain how a public statement on this site may be worded.',
+    entries: uqBlocking,
+  },
+  {
+    key: 'uq-open',
+    anchor: 'uq-open',
+    title: 'Open',
+    note:
+      'Open record gaps that do not currently constrain published wording. Openness is not a ranking of importance.',
+    entries: uqOpen,
+  },
+];
+
+/** Counted jump chips. Every chip is a link to a section that actually renders. */
+const chips: Array<{ href: string; label: string; count: number }> = [
+  { href: '#type-cq', label: 'Clinician questions', count: clinicianQuestions.length },
+  { href: '#type-uq', label: 'Unresolved record questions', count: uqs.length },
+  ...uqBuckets
+    .filter((b) => b.entries.length > 0)
+    .map((b) => ({ href: `#${b.anchor}`, label: b.title, count: b.entries.length })),
+];
+
+const statusLabel = (s: string) => (s || '').replace(/_/g, ' ');
+---
+
+<BaseLayout
+  title="All questions"
+  currentPath="/questions/"
+  description="Every open question register in one place. Research only — not medical advice."
+>
+  <section class="hero hero--tight">
+    <div class="legend-label">All questions</div>
+    <h1>Every question register, whole</h1>
+    <p class="lede">
+      {clinicianQuestions.length} clinician questions and {uqs.length} unresolved record questions. The two
+      registers answer to different audiences and are never merged: one is for a licensed clinician to
+      accept, modify, or reject; the other names a document that has not been retrieved.
+    </p>
+    <AnalysisVersionBadge compact />
+  </section>
+
+  <section class="page-section page-section--tools">
+    <nav class="domain-nav" aria-label="Question registers">
+      {
+        chips.map((c) => (
+          <a class="domain-nav-item" href={c.href}>
+            <span class="domain-nav-name">{c.label}</span>
+            <span class="domain-nav-count mono">{c.count}</span>
+          </a>
+        ))
+      }
+    </nav>
+    <p class="key-note">
+      Registers are sections, not filters. These chips jump to a section; nothing on this page hides,
+      reorders, or interleaves the registers.
+    </p>
+    <RecordFinder />
+  </section>
+
+  <section
+    class="page-section"
+    aria-labelledby="type-cq"
+    data-register="clinician_question"
+    data-register-title="Clinician questions"
+  >
+    <h2 class="sec" id="type-cq">
+      Clinician questions <span class="count mono">({clinicianQuestions.length})</span>
+    </h2>
+    <p class="sec-note">
+      Discussion questions for a licensed clinician to accept, modify, or reject. Priority means
+      <strong>research priority</strong>, never clinical urgency.
+    </p>
+    <p class="section-more">
+      The full clinician framing — printable packet, prediction / outcome matrix, and the recorded
+      forbidden phrasings — lives on{' '}
+      <a href={withBase('/questions-for-clinicians/')}>Questions for clinicians</a>.
+    </p>
+    {
+      clinicianQuestions.length === 0 && (
+        <p class="record-note mono">No clinician questions are approved in the current publication mode.</p>
+      )
+    }
+    {
+      domains.map(([domain, qs]) => (
+        <>
+          <h3 class="domain-h" id={`cq-dom-${domain}`}>
+            <span>{domainLabel(domain)}</span>
+            <span class="count mono">({qs.length})</span>
+          </h3>
+          {qs.map((q) => {
+            const review = reviewMeta(q.review_status);
+            return (
+              <article
+                class="record kind-research_question"
+                id={q.id}
+                data-record-card={q.id}
+                data-kind="clinician_question"
+                data-domain={q.medical_domain || 'general'}
+              >
+                <div class="record-head">
+                  <span class="record-id">{q.id}</span>
+                  <span class="record-meta">Clinician question</span>
+                  <span class="record-meta">{domainLabel(q.medical_domain || 'general')}</span>
+                  <span class={`priority-chip ${q.priority}`}>research priority: {q.priority}</span>
+                  {q.dont_miss && <span class="priority-chip dont-miss">don’t-miss review priority</span>}
+                  <Badge glyph={review.glyph} label={review.label} />
+                </div>
+                <div class="record-body">{q.question}</div>
+                <p class="record-note">
+                  <strong>Rationale.</strong> {q.rationale}
+                </p>
+                <div class="record-refs">
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Claims</span>
+                    {q.related_claim_ids.length ? (
+                      q.related_claim_ids.map((id, i) => (
+                        <>
+                          {i > 0 && <span class="record-refs-sep">·</span>}
+                          <ClaimLink id={id} />
+                        </>
+                      ))
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Hypotheses</span>
+                    {q.related_hypothesis_ids.length ? (
+                      q.related_hypothesis_ids.map((id, i) => (
+                        <>
+                          {i > 0 && <span class="record-refs-sep">·</span>}
+                          {rendersHypothesis(id) ? (
+                            <a
+                              class="mono claim-link"
+                              href={withBase(`/working-model/#${id}`)}
+                              {...(hypothesisAttrs.get(id) || {})}
+                            >
+                              {id}
+                            </a>
+                          ) : (
+                            <span class="mono">{id}</span>
+                          )}
+                        </>
+                      ))
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Literature</span>
+                    {q.literature_refs.length ? (
+                      q.literature_refs.map((id, i) => (
+                        <>
+                          {i > 0 && <span class="record-refs-sep">·</span>}
+                          <a class="mono claim-link" href={withBase(`/literature/${id}/`)}>
+                            {id}
+                          </a>
+                        </>
+                      ))
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                </div>
+              </article>
+            );
+          })}
+        </>
+      ))
+    }
+  </section>
+
+  <section class="page-section" aria-labelledby="type-uq">
+    <h2 class="sec" id="type-uq">
+      Unresolved record questions <span class="count mono">({uqs.length})</span>
+    </h2>
+    <p class="sec-note">
+      Gaps in the documentary record, not questions for a clinician to answer. Each one names a document
+      that has not been retrieved. <strong>Absence of a record is never a negative finding.</strong>
+    </p>
+    <p class="section-more">
+      Closable only by patient, laboratory, clinician, or facility records — not by further reasoning over
+      what is already published.
+    </p>
+    {
+      uqs.length === 0 && (
+        <p class="record-note mono">
+          No unresolved record questions are approved in the current publication mode.
+        </p>
+      )
+    }
+  </section>
+
+  {
+    uqBuckets
+      .filter((bucket) => bucket.entries.length > 0)
+      .map((bucket) => (
+        <section
+          class="page-section"
+          aria-labelledby={bucket.anchor}
+          data-register={bucket.key}
+          data-register-title={`Unresolved record questions — ${bucket.title}`}
+        >
+          <h3 class="sec sec--sub" id={bucket.anchor}>
+            {bucket.title} <span class="count mono">({bucket.entries.length})</span>
+          </h3>
+          <p class="sec-note">{bucket.note}</p>
+          {bucket.entries.map((q) => {
+            const relatedH = relatedHypothesisIdsForUq(q.id);
+            return (
+              <article
+                class="record kind-unresolved_question"
+                id={q.id}
+                data-record-card={q.id}
+                data-kind="unresolved_question"
+                data-domain={q.topic}
+              >
+                <div class="record-head">
+                  <span class="record-id">{q.id}</span>
+                  <span class="record-meta">Unresolved record question</span>
+                  <span class="record-meta">status: {statusLabel(q.status)}</span>
+                </div>
+                <p class="uq-topic">{q.topic}</p>
+                <div class="record-body">{q.question}</div>
+                <p class="record-note">
+                  <strong>Why it matters.</strong> {q.why_it_matters}
+                </p>
+                <p class="record-note">
+                  <strong>Closest available record.</strong> {q.closest_available_record}
+                </p>
+                <div class="record-refs">
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Claims</span>
+                    {q.related_claims.length ? (
+                      q.related_claims.map((id, i) => (
+                        <>
+                          {i > 0 && <span class="record-refs-sep">·</span>}
+                          <ClaimLink id={id} />
+                        </>
+                      ))
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Corrections</span>
+                    {q.related_corrections.length ? (
+                      q.related_corrections.map((id, i) => {
+                        const cor = getCorrectionById(id);
+                        return (
+                          <>
+                            {i > 0 && <span class="record-refs-sep">·</span>}
+                            <a
+                              class="mono claim-link"
+                              href={withBase(`/changelog/#${id}`)}
+                              {...(cor ? recordPreviewDataAttrs(correctionPreviewFromCorrection(cor)) : {})}
+                            >
+                              {id}
+                            </a>
+                          </>
+                        );
+                      })
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                  <span class="record-refs-group">
+                    <span class="record-refs-label mono">Hypotheses</span>
+                    {relatedH.length ? (
+                      relatedH.map((id, i) => (
+                        <>
+                          {i > 0 && <span class="record-refs-sep">·</span>}
+                          <a
+                            class="mono claim-link"
+                            href={withBase(`/working-model/#${id}`)}
+                            {...(hypothesisAttrs.get(id) || {})}
+                          >
+                            {id}
+                          </a>
+                        </>
+                      ))
+                    ) : (
+                      <span class="mono record-refs-none">—</span>
+                    )}
+                  </span>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      ))
+  }
+
+  <section class="page-section" style="padding-bottom: 48px;">
+    <div class="callout">
+      <strong class="legend-label">What this page does not say</strong>
+      <ul style="margin: 8px 0 0; padding-left: 1.1em;">
+        <li>
+          It does not order, recommend, or schedule any test. Clinician questions are for a licensed
+          clinician to accept, modify, or reject.
+        </li>
+        <li>
+          It does not treat a missing document as a negative result. An unresolved record question records
+          that the project has not retrieved something, not that the thing is absent.
+        </li>
+        <li>It does not rank the two registers against each other, or rank questions within them by urgency.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

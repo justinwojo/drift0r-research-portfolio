@@ -310,7 +310,7 @@ describe('J.2.1 rendered UX interaction regression', {
     assert.match(info.h1Type || '', /Working research hypothesis/i);
     assert.match(info.uqType || '', /open research question/i);
     assert.ok(info.h1Href && String(info.h1Href).includes('working-model'));
-    assert.equal(info.uqHref, null);
+    assert.match(String(info.uqHref || ''), /\/questions\/#UQ-0001$/);
   });
 
   it('sequential focus CLM → H → UQ keeps exactly one aria-describedby; Escape clears all', async () => {

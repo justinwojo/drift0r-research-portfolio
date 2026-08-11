@@ -29,6 +29,7 @@ The website presents the current best version of that work. Git preserves the ch
 | Clinicians | [Clinician-oriented summary](https://drift0rresearch.org/for-clinicians/) |
 | Evidence reviewers | [Case and evidence registers](https://drift0rresearch.org/case/) |
 | Researchers | [Working model](https://drift0rresearch.org/working-model/) and [literature catalog](https://drift0rresearch.org/literature/) |
+| Anyone citing an open question | [All questions](https://drift0rresearch.org/questions/)—every register, one anchor per entry |
 | Contributors | [Choose a structured GitHub issue](https://github.com/justinwojo/drift0r-research-portfolio/issues/new/choose) |
 | Maintainers | [Repository structure](docs/REPOSITORY_STRUCTURE.md) and [deployment guide](docs/DEPLOYMENT.md) |
 
@@ -47,7 +48,7 @@ Stable identifiers make the analysis reviewable:
 | `CLM-####` | A public claim, separated by evidence type and source class |
 | `H1`–`H5`, `H-NULL` | Working hypotheses and the explicit null/multifactorial model |
 | `CQ-###` | Discussion questions for clinicians—not medical orders |
-| `UQ-####` | Unresolved record or research questions |
+| `UQ-####` | Unresolved record or research questions—gaps in the documentary record, listed in full at [`/questions/`](https://drift0rresearch.org/questions/) |
 | `lit-####` | Literature records with identifiers, access notes, polarity, and applicability limits |
 | `COR-####` | Corrections preserved in the public record |
 

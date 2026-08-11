@@ -327,11 +327,19 @@ section.page-section ul li {
   margin: 0 0 4px;
   line-height: 1.35;
 }
+/* Now a real anchor into /questions/#UQ-…; the dotted underline is kept so the chip
+ * still reads as a record reference rather than ordinary body-copy link. */
 .uq-chip {
-  cursor: default;
+  color: inherit;
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 2px;
+}
+/* A UQ that does not resolve in the current mode has no anchor to point at, so the chip
+ * stays the tooltip-only span it was before the route existed. Not a link, so not a
+ * pointer. */
+span.uq-chip {
+  cursor: default;
 }
 .uq-chip:focus-visible {
   outline: 2px solid var(--focus, #0b5fff);
@@ -1336,6 +1344,13 @@ section.page-section--tools {
 }
 .finder-item.k-research_question {
   border-left-color: var(--contra);
+}
+/* Question registers on /questions/ — the two registers stay visually distinct. */
+.finder-item.k-clinician_question {
+  border-left-color: var(--contra);
+}
+.finder-item.k-unresolved_question {
+  border-left-color: var(--muted);
 }
 
 .finder-empty {
@@ -3231,4 +3246,34 @@ a.mono,
   .elsewhere li {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ── Unified questions surface (/questions/) ──────────────────────── */
+.record.kind-unresolved_question {
+  border-left: 6px dotted var(--muted);
+}
+
+/* Bucket heading inside the unresolved-record-question register. */
+.sec--sub {
+  font-size: var(--t-h3);
+}
+
+/* The record topic line: a label for the gap, not a claim about the record. */
+.uq-topic {
+  margin: 0 0 var(--s3);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  max-width: 66ch;
+}
+
+/* /case/ owns a sticky jump-nav and offsets its targets by its height. This page's
+ * chip row does not stick, so inherit nothing from that offset — an anchored question
+ * should land under the heading, not 120px below it. */
+body .page-section[data-register^='uq-'] .record[id],
+body .page-section[data-register='clinician_question'] .record[id] {
+  scroll-margin-top: 24px;
 }

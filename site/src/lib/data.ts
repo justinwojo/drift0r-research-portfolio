@@ -582,17 +582,27 @@ function loadUnresolvedQuestionsRaw(): UnresolvedQuestion[] {
   const data = loadRepoYaml<{ questions: UnresolvedQuestion[] }>(
     'audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml',
   );
+  /**
+   * `topic` and `closest_available_record` get the same public-language treatment as
+   * `question` and `why_it_matters` because /questions/ renders all four. Before that
+   * surface existed only the first two ever reached a reader, so only those two were
+   * transformed and gated; a field that renders and is not gated is exactly the hole
+   * the gate exists to close.
+   */
   _uqs = data.questions.map((q) => ({
     ...q,
+    topic: toPublicLanguage((q.topic || '').trim()),
     question: toPublicLanguage((q.question || '').trim()),
     why_it_matters: toPublicLanguage((q.why_it_matters || '').trim()),
-    closest_available_record: (q.closest_available_record || '').trim(),
+    closest_available_record: toPublicLanguage((q.closest_available_record || '').trim()),
   }));
   if (getSiteMode() === 'publication') {
     assertSafePublicLanguage(
       _uqs.flatMap((q) => [
+        { surface: `UQ ${q.id} topic`, text: q.topic },
         { surface: `UQ ${q.id} question`, text: q.question },
         { surface: `UQ ${q.id} why`, text: q.why_it_matters },
+        { surface: `UQ ${q.id} closest record`, text: q.closest_available_record },
       ]),
       { checkTreatment: false },
     );

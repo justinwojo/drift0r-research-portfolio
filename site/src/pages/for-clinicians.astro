@@ -112,10 +112,20 @@ const pageEndLine = `Research only — not medical advice · Not clinician-revie
             <ul class="print-list">
               {uqsLead.map((u) => (
                 <li>
-                  <span class="mono">{u.id}</span> — {u.question}
+                  <a class="mono" href={withBase(`/questions/#${u.id}`)}>
+                    {u.id}
+                  </a>{' '}
+                  — {u.question}
                 </li>
               ))}
             </ul>
+            {uqs.length > uqsLead.length && (
+              <p class="print-note mono">
+                +{uqs.length - uqsLead.length} further record questions block launch-critical wording, and
+                all {uqs.length} of them — plus the rest of the register — are listed on /questions/ (not
+                repeated here for print density).
+              </p>
+            )}
           </>
         )
       }

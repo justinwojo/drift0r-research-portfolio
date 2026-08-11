@@ -110,7 +110,13 @@ describe('claimExcerpt / recordExcerpt', () => {
     assert.equal(map['UQ-0001'].record_type, 'unresolved_question');
     assert.match(map['UQ-0001'].type_label, /open research question/i);
     assert.ok(map['UQ-0001'].excerpt);
-    assert.equal(map['UQ-0001'].href, null, 'UQ has no invented route');
+    // Until /questions/ existed there was no public UQ fragment to link to, and this
+    // asserted null. The route is real now, so the assertion pins the route instead.
+    assert.match(
+      String(map['UQ-0001'].href || ''),
+      /\/questions\/#UQ-0001$/,
+      'UQ links to its entry on the unified questions surface',
+    );
     const { getUqById } = await import('../src/lib/data.ts');
     const uq = getUqById('UQ-0001');
     assert.ok(uq);

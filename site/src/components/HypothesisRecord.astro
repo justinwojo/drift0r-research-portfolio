@@ -166,9 +166,21 @@ function litLine(id: string): string {
                   : { 'data-record-preview': item.id, 'data-record-type': 'unresolved_question' };
                 return (
                   <li>
-                    <span class="mono uq-chip" tabindex="0" {...uqAttrs}>
-                      {item.id}
-                    </span>
+                    {/* Real anchor into the unified questions surface — the chip used to be a
+                        focusable span because no public UQ route existed. Fail closed: only a UQ
+                        that resolves in the current mode is rendered on /questions/, so linking
+                        one that does not would be a fragment pointing at nothing. Under a partial
+                        approval that is the ordinary case rather than an error, so the chip falls
+                        back to the pre-route span instead of to a broken link. */}
+                    {uq ? (
+                      <a class="mono uq-chip" href={withBase(`/questions/#${item.id}`)} {...uqAttrs}>
+                        {item.id}
+                      </a>
+                    ) : (
+                      <span class="mono uq-chip" tabindex="0" {...uqAttrs}>
+                        {item.id}
+                      </span>
+                    )}
                     : {item.text}
                   </li>
                 );

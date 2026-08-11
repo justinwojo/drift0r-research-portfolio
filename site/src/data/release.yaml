@@ -1,4 +1,5 @@
-# Live release metadata — v0.3.0 plain-language landing + public ruled-out register.
+# Live release metadata — v0.4.0 stone-risk panel, DXA subregions, blood-count series,
+# counter-literature for H2/H3, and the DEC-0039 provenance-scoped publication policy.
 # Search indexing is enabled; patient publication approval obtained; clinician review not performed.
 # Permission is not endorsement. Research preview limitations remain in force.
 # Schema: schemas/release.schema.json
@@ -53,7 +54,7 @@ clinician_review_scope:
   label_must_not_imply_global: true
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
-base_commit: "e278d544afb78519b4b8ce10d31f1c5413f6a10a"
+base_commit: "d997b510f7cad01e5c151904e4ffc2c3d3941736"
 allowlist_version: "1.10.0"
 noindex: false
 ai_models_disclosed:
@@ -64,3 +65,5 @@ ai_models_disclosed:
   - Claude (2026-08-07 plain-language landing rewrite, ruled-out register, review triage and remediation)
   - Grok (2026-08-09 overnight research run over the compiled source documents; findings register and unknowns)
   - Claude (2026-08-10 audit of that run, source re-verification, DEC-0039 scope decision, v0.4.0 promotion)
+  - Codex (2026-08-10 paired pre-publication review of the v0.4.0 content and language gates, three rounds)
+  - Grok (2026-08-10 paired pre-publication review of the v0.4.0 content and language gates, three rounds)

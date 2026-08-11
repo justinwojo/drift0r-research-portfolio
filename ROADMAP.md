@@ -73,8 +73,14 @@ already published. Highest-value targets:
 3. **Original HPG-era laboratory reports (UQ-0003)** — instrument-level documents behind the compiled endocrine summary.
 
 Others include facility least-significant-change documentation, copper / ceruloplasmin, vaccine-history
-detail, and KIT method/limit-of-detection specifics. See
-[`/questions-for-clinicians/`](https://drift0rresearch.org/questions-for-clinicians/).
+detail, and KIT method/limit-of-detection specifics.
+
+**Known surfacing gap:** the full 20-entry UQ register is public today only as machine-readable
+YAML — [`02_unresolved_record_questions.yaml`](audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml).
+The website shows just a three-item launch-critical excerpt on
+[`/for-clinicians/`](https://drift0rresearch.org/for-clinicians/), without per-entry anchors, and
+[`/questions-for-clinicians/`](https://drift0rresearch.org/questions-for-clinicians/) renders the
+**CQ** register, not the UQs. A unified, linkable questions surface is planned (§7).
 
 ### 3. Owner adjudications owed from the Round-2 review (2026-08-10)
 
@@ -87,12 +93,30 @@ because deciding them can change what a reader understands the evidence to say.
 - **Unwired UQs** — 13 of the 20 open record questions are cited by no hypothesis. Either wire them into the relevant hypotheses' `open_question_ids` or document why they stand alone.
 - **Community-issue-#3 residuals** — promote into the CQ / UQ registers after triage: the missing dexamethasone-suppression / late-night salivary cortisol screen; a MuSK / LRP4 and fatigability discriminator; HFE genotyping; and the unexplained 2025 ferritin rise.
 
-### 4. H-NULL review pass
+### 4. Follow-ups from the PR #4 external review (2026-08-11)
+
+An external methods review (Leo Guinan / Build in Public University,
+[PR #4](https://github.com/justinwojo/drift0r-research-portfolio/pull/4)) raised five bounded
+questions; four were already tracked under existing UQ/CQ identifiers. Committed follow-ups:
+
+- **Fold review enrichments into existing entries** — the conjugate-versus-polysaccharide
+  vaccine-product distinction into **UQ-0007**, and B6 context alongside **CQ-007**'s
+  copper/ceruloplasmin/zinc panel.
+- **IgG4-related-disease wording provenance** — the one genuinely new question from the review.
+  The reviewer has been invited to file it via the new *Research question* issue template; if it
+  is not filed within a reasonable window, author it as a maintainer UQ so it is not lost.
+  When created, add its id to `release_scope.yaml` so it surfaces in publication mode.
+- **Review-register entry** — record the external methods review in
+  `audits/2026-08-publication-readiness/review_register.yaml` (acknowledgment, not endorsement).
+- **Changelog credit** — attribute the resulting changes in the changelog entry of the release
+  that carries them.
+
+### 5. H-NULL review pass
 
 `H-NULL` is the only published hypothesis still carrying `review_status: not_reviewed`; the other five
 are `source_audited`. Closable by this project.
 
-### 5. Literature and metadata hygiene
+### 6. Literature and metadata hygiene
 
 | Metric | Current value |
 |--------|--------------:|
@@ -109,12 +133,21 @@ are `source_audited`. Closable by this project.
 Identity attestation means the DOI/PMID resolves to the expected title and year. It does **not** mean a
 human verified that a card summary is an accurate reading of the paper, and it never will.
 
-### 6. Controlled product features
+### 7. Controlled product features
 
 Only while safety, correction, and moderation processes stay healthy — features never take priority
 over the review and record work above.
 
-- Browsable **UQ (record-gap) register** page
+- **Unified questions surface** — the question registers are currently fragmented and easy to
+  confuse: CQ entries render on `/questions-for-clinicians/` with per-entry anchors, the
+  20-entry UQ register is public only as repository YAML (three launch-critical items excerpted
+  on `/for-clinicians/`, unanchored), and hypotheses reference UQs indirectly via
+  `open_question_ids`. Planned: a single questions page listing every register with a filter by
+  question type (clinician question, unresolved record question, future types), a stable anchor
+  for every id so external reviewers can cite questions directly, and cross-links to related
+  claims and hypotheses. Supersedes the previously planned standalone UQ (record-gap) register
+  page. First candidate when feature work next opens up (external reviewers citing open
+  questions — e.g. PR #4 — are the audience this serves).
 - Browsable **ruled-out register** page
 - Literature browsing / filtering and detail routes beyond the 42 launch-cited cards
 - Site search
@@ -138,6 +171,7 @@ Use **structured GitHub issue templates only** (blank issues are disabled):
 - Factual / citation correction  
 - Contradictory evidence  
 - Alternative hypothesis / research idea  
+- Research question / record-provenance question  
 - Correction, privacy, or removal request  
 
 **Do not** post private medical records, personal identifiers, treatment instructions, or unsupported diagnoses.  

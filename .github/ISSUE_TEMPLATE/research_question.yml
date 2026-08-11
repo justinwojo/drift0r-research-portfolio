@@ -1,0 +1,70 @@
+name: Research question or record-provenance question
+description: Ask a bounded research question about the public evidence, or about the provenance of a public record or statement (not a clinical order).
+title: "[question] "
+labels: ["research-question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Research only — not medical advice.** Do **not** write treatment protocols, dosing, or “order this test now” language.
+
+        Use this template for a **bounded question** about the public evidence — e.g. missing assay
+        metadata, the provenance of a quoted statement, or what information would discriminate
+        between models already under discussion. Check the site’s questions-for-clinicians page and
+        the unresolved-question register first; many provenance questions are already tracked under
+        UQ-/CQ- identifiers, and a duplicate will be closed with a pointer to the existing id.
+
+        Keep questions answerable in public-safe form. Do not request that private records be
+        posted; a useful answer is a public-safe pointer, correction, or a statement that the
+        question is not answerable.
+  - type: input
+    id: short_title
+    attributes:
+      label: Short title for the question
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: The question
+      description: One bounded question. Use tentative language; do not assert a diagnosis.
+    validations:
+      required: true
+  - type: textarea
+    id: why_it_matters
+    attributes:
+      label: Why it matters
+      description: Which public claim, hypothesis, or interpretation the answer would affect.
+    validations:
+      required: true
+  - type: textarea
+    id: discriminating
+    attributes:
+      label: What information would answer or narrow it
+      description: Public-safe information only — e.g. assay method, reference interval, document provenance, wording clarification.
+  - type: textarea
+    id: not_sufficient
+    attributes:
+      label: What would not be sufficient
+      description: Optional — answers that should not be treated as closing the question.
+  - type: textarea
+    id: related_ids
+    attributes:
+      label: Related identifiers
+      description: Existing UQ-, CQ-, CLM-, H-, or lit- identifiers this touches, if known.
+  - type: textarea
+    id: closure
+    attributes:
+      label: Closure condition
+      description: What would let a maintainer close this as answered, not answerable, or non-discriminating.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: This is not personal medical advice, a treatment instruction, or an unsupported diagnosis stated as clinical fact.
+          required: true
+        - label: I am not posting private medical records or personal identifiers, and I am not requesting that any be posted.
+          required: true

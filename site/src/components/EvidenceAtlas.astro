@@ -10,9 +10,11 @@ import {
 import {
   claimExcerpt,
   claimPreviewFromClaim,
+  getLiteraturePreviewMap,
   hypothesisPreviewFromHypothesis,
   isClaimId,
   isHypothesisId,
+  isLitId,
   isUqId,
   recordPreviewDataAttrs,
   uqPreviewFromUq,
@@ -35,31 +37,88 @@ const nodesByBand = new Map(bandOrder.map((k) => [k, atlas.nodes.filter((n) => n
 
 // Layout constants for SVG
 const W = 1100;
-const bandH = 72;
 const bandGap = 8;
 const topPad = 28;
 const leftPad = 28;
 const rightPad = 28;
 const usableW = W - leftPad - rightPad;
 
-function layoutBand(key: string, bandIndex: number) {
-  const nodes = nodesByBand.get(key as (typeof bandOrder)[number]) || [];
-  const y = topPad + bandIndex * (bandH + bandGap);
-  const n = Math.max(nodes.length, 1);
-  const positions = nodes.map((node, i) => {
-    const x = leftPad + ((i + 0.5) * usableW) / n;
-    return { ...node, x, y: y + bandH / 2 + 8, bandY: y };
-  });
-  return { y, nodes: positions };
+/*
+ * Node-chip geometry. These constants drive BOTH the spacing math below and the rendered
+ * <rect>, so a chip can never grow past the slot that was reserved for it.
+ *
+ * Before: every band packed all of its nodes into one row of equal slots (usableW / n).
+ * With 16 contradiction nodes that is a 65.3px slot for a 69.6px chip — the chips overlapped
+ * and read as one unbroken strip, while every other band (≤12 nodes) had room to spare.
+ * Now a band wraps onto as many rows as it needs for a guaranteed NODE_GAP_X gutter, and
+ * grows taller to hold them.
+ */
+const NODE_H = 28;
+const NODE_MIN_W = 52;
+/** Minimum clear space between the borders of two adjacent chips in a row. */
+const NODE_GAP_X = 16;
+/** Vertical space between chip rows inside one band. */
+const NODE_GAP_Y = 10;
+/** Space above the first chip row (clears the band label) and below the last. */
+const BAND_TOP_PAD = 30;
+const BAND_BOTTOM_PAD = 14;
+/** A single-row band keeps its historical height exactly: 30 + 28 + 14 = 72. */
+const BAND_MIN_H = 72;
+
+/** Chip width for a node label — the one definition used by layout and by the <rect>. */
+function nodeWidth(label: string): number {
+  return Math.max(NODE_MIN_W, label.length * 7.2 + 12);
 }
 
-const layouts = bandOrder.map((k, i) => layoutBand(k, i));
+function layoutBand(key: string, y: number) {
+  const nodes = nodesByBand.get(key as (typeof bandOrder)[number]) || [];
+  const count = Math.max(nodes.length, 1);
+  // Slots inside a row are equal width, so a slot has to hold the widest chip in the band.
+  const widest = nodes.reduce((m, n) => Math.max(m, nodeWidth(n.label)), NODE_MIN_W);
+  const perRow = Math.max(1, Math.min(count, Math.floor(usableW / (widest + NODE_GAP_X))));
+  const rowCount = Math.max(1, Math.ceil(count / perRow));
+  /*
+   * Balance the rows (16 → 8+8, not 12+4) so a wrapped band does not read as one crowded
+   * row plus a stub. Every row count stays ≤ perRow, so the gutter guarantee still holds.
+   */
+  const base = Math.floor(nodes.length / rowCount);
+  const extra = nodes.length % rowCount;
+
+  const positions: Array<(typeof nodes)[number] & { x: number; y: number; bandY: number }> = [];
+  let idx = 0;
+  for (let r = 0; r < rowCount; r += 1) {
+    const inRow = base + (r < extra ? 1 : 0);
+    const rowCenterY = y + BAND_TOP_PAD + r * (NODE_H + NODE_GAP_Y) + NODE_H / 2;
+    for (let i = 0; i < inRow; i += 1) {
+      const node = nodes[idx];
+      idx += 1;
+      const x = leftPad + ((i + 0.5) * usableW) / inRow;
+      positions.push({ ...node, x, y: rowCenterY, bandY: y });
+    }
+  }
+
+  const height = Math.max(
+    BAND_MIN_H,
+    BAND_TOP_PAD + rowCount * NODE_H + (rowCount - 1) * NODE_GAP_Y + BAND_BOTTOM_PAD,
+  );
+  return { y, height, rowCount, nodes: positions };
+}
+
+/** Bands stack by measured height, so a wrapped band pushes the ones below it down. */
+const layouts: ReturnType<typeof layoutBand>[] = [];
+let bandCursorY = topPad;
+for (const k of bandOrder) {
+  const L = layoutBand(k, bandCursorY);
+  layouts.push(L);
+  bandCursorY += L.height + bandGap;
+}
+
 const pos = new Map<string, { x: number; y: number }>();
 for (const L of layouts) {
   for (const n of L.nodes) pos.set(n.id, { x: n.x, y: n.y });
 }
 
-const H = topPad + bandOrder.length * (bandH + bandGap) + 36;
+const H = bandCursorY + 36;
 
 function nodeHref(n: { band: string; label: string; id: string }): string | null {
   // Only link to fragments/routes that actually exist on built pages (build-safety scans).
@@ -116,7 +175,18 @@ function edgeStroke(verb: string): { stroke: string; dash: string; opacity: numb
   return { stroke: '#4C5A63', dash: '0', opacity: 0.55, width: 1 };
 }
 
+/**
+ * Launch-set literature previews only — those are the ids with a real /literature/<id>/ route
+ * and the ones the tooltip runtime's JSON map carries. A catalog-only lit id gets no preview
+ * attributes rather than a card pointing at a route that was never built.
+ */
+const litPreviews = getLiteraturePreviewMap();
+
 function previewAttrsForLabel(label: string): Record<string, string> {
+  if (isLitId(label)) {
+    const p = litPreviews[label];
+    return p ? recordPreviewDataAttrs(p) : {};
+  }
   if (isClaimId(label)) {
     const c = getClaimById(label);
     if (!c) return { 'data-record-preview': label, 'data-claim-preview': label };
@@ -161,9 +231,9 @@ function uqChipAttrs(id: string): Record<string, string> {
     appear as documented findings. Every node is a real record identifier (CLM, H, lit, UQ). Connectors are undirected
     and unweighted; relationship meaning is carried by band headings, a compact legend, accessible node descriptions,
     and the authoritative table — not by repeating the same verb on every line. The diagram terminates in unknowns —
-    there is no answer band. Nodes are links or keyboard-focusable; CLM, H, and UQ nodes expose an accessible preview
-    of approved public fields. A complete table equivalent sits directly below. On narrow screens, swipe
-    hypothesis-centered evidence-path cards.
+    there is no answer band. Nodes are links or keyboard-focusable; CLM, H, UQ, and lit nodes expose an accessible
+    preview of approved public fields. Bands wrap onto more rows rather than crowding their nodes together. A complete
+    table equivalent sits directly below. On narrow screens, swipe hypothesis-centered evidence-path cards.
   </p>
 
   <!-- Desktop/tablet SVG -->
@@ -183,7 +253,8 @@ function uqChipAttrs(id: string): Record<string, string> {
         verbs; solid gray lines indicate support-family links (would explain and related), solid rust lines indicate
         does-not-explain or contradicting literature, and dashed purple lines indicate open questions. Full
         relationship verbs appear in each node’s accessible name, the legend, and the table below. Nodes are
-        interactive links to case or working-model records. The diagram ends at open questions.
+        interactive links to case, working-model, or literature records. A band with many nodes wraps onto several
+        rows so no two node boxes touch. The diagram ends at open questions.
       </desc>
 
       <g aria-hidden="true" opacity="0.22" stroke="#C9C2B4" fill="none" stroke-width="1">
@@ -200,25 +271,34 @@ function uqChipAttrs(id: string): Record<string, string> {
       {
         atlas.bands.map((band, bi) => {
           const y = layouts[bi].y;
-          const fill = bi === 3 ? '#F6E7E0' : bi === 1 ? '#EBE6F2' : bi === 2 ? '#FBFAF7' : '#FBFAF7';
+          const h = layouts[bi].height;
+          /*
+           * Keyed off band.key, not the render index: empty bands are filtered out upstream,
+           * so an index-based rule silently repaints the wrong band the moment a band appears
+           * or disappears. Same output as the previous bi===3 / bi===1 / bi===4 rules on the
+           * current band set — and the hatch now provably lands on the contradicting band the
+           * legend promises it marks.
+           */
+          const isContraBand = band.key === 'contradictions';
+          const fill = isContraBand ? '#F6E7E0' : band.key === 'history' ? '#EBE6F2' : '#FBFAF7';
           return (
             <g>
               <rect
                 x="20"
                 y={y}
                 width="1060"
-                height={bandH}
+                height={h}
                 fill={fill}
                 stroke="#6E7880"
                 stroke-width="1"
-                stroke-dasharray={bi === 4 ? '4 3' : '0'}
+                stroke-dasharray={band.key === 'questions' ? '4 3' : '0'}
               />
-              {bi === 3 && (
+              {isContraBand && (
                 <rect
                   x="20"
                   y={y}
                   width="1060"
-                  height={bandH}
+                  height={h}
                   fill="url(#hatch)"
                   opacity="0.35"
                   aria-hidden="true"
@@ -266,7 +346,7 @@ function uqChipAttrs(id: string): Record<string, string> {
             const isHyp = n.band === 'hypotheses';
             const isContra = n.band === 'contradictions';
             const isQ = n.band === 'questions';
-            const w = Math.max(52, n.label.length * 7.2 + 12);
+            const w = nodeWidth(n.label);
             const href = nodeHref(n);
             const name = nodeAccessibleName(n);
             const preview = previewAttrsForLabel(n.label);
@@ -275,9 +355,9 @@ function uqChipAttrs(id: string): Record<string, string> {
                 <rect
                   class="atlas-node-hit"
                   x={n.x - w / 2}
-                  y={n.y - 14}
-                  width={Math.max(w, 28)}
-                  height={28}
+                  y={n.y - NODE_H / 2}
+                  width={w}
+                  height={NODE_H}
                   rx="2"
                   fill="#FBFAF7"
                   stroke={isContra ? '#8A3B1E' : isHyp ? '#54407A' : isQ ? '#54407A' : '#12202B'}
@@ -473,7 +553,9 @@ function uqChipAttrs(id: string): Record<string, string> {
                       {r.contradicting_lit.slice(0, 3).map((id, i) => (
                         <>
                           {i > 0 ? ', ' : ''}
-                          <a href={withBase(`/literature/${id}/`)}>{id}</a>
+                          <a href={withBase(`/literature/${id}/`)} {...previewAttrsForLabel(id)}>
+                            {id}
+                          </a>
                         </>
                       ))}
                       {r.contradicting_lit.length > 3 ? ` +${r.contradicting_lit.length - 3}` : ''}

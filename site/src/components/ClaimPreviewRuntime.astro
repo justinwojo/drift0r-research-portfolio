@@ -1,6 +1,6 @@
 ---
 /**
- * Single-page record-preview tooltip runtime (CLM, H, UQ, COR).
+ * Single-page record-preview tooltip runtime (CLM, H, UQ, COR, lit).
  * Data is also present on each [data-record-preview]/[data-claim-preview] element
  * for progressive enhancement. Essential claim text for mobile Atlas is rendered
  * server-side — not tooltip-only.
@@ -72,11 +72,13 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
           ? 'claim'
           : id.indexOf('COR-') === 0
             ? 'correction'
-            : id.indexOf('UQ-') === 0
-              ? 'unresolved_question'
-              : id.indexOf('H') === 0
-                ? 'hypothesis'
-                : 'claim');
+            : id.indexOf('lit-') === 0
+              ? 'literature'
+              : id.indexOf('UQ-') === 0
+                ? 'unresolved_question'
+                : id.indexOf('H') === 0
+                  ? 'hypothesis'
+                  : 'claim');
       var related = (el.getAttribute('data-record-related-h') || '')
         .split(',')
         .map(function (s) {
@@ -94,7 +96,9 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
               ? 'Open research question — not a test order or treatment recommendation.'
               : type === 'correction'
                 ? 'Correction / supersession notice — recorded publicly, never silently edited.'
-                : 'Approved public claim statement'),
+                : type === 'literature'
+                  ? 'Published literature card — a bibliographic reference, not patient data.'
+                  : 'Approved public claim statement'),
         excerpt:
           el.getAttribute('data-record-excerpt') ||
           el.getAttribute('data-claim-excerpt') ||
@@ -109,6 +113,8 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
         status: el.getAttribute('data-record-status') || '',
         category: el.getAttribute('data-record-category') || '',
         related_hypothesis_ids: related,
+        year: el.getAttribute('data-record-year') || '',
+        study_type: el.getAttribute('data-record-study-type') || '',
       };
     }
 
@@ -195,9 +201,29 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
               '</div>',
           );
         }
+      } else if (type === 'literature') {
+        // Bibliographic title reads first, then the two public catalog facts, mirroring the
+        // /literature/<id>/ card order (title → year → study-design badge).
+        if (p.excerpt) {
+          parts.push('<div class="cpt-excerpt">' + escapeHtml(p.excerpt) + '</div>');
+        }
+        if (p.year) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Year</span> ' +
+              escapeHtml(p.year) +
+              '</div>',
+          );
+        }
+        if (p.study_type) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Study design</span> ' +
+              escapeHtml(p.study_type) +
+              '</div>',
+          );
+        }
       }
-      // Correction previews already emitted their excerpt above the Status line.
-      if (p.excerpt && type !== 'correction') {
+      // Correction and literature previews already emitted their excerpt above their meta lines.
+      if (p.excerpt && type !== 'correction' && type !== 'literature') {
         parts.push('<div class="cpt-excerpt">' + escapeHtml(p.excerpt) + '</div>');
       }
       var hint =
@@ -207,7 +233,9 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
             ? 'Approved public open-question text · not a clinical order'
             : type === 'correction'
               ? 'Recorded correction title · open link for the full changelog entry'
-              : 'Approved public statement excerpt · open link for full record';
+              : type === 'literature'
+                ? 'Bibliographic title · study design is not applicability · open link for the full card'
+                : 'Approved public statement excerpt · open link for full record';
       parts.push('<div class="cpt-hint mono">' + escapeHtml(hint) + '</div>');
       return parts.join('');
     }

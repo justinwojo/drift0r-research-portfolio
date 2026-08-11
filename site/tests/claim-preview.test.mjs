@@ -45,6 +45,21 @@ describe('claimExcerpt / recordExcerpt', () => {
     assert.equal(isCorrectionId(undefined), false);
   });
 
+  it('isLitId matches lit-#### only', async () => {
+    const { isLitId } = await import('../src/lib/claimPreview.ts');
+    assert.equal(isLitId('lit-0340'), true);
+    assert.equal(isLitId('lit-0042'), true);
+    assert.equal(isLitId('lit-042'), false);
+    assert.equal(isLitId('lit-00420'), false);
+    assert.equal(isLitId('LIT-0042'), false);
+    assert.equal(isLitId('lit-abcd'), false);
+    assert.equal(isLitId('CLM-0042'), false);
+    assert.equal(isLitId('COR-0042'), false);
+    assert.equal(isLitId(''), false);
+    assert.equal(isLitId(null), false);
+    assert.equal(isLitId(undefined), false);
+  });
+
   it('preview map keys are CLM ids with kind domain excerpt', async () => {
     const { resetDataCaches } = await import('../src/lib/data.ts');
     const { getClaimPreviewMap } = await import('../src/lib/claimPreview.ts');
@@ -399,6 +414,148 @@ describe('correction record previews (COR)', () => {
   });
 });
 
+describe('literature record previews (lit)', () => {
+  it('every launch literature card is in the preview map with public-only fields', async () => {
+    const { resetDataCaches, getLaunchLiterature } = await import('../src/lib/data.ts');
+    const { getRecordPreviewMap, recordExcerpt, PREVIEW_FORBIDDEN_PAYLOAD_KEYS } = await import(
+      '../src/lib/claimPreview.ts'
+    );
+    resetDataCaches();
+    const map = getRecordPreviewMap();
+    const launch = getLaunchLiterature();
+    assert.ok(launch.length >= 20, `expected the launch literature set, got ${launch.length}`);
+
+    for (const e of launch) {
+      const p = map[e.id];
+      assert.ok(p, `${e.id} present in preview map`);
+      assert.equal(p.record_type, 'literature');
+      assert.match(p.type_label, /Published literature card/i);
+      assert.match(p.type_label, /not patient data/i);
+      // Excerpt is exactly the deterministic truncation of the public catalog title.
+      assert.equal(p.excerpt, recordExcerpt(e.title || '', 180), `${e.id} excerpt`);
+      assert.ok(p.excerpt, `${e.id} excerpt non-empty`);
+      const bare = p.excerpt.replace(/…$/, '').trim();
+      assert.ok(
+        e.title.replace(/\s+/g, ' ').includes(bare),
+        `${e.id} excerpt must derive from the catalog title`,
+      );
+      // href targets the per-entry route the launch set actually builds.
+      assert.ok(p.href && p.href.endsWith(`/literature/${e.id}/`), `${e.id} href: ${p.href}`);
+      // Two public catalog facts, verbatim as the /literature/<id>/ card renders them.
+      assert.equal(p.year, String(e.year));
+      assert.equal(p.study_type, e.study_type || '');
+      // Literature payloads carry no claim/hypothesis/UQ/correction-only fields.
+      for (const bad of [
+        'kind',
+        'kind_label',
+        'medical_domain',
+        'title',
+        'hypothesis_kind',
+        'confidence',
+        'status',
+        'category',
+        'related_hypothesis_ids',
+      ]) {
+        assert.ok(!(bad in p), `${e.id} must not carry ${bad}`);
+      }
+      // Exact key set — a new field cannot appear in the payload without a test change.
+      assert.deepEqual(
+        Object.keys(p).sort(),
+        ['excerpt', 'href', 'id', 'record_type', 'study_type', 'type_label', 'year'],
+        `${e.id} payload keys`,
+      );
+      for (const bad of PREVIEW_FORBIDDEN_PAYLOAD_KEYS) {
+        assert.ok(!Object.keys(p).includes(bad), `${e.id} must not expose ${bad}`);
+      }
+    }
+  });
+
+  it('forbids the gated / repository-path LitEntry fields, in the payload and the serialized map', async () => {
+    const { resetDataCaches } = await import('../src/lib/data.ts');
+    const { getRecordPreviewMap, PREVIEW_FORBIDDEN_PAYLOAD_KEYS } = await import(
+      '../src/lib/claimPreview.ts'
+    );
+    resetDataCaches();
+    /*
+     * quality_notes and patient_overlap are applicability prose gated per site mode by
+     * literatureApplicabilityApproved(); local_pdf and _file are repository paths that are
+     * never hosted or linked. None may reach the tooltip JSON, which BaseLayout inlines on
+     * every route.
+     */
+    for (const k of ['quality_notes', 'patient_overlap', 'local_pdf', '_file']) {
+      assert.ok(
+        PREVIEW_FORBIDDEN_PAYLOAD_KEYS.includes(k),
+        `${k} must be listed in PREVIEW_FORBIDDEN_PAYLOAD_KEYS`,
+      );
+    }
+    const serialized = JSON.stringify(getRecordPreviewMap());
+    for (const k of PREVIEW_FORBIDDEN_PAYLOAD_KEYS) {
+      assert.ok(!serialized.includes(`"${k}"`), `serialized preview map exposes ${k}`);
+    }
+  });
+
+  it('catalog-only literature ids stay out of the map (no href to an unbuilt route)', async () => {
+    const { resetDataCaches, getLiterature, getLaunchLiteratureIds } = await import(
+      '../src/lib/data.ts'
+    );
+    const { getRecordPreviewMap, getLiteraturePreviewMap } = await import(
+      '../src/lib/claimPreview.ts'
+    );
+    resetDataCaches();
+    const launchIds = new Set(getLaunchLiteratureIds());
+    const catalogOnly = getLiterature()
+      .map((e) => e.id)
+      .filter((id) => !launchIds.has(id));
+    assert.ok(
+      catalogOnly.length > 0,
+      'the catalog must hold cards outside the launch set for this test to mean anything',
+    );
+    const map = getRecordPreviewMap();
+    for (const id of catalogOnly) {
+      assert.ok(!(id in map), `${id} has no /literature/${id}/ route and must not be previewed`);
+    }
+    assert.deepEqual(Object.keys(getLiteraturePreviewMap()).sort(), [...launchIds].sort());
+  });
+
+  it('lit previews do not collide with CLM/H/UQ/COR keys', async () => {
+    const { resetDataCaches, getLaunchLiterature } = await import('../src/lib/data.ts');
+    const { getRecordPreviewMap, isLitId } = await import('../src/lib/claimPreview.ts');
+    resetDataCaches();
+    const map = getRecordPreviewMap();
+    const litCount = Object.values(map).filter((p) => p.record_type === 'literature').length;
+    assert.equal(litCount, getLaunchLiterature().length);
+    for (const [id, p] of Object.entries(map)) {
+      assert.equal(
+        p.record_type === 'literature',
+        isLitId(id),
+        `${id}: record_type must match id shape`,
+      );
+    }
+  });
+
+  it('recordPreviewDataAttrs emits literature year and study-design attributes', async () => {
+    const { resetDataCaches, getLitById } = await import('../src/lib/data.ts');
+    const { litPreviewFromEntry, recordPreviewDataAttrs } = await import(
+      '../src/lib/claimPreview.ts'
+    );
+    resetDataCaches();
+    const e = getLitById('lit-0340');
+    assert.ok(e, 'lit-0340 present in the catalog');
+    const p = litPreviewFromEntry(e);
+    const attrs = recordPreviewDataAttrs(p);
+    assert.equal(attrs['data-record-preview'], 'lit-0340');
+    assert.equal(attrs['data-record-type'], 'literature');
+    assert.equal(attrs['data-record-excerpt'], p.excerpt);
+    assert.equal(attrs['data-record-type-label'], p.type_label);
+    assert.equal(attrs['data-record-year'], String(e.year));
+    assert.equal(attrs['data-record-study-type'], e.study_type);
+    // lit chips are not CLM chips — no claim back-compat attributes, no UQ/COR status.
+    assert.ok(!('data-claim-preview' in attrs));
+    assert.ok(!('data-claim-excerpt' in attrs));
+    assert.ok(!('data-record-status' in attrs));
+  });
+});
+
 describe('claim preview wiring', () => {
   it('BaseLayout mounts ClaimPreviewRuntime', () => {
     const layout = readFileSync(join(siteRoot, 'src/layouts/BaseLayout.astro'), 'utf8');
@@ -439,6 +596,38 @@ describe('claim preview wiring', () => {
     assert.ok(interpolations.length >= 2, 'correction branch interpolates excerpt and status');
     for (const hit of interpolations) {
       assert.match(hit, /escapeHtml\(p\./, `unescaped interpolation in correction branch: ${hit}`);
+    }
+  });
+
+  it('runtime renders the literature record type with year, study design and card hint', () => {
+    const rt = readFileSync(join(siteRoot, 'src/components/ClaimPreviewRuntime.astro'), 'utf8');
+    assert.match(rt, /type === 'literature'/);
+    assert.match(rt, /Published literature card — a bibliographic reference, not patient data\./);
+    assert.match(rt, /open link for the full card/);
+    assert.match(rt, /cpt-k">Year/);
+    assert.match(rt, /cpt-k">Study design/);
+    // Progressive-enhancement fallback must recognise lit ids without the JSON map…
+    assert.match(rt, /indexOf\('lit-'\)/);
+    // …and read the two literature attributes off the element.
+    assert.match(rt, /data-record-year/);
+    assert.match(rt, /data-record-study-type/);
+    // The generic excerpt push must not double-render the title the branch already emitted.
+    assert.match(rt, /type !== 'correction' && type !== 'literature'/);
+
+    /*
+     * Every value interpolated inside the literature branch must go through escapeHtml.
+     * Titles come from the catalog, but the fallback path reads them from DOM attributes,
+     * so a raw concatenation here would be an injection sink.
+     */
+    const branch = rt.match(/\} else if \(type === 'literature'\) \{[\s\S]*?\n {6}\}/);
+    assert.ok(branch, 'literature render branch');
+    const interpolations = branch[0].match(/\+\s*(?:escapeHtml\()?p\.\w+/g) || [];
+    assert.ok(
+      interpolations.length >= 3,
+      'literature branch interpolates excerpt, year and study design',
+    );
+    for (const hit of interpolations) {
+      assert.match(hit, /escapeHtml\(p\./, `unescaped interpolation in literature branch: ${hit}`);
     }
   });
 

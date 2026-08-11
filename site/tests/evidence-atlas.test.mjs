@@ -48,11 +48,52 @@ describe('Evidence Atlas component structure', () => {
     assert.doesNotMatch(src, /flex:\s*0\s+0\s+min\(88vw,\s*340px\)/);
   });
 
-  it('CLM / H / UQ nodes carry record-preview data for accessible tooltips', () => {
+  it('CLM / H / UQ / lit nodes carry record-preview data for accessible tooltips', () => {
     assert.match(src, /data-record-preview|data-claim-preview/);
     assert.match(src, /claimExcerpt|previewAttrsForLabel|recordPreviewDataAttrs/);
     assert.match(src, /isHypothesisId|hypothesisPreviewFromHypothesis/);
     assert.match(src, /isUqId|uqPreviewFromUq/);
+    // Literature nodes resolve through the launch-set map, so a preview never points at a
+    // /literature/<id>/ route that was not built.
+    assert.match(src, /isLitId/);
+    assert.match(src, /getLiteraturePreviewMap/);
+    // The mobile path cards' contradicting-literature links get the same attributes.
+    assert.match(
+      src,
+      /contradicting_lit[\s\S]{0,400}previewAttrsForLabel\(id\)/,
+      'mobile contradicting-literature links must carry preview attributes',
+    );
+  });
+
+  it('band layout wraps rows instead of shrinking slots below the chip width', () => {
+    /*
+     * Regression lock for the bunched contradicting-evidence band: 16 chips in one row of
+     * equal slots gave each chip 65.3px of a 69.6px width, so their borders overlapped.
+     * The spacing parameters and the wrap arithmetic are asserted here; the rendered
+     * geometry they produce is asserted against dist/ below.
+     */
+    assert.match(src, /const NODE_GAP_X = \d+/);
+    assert.match(src, /const NODE_GAP_Y = \d+/);
+    assert.match(src, /const NODE_H = \d+/);
+    // One chip-width definition, used by both the layout math and the rendered <rect>.
+    assert.match(src, /function nodeWidth\(label: string\): number/);
+    assert.match(src, /width=\{w\}/);
+    assert.doesNotMatch(src, /const w = Math\.max\(52, n\.label\.length/);
+    // Rows: a slot must hold the widest chip in the band plus the gutter.
+    assert.match(src, /Math\.floor\(usableW \/ \(widest \+ NODE_GAP_X\)\)/);
+    assert.match(src, /Math\.ceil\(count \/ perRow\)/);
+    // Bands stack by measured height rather than a single fixed bandH.
+    assert.doesNotMatch(src, /const bandH = \d+/);
+    assert.match(src, /bandCursorY \+= L\.height \+ bandGap/);
+    assert.match(src, /height=\{h\}/);
+    /*
+     * Band styling keys off band.key. Empty bands are filtered out upstream, so an
+     * index-based rule repaints the wrong band as soon as a band appears or disappears —
+     * including putting the hatch fill on something other than the contradicting band.
+     */
+    assert.match(src, /band\.key === 'contradictions'|isContraBand/);
+    assert.doesNotMatch(src, /bi === 3/);
+    assert.doesNotMatch(src, /bi === 4/);
   });
 
   it('documents history band in atlas copy', () => {
@@ -181,6 +222,129 @@ describe('Evidence Atlas in built home (if dist present)', {
     assert.match(html, /atlas-path-card|atlas-path-scroller/i);
     assert.match(html, /data-claim-preview="CLM-/);
     assert.match(html, /There is no diagnosis or answer band|no diagnosis/i);
+  });
+
+  /**
+   * Rendered node chips, in document order: label, band, and the hit-rect box.
+   * Reads the geometry the browser actually gets rather than re-deriving it from source.
+   */
+  function atlasChips(html) {
+    return html
+      .split('data-atlas-node="')
+      .slice(1)
+      .map((chunk) => {
+        const label = chunk.slice(0, chunk.indexOf('"'));
+        const band = (chunk.match(/data-atlas-band="([^"]+)"/) || [])[1];
+        const rect = chunk.match(
+          /class="atlas-node-hit"[^>]*?x="([-\d.]+)"[^>]*?y="([-\d.]+)"[^>]*?width="([\d.]+)"[^>]*?height="([\d.]+)"/,
+        );
+        return rect
+          ? {
+              label,
+              band,
+              x: Number(rect[1]),
+              y: Number(rect[2]),
+              w: Number(rect[3]),
+              h: Number(rect[4]),
+            }
+          : { label, band };
+      });
+  }
+
+  it('no node chip overlaps another, in any band, at the rendered geometry', () => {
+    const html = readFileSync(distHome, 'utf8');
+    const chips = atlasChips(html);
+    assert.ok(chips.length > 20, `expected atlas chips in dist, got ${chips.length}`);
+    for (const c of chips) {
+      assert.ok(Number.isFinite(c.x), `${c.label}: no hit rect`);
+    }
+    const bands = [...new Set(chips.map((c) => c.band))];
+    assert.ok(bands.includes('contradictions'), 'contradicting band must be rendered');
+
+    for (const band of bands) {
+      const inBand = chips.filter((c) => c.band === band);
+      const rowYs = [...new Set(inBand.map((c) => c.y))].sort((a, b) => a - b);
+      // Rows never collide vertically.
+      for (let i = 1; i < rowYs.length; i += 1) {
+        assert.ok(
+          rowYs[i] - rowYs[i - 1] >= inBand[0].h,
+          `${band}: rows at ${rowYs[i - 1]} and ${rowYs[i]} overlap vertically`,
+        );
+      }
+      for (const y of rowYs) {
+        const row = inBand.filter((c) => c.y === y).sort((a, b) => a.x - b.x);
+        for (let i = 1; i < row.length; i += 1) {
+          const gap = row[i].x - (row[i - 1].x + row[i - 1].w);
+          /*
+           * 16px is the NODE_GAP_X the layout reserves; the epsilon absorbs the fractional
+           * chip width (label.length * 7.2). Before the wrap fix the contradicting band's
+           * gap was −4.35px — borders overlapping, which is what "bunched" looked like.
+           */
+          assert.ok(
+            gap >= 15.9,
+            `${band} row y=${y}: ${row[i - 1].label} → ${row[i].label} gap ${gap.toFixed(2)}px`,
+          );
+        }
+        // Chips stay inside the band rect (x=20, width=1060) at every viewport, since the
+        // SVG scales as one unit.
+        assert.ok(row[0].x >= 20, `${band} row y=${y}: leftmost chip escapes the band`);
+        const right = row[row.length - 1];
+        assert.ok(right.x + right.w <= 1080, `${band} row y=${y}: rightmost chip escapes the band`);
+      }
+    }
+  });
+
+  it('the contradicting band wraps onto multiple rows and the SVG grows to hold them', () => {
+    const html = readFileSync(distHome, 'utf8');
+    const chips = atlasChips(html);
+    const contra = chips.filter((c) => c.band === 'contradictions');
+    assert.ok(contra.length > 12, `expected a dense contradicting band, got ${contra.length}`);
+    const rowYs = [...new Set(contra.map((c) => c.y))];
+    assert.ok(
+      rowYs.length >= 2,
+      `${contra.length} contradicting chips must wrap onto more than one row`,
+    );
+    // Rows are balanced, not one full row plus a stub.
+    const counts = rowYs.map((y) => contra.filter((c) => c.y === y).length);
+    assert.ok(
+      Math.max(...counts) - Math.min(...counts) <= 1,
+      `contradicting rows must be balanced, got ${counts.join('/')}`,
+    );
+    // The viewBox has to cover the lowest chip plus the terminal caption.
+    const viewBox = html.match(/viewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/);
+    assert.ok(viewBox, 'atlas viewBox');
+    const lowest = Math.max(...chips.map((c) => c.y + c.h));
+    assert.ok(
+      Number(viewBox[2]) > lowest,
+      `viewBox height ${viewBox[2]} must exceed the lowest chip edge ${lowest}`,
+    );
+  });
+
+  it('literature chips carry the literature record preview', () => {
+    const html = readFileSync(distHome, 'utf8');
+    const chips = atlasChips(html);
+    const lits = chips.filter((c) => /^lit-\d{4}$/.test(c.label));
+    assert.ok(lits.length > 0, 'expected lit nodes on the atlas');
+    for (const c of lits) {
+      const chunk = html.split(`data-atlas-node="${c.label}"`)[1].slice(0, 1200);
+      assert.match(
+        chunk,
+        new RegExp(`data-record-preview="${c.label}"`),
+        `${c.label} must carry data-record-preview`,
+      );
+      assert.match(chunk, /data-record-type="literature"/, `${c.label} record type`);
+      assert.match(chunk, /data-record-excerpt="[^"]+"/, `${c.label} excerpt`);
+      assert.match(chunk, /data-record-type-label="Published literature card/, `${c.label} label`);
+      assert.match(chunk, /data-record-year="\d{4}"/, `${c.label} year`);
+      assert.match(chunk, /data-record-study-type="[^"]+"/, `${c.label} study design`);
+    }
+    // Each lit chip is a link to the per-entry route that route generation actually builds.
+    for (const c of lits) {
+      assert.ok(
+        existsSync(join(siteRoot, 'dist', 'literature', c.label, 'index.html')),
+        `${c.label} atlas node links to a route that must exist in dist`,
+      );
+    }
   });
 
   it('does not place hypothesis-kind claim in findings band when present (post-rebuild)', () => {

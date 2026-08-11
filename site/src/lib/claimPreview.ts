@@ -1,5 +1,5 @@
 /**
- * Record-preview payloads for accessible tooltips (CLM, H, UQ, COR).
+ * Record-preview payloads for accessible tooltips (CLM, H, UQ, COR, lit).
  * Excerpts are deterministic truncations of approved public fields — never AI-rewritten.
  * Never expose private / unapproved fields in preview payloads.
  */
@@ -8,15 +8,22 @@ import {
   getClaims,
   getCorrections,
   getHypotheses,
+  getLaunchLiterature,
   getUnresolvedQuestions,
   type Claim,
   type CorrectionRef,
   type Hypothesis,
+  type LitEntry,
   type UnresolvedQuestion,
 } from './data';
 import { withBase } from './paths';
 
-export type RecordPreviewType = 'claim' | 'hypothesis' | 'unresolved_question' | 'correction';
+export type RecordPreviewType =
+  | 'claim'
+  | 'hypothesis'
+  | 'unresolved_question'
+  | 'correction'
+  | 'literature';
 
 /** Generic record preview for tooltip runtime (CLM + H + UQ). */
 export interface RecordPreview {
@@ -40,6 +47,9 @@ export interface RecordPreview {
   status?: string;
   category?: string;
   related_hypothesis_ids?: string[];
+  // Literature-specific (public fields only — both already render on /literature/<id>/)
+  year?: string;
+  study_type?: string;
 }
 
 /** @deprecated Prefer RecordPreview — kept for call-site clarity on CLM-only helpers. */
@@ -79,6 +89,10 @@ export function isUqId(id: string | null | undefined): boolean {
 
 export function isCorrectionId(id: string | null | undefined): boolean {
   return Boolean(id && /^COR-\d{4}$/.test(id));
+}
+
+export function isLitId(id: string | null | undefined): boolean {
+  return Boolean(id && /^lit-\d{4}$/.test(id));
 }
 
 export function claimPreviewFromClaim(c: Claim): RecordPreview {
@@ -157,6 +171,37 @@ export function correctionPreviewFromCorrection(c: CorrectionRef): RecordPreview
   };
 }
 
+/**
+ * Literature (bibliographic card) preview.
+ *
+ * Every field here already renders on the public literature routes: the lit id and title in
+ * the `/literature/<id>/` hero, the year in the byline line beneath it, and the study design
+ * in that page's badge row (`study design: …`). Nothing else is exposed — in particular
+ * `quality_notes` and `patient_overlap` are applicability text gated behind
+ * `literatureApplicabilityApproved()` per site mode, and `local_pdf` / `_file` are repository
+ * paths that are never linked. All four are listed in PREVIEW_FORBIDDEN_PAYLOAD_KEYS.
+ *
+ * The title is surfaced verbatim (deterministic truncation only) and deliberately NOT run
+ * through toPublicLanguage, matching how the same titles already render on /literature/ and
+ * /literature/<id>/: a bibliographic title is the identity of a published work, and rewriting
+ * it would misattribute the source. This relaxes no gate — assertSafePublicLanguage has never
+ * been applied to catalog titles, only to the applicability fields above.
+ *
+ * `study_type` keeps its catalog spelling (`case-series`, `basic-science`, …) because that is
+ * the exact string the badge row shows; a preview must not read differently from the record.
+ */
+export function litPreviewFromEntry(e: LitEntry): RecordPreview {
+  return {
+    id: e.id,
+    record_type: 'literature',
+    type_label: 'Published literature card — a bibliographic reference, not patient data.',
+    excerpt: recordExcerpt(e.title || '', 180),
+    href: withBase(`/literature/${e.id}/`),
+    year: e.year === 0 || e.year ? String(e.year) : '',
+    study_type: e.study_type || '',
+  };
+}
+
 /** Map of public-approved claim IDs → preview payload (CLM only). */
 export function getClaimPreviewMap(): Record<string, RecordPreview> {
   const out: Record<string, RecordPreview> = {};
@@ -168,7 +213,24 @@ export function getClaimPreviewMap(): Record<string, RecordPreview> {
 }
 
 /**
- * Unified map of approved public CLM + H + UQ + COR records for the tooltip runtime.
+ * Map of literature IDs → preview payload, restricted to the launch-critical set.
+ *
+ * Only the launch subset gets `/literature/<id>/` routes (see getStaticPaths in
+ * `pages/literature/[id].astro`), so restricting the map is what keeps every preview `href`
+ * a route that actually exists in dist. It also keeps the runtime payload — inlined on every
+ * page by BaseLayout — from carrying all 339 catalog cards.
+ */
+export function getLiteraturePreviewMap(): Record<string, RecordPreview> {
+  const out: Record<string, RecordPreview> = {};
+  for (const e of getLaunchLiterature()) {
+    if (!isLitId(e.id)) continue;
+    out[e.id] = litPreviewFromEntry(e);
+  }
+  return out;
+}
+
+/**
+ * Unified map of approved public CLM + H + UQ + COR + lit records for the tooltip runtime.
  * Keys are record IDs only — private/unapproved entities are never included.
  */
 export function getRecordPreviewMap(): Record<string, RecordPreview> {
@@ -185,6 +247,7 @@ export function getRecordPreviewMap(): Record<string, RecordPreview> {
     if (!isCorrectionId(c.id)) continue;
     out[c.id] = correctionPreviewFromCorrection(c);
   }
+  Object.assign(out, getLiteraturePreviewMap());
   return out;
 }
 
@@ -202,6 +265,11 @@ export const PREVIEW_FORBIDDEN_PAYLOAD_KEYS = [
   'what_would_not_change',
   'explains_claim_ids',
   'does_not_explain_claim_ids',
+  // LitEntry fields that must never reach a preview payload.
+  'quality_notes', // applicability prose, gated per site mode by literatureApplicabilityApproved()
+  'patient_overlap', // same gate — reads this record onto the patient
+  'local_pdf', // local research PDF path; never hosted or linked
+  '_file', // repository path of the catalog entry
 ] as const;
 
 /**
@@ -239,6 +307,10 @@ export function recordPreviewDataAttrs(
   }
   if (preview.record_type === 'correction') {
     if (preview.status) attrs['data-record-status'] = preview.status;
+  }
+  if (preview.record_type === 'literature') {
+    if (preview.year) attrs['data-record-year'] = preview.year;
+    if (preview.study_type) attrs['data-record-study-type'] = preview.study_type;
   }
   return attrs;
 }

@@ -393,6 +393,102 @@ describe('J.2.1 rendered UX interaction regression', {
     assert.equal(result.afterEsc.tipHidden, true);
   });
 
+  it('atlas lit node previews open, and no band renders its chips bunched', async () => {
+    await page.setViewport(1280, 800, 1);
+    await page.goto(`${base}/`);
+    const result = await page.evaluate(`(async () => {
+      function countDesc() {
+        return document.querySelectorAll('[aria-describedby="claim-preview-tooltip"]').length;
+      }
+      const lit = document.querySelector('a[data-record-preview^="lit-"][data-atlas-band]');
+      if (!lit) return { ok: false, reason: 'no lit atlas node' };
+      try { lit.focus({ preventScroll: true }); } catch (e) { try { lit.focus(); } catch (e2) {} }
+      lit.dispatchEvent(new FocusEvent('focusin', { bubbles: true, view: window }));
+      await new Promise((r) => setTimeout(r, 80));
+      const tipEl = document.getElementById('claim-preview-tooltip');
+      const afterLit = {
+        n: countDesc(),
+        id: document.querySelector('[aria-describedby="claim-preview-tooltip"]')?.getAttribute('data-record-preview'),
+        visible: Boolean(tipEl && !tipEl.hidden && tipEl.classList.contains('is-visible')),
+        tipText: tipEl?.textContent || '',
+      };
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await new Promise((r) => setTimeout(r, 50));
+      const afterEsc = { n: countDesc(), tipHidden: tipEl?.hidden };
+
+      /*
+       * Live layout check, in CSS pixels after the SVG has been scaled to its container:
+       * group every atlas chip by band and rendered row, then measure the horizontal gap
+       * between neighbours. The bunched contradicting band had touching / overlapping
+       * borders here, which is the defect a viewBox-only assertion cannot see.
+       */
+      const chips = Array.from(document.querySelectorAll('[data-atlas-node] .atlas-node-hit')).map((r) => {
+        const box = r.getBoundingClientRect();
+        const holder = r.closest('[data-atlas-node]');
+        return {
+          label: holder.getAttribute('data-atlas-node'),
+          band: holder.getAttribute('data-atlas-band'),
+          left: box.left,
+          right: box.right,
+          top: Math.round(box.top),
+          width: box.width,
+        };
+      });
+      let worst = null;
+      for (const c of chips) {
+        for (const d of chips) {
+          if (c === d || c.band !== d.band || c.top !== d.top) continue;
+          if (d.left < c.left) continue;
+          const gap = d.left - c.right;
+          if (gap < 0 - 0.5) continue;
+          if (!worst || gap < worst.gap) worst = { gap, a: c.label, b: d.label, band: c.band };
+        }
+      }
+      const overlaps = [];
+      for (const c of chips) {
+        for (const d of chips) {
+          if (c === d || c.band !== d.band || c.top !== d.top || d.left < c.left) continue;
+          if (d.left < c.right - 0.5) overlaps.push(c.label + ' / ' + d.label);
+        }
+      }
+      const contraRows = new Set(chips.filter((c) => c.band === 'contradictions').map((c) => c.top));
+      return {
+        ok: true,
+        afterLit,
+        afterEsc,
+        chipCount: chips.length,
+        worst,
+        overlaps,
+        contraChips: chips.filter((c) => c.band === 'contradictions').length,
+        contraRows: contraRows.size,
+      };
+    })()`);
+
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.equal(result.afterLit.n, 1, 'exactly one aria-describedby after focusing a lit node');
+    assert.ok(
+      result.afterLit.id && String(result.afterLit.id).startsWith('lit-'),
+      `lit association: ${result.afterLit.id}`,
+    );
+    assert.equal(result.afterLit.visible, true, 'lit tooltip must become visible');
+    assert.match(result.afterLit.tipText || '', /Published literature card/i);
+    assert.match(result.afterLit.tipText || '', /not patient data/i);
+    assert.match(result.afterLit.tipText || '', /Study design/i);
+    assert.equal(result.afterEsc.n, 0, 'Escape clears the lit association');
+    assert.equal(result.afterEsc.tipHidden, true);
+
+    assert.ok(result.chipCount > 20, `expected atlas chips, got ${result.chipCount}`);
+    assert.deepEqual(result.overlaps, [], 'atlas chips must not overlap in the rendered layout');
+    assert.ok(result.worst, 'expected at least one neighbouring chip pair');
+    // Scaled down from a 1100-unit viewBox, the 16-unit gutter is still comfortably positive.
+    assert.ok(
+      result.worst.gap > 4,
+      `tightest chip gap ${result.worst.gap.toFixed(2)}px between ${result.worst.a} and ${result.worst.b} (${result.worst.band})`,
+    );
+    assert.ok(result.contraChips > 12, `contradicting band chips: ${result.contraChips}`);
+    assert.ok(result.contraRows >= 2, 'the dense contradicting band must wrap onto several rows');
+  });
+
   it('tooltip stays within viewport near edges', async () => {
     await page.setViewport(390, 844, 2);
     await page.goto(`${base}/`);

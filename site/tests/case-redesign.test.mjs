@@ -215,13 +215,15 @@ describe('/case/ page shape — domain grouping and jump-nav (mockup B)', () => 
     }
   });
 
-  it('renames the research-question register and keeps KIND_LABELS untouched', () => {
+  it('renames the research-question register and its kind label consistently', () => {
     const page = src('pages/case.astro');
     assert.match(page, /title: 'Research-question claims'/);
     assert.match(page, /label="Research-question claim"/);
     assert.doesNotMatch(page, /title: 'Questions for clinicians'/);
+    // The kind label follows the register rename so the same page never shows both
+    // strings — "Questions for clinicians" now names only the curated CQ page.
     const constants = src('lib/constants.ts');
-    assert.match(constants, /research_question: \{ glyph: '\?', label: 'Question for clinicians'/);
+    assert.match(constants, /research_question: \{ glyph: '\?', label: 'Research-question claim'/);
   });
 
   it('jump-nav sticks only above the mobile disclaimer strip, and offsets its targets', () => {

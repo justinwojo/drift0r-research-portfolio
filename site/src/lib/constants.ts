@@ -290,7 +290,7 @@ export const KIND_LABELS: Record<string, { glyph: string; label: string; css: st
   reported_history: { glyph: '❝', label: 'Patient-reported / history', css: 'reported' },
   interpretation: { glyph: '◇', label: 'Interpretation', css: 'interp' },
   hypothesis: { glyph: '⬡', label: 'Working hypothesis', css: 'hyp' },
-  research_question: { glyph: '?', label: 'Question for clinicians', css: 'q' },
+  research_question: { glyph: '?', label: 'Research-question claim', css: 'q' },
 };
 
 /** Verification public labels. */

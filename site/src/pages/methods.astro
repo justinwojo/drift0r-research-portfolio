@@ -46,8 +46,9 @@ const verificationRows = VERIFICATION_ORDER.map((key) => ({
 }));
 
 /**
- * Model roles. These three builds account for every AI contribution to the portfolio —
- * no other model or variant was used for any task (governance/AI_METHODS.md).
+ * Model roles. These four builds account for every AI contribution to the portfolio —
+ * no other model or variant was used for any task (governance/AI_METHODS.md). Fable 5 is a
+ * second build within the Claude family, so the family count stays three.
  */
 const MODEL_ROLES = [
   {
@@ -55,6 +56,12 @@ const MODEL_ROLES = [
     build: 'Opus 5',
     maker: 'Anthropic',
     role: 'Round-1 swarm analysis, design package, final go/no-go audit',
+  },
+  {
+    family: 'Claude',
+    build: 'Fable 5',
+    maker: 'Anthropic',
+    role: 'Round-2 solo blinded re-derivation + adversarial cross-exam (2026-08-10); community-issue adjudication',
   },
   {
     family: 'Codex',
@@ -174,6 +181,28 @@ const CANNOT_DO = [
       attack the others' work for overstatement, missing counterevidence, and provenance gaps. A
       synthesis chair reconciled what survived. A follow-on adversarial audit on 2026-08-06 repeated
       the exercise against the assembled site and produced the corrections logged in the changelog.
+    </p>
+    <p>
+      Round 2 (2026-08-10) added a fourth build, run solo: a blinded agent re-derived its own
+      analysis from the evidence pack alone — no sight of this project's hypotheses, ranking, or
+      literature cards — and a second agent then attacked both that blinded analysis and the
+      published ranking with equal aggression. Because one model family cannot supply cross-family
+      independence, the round substituted blinding and role asymmetry for it, and its findings were
+      re-verified against the source documents before entering the record. Where the blinded
+      derivation landed on a published position without having seen it, that is recorded as a
+      re-derivation; where the two disagreed, the compiled source documents adjudicated, and two of the
+      blinded analysis's own confidence grades were overturned in the process.
+    </p>
+    <p>
+      Why Fable 5 was absent from Round 1 is worth recording: at that time the build declined
+      every task touching this case material, under the deliberately broad biology safeguards it
+      launched with. Anthropic later narrowed those safeguards (<a
+        href="https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards"
+        rel="noopener noreferrer">“Improving Fable 5's biology safeguards”</a>), after which the
+      build could work on this material; its first contributions to this project are the
+      2026-08-10 roles listed below. The gap reflects the vendor's safety configuration at the
+      time, not a judgment about this material, and is why the fourth build arrived as a solo
+      round rather than as part of the original three-way review.
     </p>
     <ul class="model-roles">
       {

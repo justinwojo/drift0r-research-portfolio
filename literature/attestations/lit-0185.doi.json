@@ -1,0 +1,26 @@
+{
+  "card_title": "Bones of Contention: Bone Mineral Density Recovery in Celiac Disease\u2014A Systematic Review",
+  "card_year": 2015,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.3390/nu7053347",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0185",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.3390/nu7053347",
+    "title": "Bones of Contention: Bone Mineral Density Recovery in Celiac Disease\u2014A Systematic Review",
+    "type": "journal-article",
+    "year": 2015
+  },
+  "resolved_container": "Nutrients",
+  "resolved_title": "Bones of Contention: Bone Mineral Density Recovery in Celiac Disease\u2014A Systematic Review",
+  "resolved_year": 2015,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-11T05:11:33Z",
+  "year_delta": 0
+}

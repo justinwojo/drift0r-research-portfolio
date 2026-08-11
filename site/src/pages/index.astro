@@ -54,6 +54,7 @@ const AI_SYSTEMS = [
   { family: 'Claude', build: 'Opus 5', maker: 'Anthropic' },
   { family: 'Codex', build: 'GPT-5.6 Sol', maker: 'OpenAI' },
   { family: 'Grok', build: 'Grok 4.5', maker: 'xAI' },
+  { family: 'Claude', build: 'Fable 5', maker: 'Anthropic' },
 ];
 
 /**
@@ -99,8 +100,10 @@ const CASE_IN_BRIEF = [
 
     <p class="lede landing-lede">
       Claude, Codex, and Grok each worked the medical record independently, then each attacked the
-      others' conclusions. What survived is published here with its counterevidence, its gaps, and every
-      correction logged. <strong>No diagnosis is offered.</strong> This is a research record built for clinicians
+      others' conclusions. A fourth build, Claude Fable, later re-derived the analysis blind from the
+      compiled evidence — then attacked its own result and the published one alike. What survived is
+      published here with its counterevidence, its gaps, and every correction logged.
+      <strong>No diagnosis is offered.</strong> This is a research record built for clinicians
       to challenge.
     </p>
 
@@ -111,7 +114,8 @@ const CASE_IN_BRIEF = [
       <ol class="method-flow">
         <li><span class="method-step-n">1</span><span class="method-step-t">Independent analysis ×3</span></li>
         <li><span class="method-step-n">2</span><span class="method-step-t">Adversarial critique ×3</span></li>
-        <li><span class="method-step-n">3</span><span class="method-step-t">Human audit</span></li>
+        <li><span class="method-step-n">3</span><span class="method-step-t">Blinded re-derivation</span></li>
+        <li><span class="method-step-n">4</span><span class="method-step-t">Human audit</span></li>
         <li class="method-flow-out">
           <span class="method-step-n">→</span>
           <span class="method-step-t">{m.corrections} corrections logged</span>

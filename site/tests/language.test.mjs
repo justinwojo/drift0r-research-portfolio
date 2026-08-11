@@ -344,9 +344,9 @@ describe('claim inventory safety for site body sources', () => {
   );
   const inv = loadYaml(readFileSync(publicPath, 'utf8'));
 
-  it('public inventory has 109 approved A/B/C claims and accurate meta', () => {
-    assert.equal(inv.claims.length, 109);
-    assert.equal(inv.meta.claim_count, 109);
+  it('public inventory has 110 approved A/B/C claims and accurate meta', () => {
+    assert.equal(inv.claims.length, 110);
+    assert.equal(inv.meta.claim_count, 110);
     assert.ok(inv.claims.every((c) => c.public_approved === true));
     assert.ok(!inv.claims.some((c) => c.public_tier === 'do_not_publish'));
     assert.ok(!('Do not publish' in (inv.meta.tier_counts || {})));
@@ -591,7 +591,7 @@ describe('clinician questions forbid order language', () => {
 });
 
 describe('corrections register exact equality (P1-01)', () => {
-  it('site CORRECTIONS match CORRECTIONS.md IDs and count 42', async () => {
+  it('site CORRECTIONS match CORRECTIONS.md IDs and count 44', async () => {
     const { getCorrections, resetDataCaches } = await import('../src/lib/data.ts');
     resetDataCaches();
     const site = getCorrections();
@@ -603,8 +603,8 @@ describe('corrections register exact equality (P1-01)', () => {
       id: m[1],
       title: m[2].trim(),
     }));
-    assert.equal(mdIds.length, 42, 'register must list 42 corrections');
-    assert.equal(site.length, 42, 'site must publish 42 corrections');
+    assert.equal(mdIds.length, 44, 'register must list 44 corrections');
+    assert.equal(site.length, 44, 'site must publish 44 corrections');
     assert.deepEqual(
       site.map((c) => c.id),
       mdIds.map((c) => c.id),

@@ -130,3 +130,21 @@ describe('analysis versioning', () => {
     assert.ok(!clHtml.includes('/releases/v0.1/'));
   });
 });
+
+describe('README status freshness', () => {
+  // The README status block sat at v0.1.3 through three releases before anyone noticed
+  // (2026-08-10). It is hand-written prose, so pin it to release.yaml here.
+  it('README status section matches the live release metadata', () => {
+    const release = loadSiteYaml('src/data/release.yaml');
+    const readme = readFileSync(join(repoRoot, 'README.md'), 'utf8');
+    const header = readme.match(/^## Status \((v[^)]+)\)/m);
+    assert.ok(header, 'README must carry a "## Status (vX.Y.Z)" section');
+    assert.equal(header[1], release.content_version, 'README status header must match content_version');
+    const row = readme.match(/\| Analysis version \| `(v[^`]+)`/);
+    assert.ok(row, 'README must carry an Analysis version table row');
+    assert.equal(row[1], release.content_version, 'README Analysis version row must match content_version');
+    const evid = readme.match(/\| Evidence current through \| (\d{4}-\d{2}-\d{2}) \|/);
+    assert.ok(evid, 'README must carry an Evidence current through table row');
+    assert.equal(evid[1], release.evidence_current_through, 'README evidence date must match release.yaml');
+  });
+});

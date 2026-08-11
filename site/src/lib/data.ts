@@ -320,6 +320,8 @@ const CORRECTIONS: CorrectionRef[] = [
   { id: 'COR-0040', title: 'Public documents asserted indexing was disabled while the site shipped indexable', status: 'applied_to_public_draft' },
   { id: 'COR-0041', title: 'Two hormone results were grouped as if one reference-interval artefact explained both', status: 'logged_in_inventory' },
   { id: 'COR-0042', title: 'Published pages described the case as having no stone history when the record documents one stone', status: 'applied_to_public_draft' },
+  { id: 'COR-0043', title: 'The public ranking\'s "Confirmed/objective" row carried two items that are not confirmed or objective', status: 'applied_to_public_draft' },
+  { id: 'COR-0044', title: 'The tests ledger recorded the post-antibiotic Babesia FISH as never done when its own T047 row contains one', status: 'logged_in_inventory' },
 ];
 
 /** Domain → correction IDs that should surface on matching records (real COR IDs only). */
@@ -328,7 +330,7 @@ const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
   endocrine: ['COR-0004', 'COR-0041'],
   mast_cell: ['COR-0005', 'COR-0027', 'COR-0033'],
   laboratory: ['COR-0006'],
-  infectious_disease: ['COR-0007', 'COR-0024', 'COR-0025', 'COR-0026'],
+  infectious_disease: ['COR-0007', 'COR-0024', 'COR-0025', 'COR-0026', 'COR-0044'],
   genetics: ['COR-0009', 'COR-0018', 'COR-0030'],
   metabolic: ['COR-0012'],
   mental_health: ['COR-0008', 'COR-0036'],
@@ -347,7 +349,7 @@ const CORRECTION_BY_DOMAIN: Record<string, string[]> = {
   endocrine_bone: ['COR-0004', 'COR-0001', 'COR-0011'],
   endocrine_mental_health: ['COR-0004', 'COR-0008', 'COR-0036'],
   literature: ['COR-0010', 'COR-0015', 'COR-0017', 'COR-0020', 'COR-0021', 'COR-0030', 'COR-0042'],
-  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031', 'COR-0035', 'COR-0038', 'COR-0039', 'COR-0040'],
+  publication: ['COR-0013', 'COR-0014', 'COR-0016', 'COR-0019', 'COR-0029', 'COR-0031', 'COR-0035', 'COR-0038', 'COR-0039', 'COR-0040', 'COR-0043'],
 };
 
 const CORRECTION_BY_CLAIM: Record<string, string[]> = {
@@ -863,6 +865,7 @@ export interface LitIdentityCoverage {
   identity_unverified?: string[];
   identity_unresolvable?: string[];
   identity_mismatch?: string[];
+  launch_cited_unverified?: string[];
 }
 
 let _identityCoverage: LitIdentityCoverage | null = null;

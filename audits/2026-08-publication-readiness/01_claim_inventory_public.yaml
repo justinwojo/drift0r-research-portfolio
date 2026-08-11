@@ -11,23 +11,23 @@ meta:
   inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
   release_content_commit_ref: site/src/data/release.yaml#base_commit
   evidence_pack_version: v1+v2
-  purpose: Public research-preview claim inventory (109 approved A/B/C rows; do_not_publish omitted)
+  purpose: Public research-preview claim inventory (110 approved A/B/C rows; do_not_publish omitted)
   not_medical_advice: true
-  claim_count: 109
+  claim_count: 110
   tier_counts:
     Tier A: 92
-    Tier B: 15
+    Tier B: 16
     Tier C: 2
   kind_counts:
     hypothesis: 8
     interpretation: 4
     observed_fact: 60
-    reported_history: 16
+    reported_history: 17
     research_question: 21
   verification_counts:
     contested: 1
     not_verified: 21
-    partially_verified: 87
+    partially_verified: 88
   schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
   public_export: true
   withheld_do_not_publish_count: 0
@@ -3584,4 +3584,58 @@ claims:
     video's automatic captions insert filler syllables ("uh") inside both remarks; the quotations
     omit them and change no words - the same caption-artifact handling CLM-0105 applies to the
     drug-name spelling.
+  triage: Tier B
+- id: CLM-0112
+  statement: >-
+    The 2021 treatment record includes an aromatase inhibitor alongside the selective
+    estrogen-receptor modulator: the endocrine summary documents the reported regimen during the
+    2021 titration period as clomiphene 25 mg daily plus anastrozole 1 mg weekly, and its
+    hormone table prints an estradiol of 9.3 pg/mL on 2021-03-15 - measured by sensitive
+    LC/MS/MS against an 8.0-35.0 pg/mL interval per its methodology note (5), while every other
+    estradiol value in the table uses a standard immunoassay the same note says is not directly
+    comparable. In the public video the patient states the anastrozole was taken "for two years"
+    to lower a clomiphene-induced estradiol rise, and that both medications were then stopped
+    without tapering before the 2021 symptom cascade (the automatic captions render the drug
+    name as "an astrol"). This row records the exposure as history; it asserts nothing about
+    what the exposure did.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: endocrine_bone
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: p1 clinical context, p1 HPG table (estradiol row), p4 methodology note (5)
+    record_date: '2021-03-15'
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: 00:15:52-00:16:27
+    record_date: '2026-08-03'
+  literature_refs:
+  - lit-0308
+  - lit-0134
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Recorded because the 2026-08-10 Fable solo blinded round found the exposure unwired: lit-0308
+    and lit-0134 have been filed and topic-tagged historical-aromatase-inhibitor-use since Round 1,
+    yet no hypothesis cited them, and the only analysis-layer mention of anastrozole was a Round-1
+    acquisition ask. Estradiol is the dominant sex-steroid determinant of bone mass in men, so the
+    exposure window bears on H2's secondary-cause counters and on any "corrected axis" framing:
+    the corrected record is a testosterone record, while the estradiol record is method-split and
+    includes this on-treatment floor value. The two-year duration and the cold-turkey cessation
+    are the patient's video statements (reported history); the regimen line and the 9.3 pg/mL
+    value are compiled-summary transcriptions, so the row is partially_verified and the original
+    laboratory reports remain an acquisition ask (UQ-0020). The caption-artifact handling follows
+    CLM-0105. Typed reported_history rather than observed_fact (2026-08-10 paired review): the
+    summary's own regimen line is prefaced "reported", and the duration and cessation are video
+    statements, so the exposure as a whole is patient-reported; the single sensitive-assay
+    estradiol transcription is carried here as context rather than split into its own row.
   triage: Tier B

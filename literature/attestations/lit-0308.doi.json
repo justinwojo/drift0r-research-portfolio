@@ -1,0 +1,26 @@
+{
+  "card_title": "Effect of aromatase inhibition on bone metabolism in elderly hypogonadal men",
+  "card_year": 2005,
+  "comparison_result": "match",
+  "identifier_type": "doi",
+  "identifier_value": "10.1007/s00198-005-1890-8",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0308",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "crossref",
+  "registry_response_excerpt": {
+    "DOI": "10.1007/s00198-005-1890-8",
+    "title": "Effect of aromatase inhibition on bone metabolism in elderly hypogonadal men",
+    "type": "journal-article",
+    "year": 2005
+  },
+  "resolved_container": "Osteoporosis International",
+  "resolved_title": "Effect of aromatase inhibition on bone metabolism in elderly hypogonadal men",
+  "resolved_year": 2005,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-11T05:11:32Z",
+  "year_delta": 0
+}

@@ -4,18 +4,31 @@ kind: single_primary
 confidence: medium
 architecture_confidence: null
 module_confidence: medium
-summary: Best single-primary research alternative (WNT1/LRP5/PLS3/mild OI spectrum;
+summary: >-
+  Best single-primary research alternative (WNT1/LRP5/PLS3/mild OI spectrum;
   HPP low unless ALP truly low). Gene panel not performed. Related-cohort pathogenic
   yield is modest; panels can return variants of uncertain significance that complicate
   interpretation; negative panel does not close unknown genes or multi-hit secondary OP.
-  Two contradicting cards are now filed. lit-0340 covers what a bone-fragility gene panel
+  Contradicting cards are now filed. lit-0340 covers what a bone-fragility gene panel
   actually finds in people referred for unexplained early osteoporosis (partial yield,
   so a genetic cause cannot be assumed from presentation), and lit-0341 covers male
   osteoporosis series in which identifiable secondary causes are common and more than
   one cause is often present at once. Both cut in the same direction as the caveats
   already named here — modest related-cohort yield and VUS interpretation difficulty —
   and neither can be read the other way, since a panel has not been done and so no
-  result here argues for a genetic cause either.
+  result here argues for a genetic cause either. The 2026-08-10 Fable solo blinded round
+  added two counterweights to this hypothesis's confidence, recorded here without changing
+  its bucket: the record now carries an acquired exposure bearing on bone — an
+  aromatase-inhibitor regimen recorded in the endocrine summary, a sensitive-assay
+  estradiol of 9.3 pg/mL while on it, and about two years of weekly use per the patient's
+  own account (CLM-0112; lit-0134, also filed on the contradicting list, records a
+  year of that drug class lowering spine density in older men, while lit-0308 is carried
+  as its short-horizon comparator — twelve weeks without marker worsening, which clears
+  nothing about longer use) —
+  and the patient's own account of decades of high-impact activity without peripheral
+  fracture, which is an unusual biography for a monogenic fragility disorder of this
+  severity, while also cautioning against reading the areal-BMD numbers as a complete
+  description of bone strength.
 explains_claim_ids:
 - CLM-0003
 - CLM-0005
@@ -24,6 +37,7 @@ does_not_explain_claim_ids:
 - CLM-0023
 - CLM-0027
 - CLM-0036
+- CLM-0112
 supporting_literature_ids:
 - lit-0287
 - lit-0290
@@ -33,9 +47,11 @@ supporting_literature_ids:
 contradicting_literature_ids:
 - lit-0340
 - lit-0341
+- lit-0134
 open_question_ids:
 - UQ-0013
 - UQ-0005
+- UQ-0020
 review_status: source_audited
 as_of: '2026-08-10'
 supersedes: null

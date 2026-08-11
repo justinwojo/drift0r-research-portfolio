@@ -1,0 +1,28 @@
+{
+  "card_title": "Effects of aromatase inhibition on bone mineral density and bone turnover in older men with low testosterone levels",
+  "card_year": 2009,
+  "comparison_result": "match",
+  "identifier_type": "pmcid",
+  "identifier_value": "PMC2795655",
+  "identity_only_disclaimer": "Identifier resolution proves bibliographic identity only; it does not prove that the card summary supports any medical claim.",
+  "literature_id": "lit-0134",
+  "manual_override_reason": null,
+  "notes": "",
+  "registry": "ncbi_pmc",
+  "registry_response_excerpt": {
+    "doi": "10.1210/jc.2009-0739",
+    "pmcid": "PMC2795655",
+    "pmid": "19820017",
+    "source": "J Clin Endocrinol Metab",
+    "title": "Effects of aromatase inhibition on bone mineral density and bone turnover in older men with low testosterone levels.",
+    "year": 2009
+  },
+  "resolved_container": "J Clin Endocrinol Metab",
+  "resolved_title": "Effects of aromatase inhibition on bone mineral density and bone turnover in older men with low testosterone levels.",
+  "resolved_year": 2009,
+  "schema_version": "1.0.0",
+  "title_similarity": 1.0,
+  "user_agent": "Drift0rResearchPortfolio/0.1 (educational literature identity checks; local research project; no clinical use)",
+  "verified_at": "2026-08-11T05:06:35Z",
+  "year_delta": 0
+}

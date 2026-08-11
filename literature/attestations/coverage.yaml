@@ -7,9 +7,9 @@ semantic_verification_note: 'This coverage file records bibliographic identity v
   supports any medical claim.'
 catalog_card_count: 339
 alias_count: 10
-launch_cited_count: 49
-identity_verified_count: 49
-identity_unverified_count: 280
+launch_cited_count: 42
+identity_verified_count: 52
+identity_unverified_count: 277
 identity_unresolvable_count: 0
 identity_mismatch_count: 0
 semantic_verified_count: 0
@@ -37,6 +37,7 @@ identity_verified:
 - lit-0104
 - lit-0115
 - lit-0121
+- lit-0134
 - lit-0146
 - lit-0149
 - lit-0150
@@ -45,6 +46,7 @@ identity_verified:
 - lit-0160
 - lit-0164
 - lit-0166
+- lit-0185
 - lit-0186
 - lit-0191
 - lit-0205
@@ -59,6 +61,7 @@ identity_verified:
 - lit-0293
 - lit-0294
 - lit-0297
+- lit-0308
 - lit-0337
 - lit-0338
 - lit-0339
@@ -174,7 +177,6 @@ identity_unverified:
 - lit-0131
 - lit-0132
 - lit-0133
-- lit-0134
 - lit-0135
 - lit-0136
 - lit-0137
@@ -216,7 +218,6 @@ identity_unverified:
 - lit-0182
 - lit-0183
 - lit-0184
-- lit-0185
 - lit-0187
 - lit-0188
 - lit-0189
@@ -316,7 +317,6 @@ identity_unverified:
 - lit-0305
 - lit-0306
 - lit-0307
-- lit-0308
 - lit-0309
 - lit-0310
 - lit-0311
@@ -480,7 +480,7 @@ by_status:
   lit-0131: identity_unverified
   lit-0132: identity_unverified
   lit-0133: identity_unverified
-  lit-0134: identity_unverified
+  lit-0134: identity_verified
   lit-0135: identity_unverified
   lit-0136: identity_unverified
   lit-0137: identity_unverified
@@ -531,7 +531,7 @@ by_status:
   lit-0182: identity_unverified
   lit-0183: identity_unverified
   lit-0184: identity_unverified
-  lit-0185: identity_unverified
+  lit-0185: identity_verified
   lit-0186: identity_verified
   lit-0187: identity_unverified
   lit-0188: identity_unverified
@@ -654,7 +654,7 @@ by_status:
   lit-0305: identity_unverified
   lit-0306: identity_unverified
   lit-0307: identity_unverified
-  lit-0308: identity_unverified
+  lit-0308: identity_verified
   lit-0309: identity_unverified
   lit-0310: identity_unverified
   lit-0311: identity_unverified

@@ -276,3 +276,30 @@ questions:
     status: open
     owner: patient_or_lab_records
     blocks_launch_critical_wording: false
+
+  - id: UQ-0020
+    topic: Estradiol exposure over the anastrozole years is unmodeled and mostly unmeasured
+    question: >
+      What did estradiol actually do across the roughly two years of weekly anastrozole
+      (per the patient's video statement) - are there primary laboratory reports with assay
+      method for that window, and was the 2021-03-15 sensitive-assay value of 9.3 pg/mL
+      (8.0-35.0) typical of the exposure or a single low point?
+    why_it_matters: >
+      Estradiol is the dominant sex-steroid determinant of bone mass in men, and aromatase
+      inhibition in men measurably lowers bone density over a year of exposure (lit-0134),
+      while short-term marker studies look reassuring (lit-0308) - duration is the crux. The
+      exposure sits inside the bone-accrual-to-early-loss window this case turns on, it
+      qualifies every "corrected axis" framing (which describes testosterone, not estradiol),
+      and the compiled record holds only one sensitive-assay value from the whole window. The
+      2021 cessation was also a combined SERM-plus-AI stop, which bears on how the 2021 crash
+      is read. None of this can be settled from the compiled summaries: the other estradiol
+      values use a non-comparable immunoassay per the summary's own methodology note.
+    related_claims: [CLM-0112]
+    related_corrections: []
+    closest_available_record: >
+      Endocrine summary p1 (regimen line; HPG table estradiol row: 9.3 on 2021-03-15, then 18,
+      22, 35, 25, 30 by standard immunoassay) and p4 note (5) on assay non-comparability; video
+      transcript 00:15:52-00:16:27 (two-year duration, cessation without tapering).
+    status: open
+    owner: patient_or_lab_records
+    blocks_launch_critical_wording: false

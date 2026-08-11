@@ -1,6 +1,6 @@
 version: 1.0.0
 as_of: '2026-08-10'
-count: 111
+count: 119
 identity_only_disclaimer: Identifier resolution proves bibliographic identity only; it does
   not prove that the card summary supports any medical claim.
 attestations:
@@ -310,6 +310,24 @@ attestations:
   comparison_result: match
   verified_at: '2026-08-05T05:26:05Z'
   file: lit-0121.pmid.json
+- literature_id: lit-0134
+  identifier_type: doi
+  identifier_value: 10.1210/jc.2009-0739
+  comparison_result: match
+  verified_at: '2026-08-11T05:06:33Z'
+  file: lit-0134.doi.json
+- literature_id: lit-0134
+  identifier_type: pmcid
+  identifier_value: PMC2795655
+  comparison_result: match
+  verified_at: '2026-08-11T05:06:35Z'
+  file: lit-0134.pmcid.json
+- literature_id: lit-0134
+  identifier_type: pmid
+  identifier_value: '19820017'
+  comparison_result: match
+  verified_at: '2026-08-11T05:06:33Z'
+  file: lit-0134.pmid.json
 - literature_id: lit-0146
   identifier_type: doi
   identifier_value: 10.1148/rg.220097
@@ -412,6 +430,24 @@ attestations:
   comparison_result: match
   verified_at: '2026-08-05T05:26:16Z'
   file: lit-0166.pmid.json
+- literature_id: lit-0185
+  identifier_type: doi
+  identifier_value: 10.3390/nu7053347
+  comparison_result: match
+  verified_at: '2026-08-11T05:11:33Z'
+  file: lit-0185.doi.json
+- literature_id: lit-0185
+  identifier_type: pmcid
+  identifier_value: PMC4446755
+  comparison_result: match
+  verified_at: '2026-08-11T05:11:35Z'
+  file: lit-0185.pmcid.json
+- literature_id: lit-0185
+  identifier_type: pmid
+  identifier_value: '25961322'
+  comparison_result: match
+  verified_at: '2026-08-11T05:11:34Z'
+  file: lit-0185.pmid.json
 - literature_id: lit-0186
   identifier_type: doi
   identifier_value: 10.1007/s00415-010-5511-x
@@ -640,6 +676,18 @@ attestations:
   comparison_result: match
   verified_at: '2026-08-05T05:26:42Z'
   file: lit-0297.pmid.json
+- literature_id: lit-0308
+  identifier_type: doi
+  identifier_value: 10.1007/s00198-005-1890-8
+  comparison_result: match
+  verified_at: '2026-08-11T05:11:32Z'
+  file: lit-0308.doi.json
+- literature_id: lit-0308
+  identifier_type: pmid
+  identifier_value: '15856361'
+  comparison_result: match
+  verified_at: '2026-08-11T05:11:32Z'
+  file: lit-0308.pmid.json
 - literature_id: lit-0337
   identifier_type: pmid
   identifier_value: '28063842'

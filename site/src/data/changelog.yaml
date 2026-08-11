@@ -19,7 +19,7 @@ entries:
       replaced by a provenance test (DEC-0039): material drawn from the documents Drift0r himself
       provided or published may be relayed as attributed historical record, numbers included, while
       material that cannot be traced to them stays out. Nothing about the bar on prescriptive
-      content changes; it is restated as absolute. Thirty new claim rows follow from that,
+      content changes; it is restated as absolute. Thirty-one new claim rows follow from that,
       carrying the bone-density detail, the full 24-hour stone-risk panel, blood counts and hormone
       values that previously existed only as plain-language summaries. Five contradicting literature
       cards are filed against H2 and H3, which until now listed none. Two corrections: one hormone
@@ -30,6 +30,19 @@ entries:
       run, and existed only in the private ledger. Those results move into the public record here:
       the ruled-out register gains three entries, and H3 names distal renal tubular acidosis —
       considered and not favoured — for the first time.
+      Before this version was packaged, a Round-2 review was layered in: a fourth model build
+      (Claude Fable 5) ran solo — one agent re-derived its own analysis blinded to every prior
+      conclusion, a second attacked both that analysis and the published ranking with equal
+      aggression, and every load-bearing finding was re-verified against the source documents.
+      The round left every hypothesis bucket unchanged, independently re-derived several published
+      positions, overturned two of its own blinded confidence grades on adversarial review, and
+      surfaced one datum no prior round had wired in: roughly two years of aromatase-inhibitor
+      exposure with a documented on-treatment sensitive-assay estradiol of 9.3 pg/mL — sitting in
+      the endocrine summary and the video all along, with the two relevant literature cards filed
+      since Round 1 and, until this entry, cited by nothing. It also produced two corrections: the public ranking had
+      listed a clinical-note-only testosterone value and a single borderline thiamine result as
+      "confirmed/objective", and the tests ledger recorded the post-antibiotic Babesia FISH as
+      never done when its own rows contain a positive one.
       Not medical advice; clinician review still not performed.
     added_evidence:
       - "CLM-0082…CLM-0086 — DXA detail the public set never carried: femoral neck 0.713 g/cm² (T −1.6), total hip T-scores −1.3→−1.5, the Site 2 lowest-hip row at T −2.0, four forearm subregions with both T and Z, and per-vertebra L1–L4 with the 1.2 SD step between L2 and L3"
@@ -44,6 +57,9 @@ entries:
       - "lit-0337, lit-0338, lit-0339 — contradicting cards for H3 on whether urinary calcium tracks bone-density severity and whether stone-related fracture excess is site-selective"
       - "lit-0340, lit-0341 — contradicting cards for H2 on bone-fragility panel yield in unexplained early osteoporosis and on how often male osteoporosis has identifiable, and multiple, secondary causes"
       - "UQ-0018, UQ-0019 — the testosterone change carries no date, so the record cannot say whether any blood count postdates it; and the globulin value is glossed as low-normal by the same document that prints it below range"
+      - "CLM-0112 — the 2021 aromatase-inhibitor exposure as attributed history: clomiphene 25 mg daily plus anastrozole 1 mg weekly per the endocrine summary's regimen line, an estradiol of 9.3 pg/mL (8.0–35.0, sensitive LC/MS/MS) on 2021-03-15 while on it, the patient's video statement that the anastrozole ran about two years, and the untapered stop of both drugs before the 2021 symptom cascade (Round 2)"
+      - "UQ-0020 — what estradiol did across the anastrozole years: one sensitive-assay value exists for the whole window, the other estradiol values use a non-comparable immunoassay, and the original laboratory reports are unretrieved (Round 2)"
+      - "differentials/swarm-runs/2026-08-10-fable-blinded/03_synthesis.md — the Round-2 public synthesis: method, re-derivations, adjudicated disagreements, and the round's own scorecard, with full artifacts retained privately like Round 1's per-model files"
     changed_interpretations:
       - "Publication scope is now decided by provenance rather than content type (DEC-0039). Historical material from Drift0r's own documents — numbers, dosing history, mental-health content — may be published as attributed record; material not traceable to them may not. The prescriptive bar is unchanged and absolute: no surface may suggest a reader take, start, stop or adjust anything"
       - "evidence/ruled_out.yaml may now carry a numeric value and its reference interval where the number is what makes the result interpretable. Numbers are permitted, not required, and any number added must carry its units — or say so where the source prints none"
@@ -53,11 +69,17 @@ entries:
       - "Total hip is stated as sitting in the osteopenic band against the WHO thresholds the source prints, because the site's headline bone figures are all osteoporotic-range and a reader meeting only those would over-read the hip"
       - "The ruled-out register gains three community-prompted entries — Cushing's syndrome, hereditary hemochromatosis, and myasthenia gravis — each recording what was actually run and what it showed, with the residuals stated rather than smoothed: no dexamethasone-suppression or late-night salivary-cortisol screen anywhere in the record, no HFE genotyping, no MuSK or LRP4 antibodies, and no documentation of whether the speech limitation is fatigable"
       - "H3 registers distal renal tubular acidosis as considered and not favoured — the textbook differential for its own alkaline-urine, urine-calcium and bone-loss triad, previously never named anywhere in the record — citing preserved urine citrate (CLM-0088) and serum total CO2 never below range (CLM-0110), with the incomplete form referred to clinicians rather than closed"
+      - "The ranking's confirmed-versus-reported register is corrected (COR-0043): the clinical-note-only historical testosterone and the single borderline thiamine value with its self-reported response move from the 'Confirmed/objective' list to a reported/narrative-grade list, matching the provenance the claim inventory already recorded"
+      - "The ranking's Babesia satellite now states the two arguments Round 2 formulated: the absent hematologic footprint across 3+ years as the strongest single negative datum, and the fork created by the post-antibiotic FISH positive (COR-0044) — credited, it means the first treatment response coexisted with persistent parasitemia; discounted, the organism evidence reduces to one non-confirmed specialty-LDT result"
+      - "current_ranking.md gains §6a recording the Round-2 standing objections without changing any bucket: H2's medium challenged as generous, the HαT satellite's 'rejected as driver' challenged as one notch too absolute (defensible driver bucket: speculative), and the open H1-versus-H-NULL discrimination gap"
     strengthened_or_weakened_hypotheses:
       - "H3 weakened as a unifier and better bounded as a module: the full stone-risk panel shows high urine calcium without low citrate, high oxalate or raised oxalate supersaturation, which is a narrower finding than high urine calcium alone; the counters filed against it are now literature rather than an admission that no literature was filed"
       - "H3's magnitude mismatch is unchanged — the cited hypercalciuria literature describes mild BMD reduction and does not account for a spine T-score of −4.3"
       - "H2 unchanged in direction and better bounded: panel yield in unexplained early osteoporosis is partial, and male osteoporosis series commonly show identifiable and often multiple secondary causes, so a genetic cause cannot be assumed from presentation. No panel has been performed, so nothing in the record argues for one either"
       - "CLM-0055 (controlled calcium-flux phenotyping not yet done) stays open, and two of the new rows are direct reasons why: the middle collection fell below its volume adequacy target, and sodium and calcium rise together across the same two collections"
+      - "H2 carries two Round-2 counterweights recorded in its summary without a bucket change: the newly wired aromatase-inhibitor exposure as an acquired insult — the regimen and on-treatment estradiol carried by the endocrine summary, the roughly two-year duration by the patient's own account (CLM-0112, with lit-0134 — a year of that drug class lowering spine density in older men — now filed on H2's contradicting-literature list, and lit-0308 carried alongside it as the short-horizon comparator) — and the patient's account of decades of high-impact activity without peripheral fracture as a phenotype-level counterpoint absent from its record until now"
+      - "H3's refusal to classify the hypercalciuria mechanism is strengthened by an independent stress-test: the Round-2 blinded agent over-called a resorptive mechanism and the adversarial stage refuted it from the primary numbers back to exactly H3's position"
+      - "The multi-process architecture, the tick-borne low bucket with its channel split, the mastocytosis don't-miss with blood KIT D816V first, the untested small-fiber layer with IENFD as the top-value test, and the not-supported status of a primary psychiatric explanation were each independently re-derived by an agent blinded to them — single-family evidence, weighed per the limitations page"
     retired_or_superseded:
       - id: DEC-0036-numeric-value-limit
         status: superseded
@@ -78,15 +100,17 @@ entries:
     corrections:
       - COR-0041
       - COR-0042
+      - COR-0043
+      - COR-0044
     git_tag_planned: v0.4.0
     github_release_planned: true
     notes: >-
-      Prepared but not yet packaged. No v0.4.0 tag has been created and no GitHub Release has been
-      published at the time this entry was written; git_tag and github_release_published are
-      deliberately absent rather than set false, and are filled in only once those steps actually
-      run. Private run materials and the private tests ledger remain gitignored. The new numeric
-      rows are transcribed from the compiled summaries Drift0r provided, and the original documents
-      are not redistributed.
+      Packaging state is carried by the git_tag and github_release_published fields rather than
+      restated here: they are deliberately absent until the tag and Release actually exist, and
+      are filled in only once those steps run. Private run materials and the private tests ledger
+      remain gitignored. The new numeric rows are transcribed from the compiled summaries Drift0r
+      provided, and the original documents are not redistributed. This entry was amended once
+      before packaging, to fold in the same-day Round-2 review and its paired-review fixes.
 
   - version: v0.3.0
     date: "2026-08-07"

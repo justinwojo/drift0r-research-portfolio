@@ -33,11 +33,18 @@ const restrictedLicensePct = all.length
 
 /**
  * Identity coverage, stated as the fact that matters: whether every launch-cited card
- * has been resolved. Falls back to raw counts if the two ever diverge.
+ * has been resolved. identity_verified_count spans the whole catalog, so it can exceed
+ * launch_cited_count once non-launch cards are attested — the launch_cited_unverified
+ * list is the authoritative gap record when present.
  */
 const allLaunchCitedVerified =
   identityCoverage.launch_cited_count > 0 &&
-  identityCoverage.identity_verified_count === identityCoverage.launch_cited_count;
+  (identityCoverage.launch_cited_unverified
+    ? identityCoverage.launch_cited_unverified.length === 0
+    : identityCoverage.identity_verified_count === identityCoverage.launch_cited_count);
+const launchCitedVerifiedCount = identityCoverage.launch_cited_unverified
+  ? identityCoverage.launch_cited_count - identityCoverage.launch_cited_unverified.length
+  : Math.min(identityCoverage.identity_verified_count, identityCoverage.launch_cited_count);
 const uncheckedCardCount =
   identityCoverage.catalog_card_count - identityCoverage.identity_verified_count;
 
@@ -107,7 +114,7 @@ for (const e of launch) {
           </>
         ) : (
           <>
-            <span class="mono">{identityCoverage.identity_verified_count}</span> of{' '}
+            <span class="mono">{launchCitedVerifiedCount}</span> of{' '}
             <span class="mono">{identityCoverage.launch_cited_count}</span> launch-cited cards have
             had their identifiers resolved to a real published work.
           </>

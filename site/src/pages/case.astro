@@ -108,6 +108,12 @@ const timeline = dualTrackTimeline();
       <Badge glyph="?" label="Research-question claim" css="q" />
       <Badge glyph="⬡" label="Working hypothesis" css="hyp" />
     </div>
+    <p class="key-note">
+      Each record's <span class="mono">Verification</span> dots show how closely it was checked against
+      primary records — from ●●●●● (verified against the primary instrument record) down to ○○○○○ (no
+      adequate source). Hover a meter for the exact status; full scale on{' '}
+      <a href={withBase('/methods/')}>Methods</a>.
+    </p>
     <RecordFinder />
   </section>
 

@@ -6,12 +6,25 @@ interface Props {
 }
 const { status } = Astro.props;
 const meta = verificationMeta(status);
-const ticks = Array.from({ length: 5 }, (_, i) => i < meta.ticks);
+const dots = Array.from({ length: 5 }, (_, i) => (i < meta.ticks ? '●' : '○')).join('');
+const readout = `Verification strength ${meta.ticks} of 5 — ${meta.label}`;
+
+/**
+ * The full status label repeats near-identically on every card, so it lives in the
+ * hover/assistive readout instead of the visible header. Only the weak statuses keep a
+ * short visible flag — a reader should not need to hover to notice a contested or
+ * unsourced record.
+ */
+const SHORT_FLAGS: Record<string, string> = {
+  contested: 'Contested',
+  not_verified: 'Not verified',
+  unsupported: 'No adequate source',
+};
+const flag = SHORT_FLAGS[status];
 ---
 
-<span class="ver" role="img" aria-label={`Verification: ${meta.label}`}>
-  <span class={`ticks ${meta.border}`}>
-    {ticks.map((on) => <i class={on ? 'on' : ''} aria-hidden="true" />)}
-  </span>
-  <span>{meta.label}</span>
+<span class="ver" role="img" aria-label={readout} title={readout}>
+  <span class="ver-name" aria-hidden="true">Verification</span>
+  <span class="ver-dots" aria-hidden="true">{dots}</span>
+  {flag && <span class="ver-flag" aria-hidden="true">{flag}</span>}
 </span>

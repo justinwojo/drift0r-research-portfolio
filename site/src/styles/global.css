@@ -655,37 +655,28 @@ section.page-section {
   font-family: var(--mono);
 }
 
-.ticks {
-  display: inline-flex;
-  gap: 2px;
+.key-note {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 80ch;
 }
 
-.ticks i {
-  width: 5px;
-  height: 12px;
-  border: 1px solid var(--firm);
-  display: block;
-  background: transparent;
+.ver-name {
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
 }
 
-.ticks i.on {
-  background: var(--firm);
+.ver-dots {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--firm);
 }
 
-.ticks.dashed {
-  border-style: dashed;
-}
-.ticks.dotted i {
-  border-style: dotted;
-}
-.ticks.hatched i {
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 1px,
-    var(--firm) 1px,
-    var(--firm) 2px
-  );
+.ver-flag {
+  color: var(--contra);
+  font-weight: 600;
 }
 
 /* Confidence rail */

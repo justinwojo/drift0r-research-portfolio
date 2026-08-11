@@ -656,10 +656,18 @@ section.page-section {
 }
 
 .key-note {
-  margin: 10px 0 0;
-  font-size: 13.5px;
+  margin: 12px 0 0;
+  font-size: 12.5px;
   color: var(--muted);
-  max-width: 80ch;
+}
+
+/* Finder + verification legend live in one tight band between the nav and registers. */
+section.page-section--tools {
+  padding-top: 22px;
+}
+
+.page-section--tools .finder {
+  margin-top: 0;
 }
 
 .ver-name {
@@ -1113,7 +1121,7 @@ section.page-section {
 .jumpnav {
   border-bottom: var(--b-hair);
   padding: 8px 0;
-  margin: 24px 0 0;
+  margin: 16px 0 0;
   background: var(--parchment);
 }
 
@@ -1147,6 +1155,32 @@ section.page-section {
 
 .jumpnav-list a:hover {
   border-color: var(--firm);
+  text-decoration: underline;
+}
+
+/* Register colors on the chips — the jump-nav doubles as the register key. */
+.jumpnav-list a.jn-fact {
+  border-color: var(--ink);
+}
+.jumpnav-list a.jn-reported {
+  border-style: dotted;
+  border-color: var(--firm);
+}
+.jumpnav-list a.jn-interp {
+  border-style: dashed;
+  border-color: var(--contested);
+  color: var(--contested);
+}
+.jumpnav-list a.jn-q {
+  border-color: var(--contra);
+  color: var(--contra);
+  background: var(--contra-tint);
+}
+.jumpnav-list a.jn-hyp {
+  border-style: dashed;
+  border-color: var(--contested);
+  color: var(--contested);
+  background: var(--contested-tint);
 }
 
 .jumpnav-list .g {

@@ -218,7 +218,9 @@ describe('/case/ page shape — domain grouping and jump-nav (mockup B)', () => 
   it('renames the research-question register and its kind label consistently', () => {
     const page = src('pages/case.astro');
     assert.match(page, /title: 'Research-question claims'/);
-    assert.match(page, /label="Research-question claim"/);
+    // The colored jump-nav chips are the register key; no separate badge row remains.
+    assert.match(page, /short: 'Research questions'/);
+    assert.doesNotMatch(page, /label="Question for clinicians"/);
     assert.doesNotMatch(page, /title: 'Questions for clinicians'/);
     // The kind label follows the register rename so the same page never shows both
     // strings — "Questions for clinicians" now names only the curated CQ page.
@@ -252,7 +254,11 @@ describe('/case/ page shape — domain grouping and jump-nav (mockup B)', () => 
       'research_question',
       'hypothesis',
     ]) {
-      assert.match(html, new RegExp(`<a href="#reg-${kind}">`), `jump-nav link for ${kind}`);
+      assert.match(
+        html,
+        new RegExp(`<a href="#reg-${kind}" class="jn-[a-z]+">`),
+        `jump-nav link for ${kind}`,
+      );
       assert.match(
         html,
         new RegExp(`<h2 class="sec" id="reg-${kind}">`),

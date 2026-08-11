@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RecordCard from '../components/RecordCard.astro';
 import RecordFinder from '../components/RecordFinder.astro';
 import { getClaimsByKind, dualTrackTimeline, kindMeta, type Claim } from '../lib/data';
-import Badge from '../components/Badge.astro';
 import { withBase } from '../lib/paths';
 
 const registers = [
@@ -86,7 +85,8 @@ const timeline = dualTrackTimeline();
       {
         populatedRegisters.map(({ reg, claims }) => (
           <li>
-            <a href={`#reg-${reg.kind}`}>
+            {/* The chips double as the register key: each carries its register's color. */}
+            <a href={`#reg-${reg.kind}`} class={`jn-${kindMeta(reg.kind).css}`}>
               <span class="g" aria-hidden="true">
                 {kindMeta(reg.kind).glyph}
               </span>
@@ -99,22 +99,13 @@ const timeline = dualTrackTimeline();
     </ul>
   </nav>
 
-  <section class="page-section">
-    <div class="legend-label">Register key</div>
-    <div class="badge-row" style="margin-top: 10px;">
-      <Badge glyph="▣" label="Documented finding" css="fact" />
-      <Badge glyph="❝" label="Patient-reported / history" css="reported" />
-      <Badge glyph="◇" label="Interpretation" css="interp" />
-      <Badge glyph="?" label="Research-question claim" css="q" />
-      <Badge glyph="⬡" label="Working hypothesis" css="hyp" />
-    </div>
+  <section class="page-section page-section--tools">
+    <RecordFinder />
     <p class="key-note">
-      Each record's <span class="mono">Verification</span> dots show how closely it was checked against
-      primary records — from ●●●●● (verified against the primary instrument record) down to ○○○○○ (no
-      adequate source). Hover a meter for the exact status; full scale on{' '}
+      <span class="mono">Verification</span> ●●●●● = checked against the primary instrument record ·
+      ○○○○○ = no adequate source · hover a meter for the exact status · full scale on{' '}
       <a href={withBase('/methods/')}>Methods</a>.
     </p>
-    <RecordFinder />
   </section>
 
   {

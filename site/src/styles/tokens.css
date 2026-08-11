@@ -1,5 +1,16 @@
-/* Contour design tokens — M4_DESIGN_SPEC.md §2. Light only (dark deferred P2). */
+/*
+ * Contour design tokens — M4_DESIGN_SPEC.md §2.
+ *
+ * Light is the base palette on bare `:root`. Dark (spec §2.2) is a *token swap only*:
+ * the two guarded blocks at the foot of this file override the SAME token names, so no
+ * component has different structure, content, or disclosed information in dark mode.
+ * Three states: no `data-theme` attribute = follow the OS (`prefers-color-scheme`);
+ * `data-theme="light"` and `data-theme="dark"` are the persisted manual overrides set by
+ * the header toggle and the flash-free init script in BaseLayout.astro.
+ */
 :root {
+  color-scheme: light;
+
   --parchment: #f4f1ea;
   --card: #fbfaf7;
   --ink: #12202b;
@@ -14,6 +25,37 @@
   --contra-tint: #f6e7e0;
   --contested: #54407a;
   --contested-tint: #ebe6f2;
+
+  /* Decorative separator rule. Was an undefined var with a `#c8bfb0` fallback in
+     global.css / ContributionCta.astro; formalized here so it swaps with the theme. */
+  --rule: #c8bfb0;
+  /* Focus fill for the Atlas SVG node under hover/focus (companion to --focus). */
+  --focus-tint: #eef4ff;
+  /* Hatch stripe for a missing measurement channel — derived from surfaces so it tracks
+     the theme rather than being a fixed warm grey. */
+  --hatch: color-mix(in srgb, var(--card) 70%, var(--hairline) 30%);
+
+  /*
+   * Inverse surfaces. Two chrome elements are deliberately dark-on-light in light mode:
+   * the provenance bar and the claim-preview tooltip. They used `var(--ink)` as a SURFACE
+   * FILL, which a pure token swap would turn into a light panel carrying light text. They
+   * now have their own token family so they stay "the darker panel" in both themes, and
+   * nothing anywhere uses --ink as a background.
+   */
+  --inverse-bg: #12202b;
+  --inverse-text: #e7edf0;
+  --inverse-text-strong: #ffffff;
+  --inverse-text-quote: #f4f1ea;
+  --inverse-text-muted: #c9d3d9;
+  --inverse-text-dim: #9aa8b0;
+  --inverse-accent: #f0c7b4;
+  --inverse-hairline: rgba(231, 237, 240, 0.18);
+  --inverse-border: rgba(231, 237, 240, 0.25);
+  --inverse-shadow: rgba(18, 32, 43, 0.28);
+
+  /* The one drop shadow in the system: the on-screen paper preview of the print routes
+     (M4 §2.5 permits no other). Tokenised so it lifts the sheet in both themes. */
+  --sheet-shadow: rgba(18, 32, 43, 0.08);
 
   /* System stacks as primary; OFL self-hosted fonts are residual work (see asset inventory). */
   --serif: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
@@ -46,4 +88,133 @@
   --b-firm: 1px solid var(--firm);
   --b-strong: 2px solid var(--ink);
   --b-double: 3px double var(--ink);
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Dark palette (M4_DESIGN_SPEC.md §2.2), mapped onto the light token names.
+ * ---------------------------------------------------------------------------
+ *
+ * Two blocks, identical token sets:
+ *   1. system preference, unless the visitor pinned light
+ *   2. the explicit `data-theme="dark"` override
+ *
+ * The type/space/measure tokens are theme-independent and are NOT repeated. The border
+ * tokens (--b-hair/--b-firm/--b-strong/--b-double) reference colour tokens, so they swap
+ * for free.
+ *
+ * Values taken verbatim from the spec: --plate → --parchment, --panel → --card,
+ * --text-d → --ink (15.3:1), --muted-d → --muted (7.5:1), --hairline-d → --hairline,
+ * --firm-d → --firm (3.1:1 — UI boundary threshold), --link-d → --link (10.2:1),
+ * --support-d (10.3:1), --contra-d (8.7:1), --contested-d (9.1:1). Measured against
+ * --parchment #101418 with the sRGB relative-luminance formula; recomputed here as
+ * 15.31 / 7.46 / 3.45 / 10.15 / 10.33 / 8.67 / 9.13, i.e. the spec's figures hold.
+ *
+ * The spec has no dark --focus; --link-d is reused. 10.2:1 on --parchment and 9.4:1 on
+ * --card, far above the 3:1 the focus ring needs against either surface.
+ *
+ * Derived here, because the spec supplies no dark counterpart:
+ *
+ *   --support-tint  #172e26   --contra-tint #33201a   --contested-tint #29223b
+ *     Each is its polarity hue pulled down to just above panel lightness (1.19 / 1.11 /
+ *     1.13 against --card, 1.28 / 1.20 / 1.22 against --parchment) — read as tinted
+ *     raised panels, separated from --card and from each other by hue rather than by
+ *     lightness, exactly as the light tints are. Text contrast on them clears AA with a
+ *     wide margin: polarity colour 8.06 / 7.23 / 7.47, --ink 11.94 / 12.76 / 12.54.
+ *
+ *   --rule #2f3843 — one step lighter than --hairline so a separator rule stays visible
+ *     on --parchment without reading as a --firm control boundary.
+ *
+ *   --focus-tint #1a2a3a — the --focus hue at panel lightness; --focus on it is 8.03:1
+ *     and --ink 12.10:1, so a focused Atlas node keeps both its ring and its label.
+ *
+ *   --inverse-* — the provenance bar and claim-preview tooltip stay the *raised darker*
+ *     surface in dark mode rather than flipping to light. --inverse-bg #1e252d sits
+ *     1.20:1 above --parchment and just above --card, so the chrome still separates from
+ *     the page. Its text: --inverse-text 12.80:1, --inverse-text-strong 14.50:1,
+ *     --inverse-text-quote 13.63:1, --inverse-text-muted 8.55:1, --inverse-text-dim
+ *     6.24:1, --inverse-accent 9.97:1 — all AA for body text, not merely for large text.
+ *
+ *   --hatch is a color-mix of --card and --hairline, so it needs no dark literal; it
+ *     resolves to ≈#1d232a in dark, the same "one step off the card" it is in light.
+ *
+ * Both blocks are `screen`-scoped. Print is deliberately theme-independent: the four
+ * designated browser-print routes must emit the same paper whatever the visitor's OS or
+ * toggle says, and dozens of rules set their own `color: var(--muted)` that @media print
+ * cannot reach with a blanket `color: #000 !important` on body. Confining the dark blocks
+ * to screen leaves print reading the bare `:root` light palette, with no third copy of the
+ * palette to keep in sync.
+ */
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --parchment: #101418;
+    --card: #171c22;
+    --ink: #e6eaef;
+    --muted: #9aa6b2;
+    --hairline: #2a323b;
+    --firm: #616c77;
+    --focus: #8fc6f2;
+    --link: #8fc6f2;
+    --support: #7fd1b9;
+    --support-tint: #172e26;
+    --contra: #e8a08d;
+    --contra-tint: #33201a;
+    --contested: #bdaee6;
+    --contested-tint: #29223b;
+
+    --rule: #2f3843;
+    --focus-tint: #1a2a3a;
+    --hatch: color-mix(in srgb, var(--card) 70%, var(--hairline) 30%);
+
+    --inverse-bg: #1e252d;
+    --inverse-text: #e6eaef;
+    --inverse-text-strong: #f5f8fa;
+    --inverse-text-quote: #edf1f5;
+    --inverse-text-muted: #b7c2cc;
+    --inverse-text-dim: #9aa6b2;
+    --inverse-accent: #f0c7b4;
+    --inverse-hairline: rgba(230, 234, 239, 0.16);
+    --inverse-border: rgba(230, 234, 239, 0.22);
+    --inverse-shadow: rgba(0, 0, 0, 0.5);
+    --sheet-shadow: rgba(0, 0, 0, 0.55);
+  }
+}
+
+@media screen {
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+
+    --parchment: #101418;
+    --card: #171c22;
+    --ink: #e6eaef;
+    --muted: #9aa6b2;
+    --hairline: #2a323b;
+    --firm: #616c77;
+    --focus: #8fc6f2;
+    --link: #8fc6f2;
+    --support: #7fd1b9;
+    --support-tint: #172e26;
+    --contra: #e8a08d;
+    --contra-tint: #33201a;
+    --contested: #bdaee6;
+    --contested-tint: #29223b;
+
+    --rule: #2f3843;
+    --focus-tint: #1a2a3a;
+    --hatch: color-mix(in srgb, var(--card) 70%, var(--hairline) 30%);
+
+    --inverse-bg: #1e252d;
+    --inverse-text: #e6eaef;
+    --inverse-text-strong: #f5f8fa;
+    --inverse-text-quote: #edf1f5;
+    --inverse-text-muted: #b7c2cc;
+    --inverse-text-dim: #9aa6b2;
+    --inverse-accent: #f0c7b4;
+    --inverse-hairline: rgba(230, 234, 239, 0.16);
+    --inverse-border: rgba(230, 234, 239, 0.22);
+    --inverse-shadow: rgba(0, 0, 0, 0.5);
+    --sheet-shadow: rgba(0, 0, 0, 0.55);
+  }
 }

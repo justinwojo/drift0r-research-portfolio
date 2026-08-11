@@ -35,5 +35,124 @@ function isCurrent(href: string): boolean {
         }
       </ul>
     </nav>
+    {/*
+      Colour-theme control. Server-rendered in the "Auto" state because a static build
+      cannot know what the visitor stored; the script below rewrites the label from
+      localStorage on load, so the button never contradicts what is on screen. With
+      JavaScript off the button is inert and the OS preference simply wins — it is not
+      hidden, since hiding chrome is worse than showing a control that does nothing.
+    */}
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Colour theme: following the system setting. Activate to switch to light.">
+      <span class="theme-toggle-key" aria-hidden="true">Theme</span>
+      <span data-theme-toggle-label>Auto</span>
+    </button>
   </div>
 </header>
+
+<script is:inline>
+  (function () {
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (!btn) return;
+    var labelEl = btn.querySelector('[data-theme-toggle-label]');
+    var root = document.documentElement;
+    /* auto → light → dark → auto. 'auto' is the absence of a stored value and of the
+       data-theme attribute, which is the same contract the head init script reads. */
+    var ORDER = ['auto', 'light', 'dark'];
+    var LABEL = { auto: 'Auto', light: 'Light', dark: 'Dark' };
+    var SPOKEN = { auto: 'following the system setting', light: 'light', dark: 'dark' };
+
+    /*
+     * The live attribute is the source of truth, not storage. The head init script has
+     * already translated any stored value into data-theme before this runs, and reading
+     * storage again here would desynchronise the cycle whenever a write fails but a read
+     * still succeeds (quota exhaustion): apply() would have set the attribute while
+     * storage still said "nothing", so the next click would recompute 'auto' and the
+     * toggle would stick on one state.
+     */
+    function current() {
+      var attr = root.getAttribute('data-theme');
+      return attr === 'light' || attr === 'dark' ? attr : 'auto';
+    }
+
+    function render(mode) {
+      var next = ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length];
+      if (labelEl) labelEl.textContent = LABEL[mode];
+      btn.setAttribute(
+        'aria-label',
+        'Colour theme: ' + SPOKEN[mode] + '. Activate to switch to ' + SPOKEN[next] + '.',
+      );
+    }
+
+    function apply(mode) {
+      if (mode === 'auto') root.removeAttribute('data-theme');
+      else root.setAttribute('data-theme', mode);
+      try {
+        if (mode === 'auto') window.localStorage.removeItem('theme');
+        else window.localStorage.setItem('theme', mode);
+      } catch (err) {
+        /* Not persisted, but the current page still honours the choice. */
+      }
+      render(mode);
+    }
+
+    render(current());
+    btn.addEventListener('click', function () {
+      apply(ORDER[(ORDER.indexOf(current()) + 1) % ORDER.length]);
+    });
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    /* ≥44px target where the masthead has the room for it (1.4.11 / 2.5.5). */
+    min-height: 44px;
+    padding: 6px 10px;
+    background: var(--card);
+    color: var(--muted);
+    border: var(--b-firm);
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .theme-toggle:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  /* No icon: the site has no iconography anywhere else, and an inline <svg> in the
+     masthead also collides with a rendered-geometry test that scans the page's first
+     viewBox. The state is the label.
+     No opacity de-emphasis either: opacity composites against the surface, and at 0.75
+     this 12px uppercase mono dropped to 3.76:1 on the light card and 4.49:1 on the dark
+     panel — both under the 4.5:1 that applies at this size. Full --muted is 6.82:1 light
+     and 6.91:1 dark. The colon alone separates the key from the state. */
+  .theme-toggle-key::after {
+    content: ':';
+  }
+
+  /*
+   * The ≤480px masthead is a stretched column (global.css) with a horizontally scrolling
+   * nav. A rigid 44px control in that column is the classic source of horizontal overflow
+   * at 320–390px, so the button drops to the 36px the nav links already use there and
+   * shrinks to its content on the right rather than stretching across the column.
+   */
+  @media (max-width: 480px) {
+    .theme-toggle {
+      align-self: flex-end;
+      min-height: 36px;
+      padding: 4px 8px;
+      font-size: 11.5px;
+    }
+  }
+</style>

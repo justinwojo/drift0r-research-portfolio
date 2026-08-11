@@ -78,7 +78,7 @@ if (pages.length === 0) pages.push([]);
           {chunk.map((q) => {
             const litLines = (q.literature_refs || []).map((id) => litPrintLines(id));
             return (
-              <article style="margin: 18px 0; break-inside: avoid; border-bottom: 1px solid #ccc; padding-bottom: 12px;">
+              <article style="margin: 18px 0; break-inside: avoid; border-bottom: 1px solid var(--hairline); padding-bottom: 12px;">
                 <h2 class="mono" style="font-size: 14px; margin: 0 0 6px;">
                   {q.id} · {q.medical_domain} · research priority: {q.priority}
                   {q.dont_miss ? ' · don’t-miss review priority' : ''}
@@ -87,21 +87,21 @@ if (pages.length === 0) pages.push([]);
                 <p style="margin: 0 0 6px; font-size: 13.5px;">
                   <strong>Rationale.</strong> {q.rationale}
                 </p>
-                <p class="mono" style="margin: 0 0 4px; font-size: 11.5px; color: #444;">
+                <p class="mono" style="margin: 0 0 4px; font-size: 11.5px; color: var(--muted);">
                   claims: {q.related_claim_ids.join(', ') || '—'} · hypotheses:{' '}
                   {q.related_hypothesis_ids.join(', ') || '—'}
                 </p>
-                <div style="margin: 0; font-size: 11.5px; color: #333;">
-                  <strong class="mono" style="font-size: 11.5px; color: #444;">Literature.</strong>{' '}
+                <div style="margin: 0; font-size: 11.5px; color: var(--ink);">
+                  <strong class="mono" style="font-size: 11.5px; color: var(--muted);">Literature.</strong>{' '}
                   {litLines.length === 0 ? (
-                    <span class="mono" style="color: #444;">—</span>
+                    <span class="mono" style="color: var(--muted);">—</span>
                   ) : (
                     <ul style="margin: 4px 0 0; padding-left: 1.2em;">
                       {litLines.map((row) => (
                         <li style="margin: 0 0 4px; break-inside: avoid;">
                           <span class="mono">{row.titleLine}</span>
                           {row.applicability ? (
-                            <span style="display: block; margin-top: 1px; color: #444;">
+                            <span style="display: block; margin-top: 1px; color: var(--muted);">
                               Why cited / applicability: {row.applicability}
                             </span>
                           ) : null}

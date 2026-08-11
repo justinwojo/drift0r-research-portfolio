@@ -1,6 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Research Evidence Portfolio">
-  <rect width="32" height="32" fill="#F4F1EA"/>
-  <rect x="3" y="3" width="26" height="26" fill="none" stroke="#12202B" stroke-width="2"/>
-  <path d="M8 22 L16 10 L24 22" fill="none" stroke="#12202B" stroke-width="1.5"/>
-  <circle cx="16" cy="10" r="1.5" fill="#12202B"/>
+  <!--
+    Follows the OS preference only; the site's manual theme toggle cannot reach a favicon.
+    CSS overrides the presentation attributes below, so a renderer that ignores the style
+    block still gets the light mark.
+  -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .plate { fill: #101418; }
+      .mark { stroke: #e6eaef; }
+      .dot { fill: #e6eaef; }
+    }
+  </style>
+  <rect class="plate" width="32" height="32" fill="#F4F1EA"/>
+  <rect class="mark" x="3" y="3" width="26" height="26" fill="none" stroke="#12202B" stroke-width="2"/>
+  <path class="mark" d="M8 22 L16 10 L24 22" fill="none" stroke="#12202B" stroke-width="1.5"/>
+  <circle class="dot" cx="16" cy="10" r="1.5" fill="#12202B"/>
 </svg>

@@ -288,11 +288,13 @@
   }
 }
 
-/* On-screen */
+/* On-screen. These four rules render to visitors in the browser, so they take tokens and
+   swap with the theme; every literal inside @media print above is deliberately absolute
+   (forced #fff/#000 paper) and must stay that way. */
 .print-page-banner,
 .print-page-disclaimer {
   font-size: 12px;
-  border: 1px solid #000;
+  border: 1px solid var(--ink);
   padding: 8px;
   margin-bottom: 12px;
   max-width: 70ch;
@@ -300,7 +302,7 @@
 
 .print-page-end {
   font-size: 11px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--hairline);
   padding: 6px;
   margin-top: 16px;
   max-width: 70ch;
@@ -350,13 +352,13 @@
 }
 
 .print-hyp-sum {
-  color: #333;
+  color: var(--muted);
 }
 
 .print-closing {
   font-size: 10.5px;
   margin-top: 18px;
-  border-top: 1px solid #000;
+  border-top: 1px solid var(--ink);
   padding-top: 8px;
 }
 

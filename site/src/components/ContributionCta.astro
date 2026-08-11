@@ -192,9 +192,9 @@ const contributePolicyHref = withBase('/about/contribute/');
   .contribution-cta {
     margin: 16px 0 0;
     padding: 14px 16px;
-    border: 1px solid var(--rule, #c8bfb0);
-    border-left: 3px solid var(--ink, #1a1814);
-    background: color-mix(in srgb, var(--parchment, #f7f1e6) 88%, var(--ink, #1a1814) 4%);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink);
+    background: color-mix(in srgb, var(--parchment) 88%, var(--ink) 4%);
     border-radius: 2px;
   }
   .contribution-cta--footer {
@@ -224,7 +224,7 @@ const contributePolicyHref = withBase('/about/contribute/');
     margin: 12px 0 0;
     font-size: 12px;
     line-height: 1.5;
-    color: var(--muted, #5c564c);
+    color: var(--muted);
     max-width: 60ch;
   }
   @media (min-width: 720px) {
@@ -258,7 +258,7 @@ const contributePolicyHref = withBase('/about/contribute/');
   }
   .contribution-cta__lead--footer {
     font-size: 13.5px;
-    color: var(--muted, #5c564c);
+    color: var(--muted);
   }
   .contribution-cta__lead--home {
     margin: 0 0 12px;
@@ -283,17 +283,17 @@ const contributePolicyHref = withBase('/about/contribute/');
     line-height: 1.3;
     text-decoration: none;
     text-align: center;
-    border: 1px solid var(--ink, #1a1814);
+    border: 1px solid var(--ink);
     border-radius: 4px;
-    background: color-mix(in srgb, var(--ink, #1a1814) 10%, var(--card, #fffdf8));
-    color: var(--ink, #1a1814);
+    background: color-mix(in srgb, var(--ink) 10%, var(--card));
+    color: var(--ink);
     box-sizing: border-box;
   }
   .contribution-cta__primary:hover {
-    background: color-mix(in srgb, var(--ink, #1a1814) 16%, var(--card, #fffdf8));
+    background: color-mix(in srgb, var(--ink) 16%, var(--card));
   }
   .contribution-cta__primary:focus-visible {
-    outline: 2px solid var(--focus, #0b5fff);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
   .contribution-cta__secondary {
@@ -309,17 +309,17 @@ const contributePolicyHref = withBase('/about/contribute/');
     padding: 6px 2px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--ink, #1a1814);
+    color: var(--ink);
   }
   .contribution-cta__secondary a:focus-visible {
-    outline: 2px solid var(--focus, #0b5fff);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
   .contribution-cta__policy--home {
     margin: 10px 0 0;
     font-size: 13px;
     line-height: 1.45;
-    color: var(--muted, #5c564c);
+    color: var(--muted);
   }
   @media (min-width: 720px) {
     .contribution-cta__home-actions {
@@ -354,25 +354,27 @@ const contributePolicyHref = withBase('/about/contribute/');
     font-size: 15px;
     line-height: 1.3;
     text-decoration: none;
-    border: 1px solid var(--rule, #c8bfb0);
+    border: 1px solid var(--rule);
     border-radius: 4px;
-    background: var(--card, #fffdf8);
-    color: var(--ink, #1a1814);
+    background: var(--card);
+    color: var(--ink);
     box-sizing: border-box;
   }
   .contribution-cta__links a:hover {
-    border-color: var(--ink, #1a1814);
-    background: color-mix(in srgb, var(--parchment, #f7f1e6) 70%, #fff 30%);
+    border-color: var(--ink);
+    /* Mixed from surface tokens, not toward literal white, so the hover tone shift
+       survives the dark token swap instead of blowing out to a white patch. */
+    background: color-mix(in srgb, var(--parchment) 70%, var(--card) 30%);
   }
   .contribution-cta__links a:focus-visible {
-    outline: 2px solid var(--focus, #0b5fff);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
   /* Primary action: correction/privacy template */
   .contribution-cta__links a[data-contribution-link='privacy-correction-removal'],
   .contribution-cta__links a[data-contribution-link='issues-new-choose'] {
-    border-color: var(--ink, #1a1814);
-    background: color-mix(in srgb, var(--ink, #1a1814) 8%, var(--card, #fffdf8));
+    border-color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 8%, var(--card));
   }
   .contribution-cta--footer .contribution-cta__links {
     gap: 6px;
@@ -403,6 +405,6 @@ const contributePolicyHref = withBase('/about/contribute/');
     line-height: 1.5;
   }
   .contribution-cta--unconfigured {
-    border-left-color: var(--contra, #8b3a3a);
+    border-left-color: var(--contra);
   }
 </style>

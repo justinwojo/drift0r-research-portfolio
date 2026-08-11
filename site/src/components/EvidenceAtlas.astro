@@ -163,16 +163,20 @@ function nodeAccessibleName(n: { band: string; label: string; id: string }): str
   return `${n.label}, ${bandLabel}. Relationships: ${phrases.join('; ')}${more}. Full detail in the table below.`;
 }
 
-/** Stroke style by relationship family — meaning preserved without repeating verb text on every line. */
-function edgeStroke(verb: string): { stroke: string; dash: string; opacity: number; width: number } {
+/**
+ * Stroke style by relationship family — meaning preserved without repeating verb text on
+ * every line. The colour is a CLASS, not a `stroke` attribute: SVG presentation attributes
+ * cannot carry `var()`, so a themed palette has to reach these lines through CSS.
+ */
+function edgeStroke(verb: string): { cls: string; dash: string; opacity: number; width: number } {
   if (verb === 'does not explain' || verb === 'contradicted by') {
-    return { stroke: '#8A3B1E', dash: '0', opacity: 0.72, width: 1.15 };
+    return { cls: 'atlas-edge-line atlas-edge-line--contra', dash: '0', opacity: 0.72, width: 1.15 };
   }
   if (verb === 'leaves open') {
-    return { stroke: '#54407A', dash: '4 3', opacity: 0.7, width: 1 };
+    return { cls: 'atlas-edge-line atlas-edge-line--open', dash: '4 3', opacity: 0.7, width: 1 };
   }
   // would explain / interpreted toward / restates architecture / default support-family
-  return { stroke: '#4C5A63', dash: '0', opacity: 0.55, width: 1 };
+  return { cls: 'atlas-edge-line atlas-edge-line--support', dash: '0', opacity: 0.55, width: 1 };
 }
 
 /**
@@ -257,14 +261,14 @@ function uqChipAttrs(id: string): Record<string, string> {
         rows so no two node boxes touch. The diagram ends at open questions.
       </desc>
 
-      <g aria-hidden="true" opacity="0.22" stroke="#C9C2B4" fill="none" stroke-width="1">
+      <g class="atlas-deco" aria-hidden="true" opacity="0.22" fill="none" stroke-width="1">
         <path d={`M20,20 C200,0 400,50 600,15 S900,10 1080,35`}></path>
         <path d={`M20,${H - 20} C180,${H} 420,${H - 40} 640,${H - 10} S920,${H - 30} 1080,${H - 15}`}></path>
       </g>
 
       <defs>
         <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="8" stroke="#8A3B1E" stroke-width="2"></line>
+          <line class="atlas-hatch-line" x1="0" y1="0" x2="0" y2="8" stroke-width="2"></line>
         </pattern>
       </defs>
 
@@ -280,16 +284,21 @@ function uqChipAttrs(id: string): Record<string, string> {
            * legend promises it marks.
            */
           const isContraBand = band.key === 'contradictions';
-          const fill = isContraBand ? '#F6E7E0' : band.key === 'history' ? '#EBE6F2' : '#FBFAF7';
+          /* Band fill as a modifier class, for the same reason the edges use one: a `fill`
+             presentation attribute cannot resolve a token. */
+          const bandCls = isContraBand
+            ? 'atlas-band atlas-band--contra'
+            : band.key === 'history'
+              ? 'atlas-band atlas-band--history'
+              : 'atlas-band';
           return (
             <g>
               <rect
+                class={bandCls}
                 x="20"
                 y={y}
                 width="1060"
                 height={h}
-                fill={fill}
-                stroke="#6E7880"
                 stroke-width="1"
                 stroke-dasharray={band.key === 'questions' ? '4 3' : '0'}
               />
@@ -304,7 +313,13 @@ function uqChipAttrs(id: string): Record<string, string> {
                   aria-hidden="true"
                 />
               )}
-              <text x="32" y={y + 16} font-family="ui-monospace,monospace" font-size="11" fill="#4C5A63">
+              <text
+                class="atlas-band-label"
+                x="32"
+                y={y + 16}
+                font-family="ui-monospace,monospace"
+                font-size="11"
+              >
                 {band.label}
               </text>
             </g>
@@ -326,11 +341,11 @@ function uqChipAttrs(id: string): Record<string, string> {
             <g class="atlas-edge" data-atlas-verb={e.verb} data-atlas-from={e.from} data-atlas-to={e.to}>
               <title>{`${e.verb}: ${fromLabel} — ${toLabel}`}</title>
               <line
+                class={style.cls}
                 x1={a.x}
                 y1={a.y}
                 x2={b.x}
                 y2={b.y}
-                stroke={style.stroke}
                 stroke-width={style.width}
                 stroke-dasharray={style.dash}
                 opacity={style.opacity}
@@ -350,8 +365,16 @@ function uqChipAttrs(id: string): Record<string, string> {
             const href = nodeHref(n);
             const name = nodeAccessibleName(n);
             const preview = previewAttrsForLabel(n.label);
+            /* Border colour rides on the wrapping <g>, not on the hit rect: the rect keeps
+               a single stable class so the rendered-geometry tests can still find it by
+               exact class match. */
+            const nodeCls = isContra
+              ? 'atlas-node atlas-node--contra'
+              : isHyp || isQ
+                ? 'atlas-node atlas-node--contested'
+                : 'atlas-node atlas-node--plain';
             const inner = (
-              <g class="atlas-node">
+              <g class={nodeCls}>
                 <rect
                   class="atlas-node-hit"
                   x={n.x - w / 2}
@@ -359,19 +382,17 @@ function uqChipAttrs(id: string): Record<string, string> {
                   width={w}
                   height={NODE_H}
                   rx="2"
-                  fill="#FBFAF7"
-                  stroke={isContra ? '#8A3B1E' : isHyp ? '#54407A' : isQ ? '#54407A' : '#12202B'}
                   stroke-width={isHyp ? 1.5 : 1}
                   stroke-dasharray={isHyp || isQ ? '4 2' : '0'}
                 />
                 <text
+                  class="atlas-node-label"
                   x={n.x}
                   y={n.y + 4}
                   text-anchor="middle"
                   font-family="ui-monospace,monospace"
                   font-size="11"
                   font-weight={isHyp ? '600' : '400'}
-                  fill="#12202B"
                   pointer-events="none"
                 >
                   {n.label}
@@ -415,12 +436,12 @@ function uqChipAttrs(id: string): Record<string, string> {
       }
 
       <text
+        class="atlas-terminal-note"
         x={W / 2}
         y={H - 8}
         text-anchor="middle"
         font-family="system-ui,sans-serif"
         font-size="11"
-        fill="#8A3B1E"
       >
         Terminal: open questions — the atlas does not conclude with a diagnosis.
       </text>
@@ -763,6 +784,58 @@ function uqChipAttrs(id: string): Record<string, string> {
 </script>
 
 <style>
+  /*
+   * SVG chart colours live here rather than on `fill`/`stroke` presentation attributes,
+   * because presentation attributes cannot resolve `var()`. Every colour in the diagram
+   * therefore comes through a class and swaps with the theme like the rest of the page.
+   */
+  .atlas-deco {
+    stroke: var(--hairline);
+  }
+  .atlas-hatch-line {
+    stroke: var(--contra);
+  }
+  .atlas-band {
+    fill: var(--card);
+    stroke: var(--firm);
+  }
+  .atlas-band--contra {
+    fill: var(--contra-tint);
+  }
+  .atlas-band--history {
+    fill: var(--contested-tint);
+  }
+  .atlas-band-label {
+    fill: var(--muted);
+  }
+  .atlas-edge-line--contra {
+    stroke: var(--contra);
+  }
+  .atlas-edge-line--open {
+    stroke: var(--contested);
+  }
+  .atlas-edge-line--support {
+    stroke: var(--muted);
+  }
+  .atlas-node-hit {
+    fill: var(--card);
+  }
+  .atlas-node--contra .atlas-node-hit {
+    stroke: var(--contra);
+  }
+  .atlas-node--contested .atlas-node-hit {
+    stroke: var(--contested);
+  }
+  .atlas-node--plain .atlas-node-hit {
+    stroke: var(--ink);
+  }
+  .atlas-node-label {
+    fill: var(--ink);
+  }
+  .atlas-terminal-note {
+    fill: var(--contra);
+  }
+
   .atlas-node-link {
     cursor: pointer;
     outline: none;
@@ -772,9 +845,9 @@ function uqChipAttrs(id: string): Record<string, string> {
   .atlas-node-link:focus-visible .atlas-node-hit,
   .atlas-node-static:focus .atlas-node-hit,
   .atlas-node-static:focus-visible .atlas-node-hit {
-    stroke: #0b5fff !important;
+    stroke: var(--focus) !important;
     stroke-width: 2.5px !important;
-    fill: #eef4ff !important;
+    fill: var(--focus-tint) !important;
   }
   .atlas-node-link:hover .atlas-node-hit {
     filter: brightness(0.97);
@@ -809,7 +882,7 @@ function uqChipAttrs(id: string): Record<string, string> {
     box-sizing: border-box;
   }
   .atlas-path-track:focus-visible {
-    box-shadow: 0 0 0 2px var(--ink, #12202b);
+    box-shadow: 0 0 0 2px var(--ink);
   }
   /*
    * Card width from the carousel track (not viewport). ~86% leaves a peek of the next card
@@ -866,15 +939,15 @@ function uqChipAttrs(id: string): Record<string, string> {
     overflow-wrap: anywhere;
   }
   .atlas-path-section.support {
-    border-left: 3px solid var(--firm, #2f5d50);
+    border-left: 3px solid var(--firm);
     padding-left: 10px;
   }
   .atlas-path-section.contra {
-    border-left: 3px solid var(--contra, #8a3b1e);
+    border-left: 3px solid var(--contra);
     padding-left: 10px;
   }
   .atlas-path-section.questions {
-    border-left: 3px dashed var(--contested, #54407a);
+    border-left: 3px dashed var(--contested);
     padding-left: 10px;
   }
   .atlas-path-empty {
@@ -897,9 +970,9 @@ function uqChipAttrs(id: string): Record<string, string> {
   .atlas-path-terminal {
     margin: 4px 0 0;
     padding-top: 8px;
-    border-top: 1px dashed var(--line, #c9c2b4);
+    border-top: 1px dashed var(--hairline);
     font-size: 12.5px;
-    color: var(--contra, #8a3b1e);
+    color: var(--contra);
     font-weight: 600;
   }
   .atlas-path-uqs {
@@ -915,7 +988,7 @@ function uqChipAttrs(id: string): Record<string, string> {
     text-underline-offset: 2px;
   }
   .uq-chip:focus-visible {
-    outline: 2px solid var(--focus, #0b5fff);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
   .claim-inline-excerpt {

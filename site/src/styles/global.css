@@ -147,9 +147,12 @@ section.page-section ul li {
 }
 
 /* --- Provenance bar --- */
+/* Deliberately the inverse surface (dark chrome above a light page), so it is driven by
+   the --inverse-* family rather than by --ink-as-a-background: under the dark token swap
+   --ink is a *text* colour and would turn this bar into a light panel with light text. */
 .provenance {
-  background: var(--ink);
-  color: #e7edf0;
+  background: var(--inverse-bg);
+  color: var(--inverse-text);
   font-family: var(--mono);
   font-size: var(--t-sm);
 }
@@ -164,12 +167,12 @@ section.page-section ul li {
 }
 
 .provenance b {
-  color: #fff;
+  color: var(--inverse-text-strong);
   font-weight: 600;
 }
 
 .provenance .neg {
-  color: #f0c7b4;
+  color: var(--inverse-accent);
 }
 
 .provenance .neg::before {
@@ -196,7 +199,7 @@ section.page-section ul li {
 
 /* Homepage compact disclosure — genuine single row (Checkpoint J.2.1). */
 .provenance--compact {
-  background: var(--ink);
+  background: var(--inverse-bg);
 }
 .provenance--compact .wrap {
   padding-top: 2px;
@@ -211,7 +214,7 @@ section.page-section ul li {
 }
 .provenance--compact .prov-grid {
   padding: 6px 0 8px;
-  border-top: 1px solid rgba(231, 237, 240, 0.18);
+  border-top: 1px solid var(--inverse-hairline);
   margin-top: 4px;
   font-size: 12px;
 }
@@ -255,7 +258,7 @@ section.page-section ul li {
   text-underline-offset: 2px;
 }
 .claim-link:focus-visible {
-  outline: 2px solid var(--focus, #0b5fff);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 .claim-preview-tooltip {
@@ -263,13 +266,14 @@ section.page-section ul li {
   z-index: 80;
   max-width: min(320px, calc(100vw - 16px));
   padding: 10px 12px;
-  background: var(--ink, #12202b);
-  color: #e7edf0;
-  border: 1px solid rgba(231, 237, 240, 0.25);
+  /* Same inverse-surface rule as .provenance — never --ink as a background fill. */
+  background: var(--inverse-bg);
+  color: var(--inverse-text);
+  border: 1px solid var(--inverse-border);
   border-radius: 2px;
   font-size: 13px;
   line-height: 1.4;
-  box-shadow: 0 6px 18px rgba(18, 32, 43, 0.28);
+  box-shadow: 0 6px 18px var(--inverse-shadow);
   pointer-events: none;
   opacity: 0;
 }
@@ -287,11 +291,11 @@ section.page-section ul li {
 .claim-preview-tooltip .cpt-id {
   font-weight: 700;
   margin-bottom: 4px;
-  color: #fff;
+  color: var(--inverse-text-strong);
 }
 .claim-preview-tooltip .cpt-meta {
   font-size: 12px;
-  color: #c9d3d9;
+  color: var(--inverse-text-muted);
   margin-bottom: 2px;
 }
 .claim-preview-tooltip .cpt-k {
@@ -299,31 +303,31 @@ section.page-section ul li {
   font-size: 10.5px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #9aa8b0;
+  color: var(--inverse-text-dim);
   margin-right: 4px;
 }
 .claim-preview-tooltip .cpt-excerpt {
   margin-top: 6px;
   font-family: var(--serif);
   font-size: 13.5px;
-  color: #f4f1ea;
+  color: var(--inverse-text-quote);
 }
 .claim-preview-tooltip .cpt-hint {
   margin-top: 8px;
   font-size: 10.5px;
-  color: #9aa8b0;
+  color: var(--inverse-text-dim);
 }
 .claim-preview-tooltip .cpt-banner {
   font-size: 11.5px;
   font-weight: 600;
-  color: #f0c7b4;
+  color: var(--inverse-accent);
   margin: 0 0 6px;
   line-height: 1.35;
 }
 .claim-preview-tooltip .cpt-title {
   font-family: var(--serif);
   font-size: 13.5px;
-  color: #fff;
+  color: var(--inverse-text-strong);
   margin: 0 0 4px;
   line-height: 1.35;
 }
@@ -342,7 +346,7 @@ span.uq-chip {
   cursor: default;
 }
 .uq-chip:focus-visible {
-  outline: 2px solid var(--focus, #0b5fff);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -552,8 +556,10 @@ h3 {
 .lede {
   font-family: var(--serif);
   font-size: var(--t-lede);
+  /* One step softer than body ink; mixed from tokens so it inverts with the theme
+     instead of staying a fixed dark slate. */
   line-height: 1.55;
-  color: #28353d;
+  color: color-mix(in srgb, var(--ink) 88%, var(--parchment));
   max-width: 62ch;
   margin: 0;
 }
@@ -851,8 +857,8 @@ section.page-section--tools {
     45deg,
     var(--card),
     var(--card) 6px,
-    #f0ebe3 6px,
-    #f0ebe3 12px
+    var(--hatch) 6px,
+    var(--hatch) 12px
   );
 }
 
@@ -1914,7 +1920,7 @@ figcaption {
   gap: 8px 20px;
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid var(--rule, #c8bfb0);
+  border-top: 1px solid var(--rule);
 }
 
 .site-footer .foot-nav a {
@@ -2184,11 +2190,17 @@ a.mono,
   margin-bottom: 8px;
 }
 
-/* Print sheet preview on screen */
+/*
+ * Print sheet preview on screen. This wraps the entire body of five print routes, so a
+ * hardcoded white here would keep a white page under the dark token swap while the text
+ * inside it inverted — the sheet is the page on those routes, and it takes the raised
+ * surface token like every other panel. The paper stays literal white in the actual print
+ * output (forced below), where the theme must never leak into the PDF.
+ */
 .print-sheet {
-  background: #fff;
+  background: var(--card);
   border: var(--b-firm);
-  box-shadow: 0 8px 24px rgba(18, 32, 43, 0.08);
+  box-shadow: 0 8px 24px var(--sheet-shadow);
   padding: 28px 32px;
   margin: 20px 0;
   max-width: 8.5in;
@@ -2196,6 +2208,8 @@ a.mono,
 
 @media print {
   .print-sheet {
+    background: #fff !important;
+    color: #000 !important;
     box-shadow: none;
     border: none;
     padding: 0;
@@ -3004,7 +3018,9 @@ a.mono,
 .packet-intro {
   margin: 10px 0 18px;
   padding: 12px 14px;
-  border: 1px solid #bbb;
+  /* --rule, not --hairline: this replaced a #bbb border, and the separator token stays a
+     step more visible than a hairline in dark while remaining decorative. */
+  border: 1px solid var(--rule);
   break-inside: avoid;
 }
 
@@ -3028,7 +3044,7 @@ a.mono,
   margin: 0;
   font-size: 11px;
   line-height: 1.45;
-  color: #444;
+  color: var(--muted);
 }
 
 @media print {

@@ -24,7 +24,9 @@ describe('Evidence Atlas component structure', () => {
   it('has visible focus/hover styles', () => {
     assert.match(src, /:focus-visible|:focus/);
     assert.match(src, /:hover/);
-    assert.match(src, /stroke:\s*#0b5fff|stroke:\s*#0B5FFF/i);
+    // Focus colour is tokenised (dark mode is a token swap), so assert the token, not a hex.
+    assert.match(src, /stroke:\s*var\(--focus\)\s*!important/);
+    assert.match(src, /fill:\s*var\(--focus-tint\)\s*!important/);
   });
 
   it('preserves authoritative HTML table fallback', () => {

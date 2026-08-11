@@ -94,7 +94,33 @@ if (publicationRequiresApprovedClaims || publicationRequiresRouteApproval) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content={robotsContent} />
     <meta name="description" content={ogDescription} />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
+    {/*
+      Theme init. Must run before first paint (hence: inline, in <head>, above the styles
+      Astro injects) or a visitor who pinned dark gets a light flash on every navigation.
+      Contract shared with the header toggle in SiteHeader.astro: localStorage key 'theme',
+      values 'light' | 'dark'; anything else (including no key) means "follow the OS" and
+      leaves data-theme absent so the prefers-color-scheme block in tokens.css decides.
+      localStorage access is wrapped because it throws outright in some privacy modes.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.setAttribute('data-theme', stored);
+          }
+        } catch (err) {
+          /* Storage unavailable — stay on the OS preference. */
+        }
+      })();
+    </script>
+    {/*
+      Browser UI tint. These follow the OS preference only; a manual toggle does not
+      restyle them, which is a cosmetic mismatch confined to the address bar.
+    */}
+    <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101418" media="(prefers-color-scheme: dark)" />
     <title>{pageTitle}</title>
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />

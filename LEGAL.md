@@ -5,6 +5,9 @@
 | Item | Status |
 |------|--------|
 | Public research preview | **Yes** — incomplete and open to correction |
+| Analysis version | **v0.4.0** — see [`site/src/data/release.yaml`](site/src/data/release.yaml) for the authoritative record |
+| Evidence current through | **2026-08-10** (`release.yaml: evidence_current_through`) |
+| Search indexing | **Enabled** (`index, follow`) by owner decision DEC-0037; single-sourced from `release.yaml: noindex` |
 | Patient publication permission | **Obtained** (2026-08-05) |
 | Permission is endorsement? | **No** — permission is not endorsement of findings by Drift0r or any clinician |
 | Clinician review | **Not performed** |
@@ -34,14 +37,14 @@ If you are in medical distress, seek emergency care.
 | Our analysis, summaries, timelines, code | Yes | MIT (see `LICENSE`) |
 | Bibliographic metadata (title, authors, year, DOI, PMID, URL) | Yes | Factual citation data |
 | Short quotations (a few lines) with citation | Yes | Keep short; attribute clearly |
-| Open-access full text (e.g. many PMC / CC-BY works) | **Not included in v0.1** | A future release would require an explicit license review and allowlist change |
+| Open-access full text (e.g. many PMC / CC-BY works) | **Not included** | Including it would require an explicit license review and allowlist change |
 | Paywalled publisher PDFs | **No** | Link via DOI/PubMed only |
-| Patient-hosted source documents | **Linked, not redistributed in v0.1** | Drift0r controls the external folder; this repository publishes original analysis and structured summaries |
+| Patient-hosted source documents | **Linked, not redistributed** | Drift0r controls the external folder; this repository publishes original analysis and structured summaries |
 
 ### Local-only full texts
 
 - Full PDFs used for offline agent reading may live under `data/papers_local/` (gitignored).
-- Verified open-access copies may be retained in the private research archive, but `data/papers_oa/` remains excluded from the v0.1 public repository regardless of access status.
+- Verified open-access copies may be retained in the private research archive, but `data/papers_oa/` remains excluded from the public repository regardless of access status.
 - The public repo is a **curated link store + original summaries**, not a pirate library.
 
 ### Attribution template

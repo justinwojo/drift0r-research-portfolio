@@ -76,7 +76,7 @@ Drift0r controls the externally hosted source folder. This repository links to i
 
 **[Patient-hosted source documents on Google Drive](https://drive.google.com/drive/folders/1z_juK9yVdhbzaGJafzzZYZWe3U1cs37e)**
 
-The literature catalog contains roughly 334 records. Forty-four launch-cited identities have external identifier attestations. Of the 34 works used directly on public hypothesis/claim surfaces, 32 have source text available to the AI-assisted citation-fidelity pass and two are explicitly bibliographic-only. Independent human semantic review remains pending. Identifier resolution proves bibliographic identity—not that every project summary or medical inference is correct.
+The literature catalog contains 339 records (329 unique works plus 10 alias cards). Fifty-two cards carry external identifier attestations, which covers all 42 cards cited by launch-critical content. A dated AI-assisted citation-fidelity pass on 2026-08-05 (DEC-0033) examined the 34 works then used directly on public hypothesis/claim surfaces: 32 had source text available to that pass and two were explicitly bibliographic-only. Works that public surfaces began citing after that date were not in it and carry identifier attestations only: lit-0134 and lit-0308 had been in the catalog since the first research round but were first cited by a hypothesis surface in v0.4.0, and lit-0337–lit-0341 are new cards added in v0.4.0. Independent human semantic review remains pending for the entire catalog. Identifier resolution proves bibliographic identity—not that every project summary or medical inference is correct.
 
 See [`literature/CORPUS_STATUS.md`](literature/CORPUS_STATUS.md), [`governance/AI_METHODS.md`](governance/AI_METHODS.md), and the [public roadmap](ROADMAP.md) for the detailed limitations and backlog.
 
@@ -100,6 +100,7 @@ Do not post private medical records, personal identifiers, treatment instruction
 ├── audits/              approved public claim and correction registers
 ├── differentials/       hypotheses and clinician-facing research questions
 ├── docs/                public project and maintainer documentation
+├── evidence/            ruled-out register (a homepage build input)
 ├── governance/          publication, review, correction, and AI-use policies
 ├── literature/          bibliography, cards, topics, and identity attestations
 ├── schemas/             machine-readable data contracts

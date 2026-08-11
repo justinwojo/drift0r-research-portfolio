@@ -8,6 +8,10 @@
 | Run | `2026-08-publication-readiness` |
 | Base commit | `6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c` |
 
+> That base commit is a SHA in the **private working monorepo** this audit ran in; it does not
+> resolve in the public repository. The public provenance anchor is `base_commit` in
+> `site/src/data/release.yaml`.
+
 ---
 
 ## Decision template

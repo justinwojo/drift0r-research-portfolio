@@ -21,6 +21,11 @@ This permission covers patient consent for a public repository and hosted websit
 - override `do_not_publish`, private-identifier, raw-community, or secret-file exclusions; or
 - authorize search indexing or production deploy without a separate owner launch decision.
 
+Both of those separate owner decisions have since been taken: the site is deployed and live, and
+search indexing is enabled (DEC-0037, 2026-08-07). That does not change the statement above — the
+permission alone did not authorize either; each required its own owner decision, and each got one.
+See item 6 below for the indexing record, including what DEC-0037 does and does not rest on.
+
 ## Consent checklist (v0.1 research preview) — satisfied 2026-08-05
 
 Documented approval obtained 2026-08-05 covers the following for this **public research preview**
@@ -35,6 +40,14 @@ Documented approval obtained 2026-08-05 covers the following for this **public r
 7. Correction/contact process — **satisfied** (GitHub issue template for correction/privacy/removal; no privacy@ email; Drift0r consent/withdrawal may continue via existing private correspondence)  
 8. Launch-copy review of actual pages to be published — **owner editorial discretion under broad grant; clinician review not performed**  
 9. Special-category mental-health content — **satisfied at owner editorial discretion under the broad grant**. DEC-0030 covers the v0.1 exact claims **CLM-0046**, **CLM-0047**, and **CLM-0048** (DSM-5 SSD assessment history, MMPI-2-RF results framing, and rejection of a primary psychiatric default) with their **exact published wording** and locators on `/case/` and related medical surfaces. DEC-0036 extends the same judgment to the ruled-out register (`evidence/ruled_out.yaml`), including its psychiatric-evaluation entry. Mental-health material is therefore no longer excluded by default; it is published only where the owner judges it accurate and materially informative. **From v0.4.0 (DEC-0039) the standing limit is scoped by provenance, not by content type**, superseding the DEC-0036 formulation *"plain results only, never numeric values or verbatim clinical wording"*: material drawn from the documents Drift0r himself provided or published may be relayed as **attributed historical record, including numeric values and clinical wording**, because he published that material himself and has directed his own audience to this site. Material **not** traceable to those documents remains excluded, as does any material covered by an existing do-not-publish exclusion. Nothing here relaxes the absolute bar on prescriptive content: no page may recommend that a reader take, start, stop or adjust anything (`audits/2026-08-publication-readiness/03_public_language_guide.md` §4.5). Drift0r may narrow or withdraw any of it through existing private correspondence.
+
+**Standing scope note (added 2026-08-11).** The checklist above is a dated record of what was
+satisfied on 2026-08-05, and it is left as written. It has **not** been re-confirmed with Drift0r
+since, and nothing here should be read as a fresh consent review. Material added after that date —
+including the v0.4.0 additions — is published under the **same** broad permission, governed by the
+publication-policy gates rather than by a new consent step: `governance/PUBLICATION_POLICY.md`, the
+language guide, and the provenance-scoped limit recorded as DEC-0039 (item 9). Drift0r may narrow,
+correct, or withdraw any of it at any time through the channels below.
 
 ### What may be stored in the public repository
 

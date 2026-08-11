@@ -1,6 +1,6 @@
 # Live release metadata — v0.4.0 stone-risk panel, DXA subregions, blood-count series,
 # counter-literature for H2/H3, and the DEC-0039 provenance-scoped publication policy;
-# plus the Round-2 Fable solo blinded review layered into this still-unpackaged version:
+# plus the Round-2 Fable solo blinded review layered into this version before packaging:
 # aromatase-inhibitor exposure wired into the record (CLM-0112, UQ-0020), ranking
 # provenance correction (COR-0043), ledger post-abx FISH correction (COR-0044), Round-2
 # synthesis and methods/limitations pages updated.
@@ -59,7 +59,7 @@ clinician_review_scope:
 # Release content tip — stable-release gate update immediately before this metadata promotion.
 # Metadata-only provenance commits that only edit this field must not use their own SHA as base_commit.
 base_commit: "d93f4bc4bb5d3fffe20acacde92ef06448fc046e"
-allowlist_version: "1.10.0"
+allowlist_version: "1.11.0"
 noindex: false
 ai_models_disclosed:
   - Grok (M4 / M4R / E2.x / Checkpoint F / F.1 / F.1.1 / G.1 / G.2 / G.2.1 / G.2.2 / H.1 / I / I.1 / I.1.1 / J.1 prelaunch remediation; 2026-08-06 adversarial audit remediation COR-0022…COR-0032)

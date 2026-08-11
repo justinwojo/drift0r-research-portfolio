@@ -107,12 +107,16 @@ entries:
     git_tag: v0.4.0
     github_release_published: true
     notes: >-
-      Packaging state is carried by the git_tag and github_release_published fields rather than
-      restated here: they are deliberately absent until the tag and Release actually exist, and
-      are filled in only once those steps run. Private run materials and the private tests ledger
-      remain gitignored. The new numeric rows are transcribed from the compiled summaries Drift0r
-      provided, and the original documents are not redistributed. This entry was amended once
-      before packaging, to fold in the same-day Round-2 review and its paired-review fixes.
+      Packaging is complete: the annotated v0.4.0 tag was created and pushed, and the GitHub
+      Release carrying this summary is published — which is what the git_tag and
+      github_release_published fields now record. Content landed on main as d93f4bc, which is
+      what release.yaml records as base_commit; the tag sits one commit later, on the
+      metadata-only promotion commit, so the deployed site is not byte-identical to d93f4bc.
+      content_version labels the analysis, not the build. Private run materials and the private
+      tests ledger remain gitignored. The new numeric rows are transcribed from the compiled
+      summaries Drift0r provided, and the original documents are not redistributed. This entry
+      was amended once before packaging, to fold in the same-day Round-2 review and its
+      paired-review fixes.
 
   - version: v0.3.0
     date: "2026-08-07"

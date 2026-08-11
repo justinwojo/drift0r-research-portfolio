@@ -5,7 +5,7 @@
 
 ## Principle
 
-The **website is the current best understanding**. This project does **not** maintain rendered historical archives such as `/releases/v0.1/` for v0.1. Prior understanding is recorded via:
+The **website is the current best understanding**. This project does **not** maintain rendered historical archives such as `/releases/vX.Y/` for any version. Prior understanding is recorded via:
 
 1. Structured changelog entries (`site/src/data/changelog.yaml` → public `/changelog/`)
 2. In-place correction and supersession notices on live records
@@ -78,11 +78,15 @@ Each **public** release (when the owner decides to publish beyond private monore
 1. Receive an **annotated Git tag** matching `content_version` (e.g. `v0.1.3`)
 2. Receive a **GitHub Release** whose body summarizes the changelog entry sections above
 
-Private remediation commits and noindex candidates may defer tag/Release creation; the changelog still records `git_tag_planned` / `github_release_planned`.
+Every published version so far has both: `v0.1.3`, `v0.2.0`, `v0.3.0` and `v0.4.0` are annotated tags
+with GitHub Releases. Private remediation commits may still defer tag/Release creation while work is
+unpublished; until the tag exists the changelog records `git_tag_planned` / `github_release_planned`
+(intent only), and `git_tag` / `github_release_published` are set **only after** the tag and Release
+actually exist.
 
-## Explicit non-goals (v0.1)
+## Explicit non-goals
 
-- No rendered multi-version site archive (`/releases/v0.1/`, frozen HTML snapshots per version)
+- No rendered multi-version site archive (`/releases/vX.Y.Z/`, frozen HTML snapshots per version)
 - No silent rewrite of historical swarm artifacts (use SUPERSEDED banners + corrections)
 - No claim of clinician review unless `clinician_review_scope` changes and a major release documents it
 

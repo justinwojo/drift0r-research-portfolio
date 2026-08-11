@@ -4,7 +4,7 @@
 > **Published with Drift0r’s permission. Permission is not endorsement.**  
 > **Clinician review has not been performed.**
 
-Thank you for helping improve this **initial research preview**. The project is incomplete and open to correction. Contributions are **tightly gated** for v0.1 so public surfaces stay evidence-oriented and safe.
+Thank you for helping improve this **research preview**. The project is incomplete and open to correction. Contributions are **tightly gated** so public surfaces stay evidence-oriented and safe.
 
 ## Contact channels
 
@@ -18,7 +18,7 @@ There is **no published privacy@ email address** for this project.
 
 Also see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SECURITY.md](SECURITY.md), and `docs/public/COMMUNITY_MODERATION.md` for community and security expectations.
 
-## What we accept (v0.1)
+## What we accept
 
 Open a **GitHub issue** using one of the templates:
 
@@ -57,7 +57,7 @@ Violations will be closed and may be deleted. This is **not** an unmoderated med
 Material errors are logged and shown on affected records and the changelog rather than fixed silently. See:
 
 - `governance/CORRECTIONS_POLICY.md`  
-- `audits/2026-08-publication-readiness/CORRECTIONS.md` (when present in this tree)  
+- `audits/2026-08-publication-readiness/CORRECTIONS.md`
 - Site route `/changelog/` after build  
 
 If you are correcting a specific claim or literature card, include its ID (e.g. `CLM-0003`, `lit-0015`).
@@ -66,7 +66,7 @@ For privacy or removal requests, use the **Correction, privacy, or removal reque
 
 ## Pull requests
 
-For v0.1, **prefer issues** over unsolicited large PRs. Small, well-scoped PRs that fix typos, citations, or documentation may be considered after discussion in an issue. Do not open PRs that add private source PDFs, secrets, or medical advice content.
+**Prefer issues** over unsolicited large PRs. Small, well-scoped PRs that fix typos, citations, or documentation may be considered after discussion in an issue. Do not open PRs that add private source PDFs, secrets, or medical advice content.
 
 ## Local site build (public tree)
 

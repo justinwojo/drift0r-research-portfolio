@@ -2,6 +2,10 @@
 
 _Generated 2026-08-05 by `scripts/regenerate_oa_manifest.py`._
 
+> **Scope of this snapshot.** It was generated on 2026-08-05 and covers cards through `lit-0316`.
+> Cards `lit-0317`…`lit-0341` postdate it and are not accounted for below; regenerating the
+> manifest requires the private monorepo tooling, which is not part of the public export.
+
 ## Do not redistribute
 
 - This document is **aggregate license accounting** for research transparency.

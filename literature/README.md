@@ -10,9 +10,9 @@
 
 ## Stats (current corpus)
 
-- **334** literature entry cards (`entries/`)
-- **324 unique works** after DOI/PMID dedupe (**10** alias cards)
-- IDs: mostly `lit-0001` … `lit-0336` (minor gaps; some intentional DOI cross-refs)
+- **339** literature entry cards (`entries/`)
+- **329 unique works** after DOI/PMID dedupe (**10** alias cards)
+- IDs: mostly `lit-0001` … `lit-0341` (minor gaps; some intentional DOI cross-refs)
 - Local full-text PDF cache (private monorepo only; not in public export)
 - Index: `catalog.yaml` + `search/index.json`
 - Status audit: `CORPUS_STATUS.md` · OA accounting: `oa_manifest.md`

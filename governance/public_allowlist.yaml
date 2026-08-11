@@ -1,21 +1,30 @@
 # Machine-readable public allowlist — deny by default.
 # Validated by scripts/validate_all.py. Human narrative: PUBLIC_FILE_ALLOWLIST.md
-version: "1.10.0"
-as_of: "2026-08-07"
+version: "1.11.0"
+as_of: "2026-08-11"
 not_medical_advice: true
 
 # ---------------------------------------------------------------------------
 # v1 *public git repository* content set for sanitized export (Checkpoint F.1.1).
 # Exact paths only. Never auto-includes deep_archive_optional.
 # Node/Astro site is independently buildable; monorepo Python tooling is NOT exported.
+#
+# Paths below are **source paths in the private monorepo**, not paths in the
+# published public tree. Most are identical in both, but export_path_rewrites
+# (below) can change the destination, so an entry here may name a file that does
+# not exist under that path in the exported repository. This list is the live
+# publication boundary for the current release, not a historical candidate set.
 # ---------------------------------------------------------------------------
 v1_public_repository:
   - .editorconfig
+  - .gitignore
   - .nvmrc
   - LEGAL.md
   - LICENSE
   - README.md
   # Concise public roadmap only — monorepo root ROADMAP.md is operational and NOT exported.
+  # Source-side path: exists in the private monorepo, and is rewritten on export to
+  # root ROADMAP.md (see export_path_rewrites), which is the file the public tree carries.
   - docs/public/ROADMAP.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
@@ -25,7 +34,7 @@ v1_public_repository:
   - docs/public/FIRST_72_HOURS_ISSUE_MONITORING.md
   - .github/ISSUE_TEMPLATE/
   - .github/CODEOWNERS
-  - .github/dependabot.yml
+  - .github/FUNDING.yml
   - .github/pull_request_template.md
   - .github/workflows/
   - docs/REPOSITORY_STRUCTURE.md
@@ -57,6 +66,10 @@ v1_public_repository:
   - differentials/current_ranking.md
   - differentials/swarm-runs/2026-08-05-round1/03_synthesis.md
   - differentials/swarm-runs/2026-08-05-round1/04_clinician_onepager.md
+  # Round-2 public synthesis (v0.4.0). differentials/current_ranking.md links to it, so an
+  # export that omits it publishes a dangling reference. Round-2 per-model artifacts live
+  # under private/research-runs/ and are never exported — only this synthesis is public.
+  - differentials/swarm-runs/2026-08-10-fable-blinded/03_synthesis.md
   - audits/2026-08-publication-readiness/01_claim_inventory_public.yaml
   - audits/2026-08-publication-readiness/02_unresolved_record_questions.yaml
   - audits/2026-08-publication-readiness/03_public_language_guide.md

@@ -6,16 +6,22 @@ This repository is the sanitized, public working tree for the Drift0r Research E
 
 | Path | Purpose |
 |---|---|
-| `.github/` | Structured issue forms, validation CI, ownership metadata, and manual Pages deployment |
+| `.github/` | Structured issue forms, validation CI, ownership and funding metadata, and manual Pages deployment |
 | `audits/2026-08-publication-readiness/` | Approved public claim inventory, unresolved questions, public-language rules, corrections, decisions, and review register |
 | `differentials/hypotheses/` | Versioned working hypotheses, including `H-NULL` |
 | `differentials/clinician_questions/` | Discussion questions intended for licensed clinicians—not orders |
-| `docs/` | Public roadmap, operating documentation, launch FAQ, and community moderation guidance |
-| `governance/` | Publication, review, correction, privacy, AI-use, and versioning policies |
-| `literature/` | Bibliographic catalog, topic rollups, literature cards, search index, and identifier attestations |
-| `schemas/` | Data contracts for claims, hypotheses, questions, releases, corrections, and reviews |
+| `differentials/current_ranking.md` | Current working ranking of the hypotheses; rendered into the public analysis |
+| `differentials/swarm-runs/` | Reviewed review-round syntheses — Round 1 multi-model swarm plus its clinician one-pager, Round 2 solo blinded — rendered into the public analysis |
+| `docs/` | Operating documentation: deployment runbook, this map, launch FAQ, issue-monitoring, and community moderation guidance |
+| `evidence/ruled_out.yaml` | Ruled-out register; a build input for the homepage and gated on approved claim rows |
+| `governance/` | Publication, review, correction, privacy, AI-use, and versioning policies, plus the public file allowlist |
+| `literature/` | Bibliographic catalog, topic rollups, literature cards, search index, corpus status, and identifier attestations |
+| `schemas/` | Data contracts for claims, hypotheses, questions, literature cards, attestations, releases, corrections, reviews, and the changelog |
 | `site/` | Astro source, release data, tests, build gates, and public static assets |
-| `templates/` | Reusable research-entry templates |
+| `templates/` | Reusable research-entry and swarm-output templates |
+
+Repository-root files include `README.md`, `ROADMAP.md` (the public concise roadmap), `CONTRIBUTING.md`,
+`CODE_OF_CONDUCT.md`, `SECURITY.md`, `LEGAL.md`, and `LICENSE`.
 
 ## Source-of-truth hierarchy
 

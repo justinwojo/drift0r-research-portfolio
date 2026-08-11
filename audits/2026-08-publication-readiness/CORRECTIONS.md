@@ -9,6 +9,10 @@
 | Run | `2026-08-publication-readiness` |
 | Base commit | `6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c` |
 
+> That base commit is a SHA in the **private working monorepo** this audit ran in; it does not
+> resolve in the public repository. The public provenance anchor is `base_commit` in
+> `site/src/data/release.yaml`.
+
 ---
 
 ## Status key
@@ -503,6 +507,14 @@
 - **Corrected form:** DEC-0037 records the owner's decision to ship indexable, with DEC-0023 and DEC-0027 marked superseded; the six public documents restated to say indexing is enabled; the monitoring checklist now asks the operator to confirm the robots meta matches `release.yaml:noindex`
 - **Evidence:** Codex finding 8 and Grok finding 1 (paired pre-publication review, 2026-08-07); `site/src/lib/indexing.ts` `STUCK_NOINDEX_BODY_PATTERNS` already classifies "indexing remains disabled" as a false-polarity defect
 - **Residual uncertainty:** DEC-0023 framed removal of `noindex` as requiring Drift0r's decision on search indexing separately from the general publication grant. DEC-0037 records the owner's reading that the broad grant covers it as **owner editorial judgment, not a documented patient statement about indexing**. This remains open until Drift0r is asked about indexing specifically.
+
+> **Annotation (2026-08-11, entry not rewritten):** "the six public documents restated to say
+> indexing is enabled" overstates what happened in one of the six. In `docs/public/LAUNCH_FAQ.md`
+> the only indexing text was the phrase "a **noindex** research preview" in FAQ 5, and commit
+> e278d54 **removed** it ("publishing a **research preview**") rather than replacing it with a
+> statement that indexing is enabled — leaving the FAQ with no indexing statement at all. The
+> false-polarity claim was corrected, which is what the finding required; the positive statement
+> was not added there until a later docs pass.
 
 ### COR-0041 — Two hormone results were grouped as if one reference-interval artefact explained both
 

@@ -8,7 +8,7 @@
 | **Run** | [`swarm-runs/2026-08-05-round1/`](swarm-runs/2026-08-05-round1/) · [`swarm-runs/2026-08-10-fable-blinded/`](swarm-runs/2026-08-10-fable-blinded/) |
 | **Artifacts** | R1: Independent ×3 · Adversarial ×3 · [`03_synthesis.md`](swarm-runs/2026-08-05-round1/03_synthesis.md) · [`04_clinician_onepager.md`](swarm-runs/2026-08-05-round1/04_clinician_onepager.md) — R2: [`03_synthesis.md`](swarm-runs/2026-08-10-fable-blinded/03_synthesis.md) |
 | **Evidence** | v1 + v2 packs · `evidence/facts/tests_ledger.*` |
-| **Literature** | ~334 cards |
+| **Literature** | ~339 cards |
 
 ---
 

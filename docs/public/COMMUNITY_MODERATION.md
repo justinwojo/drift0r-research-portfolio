@@ -4,7 +4,7 @@
 
 ## Principles
 
-1. **Public means public.** Issues, comments, and most moderation actions leave a trail. Assume content can be indexed, archived, forked, or screenshotted.  
+1. **Public means public.** Issues, comments, and most moderation actions leave a trail. Assume content can be indexed, archived, forked, or screenshotted — the site itself ships indexable (DEC-0037), so published text is search-discoverable.
 2. **Never paste private medical records** into public issues — even when requesting a correction. Quote only already-public site text when possible.  
 3. **Blank issues are disabled.** Use structured templates only.  
 4. **Speed with honesty.** Harmful content (records, doxxing, threats) is removed or locked quickly; research disagreements stay open when civil and sourced.
@@ -37,7 +37,7 @@ Disputes about laboratory-developed tests (LDTs), MCAS criteria, infection serol
 
 ## Who watches issues
 
-After any public quiet deploy, an owner/maintainer should follow the first-72-hours checklist in [`FIRST_72_HOURS_ISSUE_MONITORING.md`](FIRST_72_HOURS_ISSUE_MONITORING.md).
+An owner/maintainer keeps Issue notifications on and follows the **steady-state monitoring** practice in [`FIRST_72_HOURS_ISSUE_MONITORING.md`](FIRST_72_HOURS_ISSUE_MONITORING.md) — ongoing triage, escalation triggers, and privacy/removal handling. That document also retains the first-72-hours checklist prepared for the 2026-08-06 launch window as a historical record.
 
 ## Related
 

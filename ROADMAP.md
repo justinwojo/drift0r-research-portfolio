@@ -1,13 +1,13 @@
-# Drift0r public roadmap (v0.1 research preview)
+# Drift0r public roadmap (post-v0.4.0)
 
 > **Research only — not medical advice, diagnosis, or treatment.**  
 > **Patient publication permission:** obtained (2026-08-05). Permission is **not** endorsement.  
 > **Clinician review:** **not performed.** This project does not claim clinician endorsement.  
-> **Indexing:** disabled (`noindex, nofollow`) until a separate owner launch decision.
+> **Indexing:** enabled (`index, follow`) by owner decision DEC-0037; pages may appear in public search results.
 
-This is the **public** roadmap for the Drift0r Research Evidence Portfolio.  
-It is intentionally short. Day-to-day execution material lives only in the ignored local research
-archive and is **not** part of the public repository history.
+This is the **public** roadmap for the Drift0r Research Evidence Portfolio. It is intentionally short
+and forward-looking. Day-to-day execution material lives only in the ignored local research archive
+and is **not** part of the public repository history.
 
 ---
 
@@ -17,21 +17,25 @@ An independent, AI-assisted research evidence portfolio that organizes publicly 
 
 - Created by **Justin Wojciechowski** ([@justinwojo](https://github.com/justinwojo)); **not a clinician**
 - **Independent** — not affiliated with, operated by, or endorsed by Drift0r
-- **AI-assisted** (Grok, Claude, Codex disclosed) — multi-model agreement is **not** clinical validation
+- **AI-assisted** (Grok, Claude, Codex; models disclosed per release in [`site/src/data/release.yaml`](site/src/data/release.yaml)) — multi-model agreement is **not** clinical validation
 - Static site + sanitized public repository; original source PDFs are **not** redistributed here
 
 ---
 
-## v0.1 status and limitations
+## Where the project stands
 
 | Item | Status |
 |------|--------|
-| Public research preview | Candidate / quiet-deploy posture |
-| Search indexing | **Disabled** (`noindex`) |
-| Clinician review | **Not performed** (pending; highest post-launch priority) |
+| Analysis version | `v0.4.0` (evidence current through 2026-08-10) |
+| Website | Live and publicly indexed |
+| Clinician review | **Not performed** (REV-0006 pending; still the highest priority) |
+| Legal / privacy review | **Not engaged** (REV-0007 pending) |
 | Primary instrument records (labs, DXA printouts, radiology, clinic notes) | **Not reviewed by this project** |
 | Source PDFs in this repository | **Not included** |
 | Public contributions | Structured **GitHub issues only** (blank issues disabled) |
+
+The machine-readable record is [`site/src/data/release.yaml`](site/src/data/release.yaml); substantive
+changes are recorded in the [analysis changelog](https://drift0rresearch.org/changelog/).
 
 **Limitations readers must keep in mind:**
 
@@ -42,41 +46,87 @@ An independent, AI-assisted research evidence portfolio that organizes publicly 
 
 ---
 
-## Highest-priority research gaps
+## Work plan
 
-These are **research / record gaps**, not consumer action lists:
+Roughly in priority order. Items are marked by **who can actually close them** — several cannot be
+closed by more analysis at all.
 
-1. **Primary-record depth** — facility LSC documentation, formation markers, copper/ceruloplasmin, vaccine-history detail, KIT method/LOD, and other unresolved record questions (see site `/questions-for-clinicians/`).
-2. **Bone / endocrine axes** — hypercalciuria mechanism (absorptive vs renal leak), age-appropriate BMD language, incomplete mineralization/genetic workup where phenotype supports.
-3. **Infection / specialty-LDT discordance** — Babesia FISH / Bartonella IgM specialty signals vs commercial/PCR pathways; prefer independent guidelines over single-lab narrative.
-4. **Immunology / mast-cell residual** — IgG4 elevation without fibrotic IgG4-RD pattern; HαT + tryptase without classic MCAS criteria met.
-5. **Literature balance** — catalog weighted toward reviews; primary studies under-represented relative to discovery browsing; abstract-only bodies for some cards.
-6. **Semantic citation support** — identifier identity checks do **not** prove that a card summary accurately supports a medical claim (see below).
+### 1. Reviews that require people this project has not yet engaged
 
----
+| Item | Who closes it |
+|------|---------------|
+| **Clinician review (REV-0006)** — scoped licensed review, metabolic bone / endocrinology first, recorded honestly whatever it finds | A licensed clinician. Not engaged yet |
+| **Legal / privacy review (REV-0007)** — public repository, artifact, metadata, rollback posture | A legal/privacy reviewer. Not engaged yet |
+| **Citation semantic verification** — independent **human** review of the launch-cited card summaries against the papers | A human reviewer. `semantic_verified_count` stays **0** until then (DEC-0033); AI work never increments it |
 
-## Clinician review
+Until a licensed clinician actually reviews scoped materials, public pages must continue to state
+that review has **not** been performed. Model cross-checking is not human clinical review.
 
-| Field | Status |
-|-------|--------|
-| Clinician review of launch content | **Not performed** |
-| Endorsement by any clinician | **None claimed** |
-| Highest-priority post-launch task | Obtain scoped licensed review (e.g. metabolic bone / endocrinology first), recorded honestly |
+### 2. Record acquisition (analysis cannot close these)
 
-Until a licensed clinician actually reviews scoped materials, public pages must continue to state that review has **not** been performed. Model cross-checking is not human clinical review.
+All **20 unresolved record questions (UQ) are open**, and every one of them is closable only by
+patient, laboratory, clinician, or DXA-facility records — not by further reasoning over what is
+already published. Highest-value targets:
 
----
+1. **Anastrozole-era estradiol records (UQ-0020)** — one sensitive-assay value exists for a roughly two-year exposure window; the other values use a non-comparable immunoassay and the original laboratory reports are unretrieved.
+2. **Bone formation markers (P1NP / bone-specific alkaline phosphatase)** — records for the item ranked first in the research ranking's clinician-facing test list (`differentials/current_ranking.md` §3).
+3. **Original HPG-era laboratory reports (UQ-0003)** — instrument-level documents behind the compiled endocrine summary.
 
-## Literature and citation backlog
+Others include facility least-significant-change documentation, copper / ceruloplasmin, vaccine-history
+detail, and KIT method/limit-of-detection specifics. See
+[`/questions-for-clinicians/`](https://drift0rresearch.org/questions-for-clinicians/).
 
-| Metric | Value |
-|--------|------:|
-| Literature entry cards | **334** |
-| Launch-cited cards with identity attestation (DOI/PMID registry match) | **~44** (identity-verified against external registries) |
-| Semantic verification of summaries vs full papers | **Pending human review** — identity success ≠ claim support |
-| License metadata completeness | ~75% of catalog fields still `unknown` or `all-rights-reserved` (disclosed; full texts not rehosted) |
+### 3. Owner adjudications owed from the Round-2 review (2026-08-10)
 
-Identity attestation means the DOI/PMID resolves to the expected title/year. It does **not** mean a human verified that every sentence of the card is an accurate reading of the paper.
+These are open decisions for the repository owner. Each **may trigger a version bump when decided**,
+because deciding them can change what a reader understands the evidence to say.
+
+- **HαT satellite wording** — the Round-2 challenge that "rejected as driver" is one notch too absolute (defensible driver bucket: speculative). Recorded in `differentials/current_ranking.md` §6a without a bucket change.
+- **Triage of proposed don't-miss and test candidates** — *T. whipplei*; porphyrins if new photosensitivity is confirmed; quantitative sulfur amino acids; naming idiopathic osteoporosis of the young male as the residual bucket; characterizing the polyuria / volume-contraction picture; and the childhood-IIH diuretic and vitamin-A question.
+- **The H1 versus H-NULL discrimination gap** — either name an observation that would discriminate between them, or merge them.
+- **Unwired UQs** — 13 of the 20 open record questions are cited by no hypothesis. Either wire them into the relevant hypotheses' `open_question_ids` or document why they stand alone.
+- **Community-issue-#3 residuals** — promote into the CQ / UQ registers after triage: the missing dexamethasone-suppression / late-night salivary cortisol screen; a MuSK / LRP4 and fatigability discriminator; HFE genotyping; and the unexplained 2025 ferritin rise.
+
+### 4. H-NULL review pass
+
+`H-NULL` is the only published hypothesis still carrying `review_status: not_reviewed`; the other five
+are `source_audited`. Closable by this project.
+
+### 5. Literature and metadata hygiene
+
+| Metric | Current value |
+|--------|--------------:|
+| Literature entry cards | **339** (329 unique works + 10 alias cards) |
+| Launch-cited cards | **42** |
+| Cards with identity attestation (DOI/PMID registry match) | **52** |
+| Semantic verification of summaries vs full papers | **0** — pending independent human review |
+| Cards recording license as `unknown` or `all-rights-reserved` | **254 of 339 (~75%)** |
+
+- **License metadata normalization** — beyond the unknown/all-rights-reserved bulk, the remaining license strings are free-text and non-normalized (e.g. "see PMC", "verify OA terms on publisher"). Normalizing them is disclosure hygiene, not a clearance to reuse anything.
+- **Broader identity attestations** — extend registry checks beyond the launch-cited set as capacity allows.
+- **OA manifest regeneration** — `literature/oa_manifest.md` regenerated against the current catalog.
+
+Identity attestation means the DOI/PMID resolves to the expected title and year. It does **not** mean a
+human verified that a card summary is an accurate reading of the paper, and it never will.
+
+### 6. Controlled product features
+
+Only while safety, correction, and moderation processes stay healthy — features never take priority
+over the review and record work above.
+
+- Browsable **UQ (record-gap) register** page
+- Browsable **ruled-out register** page
+- Literature browsing / filtering and detail routes beyond the 42 launch-cited cards
+- Site search
+- Case timeline visualization
+- Per-hypothesis routes
+- Social share cards
+- Dark theme (DEC-0017)
+- COR-0013 machine-readable compound-probability vocabulary
+- `/case/` domain-notice placement option
+
+**Not planned** for the public surface: live AI diagnostic chat, treatment calculators, diagnosis
+voting, or unmoderated medical-advice forums.
 
 ---
 
@@ -91,22 +141,7 @@ Use **structured GitHub issue templates only** (blank issues are disabled):
 - Correction, privacy, or removal request  
 
 **Do not** post private medical records, personal identifiers, treatment instructions, or unsupported diagnoses.  
-See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and [SECURITY.md](SECURITY.md).  
----
-
-## Planned post-launch work (public view)
-
-In rough priority order after a quiet research-preview deploy:
-
-1. **Clinician review** — scoped outreach and honest status updates  
-2. **Citation semantic verification** — human check of launch-cited card summaries  
-3. **Record-gap follow-up** — only as new patient materials allow; no invented values  
-4. **Broader identity attestations** — beyond the launch-cited set when capacity allows  
-5. **License metadata / OA manifest cleanup**  
-6. **Controlled product features** (literature browser polish, hypothesis detail pages, update reports) — only after safety and correction processes stay healthy  
-7. **Indexing / social-preview policy** — separate patient/owner decisions; not automatic  
-
-**Not planned** for the public surface: live AI diagnostic chat, treatment calculators, diagnosis voting, or unmoderated medical-advice forums.
+See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and [SECURITY.md](SECURITY.md).
 
 ---
 
@@ -115,7 +150,7 @@ In rough priority order after a quiet research-preview deploy:
 - Material errors → structured issue + changelog (no silent rewrite of history).  
 - Privacy / removal → dedicated issue template; **never paste private medical records into public issues**.  
 - Drift0r consent withdrawal → existing private correspondence with the repository owner (no published privacy@ email).  
-- Complete erasure of forks, clones, and caches **cannot be guaranteed** after public release.
+- Complete erasure of forks, clones, and caches **cannot be guaranteed** now that the repository and site are public and indexed.
 
 ---
 
@@ -127,4 +162,4 @@ In rough priority order after a quiet research-preview deploy:
 - [docs/public/COMMUNITY_MODERATION.md](docs/public/COMMUNITY_MODERATION.md) — moderation / deletion posture  
 - Governance policies under `governance/`  
 
-*Last updated: 2026-08-05 · Public roadmap only; not the private operational plan.*
+*Last updated: 2026-08-11 · Public roadmap only; not the private operational plan.*

@@ -1,7 +1,7 @@
 # Machine-readable review register — dispositions only when evidenced.
 # Do not invent patient/clinician/legal approvals. AI model review is never clinical review.
 version: "1.0.0"
-as_of: "2026-08-05"
+as_of: "2026-08-11"
 not_medical_advice: true
 
 entries:
@@ -69,6 +69,13 @@ entries:
       referencing the detailed publication-request email. This covers public repository and website
       publication at owner discretion. It does not constitute clinician review, medical validation,
       third-party copyright clearance, or technical launch approval.
+
+      Annotation 2026-08-11 (entry not rewritten): the tokens in this entry's scope line — including
+      "indexing" — name the topics the owner's publication request covered, not separate documented
+      patient statements about each one. The decision to ship the site indexable is recorded as
+      owner editorial judgment under DEC-0037, which also carries forward DEC-0023's open item that
+      Drift0r has not been asked about search indexing specifically. Do not read this entry's
+      approved disposition as patient approval of indexing as such.
 
   - id: REV-0006
     artifact: Launch-critical medical content
@@ -247,3 +254,177 @@ entries:
     notes: >
       Local remediation only. Do not push/deploy/remove noindex. Owner launch decision still required.
       Clinician review still not performed (REV-0006).
+
+  # Entries REV-0019 onward were backfilled on 2026-08-11 from the surviving public record
+  # (release.yaml ai_models_disclosed, changelog.yaml, governance/AI_METHODS.md, git history,
+  # and the Round-2 synthesis). Every one is AI or owner review; none is clinician review.
+
+  - id: REV-0019
+    artifact: v0.1.3 public site and repository tree as published 2026-08-06
+    artifact_author: mixed (Grok remediation + audits + site content)
+    reviewer_type: ai_model
+    reviewer_label: Claude (Opus 5) + Grok 4.5 + Codex GPT-5.6 Sol (2026-08-06 overnight adversarial audit)
+    scope: >
+      Cross-model attack on public claims, citation fidelity, provenance and language;
+      primary-source recheck of the contested items; remediation planning
+    date: "2026-08-06"
+    disposition: changes_requested
+    evidence_location: >
+      governance/AI_METHODS.md ("Adversarial multi-model audit (overnight)" row);
+      site/src/data/changelog.yaml v0.2.0 entry; commit d8d9727 applying the findings.
+      Private run materials under private/research-runs/2026-08-06-overnight/ are gitignored
+      and are not part of the public export.
+    notes: >
+      Eleven material corrections (COR-0022…COR-0032) were verified against the compiled
+      source documents and applied. AI-model review only. Not patient, clinician, owner, or
+      legal review; clinician review still not performed (REV-0006).
+
+  - id: REV-0020
+    artifact: >
+      v0.3.0 candidate — plain-language landing rewrite and the public ruled-out register
+      (evidence/ruled_out.yaml), commit e4824d5
+    artifact_author: Claude (Opus 5) content pass
+    reviewer_type: ai_model
+    reviewer_label: Codex + Grok (2026-08-07 paired pre-publication review)
+    scope: >
+      Whether public copy outran its claim rows; ruled-out register grounding and
+      publication gating; AI methods disclosure accuracy
+    date: "2026-08-07"
+    disposition: changes_requested
+    evidence_location: >
+      Commit e278d54 ("fix: apply paired Codex/Grok review before v0.3.0 publication");
+      site/src/data/changelog.yaml v0.3.0 entry; DEC-0037, DEC-0038;
+      site/src/data/release.yaml ai_models_disclosed (2026-08-07 rows)
+    notes: >
+      Findings landed as COR-0033…COR-0040 before publication: mast-cell, autoimmune,
+      mold/CIRS, psychiatric and COVID register entries restated to match their claim rows,
+      and the register put behind the same publication gate as every other medical surface.
+      AI-model review only; clinician review still not performed (REV-0006).
+
+  - id: REV-0021
+    artifact: >
+      2026-08-09 Grok overnight research run over the compiled source documents
+      (findings register and unknowns)
+    artifact_author: Grok (2026-08-09 overnight research run)
+    reviewer_type: ai_model
+    reviewer_label: Claude (2026-08-10 audit of that run, with source re-verification)
+    scope: >
+      Re-verification of the run's findings against the compiled source documents, and what
+      of it could be published and under what scope (fed the DEC-0039 provenance decision)
+    date: "2026-08-10"
+    disposition: not_archived
+    evidence_location: >
+      site/src/data/release.yaml ai_models_disclosed (2026-08-09 and 2026-08-10 Claude rows);
+      DEC-0039. The run's own materials are private-monorepo only and gitignored, and no
+      reviewer-authored disposition text is preserved as a separate artifact in git history.
+    notes: >
+      What survives publicly is the v0.4.0 evidence pass that followed, not the run record
+      itself. AI-model research and review only; no clinical validation is implied.
+
+  - id: REV-0022
+    artifact: >
+      v0.4.0 content pass — CLM-0082…CLM-0105, lit-0337…lit-0341, DEC-0039 publication policy
+      and the language-gate hardening it required (commit d997b51)
+    artifact_author: Claude (Opus 5) v0.4.0 implementation
+    reviewer_type: ai_model
+    reviewer_label: Codex + Grok (2026-08-10 paired pre-publication review, three rounds)
+    scope: >
+      v0.4.0 content and the language gates — attribution and prescriptive-content predicates,
+      numeric historical material under DEC-0039, publication build and test gates
+    date: "2026-08-10"
+    disposition: changes_requested
+    evidence_location: >
+      Commit d997b51 ("Three review rounds found them disagreeing in ways that failed open…
+      Reviewed by Codex and Grok over three rounds"); site/src/data/release.yaml
+      ai_models_disclosed (2026-08-10 Codex and Grok rows); changelog v0.4.0 entry
+    notes: >
+      Each round found the attribution predicate and the prescriptive gate disagreeing about
+      clause boundaries in ways that failed open; the fixes landed in the same commit.
+      AI-model review only; clinician review still not performed (REV-0006).
+
+  - id: REV-0023
+    artifact: >
+      Community-issue-#3 evidence additions — CLM-0106…CLM-0111, three ruled-out register
+      entries (Cushing's, hereditary hemochromatosis, myasthenia gravis) and the H3 distal-RTA
+      bounding (commit b3f864d)
+    artifact_author: Claude Fable 5 (issue #3 adjudication against the public and private record)
+    reviewer_type: ai_model
+    reviewer_label: Codex + Grok (2026-08-10 paired pre-commit review, one round each)
+    scope: >
+      Whether the newly published screens are stated as the record has them, and whether the
+      register entries read no stronger than their claim rows
+    date: "2026-08-10"
+    disposition: changes_requested
+    evidence_location: >
+      Commit b3f864d; governance/AI_METHODS.md ("Community-issue adjudication" row);
+      site/src/data/changelog.yaml v0.4.0 entry; site/src/data/release.yaml
+      ai_models_disclosed (2026-08-10 issue #3 rows)
+    notes: >
+      No High findings. Three Medium findings — an arithmetically false cortisol gloss, a
+      misdated ferritin value, and a register entry reading stronger than its claim rows —
+      were fixed before the commit landed. The originating report was a public community
+      issue, not a clinician or patient review.
+
+  - id: REV-0024
+    artifact: >
+      Published differential ranking, working hypotheses and evidence pack as they stood on
+      2026-08-10, re-derived blind and then attacked
+    artifact_author: mixed (Round-1 swarm synthesis plus subsequent content passes)
+    reviewer_type: ai_model
+    reviewer_label: Claude Fable 5 (Round-2 solo blinded round)
+    scope: >
+      Blinded independent re-derivation from the evidence pack and public video transcript;
+      adversarial cross-examination of both the blinded output and the published ranking;
+      chair synthesis re-verified against the compiled source documents (not primary records)
+    date: "2026-08-10"
+    disposition: changes_requested
+    evidence_location: >
+      differentials/swarm-runs/2026-08-10-fable-blinded/03_synthesis.md;
+      governance/AI_METHODS.md ("Solo blinded round (Round 2)" row); commit d93f4bc.
+      Per-model artifacts under private/research-runs/2026-08-10-fable-blinded/ are private,
+      following the same policy as Round 1's per-model files.
+    notes: >
+      Every hypothesis bucket was left unchanged. The round wired the aromatase-inhibitor
+      exposure into the record (CLM-0112, UQ-0020), filed COR-0043 and COR-0044, and recorded
+      its standing objections in current_ranking.md §6a. A single-family round cannot detect
+      blind spots shared across the Claude family, and it read the same compiled summaries as
+      every prior round. AI-model review only; not clinician review.
+
+  - id: REV-0025
+    artifact: v0.4.0 Round-2 layering and its packaging surfaces (commit d93f4bc)
+    artifact_author: Claude Fable 5 (Round-2 layering)
+    reviewer_type: ai_model
+    reviewer_label: Codex + Grok (2026-08-10 paired pre-packaging review, two rounds each)
+    scope: >
+      Round-2 content layering, literature polarity and attestation coverage, changelog and
+      README packaging surfaces, test and build gates
+    date: "2026-08-10"
+    disposition: changes_requested
+    evidence_location: >
+      Commit d93f4bc ("Same-day Codex+Grok paired review, two rounds each: all High/Medium
+      findings fixed or dismissed with reasons; final round Medium-only");
+      site/src/data/release.yaml ai_models_disclosed (2026-08-10 pre-packaging rows)
+    notes: >
+      Codex caught the lit-0308 polarity misfiling and the launch-citation attestation gap.
+      AI-model review only; clinician review still not performed (REV-0006).
+
+  - id: REV-0026
+    artifact: v0.4.0 release metadata and packaging (release.yaml, changelog entry, tag, GitHub Release)
+    artifact_author: repository owner (metadata promotion commits 219f6ab and a52bbf5)
+    reviewer_type: repository_owner
+    reviewer_label: Repository owner
+    scope: >
+      Promotion of content_version to v0.4.0, base_commit set to the reviewed content tip
+      d93f4bc, and creation of the v0.4.0 annotated tag and GitHub Release
+    date: "2026-08-11"
+    disposition: approved
+    evidence_location: >
+      site/src/data/release.yaml (content_version v0.4.0, base_commit d93f4bc…);
+      site/src/data/changelog.yaml v0.4.0 entry (git_tag, github_release_published);
+      commits 219f6ab and a52bbf5; git tag v0.4.0
+    notes: >
+      Owner technical and packaging decision only. release.yaml records as_of and
+      last_reviewed of 2026-08-10 for the analysis snapshot; the promotion commits are
+      stamped 2026-08-11. This approves publication packaging, not medical accuracy:
+      clinician review remains not performed (REV-0006), legal/privacy review remains not
+      engaged (REV-0007), and patient permission is not endorsement.

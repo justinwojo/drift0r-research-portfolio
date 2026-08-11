@@ -1,6 +1,7 @@
 # Launch FAQ — prepared public responses
 
 > **Research only — not medical advice.** Short answers maintainers can link or paste. Not a substitute for LEGAL.md.
+> Written for launch and kept current: the site is live at [drift0rresearch.org](https://drift0rresearch.org/) and its pages are indexed.
 
 ## 1. “AI cannot diagnose”
 
@@ -24,21 +25,29 @@ There is **no published privacy@ email**. Public issues are public.
 
 ## 4. Creator identity — who are you?
 
-**Response:** This independent portfolio is created and maintained by **Justin Wojciechowski** ([@justinwojo](https://github.com/justinwojo) on GitHub). Justin is **not a clinician**, is **not affiliated with Drift0r**, receives **no compensation from Drift0r** for this work, and does not claim medical authority. The site is **not** an official Drift0r property. See `/about/` after site build.
+**Response:** This independent portfolio is created and maintained by **Justin Wojciechowski** ([@justinwojo](https://github.com/justinwojo) on GitHub). Justin is **not a clinician**, is **not affiliated with Drift0r**, receives **no compensation from Drift0r** for this work, and does not claim medical authority. The site is **not** an official Drift0r property. See [https://drift0rresearch.org/about/](https://drift0rresearch.org/about/).
 
-## 5. Why is there no clinician review?
+## 5. Why do these pages show up in search results?
+
+**Response:** Search indexing is **enabled** for the site (owner decision **DEC-0037**, 2026-08-07), so pages render `index, follow` and are search-discoverable. Indexing is single-sourced from the versioned release record (`site/src/data/release.yaml:noindex`), not from the deploy workflow.
+
+The publication permission Drift0r granted on 2026-08-05 was already broad, and the owner reads it as covering indexing. That reading is recorded as the **owner's editorial judgment, not a documented patient statement about search indexing specifically** — see `governance/PRIVACY_AND_CONSENT.md` item 6. **Permission is still not endorsement.**
+
+Indexing can be turned back off. Doing so is a reviewed change to the release record plus a new build and deploy, logged as an owner decision — not a code change. If Drift0r withdraws permission or asks that the site not be indexed, through the **Correction, privacy, or removal request** issue template or existing private correspondence, that request is honored on the withdrawal timeline in `governance/PRIVACY_AND_CONSENT.md`. As with any removal: official surfaces can be changed; forks, caches, and third-party archives cannot be guaranteed erased.
+
+## 6. Why is there no clinician review?
 
 **Response:** Clinician review has **not been performed** and that status is stated prominently. The owner accepted publishing a **research preview** before clinician review solely because the absence of review is unambiguous and cannot be mistaken for endorsement. **Scoped licensed clinician review remains the highest-priority post-launch task.** Until then, treat all rankings and interpretations as unaudited research.
 
-## 6. Can I get personal medical advice here?
+## 7. Can I get personal medical advice here?
 
 **No.** Issues that request personal advice, dosing, or treatment plans will be closed. See a licensed clinician who can access your records.
 
-## 7. How do I contribute research?
+## 8. How do I contribute research?
 
 Use structured GitHub issue templates only (literature, citation fix, counterevidence, alternative hypothesis). Prefer DOI/PMID. No unsolicited dumps of private records. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
-## 8. Will removing something from the site erase it everywhere?
+## 9. Will removing something from the site erase it everywhere?
 
 **No guarantee.** Official surfaces can be corrected, redacted, or unpublished. Forks, clones, archives, and caches may persist. See [COMMUNITY_MODERATION.md](COMMUNITY_MODERATION.md).
 

@@ -1,7 +1,7 @@
 # Public file allowlist (human narrative)
 
 > **Deny by default.**  
-> **Authoritative machine-readable list:** [`public_allowlist.yaml`](public_allowlist.yaml) (version **1.9.1**).
+> **Authoritative machine-readable list:** [`public_allowlist.yaml`](public_allowlist.yaml) (version **1.11.0**).
 > `scripts/validate_all.py` (private monorepo tooling) enforces the YAML file, not this markdown.  
 > **Not medical advice.**
 
@@ -48,7 +48,7 @@ That folder is **not** part of this repository, may change, and is not redistrib
 
 ## v1 public git repository (sanitized export)
 
-`v1_public_repository` in the YAML is the **only** content set the sanitized exporter may copy. It is an **explicit, non-empty** reviewed set for the v0.1 research-preview candidate (Checkpoint F / F.1). Exporter requirements:
+`v1_public_repository` in the YAML is the **only** content set the sanitized exporter may copy. It is an **explicit, non-empty** reviewed set, first assembled for the v0.1 research-preview candidate (Checkpoint F / F.1) and maintained since: it is the **live publication boundary for the current release**, not a frozen v0.1 candidate artifact. Its paths are **source paths in the private monorepo**; `export_path_rewrites` may place a file at a different path in the published tree, so an entry can name a path that does not exist in the public repository as such. Exporter requirements:
 
 - Exact exported-set equality with the expanded allowlist  
 - Content scans (not merely filenames) for secrets, absolute workstation paths, and unapproved inventory rows (`public_approved: false`)  
@@ -63,7 +63,7 @@ See `never_publish` in YAML: `data/papers_local/`, `data/papers_oa/`, `community
 
 ## Export path rewrites
 
-`export_path_rewrites` in the YAML maps allowlisted source paths to different destinations in the sanitized tree. `docs/public/ROADMAP.md` exports as root `ROADMAP.md`. The private monorepo operational `ROADMAP.md` is **not** on `v1_public_repository` and must not be copied.
+`export_path_rewrites` in the YAML maps allowlisted source paths to different destinations in the sanitized tree. `docs/public/ROADMAP.md` exports as root `ROADMAP.md` — that rewrite is how the root `ROADMAP.md` in the published public repository is covered, and it is why `docs/public/ROADMAP.md` has no counterpart there. The private monorepo operational `ROADMAP.md` is **not** on `v1_public_repository` and must not be copied.
 
 ## Post-build enforcement
 
@@ -87,3 +87,5 @@ Monorepo `validate_all.py` checks that every path is on the allowlist, none matc
 | 1.8.3 | 2026-08-05 | P2 public readiness: concise `docs/public/ROADMAP.md` rewritten to export `ROADMAP.md`; CODE_OF_CONDUCT/SECURITY/community docs allowlisted; private operational monorepo ROADMAP not exported |
 | 1.9.0 | 2026-08-05 | Pre-commit public-repository assembly: reader-first README; CI/dependency/ownership metadata; repository and deployment docs; hardened local ignore boundary |
 | 1.9.1 | 2026-08-05 | Fresh-repository cleanup: superseded `site/SITE_PLAN.md` retained only in the private archive; local consent/review/launch artifacts nested under ignored `private/` paths |
+| 1.10.0 | 2026-08-07 | v0.3.0 paired-review fix: `evidence/ruled_out.yaml` added to `v1_public_repository` and `medical_page_body_sources` — `getRuledOut()` loads it unconditionally as a homepage build input, so deny-by-default omission broke the sanitized export's landing build |
+| 1.11.0 | 2026-08-11 | Reconciliation against the published tree: added the Round-2 public synthesis (`differentials/swarm-runs/2026-08-10-fable-blinded/03_synthesis.md`, linked from `current_ranking.md`), `.gitignore`, and `.github/FUNDING.yml`; removed `.github/dependabot.yml` (file deleted 2026-08-06 and absent from the source tree); documented that entries are private-monorepo source paths subject to `export_path_rewrites`, and that the list is the live boundary rather than a v0.1 candidate set |

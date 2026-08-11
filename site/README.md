@@ -1,11 +1,13 @@
 # Research Evidence Portfolio (Astro site)
 
-Public **v0.1 research-preview** static site for the Drift0r publication-readiness project.
+Public research-preview static site for the Drift0r Research Evidence Portfolio, live at
+`https://drift0rresearch.org`. Version, dates, and indexing state are single-sourced from
+`src/data/release.yaml` (currently `v0.4.0`, evidence current through 2026-08-10).
 
 > **Research only — not medical advice, diagnosis, or treatment.**  
 > **Published with Drift0r’s permission. Permission is not endorsement.**  
 > **Clinician review:** **not performed.**  
-> All routes are `noindex, nofollow` until a separate owner launch decision.
+> Routes ship `index, follow` — search indexing is enabled by owner decision DEC-0037 and is read from `release.yaml: noindex`, never hardcoded in a route.
 
 ## Stack
 
@@ -58,9 +60,12 @@ It does **not** require the private monorepo inventory. Override for tests/canar
 | `/working-model/evidence-table/` | Printable matrix |
 | `/questions-for-clinicians/` | Discussion questions |
 | `/questions-for-clinicians/packet/` | Printable packet |
+| `/questions-for-clinicians/prediction-matrix/` | Hypothesis prediction matrix |
 | `/for-clinicians/` | Print-first handout (Letter/A4) |
-| `/literature/`, `/literature/[id]/` | Launch bibliography + cards |
+| `/how-this-could-be-wrong/` | Failure modes and limitations |
+| `/literature/`, `/literature/[id]/` | Launch-cited bibliography + cards |
 | `/methods/`, `/changelog/`, `/legal/` | Process, corrections, legal |
+| `/about/`, `/about/contribute/` | Project background + contribution surface |
 | `/about/snapshot/`, `/about/downloads/` | Print snapshot + print index |
 
 ## Source documents

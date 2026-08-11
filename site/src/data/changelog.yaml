@@ -40,12 +40,16 @@ entries:
     corrections: []
     git_tag_planned: v0.4.1
     github_release_planned: true
+    git_tag: v0.4.1
+    github_release_published: true
     notes: >-
-      Packaging is planned but not yet performed at the time this entry was written: no
-      v0.4.1 tag or GitHub Release exists yet, which is why this entry carries only the
-      planned fields. Content landed on main as 4f54236, which is what release.yaml records
-      as base_commit; this entry ships in the metadata-only promotion commit that follows
-      it. /questions-for-clinicians/ keeps its route, all ten CQ anchors, and its full
+      Packaging is complete: the annotated v0.4.1 tag was created and pushed, and the GitHub
+      Release carrying this summary is published — which is what the git_tag and
+      github_release_published fields now record. Content landed on main as 4f54236, which is
+      what release.yaml records as base_commit; the tag sits on the metadata-only promotion
+      commit that follows it, and this packaging note lands one commit later still, so the
+      deployed site is not byte-identical to the tagged tree. content_version labels the
+      analysis, not the build. /questions-for-clinicians/ keeps its route, all ten CQ anchors, and its full
       clinician framing, so existing external citations continue to resolve unchanged. One
       wording artefact was fixed in the language-generalisation layer rather than in any
       record: where a drug name followed a determiner, the generalised phrase previously

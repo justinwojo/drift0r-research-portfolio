@@ -1,6 +1,6 @@
 ---
 /**
- * Single-page record-preview tooltip runtime (CLM, H, UQ).
+ * Single-page record-preview tooltip runtime (CLM, H, UQ, COR).
  * Data is also present on each [data-record-preview]/[data-claim-preview] element
  * for progressive enhancement. Essential claim text for mobile Atlas is rendered
  * server-side — not tooltip-only.
@@ -70,11 +70,13 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
         el.getAttribute('data-record-type') ||
         (id.indexOf('CLM-') === 0
           ? 'claim'
-          : id.indexOf('UQ-') === 0
-            ? 'unresolved_question'
-            : id.indexOf('H') === 0
-              ? 'hypothesis'
-              : 'claim');
+          : id.indexOf('COR-') === 0
+            ? 'correction'
+            : id.indexOf('UQ-') === 0
+              ? 'unresolved_question'
+              : id.indexOf('H') === 0
+                ? 'hypothesis'
+                : 'claim');
       var related = (el.getAttribute('data-record-related-h') || '')
         .split(',')
         .map(function (s) {
@@ -90,7 +92,9 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
             ? 'Working research hypothesis — not a diagnosis.'
             : type === 'unresolved_question'
               ? 'Open research question — not a test order or treatment recommendation.'
-              : 'Approved public claim statement'),
+              : type === 'correction'
+                ? 'Correction / supersession notice — recorded publicly, never silently edited.'
+                : 'Approved public claim statement'),
         excerpt:
           el.getAttribute('data-record-excerpt') ||
           el.getAttribute('data-claim-excerpt') ||
@@ -179,8 +183,21 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
               '</div>',
           );
         }
+      } else if (type === 'correction') {
+        // Correction title reads first, then its register status (mockup A1 order).
+        if (p.excerpt) {
+          parts.push('<div class="cpt-excerpt">' + escapeHtml(p.excerpt) + '</div>');
+        }
+        if (p.status) {
+          parts.push(
+            '<div class="cpt-meta"><span class="cpt-k">Status</span> ' +
+              escapeHtml(p.status) +
+              '</div>',
+          );
+        }
       }
-      if (p.excerpt) {
+      // Correction previews already emitted their excerpt above the Status line.
+      if (p.excerpt && type !== 'correction') {
         parts.push('<div class="cpt-excerpt">' + escapeHtml(p.excerpt) + '</div>');
       }
       var hint =
@@ -188,7 +205,9 @@ const json = JSON.stringify(map).replace(/</g, '\\u003c');
           ? 'Approved public summary excerpt · open link for full working-model record'
           : type === 'unresolved_question'
             ? 'Approved public open-question text · not a clinical order'
-            : 'Approved public statement excerpt · open link for full record';
+            : type === 'correction'
+              ? 'Recorded correction title · open link for the full changelog entry'
+              : 'Approved public statement excerpt · open link for full record';
       parts.push('<div class="cpt-hint mono">' + escapeHtml(hint) + '</div>');
       return parts.join('');
     }

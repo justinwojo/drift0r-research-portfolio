@@ -1,20 +1,22 @@
 /**
- * Record-preview payloads for accessible tooltips (CLM, H, UQ).
+ * Record-preview payloads for accessible tooltips (CLM, H, UQ, COR).
  * Excerpts are deterministic truncations of approved public fields — never AI-rewritten.
  * Never expose private / unapproved fields in preview payloads.
  */
 import { KIND_LABELS } from './constants';
 import {
   getClaims,
+  getCorrections,
   getHypotheses,
   getUnresolvedQuestions,
   type Claim,
+  type CorrectionRef,
   type Hypothesis,
   type UnresolvedQuestion,
 } from './data';
 import { withBase } from './paths';
 
-export type RecordPreviewType = 'claim' | 'hypothesis' | 'unresolved_question';
+export type RecordPreviewType = 'claim' | 'hypothesis' | 'unresolved_question' | 'correction';
 
 /** Generic record preview for tooltip runtime (CLM + H + UQ). */
 export interface RecordPreview {
@@ -34,7 +36,7 @@ export interface RecordPreview {
   title?: string;
   hypothesis_kind?: string;
   confidence?: string;
-  // UQ-specific (public fields only)
+  // UQ-specific (public fields only) — `status` is shared with COR previews.
   status?: string;
   category?: string;
   related_hypothesis_ids?: string[];
@@ -73,6 +75,10 @@ export function isHypothesisId(id: string | null | undefined): boolean {
 
 export function isUqId(id: string | null | undefined): boolean {
   return Boolean(id && /^UQ-\d{4}$/.test(id));
+}
+
+export function isCorrectionId(id: string | null | undefined): boolean {
+  return Boolean(id && /^COR-\d{4}$/.test(id));
 }
 
 export function claimPreviewFromClaim(c: Claim): RecordPreview {
@@ -125,6 +131,32 @@ export function uqPreviewFromUq(q: UnresolvedQuestion): RecordPreview {
   };
 }
 
+/**
+ * Correction / supersession notice preview.
+ * Every field here is already public on /changelog/ (register + per-entry list) and on
+ * /case/ correction badges: the COR id, its short title, and its status. Nothing else
+ * is exposed.
+ *
+ * The title is surfaced verbatim (deterministic truncation only) and is deliberately NOT
+ * run through toPublicLanguage. A correction record's job is to name the wording that was
+ * corrected — e.g. COR-0003 quotes “Catastrophic osteoporosis” as the internal phrasing it
+ * retired. Rewriting that quotation would both make the record incoherent and silently edit
+ * a published correction, which is the exact thing the notice promises never happens. This
+ * matches how the same titles already render on /changelog/ and in the /case/ correction
+ * badges; it does not relax any gate, because assertSafePublicLanguage has never been
+ * applied to the corrections register.
+ */
+export function correctionPreviewFromCorrection(c: CorrectionRef): RecordPreview {
+  return {
+    id: c.id,
+    record_type: 'correction',
+    type_label: 'Correction / supersession notice — recorded publicly, never silently edited.',
+    excerpt: recordExcerpt(c.title || '', 180),
+    href: withBase(`/changelog/#${c.id}`),
+    status: (c.status || '').replace(/_/g, ' '),
+  };
+}
+
 /** Map of public-approved claim IDs → preview payload (CLM only). */
 export function getClaimPreviewMap(): Record<string, RecordPreview> {
   const out: Record<string, RecordPreview> = {};
@@ -136,7 +168,7 @@ export function getClaimPreviewMap(): Record<string, RecordPreview> {
 }
 
 /**
- * Unified map of approved public CLM + H + UQ records for the tooltip runtime.
+ * Unified map of approved public CLM + H + UQ + COR records for the tooltip runtime.
  * Keys are record IDs only — private/unapproved entities are never included.
  */
 export function getRecordPreviewMap(): Record<string, RecordPreview> {
@@ -148,6 +180,10 @@ export function getRecordPreviewMap(): Record<string, RecordPreview> {
   for (const q of getUnresolvedQuestions()) {
     if (!isUqId(q.id)) continue;
     out[q.id] = uqPreviewFromUq(q);
+  }
+  for (const c of getCorrections()) {
+    if (!isCorrectionId(c.id)) continue;
+    out[c.id] = correctionPreviewFromCorrection(c);
   }
   return out;
 }
@@ -200,6 +236,9 @@ export function recordPreviewDataAttrs(
     if (preview.related_hypothesis_ids?.length) {
       attrs['data-record-related-h'] = preview.related_hypothesis_ids.join(',');
     }
+  }
+  if (preview.record_type === 'correction') {
+    if (preview.status) attrs['data-record-status'] = preview.status;
   }
   return attrs;
 }

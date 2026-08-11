@@ -149,7 +149,23 @@ export interface Claim {
   last_checked: string;
   notes: string;
   triage: string;
+  /**
+   * Every correction notice attached to this claim — claim-specific first-class matches
+   * plus domain-wide notices, in corrections-register order. Kept as the single union so
+   * existing surfaces render unchanged.
+   */
   corrections: CorrectionRef[];
+  /**
+   * Corrections that name this claim id directly (CORRECTION_BY_CLAIM).
+   * Invariant: corrections_claim_specific ∪ corrections_domain_wide === corrections,
+   * and the two are disjoint.
+   */
+  corrections_claim_specific: CorrectionRef[];
+  /**
+   * Domain-wide notices stamped on every claim in this medical_domain
+   * (CORRECTION_BY_DOMAIN), excluding any that already name this claim.
+   */
+  corrections_domain_wide: CorrectionRef[];
   /** Default active when omitted in inventory. */
   lifecycle_status: 'active' | 'retired' | 'superseded';
   superseded_by: string | null;
@@ -435,12 +451,31 @@ export function getCorrectionById(id: string): CorrectionRef | undefined {
   return CORRECTIONS.find((c) => c.id === id);
 }
 
-function correctionsForClaim(c: { id: string; medical_domain: string }): CorrectionRef[] {
-  const ids = new Set<string>([
-    ...(CORRECTION_BY_CLAIM[c.id] || []),
-    ...(CORRECTION_BY_DOMAIN[c.medical_domain] || []),
-  ]);
-  return CORRECTIONS.filter((x) => ids.has(x.id));
+/** Corrections attached to a claim, split by why they attach. */
+export interface ClaimCorrectionSplit {
+  /** Union of claim_specific + domain_wide, in corrections-register order. */
+  all: CorrectionRef[];
+  /** Corrections that name this claim id. */
+  claim_specific: CorrectionRef[];
+  /** Domain-wide notices, minus anything already claim-specific (never double-listed). */
+  domain_wide: CorrectionRef[];
+}
+
+/**
+ * Split a claim's corrections into claim-specific and domain-wide buckets.
+ * All three lists are filtered from CORRECTIONS, so register order is preserved and
+ * an id that is not in the register is dropped from every bucket identically.
+ */
+function correctionSplitForClaim(c: { id: string; medical_domain: string }): ClaimCorrectionSplit {
+  const specificIds = new Set<string>(CORRECTION_BY_CLAIM[c.id] || []);
+  const domainIds = new Set<string>(
+    (CORRECTION_BY_DOMAIN[c.medical_domain] || []).filter((id) => !specificIds.has(id)),
+  );
+  return {
+    all: CORRECTIONS.filter((x) => specificIds.has(x.id) || domainIds.has(x.id)),
+    claim_specific: CORRECTIONS.filter((x) => specificIds.has(x.id)),
+    domain_wide: CORRECTIONS.filter((x) => domainIds.has(x.id)),
+  };
 }
 
 function normalizePatientSource(s: Partial<PatientSource> & { source_id: string; path: string }): PatientSource {
@@ -466,6 +501,8 @@ type RawClaim = Omit<
   Claim,
   | 'public_statement'
   | 'corrections'
+  | 'corrections_claim_specific'
+  | 'corrections_domain_wide'
   | 'patient_sources'
   | 'lifecycle_status'
   | 'superseded_by'
@@ -488,17 +525,22 @@ function loadClaimsRaw(): Claim[] {
 
   _claimsRaw = inv.claims
     .filter((c) => c.public_tier !== 'do_not_publish' && c.triage !== 'Do not publish')
-    .map((c) => ({
-      ...c,
-      public_statement: toPublicLanguage(c.statement),
-      patient_sources: (c.patient_sources || []).map(normalizePatientSource),
-      literature_refs: c.literature_refs || [],
-      corrections: correctionsForClaim(c),
-      lifecycle_status: c.lifecycle_status || 'active',
-      superseded_by: c.superseded_by ?? null,
-      supersedes: c.supersedes ?? null,
-      changelog_entry: c.changelog_entry ?? null,
-    }));
+    .map((c) => {
+      const split = correctionSplitForClaim(c);
+      return {
+        ...c,
+        public_statement: toPublicLanguage(c.statement),
+        patient_sources: (c.patient_sources || []).map(normalizePatientSource),
+        literature_refs: c.literature_refs || [],
+        corrections: split.all,
+        corrections_claim_specific: split.claim_specific,
+        corrections_domain_wide: split.domain_wide,
+        lifecycle_status: c.lifecycle_status || 'active',
+        superseded_by: c.superseded_by ?? null,
+        supersedes: c.supersedes ?? null,
+        changelog_entry: c.changelog_entry ?? null,
+      };
+    });
   if (getSiteMode() === 'publication') {
     assertSafePublicLanguage(
       _claimsRaw.map((c) => ({ surface: `claim ${c.id}`, text: c.public_statement })),

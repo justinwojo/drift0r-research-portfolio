@@ -1,0 +1,251 @@
+---
+/**
+ * Client-side record finder for /case/ (redesign mockup C).
+ *
+ * Progressive enhancement only: the shell ships `hidden`, so without JavaScript nothing
+ * interactive is exposed — no focusable input, no controls, no behaviour change. The
+ * script unhides it and builds its index from the records already rendered on the page
+ * (id, kind, domain, and the server-rendered statement text). No new payload is
+ * serialized and no private field is read.
+ *
+ * It NAVIGATES, it never filters: results are grouped by register in register (DOM)
+ * order and the page's own sections are never hidden, reordered, or interleaved.
+ */
+---
+
+<div class="finder" id="record-finder" hidden data-record-finder>
+  <label class="finder-label" for="record-finder-input">Find a record</label>
+  <div class="finder-field">
+    <span class="finder-icon" aria-hidden="true">⌕</span>
+    <input
+      id="record-finder-input"
+      class="finder-input mono"
+      type="search"
+      placeholder="ID, keyword, or domain…"
+      autocomplete="off"
+      aria-describedby="record-finder-hint record-finder-status"
+    />
+  </div>
+  <p class="finder-hint mono" id="record-finder-hint">
+    Jumps to a record on this page. Registers stay separate sections — nothing is filtered,
+    reordered, or hidden. Press Escape to clear.
+  </p>
+  <p class="finder-status mono" id="record-finder-status" role="status" aria-live="polite"></p>
+  <div class="finder-results" id="record-finder-results" hidden></div>
+</div>
+
+<script is:inline>
+  (function () {
+    if (typeof document === 'undefined') return;
+    // The registers this indexes are rendered after the finder, so wait for the
+    // document before reading them.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+
+    function init() {
+      var root = document.getElementById('record-finder');
+      var input = document.getElementById('record-finder-input');
+      var results = document.getElementById('record-finder-results');
+      var status = document.getElementById('record-finder-status');
+      if (!root || !input || !results || !status) return;
+
+      /** Index built from what is already on the page — no extra data payload. */
+      var index = [];
+      var sections = document.querySelectorAll('section[data-register]');
+      for (var s = 0; s < sections.length; s++) {
+        var sec = sections[s];
+        var title = sec.getAttribute('data-register-title') || '';
+        var cards = sec.querySelectorAll('article[data-record-card]');
+        for (var i = 0; i < cards.length; i++) {
+          var card = cards[i];
+          var body = card.querySelector('.record-body');
+          var kindEl = card.querySelector('.record-meta');
+          index.push({
+            id: card.getAttribute('data-record-card') || card.id || '',
+            kind: card.getAttribute('data-kind') || '',
+            kindLabel: ((kindEl && kindEl.textContent) || '').replace(/\s+/g, ' ').trim(),
+            domain: (card.getAttribute('data-domain') || '').replace(/_/g, ' '),
+            text: ((body && body.textContent) || '').replace(/\s+/g, ' ').trim(),
+            reg: s,
+            regTitle: title,
+          });
+        }
+      }
+      if (!index.length) return;
+
+      var reduceMotion =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      root.hidden = false;
+
+      function escapeHtml(v) {
+        return String(v)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function matches(rec, q) {
+        return (
+          rec.id.toLowerCase().indexOf(q) >= 0 ||
+          rec.domain.toLowerCase().indexOf(q) >= 0 ||
+          rec.kindLabel.toLowerCase().indexOf(q) >= 0 ||
+          rec.text.toLowerCase().indexOf(q) >= 0
+        );
+      }
+
+      function close(clearValue) {
+        results.hidden = true;
+        results.innerHTML = '';
+        status.textContent = '';
+        if (clearValue) input.value = '';
+      }
+
+      function render(q) {
+        var hits = [];
+        for (var i = 0; i < index.length; i++) {
+          if (matches(index[i], q)) hits.push(index[i]);
+        }
+        results.hidden = false;
+        if (!hits.length) {
+          results.innerHTML =
+            '<p class="finder-empty">No record on this page matches. Nothing was hidden — the registers below are unchanged.</p>';
+          status.textContent = 'No matching records.';
+          return;
+        }
+        // Register order is DOM order; groups are emitted in that order and never merged.
+        var html = '';
+        var shown = 0;
+        var limit = 40;
+        for (var r = 0; r < sections.length && shown < limit; r++) {
+          var group = hits.filter(function (h) {
+            return h.reg === r;
+          });
+          if (!group.length) continue;
+          var gid = 'record-finder-group-' + r;
+          html +=
+            '<p class="finder-group" id="' + gid + '">' + escapeHtml(group[0].regTitle) + '</p>';
+          html += '<ul class="finder-list" aria-labelledby="' + gid + '">';
+          for (var g = 0; g < group.length && shown < limit; g++, shown++) {
+            var rec = group[g];
+            var snippet = rec.text.length > 110 ? rec.text.slice(0, 110) + '…' : rec.text;
+            html +=
+              '<li><a class="finder-item k-' +
+              escapeHtml(rec.kind) +
+              '" href="#' +
+              encodeURIComponent(rec.id) +
+              '" data-finder-target="' +
+              escapeHtml(rec.id) +
+              '"><span class="fid mono">' +
+              escapeHtml(rec.id) +
+              '</span><span class="fdomain mono">' +
+              escapeHtml(rec.domain) +
+              '</span><span class="ftext">' +
+              escapeHtml(snippet) +
+              '</span></a></li>';
+          }
+          html += '</ul>';
+        }
+        if (hits.length > shown) {
+          html +=
+            '<p class="finder-empty">' +
+            (hits.length - shown) +
+            ' more match — keep typing to narrow.</p>';
+        }
+        results.innerHTML = html;
+        status.textContent =
+          hits.length === 1 ? '1 matching record.' : hits.length + ' matching records.';
+      }
+
+      function goTo(id) {
+        var target = document.getElementById(id);
+        if (!target) return;
+        close(true);
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        try {
+          target.focus({ preventScroll: true });
+        } catch (e) {
+          target.focus();
+        }
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        target.classList.remove('record-flash');
+        void target.offsetWidth;
+        target.classList.add('record-flash');
+        window.setTimeout(function () {
+          target.classList.remove('record-flash');
+        }, 2000);
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', '#' + id);
+        }
+      }
+
+      function refresh() {
+        var q = input.value.trim().toLowerCase();
+        if (!q) {
+          close(false);
+          return;
+        }
+        render(q);
+      }
+
+      input.addEventListener('input', refresh);
+
+      // Closing by clicking elsewhere keeps the typed query (deliberately — it is not
+      // a submitted search), so coming back to the field has to re-open its results.
+      // Without this the input looks live but is inert until the query is edited.
+      input.addEventListener('focus', function () {
+        if (results.hidden) refresh();
+      });
+      input.addEventListener('click', function () {
+        if (results.hidden) refresh();
+      });
+
+      results.addEventListener('click', function (ev) {
+        var link = ev.target && ev.target.closest ? ev.target.closest('[data-finder-target]') : null;
+        if (!link) return;
+        ev.preventDefault();
+        goTo(link.getAttribute('data-finder-target'));
+      });
+
+      function items() {
+        return Array.prototype.slice.call(results.querySelectorAll('[data-finder-target]'));
+      }
+
+      root.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' || ev.key === 'Esc') {
+          if (!results.hidden || input.value) {
+            close(true);
+            input.focus();
+            ev.stopPropagation();
+          }
+          return;
+        }
+        if (ev.key !== 'ArrowDown' && ev.key !== 'ArrowUp') return;
+        var list = items();
+        if (!list.length) return;
+        var at = list.indexOf(document.activeElement);
+        ev.preventDefault();
+        if (at < 0) {
+          list[ev.key === 'ArrowDown' ? 0 : list.length - 1].focus();
+          return;
+        }
+        var next = ev.key === 'ArrowDown' ? at + 1 : at - 1;
+        if (next < 0) {
+          input.focus();
+          return;
+        }
+        if (next >= list.length) next = list.length - 1;
+        list[next].focus();
+      });
+
+      document.addEventListener('click', function (ev) {
+        if (ev.target && ev.target.closest && ev.target.closest('#record-finder')) return;
+        close(false);
+      });
+    }
+  })();
+</script>

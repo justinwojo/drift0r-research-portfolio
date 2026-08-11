@@ -1,9 +1,23 @@
 ---
-import type { Claim } from '../lib/data';
-import { kindMeta, reviewMeta } from '../lib/data';
-import Badge from './Badge.astro';
+/**
+ * Compact claim record card (/case/ only).
+ *
+ * Layout follows the approved redesign mockups:
+ * - B: one mono header line (id · kind · domain · verification · clinician review),
+ *   statement in serif, notes + source trail folded into inline expanders.
+ * - A1: claim-specific corrections render as ID-only pills whose full title reaches
+ *   hover/focus users through the shared record-preview tooltip. The same titles are
+ *   ALSO rendered server-side in a collapsed <details>, so touch users (where the
+ *   tooltip runtime deliberately suppresses hover, J.2.1) lose nothing and essential
+ *   text is never tooltip-only.
+ * - A3: domain-wide notices never render as per-claim pills; they collapse into one
+ *   quiet expander naming the domain they apply to.
+ */
+import type { Claim, CorrectionRef } from '../lib/data';
+import { kindMeta, reviewMeta, getSiteMode } from '../lib/data';
 import VerificationMeter from './VerificationMeter.astro';
 import SourceTrail from './SourceTrail.astro';
+import { correctionPreviewFromCorrection, recordPreviewDataAttrs } from '../lib/claimPreview';
 import { withBase } from '../lib/paths';
 
 interface Props {
@@ -17,26 +31,53 @@ const isInactive = lifecycle === 'retired' || lifecycle === 'superseded';
 const changelogHref = claim.changelog_entry
   ? withBase(`/changelog/#${claim.changelog_entry}`)
   : withBase('/changelog/');
+
+const domainLabel = (claim.medical_domain || 'unspecified').replace(/_/g, ' ');
+
+/**
+ * Publication builds only ever contain approved claims, so the flag is noise there.
+ * Preview builds keep it, and any claim that is somehow not approved keeps it in every
+ * mode — defense in depth, so a false value can never be hidden by the compact layout.
+ */
+const showApproval = getSiteMode() !== 'publication' || claim.public_approved !== true;
+
+const specificCorrections: CorrectionRef[] = claim.corrections_claim_specific || [];
+const domainCorrections: CorrectionRef[] = claim.corrections_domain_wide || [];
+
+const correctionHref = (c: CorrectionRef) => withBase(`/changelog/#${c.id}`);
+const correctionAttrs = (c: CorrectionRef) =>
+  recordPreviewDataAttrs(correctionPreviewFromCorrection(c));
+const correctionStatus = (c: CorrectionRef) => (c.status || '').replace(/_/g, ' ');
 ---
 
-<article class={`record kind-${claim.kind}`} id={claim.id} aria-labelledby={`${claim.id}-title`}>
-  <div class="record-head">
+<article
+  class={`record record--compact kind-${claim.kind}`}
+  id={claim.id}
+  data-record-card={claim.id}
+  data-kind={claim.kind}
+  data-domain={claim.medical_domain}
+  aria-labelledby={`${claim.id}-title`}
+>
+  <div class="record-head record-head--compact mono">
     <span class="record-id">{claim.id}</span>
-    <span class="mono" style="font-size: 12px; color: var(--muted);">{claim.medical_domain}</span>
-    <span class="mono" style="font-size: 12px; color: var(--muted);">
-      public_approved: {String(claim.public_approved)}
+    <span class="record-meta">
+      <span class="g" aria-hidden="true">{kind.glyph}</span>{' '}{kind.label}
+    </span>
+    <span class="record-meta">{domainLabel}</span>
+    <VerificationMeter status={claim.verification_status} />
+    <span class="record-meta">
+      <span class="g" aria-hidden="true">{review.glyph}</span>{' '}Clinician: {review.label}
     </span>
     {
-      isInactive && (
-        <span class="mono" style="font-size: 12px; font-weight: 700;">
-          {lifecycle}
-        </span>
+      showApproval && (
+        <span class="record-meta">public_approved: {String(claim.public_approved)}</span>
       )
     }
+    {isInactive && <span class="record-lifecycle">{lifecycle}</span>}
   </div>
   {
     isInactive && (
-      <div class="callout caution" style="margin: 8px 0 10px;" role="note">
+      <div class="callout caution record-callout" role="note">
         <strong class="legend-label">
           {lifecycle === 'superseded' ? 'Superseded' : 'Retired'} record
         </strong>
@@ -65,41 +106,88 @@ const changelogHref = claim.changelog_entry
       </div>
     )
   }
-  <div class="record-body" id={`${claim.id}-title`}>{claim.public_statement}</div>
-  {claim.notes && <p class="record-note">{claim.notes}</p>}
-  <div class="badge-row">
-    <Badge glyph={kind.glyph} label={kind.label} css={kind.css} />
-    <VerificationMeter status={claim.verification_status} />
-    <Badge glyph={review.glyph} label={`Clinician: ${review.label}`} />
-    {
-      claim.corrections.map((c) => (
-        <a href={withBase(`/changelog/#${c.id}`)} style="text-decoration: none;">
-          <Badge glyph="◇" label={`${c.id}: ${c.title}`} css="corr" />
-        </a>
-      ))
-    }
+  <div class="record-body record-body--compact" id={`${claim.id}-title`}>
+    {claim.public_statement}
   </div>
   {
-    claim.corrections.length > 0 && (
-      <p class="record-note" style="margin-top: 10px;">
-        Correction / supersession notices:{' '}
-        {claim.corrections.map((c, i) => (
-          <>
-            {i > 0 ? ', ' : null}
-            <a class="mono" href={withBase(`/changelog/#${c.id}`)}>
-              {c.id}
-            </a>
-          </>
+    specificCorrections.length > 0 && (
+      <div class="cor-row">
+        <span class="cor-label">Corrections to this record</span>
+        {specificCorrections.map((c) => (
+          <a class="cor-pill mono" href={correctionHref(c)} {...correctionAttrs(c)}>
+            <span class="g" aria-hidden="true">
+              ◇
+            </span>
+            {c.id}
+          </a>
         ))}
-        {' · '}
-        <a href={withBase('/changelog/')}>full changelog</a>
-      </p>
+      </div>
     )
   }
-  <details style="margin-top: 12px;">
-    <summary style="min-height: 44px; display: flex; align-items: center; cursor: pointer; font-family: var(--mono); font-size: 12.5px;">
-      Source trail (always available — expand for locator detail)
-    </summary>
-    <SourceTrail claim={claim} />
-  </details>
+  <div class="record-foot">
+    {
+      specificCorrections.length > 0 && (
+        <details class="record-exp cor-details">
+          <summary>Correction titles ({specificCorrections.length})</summary>
+          <div class="record-exp-body">
+            <ul class="cor-list">
+              {specificCorrections.map((c) => (
+                <li>
+                  <a class="mono" href={correctionHref(c)}>
+                    {c.id}
+                  </a>
+                  {': '}
+                  {c.title}
+                  {correctionStatus(c) ? <span class="cor-status mono"> — {correctionStatus(c)}</span> : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      )
+    }
+    {
+      domainCorrections.length > 0 && (
+        <details class="record-exp cor-details">
+          <summary>
+            {domainCorrections.length} domain-wide correction{' '}
+            {domainCorrections.length === 1 ? 'notice' : 'notices'} for {domainLabel}
+          </summary>
+          <div class="record-exp-body">
+            <p class="cor-domain-note">
+              Recorded for every claim in this domain, not raised against this record specifically.
+            </p>
+            <ul class="cor-list">
+              {domainCorrections.map((c) => (
+                <li>
+                  <a class="mono" href={correctionHref(c)}>
+                    {c.id}
+                  </a>
+                  {': '}
+                  {c.title}
+                  {correctionStatus(c) ? <span class="cor-status mono"> — {correctionStatus(c)}</span> : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      )
+    }
+    {
+      claim.notes && (
+        <details class="record-exp">
+          <summary>Note</summary>
+          <div class="record-exp-body">
+            <p class="record-note">{claim.notes}</p>
+          </div>
+        </details>
+      )
+    }
+    <details class="record-exp">
+      <summary>Source trail (always available)</summary>
+      <div class="record-exp-body">
+        <SourceTrail claim={claim} />
+      </div>
+    </details>
+  </div>
 </article>

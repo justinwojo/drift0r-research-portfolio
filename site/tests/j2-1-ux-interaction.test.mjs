@@ -579,4 +579,309 @@ describe('J.2.1 rendered UX interaction regression', {
       JSON.stringify({ overflows, generated: new Date().toISOString() }, null, 2),
     );
   });
+
+  it('/case/ redesign: no overflow at 320/360/390/430/480, expanders open without overflow', async () => {
+    const vps = [
+      { id: '320x568', w: 320, h: 568 },
+      { id: '360x800', w: 360, h: 800 },
+      { id: '390x844', w: 390, h: 844 },
+      { id: '430x932', w: 430, h: 932 },
+      { id: '480x800', w: 480, h: 800 },
+    ];
+    for (const vp of vps) {
+      await page.setViewport(vp.w, vp.h, 2);
+      await page.goto(`${base}/case/`);
+      await page.evaluate('window.scrollTo(0,0)');
+      await sleep(120);
+      const m = await page.evaluate(`(() => {
+        const d = document.documentElement;
+        function overflow() {
+          return Math.max(0, Math.max(d.scrollWidth, document.body.scrollWidth) - d.clientWidth);
+        }
+        const closed = overflow();
+        // Every inline expander on the page open at once is the worst case for reflow.
+        const exps = Array.from(document.querySelectorAll('details.record-exp'));
+        exps.forEach((e) => { e.open = true; });
+        const opened = overflow();
+        exps.forEach((e) => { e.open = false; });
+        const nav = document.querySelector('.jumpnav');
+        // The nav element is block-level, so its own right edge is just the content
+        // column and proves nothing. The chips are what can overflow: measure those
+        // plus the nav's own scroll extent.
+        const navLinkRight = nav
+          ? Array.from(nav.querySelectorAll('a')).reduce(
+              (mx, a) => Math.max(mx, a.getBoundingClientRect().right),
+              0,
+            )
+          : null;
+        const navScrollOverflow = nav ? Math.max(0, nav.scrollWidth - nav.clientWidth) : null;
+        return {
+          closed,
+          opened,
+          expCount: exps.length,
+          hasNav: !!nav,
+          navLinkRight,
+          navScrollOverflow,
+          navLinks: nav ? nav.querySelectorAll('a[href^="#reg-"]').length : 0,
+          domainHeads: document.querySelectorAll('h3.domain-h').length,
+          cards: document.querySelectorAll('article[data-record-card]').length,
+          vw: d.clientWidth,
+        };
+      })()`);
+      assert.ok(m.closed <= 1, `/case/ ${vp.id} overflow ${m.closed}`);
+      assert.ok(m.opened <= 1, `/case/ ${vp.id} overflow with expanders open ${m.opened}`);
+      assert.ok(m.hasNav, `/case/ ${vp.id} jump-nav present`);
+      assert.equal(m.navLinks, 5, `/case/ ${vp.id} jump-nav register links`);
+      assert.ok(m.expCount > 100, `/case/ ${vp.id} expanders exercised ${m.expCount}`);
+      assert.ok(
+        m.navLinkRight <= m.vw + 1,
+        `/case/ ${vp.id} jump-nav chip right edge ${m.navLinkRight} > ${m.vw}`,
+      );
+      assert.ok(
+        m.navScrollOverflow <= 1,
+        `/case/ ${vp.id} jump-nav scroll overflow ${m.navScrollOverflow}`,
+      );
+      assert.ok(m.domainHeads >= 10, `/case/ ${vp.id} domain subheads ${m.domainHeads}`);
+      assert.ok(m.cards > 50, `/case/ ${vp.id} record cards ${m.cards}`);
+      if (vp.id === '390x844') await page.screenshot(join(shotDir, 'case__390x844.png'));
+    }
+  });
+
+  it('/case/ finder: enhances in, groups by register, navigates and flashes, Escape clears', async () => {
+    await page.setViewport(1280, 900, 1);
+    await page.goto(`${base}/case/`);
+    const r = await page.evaluate(`(async () => {
+      const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+      const root = document.getElementById('record-finder');
+      const input = document.getElementById('record-finder-input');
+      const results = document.getElementById('record-finder-results');
+      if (!root || !input || !results) return { ok: false, reason: 'finder missing' };
+      const enhanced = !root.hidden;
+
+      const registerTitles = Array.from(document.querySelectorAll('section[data-register]'))
+        .map((s) => s.getAttribute('data-register-title'));
+
+      function type(v) {
+        input.value = v;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      // Broad term so several registers match — groups must stay in register order.
+      type('bone');
+      await wait(40);
+      const groups = Array.from(results.querySelectorAll('.finder-group')).map((e) => e.textContent.trim());
+      const itemsPerGroupOrdered = (() => {
+        const nodes = Array.from(results.children);
+        let lastGroupIdx = -1;
+        let ok = true;
+        for (const n of nodes) {
+          if (n.classList.contains('finder-group')) {
+            const idx = registerTitles.indexOf(n.textContent.trim());
+            if (idx <= lastGroupIdx) ok = false;
+            lastGroupIdx = idx;
+          }
+        }
+        return ok;
+      })();
+
+      // Keyboard: ArrowDown moves into the result list.
+      input.focus();
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+      await wait(30);
+      const focusedIsItem = !!(document.activeElement && document.activeElement.hasAttribute &&
+        document.activeElement.hasAttribute('data-finder-target'));
+
+      // Registers themselves are untouched by searching.
+      const sectionsVisible = Array.from(document.querySelectorAll('section[data-register]'))
+        .every((s) => !s.hidden && getComputedStyle(s).display !== 'none');
+      const cardsVisible = Array.from(document.querySelectorAll('article[data-record-card]'))
+        .every((c) => !c.hidden);
+
+      type('CLM-0003');
+      await wait(40);
+      const first = results.querySelector('[data-finder-target]');
+      const targetId = first && first.getAttribute('data-finder-target');
+      if (first) first.click();
+      await wait(60);
+      const card = targetId ? document.getElementById(targetId) : null;
+      const flashed = !!(card && card.classList.contains('record-flash'));
+      const closedAfterClick = results.hidden;
+      const clearedAfterClick = input.value === '';
+
+      type('bone');
+      await wait(40);
+      const openAgain = !results.hidden;
+
+      // Clicking away closes the results but deliberately keeps the query; coming back
+      // to the field must re-open them, not leave a live-looking but inert input.
+      // A real pointer click outside also blurs the field, which .click() does not do.
+      input.blur();
+      document.body.click();
+      await wait(30);
+      const closedByOutsideClick = results.hidden;
+      const keptQueryAfterOutsideClick = input.value === 'bone';
+      // Headless does not reliably dispatch focus events for a window that never had
+      // OS focus, so drive the return trip the way a pointer does: focus + click.
+      input.focus();
+      input.click();
+      await wait(40);
+      const reopenedOnFocus = !results.hidden;
+
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await wait(40);
+
+      return {
+        ok: true,
+        enhanced,
+        closedByOutsideClick,
+        keptQueryAfterOutsideClick,
+        reopenedOnFocus,
+        registerTitles,
+        groups,
+        itemsPerGroupOrdered,
+        focusedIsItem,
+        sectionsVisible,
+        cardsVisible,
+        targetId,
+        flashed,
+        closedAfterClick,
+        clearedAfterClick,
+        openAgain,
+        hiddenAfterEsc: results.hidden,
+        valueAfterEsc: input.value,
+        sectionCount: document.querySelectorAll('section[data-register]').length,
+      };
+    })()`);
+
+    assert.equal(r.ok, true, JSON.stringify(r));
+    assert.equal(r.enhanced, true, 'finder must be revealed by its own script');
+    assert.equal(r.sectionCount, 5, 'five register sections');
+    assert.ok(r.groups.length >= 2, `results must group by register, got ${JSON.stringify(r.groups)}`);
+    for (const g of r.groups) {
+      assert.ok(r.registerTitles.includes(g), `group "${g}" must be a register title`);
+    }
+    assert.equal(r.itemsPerGroupOrdered, true, 'groups must follow register order, never interleave');
+    assert.equal(r.focusedIsItem, true, 'ArrowDown moves focus into the results');
+    assert.equal(r.sectionsVisible, true, 'the finder must not hide register sections');
+    assert.equal(r.cardsVisible, true, 'the finder must not hide records');
+    assert.equal(r.targetId, 'CLM-0003');
+    assert.equal(r.flashed, true, 'navigating flashes the target card');
+    assert.equal(r.closedAfterClick, true);
+    assert.equal(r.clearedAfterClick, true);
+    assert.equal(r.openAgain, true);
+    assert.equal(r.closedByOutsideClick, true, 'clicking away closes the results');
+    assert.equal(r.keptQueryAfterOutsideClick, true, 'clicking away keeps the typed query');
+    assert.equal(r.reopenedOnFocus, true, 'returning focus re-opens results for a kept query');
+    assert.equal(r.hiddenAfterEsc, true, 'Escape closes results');
+    assert.equal(r.valueAfterEsc, '', 'Escape clears the query');
+  });
+
+  it('/case/ correction pills expose the tooltip and never hide the title from touch', async () => {
+    await page.setViewport(1280, 900, 1);
+    await page.goto(`${base}/case/`);
+    const r = await page.evaluate(`(async () => {
+      const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+      const pill = document.querySelector('a.cor-pill[data-record-preview^="COR-"]');
+      if (!pill) return { ok: false, reason: 'no correction pill' };
+      const id = pill.getAttribute('data-record-preview');
+      pill.focus();
+      pill.dispatchEvent(new FocusEvent('focusin', { bubbles: true, view: window }));
+      await wait(80);
+      const tip = document.getElementById('claim-preview-tooltip');
+      const tipText = tip ? tip.textContent : '';
+      const described = pill.getAttribute('aria-describedby');
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+      // The same title must also be readable with no hover at all. The tooltip payload
+      // is the source of truth for what hover shows, so compare against that exact text
+      // — an expander that kept the id and dropped the title has to fail here.
+      const tipTitle = (pill.getAttribute('data-record-excerpt') || '').replace(/…$/, '').trim();
+      const card = pill.closest('article[data-record-card]');
+      const details = Array.from(card.querySelectorAll('details.cor-details'));
+      const serverText = details.map((d) => d.textContent).join(' ').replace(/\\s+/g, ' ');
+      // Accessible name excludes the decorative glyph.
+      const label = Array.from(pill.childNodes)
+        .filter((n) => !(n.nodeType === 1 && n.getAttribute('aria-hidden') === 'true'))
+        .map((n) => n.textContent)
+        .join('')
+        .trim();
+      return {
+        ok: true,
+        id,
+        pillText: label,
+        tipText,
+        described,
+        tipTitle,
+        serverHasId: serverText.indexOf(id) >= 0,
+        serverHasTitle: tipTitle.length > 0 && serverText.indexOf(tipTitle) >= 0,
+        serverLen: serverText.length,
+      };
+    })()`);
+    assert.equal(r.ok, true, JSON.stringify(r));
+    assert.equal(r.pillText, r.id, 'pill text is the id only (mockup A1)');
+    assert.equal(r.described, 'claim-preview-tooltip');
+    assert.match(r.tipText || '', /Correction \/ supersession notice/i);
+    assert.ok((r.tipTitle || '').length > 10, `correction title payload too short: ${r.tipTitle}`);
+    assert.equal(r.serverHasId, true, 'collapsed expander carries the same correction server-side');
+    assert.equal(
+      r.serverHasTitle,
+      true,
+      `the full title "${r.tipTitle}" must be server-rendered, not tooltip-only`,
+    );
+    assert.ok(r.serverLen > 40, 'server-side correction text is substantive');
+  });
+
+  it('/case/ sticky jump-nav does not cover the register it jumps to', async () => {
+    for (const vp of [
+      { id: '481x900', w: 481, h: 900 },
+      { id: '768x900', w: 768, h: 900 },
+      { id: '1280x900', w: 1280, h: 900 },
+    ]) {
+      await page.setViewport(vp.w, vp.h, 1);
+      await page.goto(`${base}/case/`);
+      await page.evaluate('window.scrollTo(0,0)');
+      await sleep(120);
+      const r = await page.evaluate(`(async () => {
+        const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+        const link = document.querySelector('.jumpnav a[href="#reg-hypothesis"]');
+        const heading = document.getElementById('reg-hypothesis');
+        if (!link || !heading) return { ok: false, reason: 'jump target missing' };
+        link.click();
+        // scroll-behavior is smooth site-wide and this page is very tall, so the
+        // animation can run for seconds. Wait for scrollY to stop changing.
+        let last = -1;
+        let stable = 0;
+        for (let i = 0; i < 80 && stable < 4; i++) {
+          await wait(100);
+          if (window.scrollY === last) stable += 1;
+          else stable = 0;
+          last = window.scrollY;
+        }
+        const nav = document.querySelector('.jumpnav');
+        const navRect = nav.getBoundingClientRect();
+        const headRect = heading.getBoundingClientRect();
+        return {
+          ok: true,
+          navPosition: getComputedStyle(nav).position,
+          navTop: navRect.top,
+          navBottom: navRect.bottom,
+          headTop: headRect.top,
+          hash: location.hash,
+        };
+      })()`);
+      assert.equal(r.ok, true, `${vp.id}: ${JSON.stringify(r)}`);
+      assert.equal(r.navPosition, 'sticky', `${vp.id}: jump-nav is sticky above 480px`);
+      assert.ok(Math.abs(r.navTop) <= 1, `${vp.id}: stuck nav sits at the top, got ${r.navTop}`);
+      assert.equal(r.hash, '#reg-hypothesis');
+      assert.ok(
+        r.headTop >= r.navBottom - 1,
+        `${vp.id}: register heading at ${r.headTop} is under the stuck nav (bottom ${r.navBottom})`,
+      );
+      // …and the offset must not be so large the heading is pushed off-screen.
+      assert.ok(
+        r.headTop < vp.h / 2,
+        `${vp.id}: scroll offset overshoots, heading at ${r.headTop}`,
+      );
+    }
+  });
 });

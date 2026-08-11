@@ -94,12 +94,18 @@ export const REPLACEMENTS: Array<[RegExp, Replacement]> = [
   // is framed as history. Same gate as the dose rule: historical record keeps the name, anything
   // else keeps the pre-v0.4.0 generalisation.
   // Do not fire mid-hyphenated tokens (e.g. historical-clomiphene-response).
+  //
+  // A preceding determiner is part of the match on purpose. The generic phrases carry their
+  // own article, so replacing the bare drug name inside "over the anastrozole years" produced
+  // "over the an aromatase inhibitor years" — reachable public copy. A replacement callback
+  // can only rewrite what the pattern matched, so the determiner has to be inside the match
+  // for drugNameReplacer to be able to reconcile it. See drugNameReplacer for the rules.
   [
-    /(?<![A-Za-z0-9-])clomiphene(?![A-Za-z0-9-])/gi,
+    /(?<![A-Za-z0-9-])(?:(a|an|the)\s+)?clomiphene(?![A-Za-z0-9-])/gi,
     drugNameReplacer('a selective estrogen-receptor modulator'),
   ],
   [
-    /(?<![A-Za-z0-9-])anastrozole(?![A-Za-z0-9-])/gi,
+    /(?<![A-Za-z0-9-])(?:(a|an|the)\s+)?anastrozole(?![A-Za-z0-9-])/gi,
     drugNameReplacer('an aromatase inhibitor'),
   ],
 ];
@@ -204,14 +210,51 @@ export function isPrescriptive(text: string): boolean {
   );
 }
 
+/** The article a generic phrase carries ("an aromatase inhibitor" → "an"). */
+const LEADING_ARTICLE = /^(a|an|the)\s+/i;
+
+/**
+ * Replace a drug name with its generic description, reconciling determiners.
+ *
+ * The pattern optionally captures the determiner in front of the drug name, so the callback
+ * arguments are (match, article, offset, full) — the article is `undefined` when the group did
+ * not participate. Reconciliation rules:
+ *
+ *  - Keeping the name (attributed historical record, DEC-0039) returns the match verbatim, so a
+ *    captured determiner is carried through untouched.
+ *  - Generalising with a captured "the" keeps "the" and drops the generic phrase's own article:
+ *    "the anastrozole years" → "the aromatase inhibitor years", not "the an aromatase inhibitor
+ *    years". A definite article in the source is a deliberate reference to a specific episode
+ *    and survives generalisation; the phrase's indefinite article is the part that is wrong
+ *    there, so it is the part that goes.
+ *  - Generalising with a captured "a"/"an" uses the generic phrase's own article, which is the
+ *    one that agrees with the phrase's first sound ("an anastrozole" → "an aromatase inhibitor",
+ *    "a anastrozole" → "an aromatase inhibitor").
+ *  - Sentence-initial capitalisation of the determiner is preserved.
+ */
 function drugNameReplacer(generic: string): Replacement {
   return (match: string, ...args: unknown[]) => {
-    const offset = typeof args[0] === 'number' ? args[0] : 0;
-    const full = typeof args[1] === 'string' ? args[1] : '';
-    if (isPrescriptive(full)) return generic;
+    const article = typeof args[0] === 'string' ? args[0] : '';
+    const offset = typeof args[1] === 'number' ? args[1] : 0;
+    const full = typeof args[2] === 'string' ? args[2] : '';
+    const generalised = withArticle(generic, article);
+    if (isPrescriptive(full)) return generalised;
     if (isHistoricalRecord(sentenceAround(full, offset))) return match;
-    return generic;
+    return generalised;
   };
+}
+
+/** `generic` re-articled against the determiner captured from the source, if any. */
+function withArticle(generic: string, article: string): string {
+  if (!article) return generic;
+  const own = generic.match(LEADING_ARTICLE)?.[1] ?? '';
+  const determiner = article.toLowerCase() === 'the' ? 'the' : own;
+  const bare = generic.replace(LEADING_ARTICLE, '');
+  const out = determiner ? `${determiner} ${bare}` : bare;
+  // "The anastrozole years began…" must not become "the aromatase inhibitor years began…".
+  return article[0] === article[0].toUpperCase() && article[0] !== article[0].toLowerCase()
+    ? out[0].toUpperCase() + out.slice(1)
+    : out;
 }
 
 /**

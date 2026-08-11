@@ -456,9 +456,8 @@ section.page-section ul li {
   border: var(--b-firm);
   border-left: 4px solid var(--ink);
   background: var(--card);
-  padding: 20px 22px;
-  margin: 28px 0 0;
-  max-width: 74ch;
+  padding: 14px 20px;
+  margin: 24px 0 0;
 }
 
 .disclaimer h2,
@@ -2021,6 +2020,37 @@ a.mono,
   padding: 14px 16px;
   margin: 20px 0;
   max-width: 70ch;
+}
+
+/* Compact pre-content strips (/case/ hero): one line each, tight rhythm. */
+.callout--strip {
+  padding: 8px 14px;
+  margin: 10px 0 0;
+  max-width: none;
+}
+
+.callout--strip p {
+  margin: 0;
+}
+
+.scope-details > summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 24px;
+}
+
+.scope-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.scope-details > summary::before {
+  content: '▸';
+  font-size: 10px;
+  margin-right: 6px;
+}
+
+.scope-details[open] > summary::before {
+  content: '▾';
 }
 
 .callout.caution {

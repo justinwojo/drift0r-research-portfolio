@@ -11,23 +11,23 @@ meta:
   inventory_extraction_base_commit: 6c6a49d2d258524c1a8d9c80d4b159dfa914ea2c
   release_content_commit_ref: site/src/data/release.yaml#base_commit
   evidence_pack_version: v1+v2
-  purpose: Public research-preview claim inventory (103 approved A/B/C rows; do_not_publish omitted)
+  purpose: Public research-preview claim inventory (109 approved A/B/C rows; do_not_publish omitted)
   not_medical_advice: true
-  claim_count: 103
+  claim_count: 109
   tier_counts:
-    Tier A: 87
-    Tier B: 14
+    Tier A: 92
+    Tier B: 15
     Tier C: 2
   kind_counts:
     hypothesis: 8
     interpretation: 4
-    observed_fact: 55
-    reported_history: 15
+    observed_fact: 60
+    reported_history: 16
     research_question: 21
   verification_counts:
     contested: 1
     not_verified: 21
-    partially_verified: 81
+    partially_verified: 87
   schema_note: Fields follow ROADMAP §8.1 plus public_tier/triage for M1 §8.4
   public_export: true
   withheld_do_not_publish_count: 0
@@ -3377,4 +3377,211 @@ claims:
     given here by its correct spelling. No dose, schedule or product name is recorded, because none is
     stated. Nothing here is a recommendation about either treatment. See UQ-0018 and the acquisition
     asks for the dated medication list that would close this.
+  triage: Tier B
+- id: CLM-0106
+  statement: >-
+    The endocrine summary carries a hypothalamic-pituitary-adrenal screen across three draw dates:
+    morning serum cortisol 19.7 µg/dL on 2021-03-15 and 20.4 µg/dL on 2025-10-01 against a printed
+    4.0-22.0 interval, 24-hour urine free cortisol 22.8 µg/24h on 2025-09-30 against an upper limit
+    of 60, and plasma ACTH 19.4 pg/mL on 2021-03-15 and 11 pg/mL on 2025-10-01 against 6-50. The
+    summary's own reading is "HPA axis intact: AM cortisol high-normal, 24-h urine free cortisol
+    normal, ACTH normal - no Cushing's or adrenal insufficiency signal."
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: endocrine
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Adrenal, Pituitary & Growth Axis table and interpretation line, p.2
+    record_date: '2021-03-15 to 2025-10-01'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Published because the public tree previously carried no cortisol testing at all, and community
+    issue #3 read that tree and reasonably reported the axis as never screened - the results existed
+    only in the private ledger. Both morning cortisol values sit high in their interval - 19.7 and
+    20.4 against a ceiling of 22.0 - which is what the summary's "high-normal" refers to. What this
+    row does not license: two morning
+    draws and a single urine free cortisol do not exclude cyclic or mild autonomous hypercortisolism,
+    and no dexamethasone-suppression or late-night salivary cortisol result appears anywhere in the
+    compiled record. The ruled-out register entry carries that residual explicitly.
+  triage: Tier A
+- id: CLM-0107
+  statement: >-
+    The endocrine summary's iron-studies table carries two complete panels, 2021-03-15 and
+    2022-09-16: serum iron 84 then 107 µg/dL against 50-180, total iron-binding capacity 243 then
+    249 µg/dL against 250-450 - below range on both draws - transferrin saturation 35 then 43
+    percent against 20-48, and ferritin 398 then 264 ng/mL against a printed 38-380 interval. The
+    summary's own gloss: "Iron replete: normal iron/saturation with high-normal, stable ferritin
+    (also 315 on 10/01/2025); isolated low TIBC fits an iron-replete/inflammatory pattern, not
+    deficiency."
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: metabolic
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Iron studies table and gloss, Hematology / Iron Studies & Lipids section
+    record_date: '2021-03-15 to 2025-10-01'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Published because the public tree previously carried no iron values, and community issue #3
+    correctly named that absence while raising hereditary hemochromatosis - a differential whose
+    screen is exactly this panel. One tension is preserved rather than smoothed: the 2021 ferritin
+    of 398 sits above the table's own 38-380 interval while the narrative calls the series
+    high-normal; CLM-0108 carries the rheumatology summary's footnote that the upper limit differed
+    by laboratory (400 at the 2025 laboratory, 380 at the 2026 one). Whether these saturations
+    exclude iron overload is a clinical judgment this row does not make; no HFE genotyping appears
+    anywhere in the record.
+  triage: Tier A
+- id: CLM-0108
+  statement: >-
+    The rheumatology summary's iron section records ferritin 466 ng/mL on 2025-08-05 and 450 ng/mL
+    on 2026-01-15, both flagged high against its printed interval of approximately 30-400, falling
+    to 294 ng/mL - normal - by 2026-06-19. The one dated full panel, 2025-08-05, shows serum iron 91
+    µg/dL against 38-169, iron saturation 38 percent against 15-55, total iron-binding capacity 239
+    µg/dL below its 250-450 interval, and UIBC 148 µg/dL against 111-343. The summary's own gloss:
+    ferritin "was elevated across 2025 and normalized by mid-2026; iron indices otherwise
+    unremarkable." Its footnote records the ferritin upper limit as 400 at the 2025 laboratory and
+    380 at the 2026 laboratory, and notes the 2021 value of 398 as on record.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: rheumatology
+  patient_sources:
+  - source_id: rheum_pdf
+    path: evidence/sources/Drift0r_Rheumatology_Lab_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Iron studies & ferritin table with laboratory footnote
+    record_date: '2025-08-05 to 2026-06-19'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    The transient 2025 ferritin elevation has no stated cause in either summary, and this row does
+    not supply one - ferritin rises with inflammation as readily as with iron loading, and the same
+    2025 draw carries the normal saturation that argues against the latter. Read alongside CLM-0107;
+    the two rows are the whole documented iron record.
+  triage: Tier A
+- id: CLM-0109
+  statement: >-
+    The endocrine summary's one-off studies table records an acetylcholine-receptor antibody of
+    <0.30 nmol/L on 2022-09-16 against a reference of <=0.30, read as negative.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: neurology
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Additional & One-off Studies table, acetylcholine-receptor antibody row
+    record_date: '2022-09-16'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P2
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Published because community issue #3 observed that the speech symptom had no hypothesis anywhere
+    in the analysis and asked whether neuromuscular-junction disease had been considered; the record
+    turns out to hold this one screen. What it does and does not reach: a negative
+    acetylcholine-receptor antibody bears on classic seropositive myasthenia gravis, and MuSK and
+    LRP4 antibodies and single-fiber EMG appear nowhere in the compiled record. Whether the speech
+    limitation is fatigable - worse with use, recovering with rest - is not documented in any
+    summary. The ruled-out register entry carries both residuals.
+  triage: Tier A
+- id: CLM-0110
+  statement: >-
+    Serum total CO2 sits within its printed reference interval on every draw in the compiled record:
+    23, 26 and 23 mmol/L on 2021-03-15, 2022-09-16 and 2025-10-01 against 20-32 in the endocrine
+    summary's metabolic panel, and 21 mmol/L on 2025-08-05 against 20-29 in the urology/nephrology
+    summary's serum chemistry. No below-range value appears anywhere in the summaries.
+  kind: observed_fact
+  verification_status: partially_verified
+  medical_domain: renal_bone
+  patient_sources:
+  - source_id: endo_pdf
+    path: evidence/sources/Drift0r_Endocrine_Summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Comprehensive metabolic panel, CO2 row, p.2
+    record_date: '2021-03-15 to 2025-10-01'
+  - source_id: uro_pdf
+    path: evidence/sources/Drift0r_urology_nephrology_summary.pdf
+    source_class: patient_compiled_summary
+    is_transcription: true
+    page_or_lines: Serum chemistry (08/05/2025), CO2 (total) row, p.3
+    record_date: '2025-08-05'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P1
+  public_tier: A
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Carried as the serum half of the distal renal tubular acidosis bounding now registered in H3:
+    that condition is defined by a normal-anion-gap metabolic acidosis, and no acidosis is
+    documented. The urine half is CLM-0088's citrate of 784 mg/24h against a lower limit of 400,
+    where the condition characteristically drives citrate low. Neither value excludes an incomplete
+    form - H3 states that residual and refers it to clinicians rather than closing it.
+  triage: Tier A
+- id: CLM-0111
+  statement: >-
+    In the public video the patient attributes his speech limitation to his jaw - "my jaw joint is
+    similarly agitated, and it limits my ability to speak," the joint pain having recently spread
+    there - and near the end of the same recording says "I'm getting very tired ... I'm getting less
+    clear with my speech and more rundown." Both are the patient's own statements. No clinical
+    evaluation of the speech symptom appears in any compiled summary.
+  kind: reported_history
+  verification_status: partially_verified
+  medical_domain: neurology
+  patient_sources:
+  - source_id: transcript
+    path: evidence/sources/transcript-youtube-krP9EGyLCRE.txt
+    source_class: video_statement
+    is_transcription: true
+    page_or_lines: 00:08:46 and 01:01:36
+    record_date: '2026-08-03'
+  literature_refs: []
+  interpretation_owner: research_team
+  public_priority: P2
+  public_tier: B
+  public_approved: true
+  clinician_review_status: not_reviewed
+  last_checked: '2026-08-10'
+  notes: >-
+    Recorded because community issue #3 flagged the speech symptom as carrying no hypothesis
+    anywhere in the analysis. The two statements pull in different directions, and this row
+    deliberately carries both: a mechanical jaw attribution, and a same-video observation of speech
+    becoming less clear with fatigue over an hour of recording. Whether the limitation is fatigable
+    in the formal neuromuscular sense - worse with sustained use, recovering with rest - is not
+    documented anywhere, and ordinary end-of-day tiredness would produce the second statement just
+    as well. The ruled-out register's myasthenia entry states what the single 2022 antibody screen
+    does and does not reach. This row asserts what was said, not which reading is right. The
+    video's automatic captions insert filler syllables ("uh") inside both remarks; the quotations
+    omit them and change no words - the same caption-artifact handling CLM-0105 applies to the
+    drug-name spelling.
   triage: Tier B

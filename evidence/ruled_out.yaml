@@ -35,7 +35,7 @@
 #
 # `still_open: null` renders as "—" (nothing further flagged on the present record).
 
-as_of: '2026-08-07'
+as_of: '2026-08-10'
 
 standing_caveat: >-
   A negative test is not the same as an impossibility. These entries record what was run
@@ -167,3 +167,61 @@ entries:
       record supports is the reversal of that specific label — not a finding that no
       psychiatric factor plays any part. Treating the medical findings as primary is this
       project's research position, not a clinical adjudication.
+
+  # The next three entries were prompted by community issue #3 (2026-08-08), which read the
+  # public tree and reported these screens absent from the record. They were not absent from
+  # the record — they were absent from the published record. Each is exactly the kind of
+  # commonly-raised differential this register exists to answer, so the results move here
+  # from the private ledger under DEC-0039 provenance scoping.
+  - suggestion: Cushing's syndrome / endogenous hypercortisolism
+    claim_ids: [CLM-0106, CLM-0003, CLM-0020, CLM-0022]
+    tested: Morning serum cortisol (twice), 24-hour urine free cortisol, plasma ACTH (twice)
+    when: '2021 – 2025'
+    result: >-
+      All within reference — morning cortisol 19.7 and 20.4 µg/dL (ref 4.0–22.0), urine free
+      cortisol 22.8 µg/24h (ref ≤60), ACTH 19.4 and 11 pg/mL (ref 6–50). The endocrine
+      summary's own reading is "no Cushing's or adrenal insufficiency signal."
+    still_open: >-
+      Both morning cortisol values sit high in their interval — 19.7 and 20.4 against a
+      ceiling of 22.0. Two morning draws
+      and one urine collection do not exclude cyclic or mild autonomous cortisol excess — the
+      screens directed at that (overnight dexamethasone suppression, late-night salivary
+      cortisol) appear nowhere in the record. That absence matters here because the record
+      also carries severe lumbar-spine bone loss, an off-therapy hormone pattern its own
+      summaries read as central, and a small 2021 pituitary enhancement focus not seen on
+      follow-up — the combination those screens exist to interrogate. No tally of past
+      prescribed glucocorticoid exposure appears in the summaries either.
+
+  - suggestion: Hereditary hemochromatosis / iron overload
+    claim_ids: [CLM-0107, CLM-0108]
+    tested: Full iron studies on three dated draws, ferritin serially through mid-2026
+    when: '2021 – 2026'
+    result: >-
+      Read by the endocrine summary as iron-replete, with the rheumatology summary calling
+      iron indices otherwise unremarkable. Transferrin saturation 35% and 43% (ref 20–48)
+      and 38% (ref 15–55) — never flagged high. Ferritin ran high-normal to transiently high
+      — 398 ng/mL against one table's 38–380 interval, then 466 in August 2025 and 450 in
+      January 2026 against ~30–400, settling to 294 by mid-2026 — with the rheumatology
+      summary noting the upper limit differed by laboratory (400 vs 380). TIBC sat below its
+      250–450 interval on all three dated panels, which the endocrine summary reads as
+      fitting an iron-replete or inflammatory pattern, not deficiency.
+    still_open: >-
+      No HFE genotyping appears in the record. The 2025 ferritin rise has no stated cause;
+      ferritin climbs with inflammation as readily as with iron loading, and the concurrent
+      normal saturation argues against loading without settling what it was.
+
+  - suggestion: Myasthenia gravis (for the speech and weakness symptoms)
+    claim_ids: [CLM-0109, CLM-0111]
+    tested: Acetylcholine-receptor antibody
+    when: '2022-09'
+    result: '<0.30 nmol/L against a reference of ≤0.30 — negative.'
+    still_open: >-
+      A negative acetylcholine-receptor antibody bears on classic seropositive myasthenia
+      only — MuSK and LRP4 antibodies and single-fiber EMG appear nowhere in the record, and
+      the draw predates the 2026 speech symptom by roughly four years. On that symptom the
+      record holds only the patient's own video statements, which pull in different
+      directions: he attributes it to his jaw joint, and near the end of the same recording
+      observes his speech getting less clear as he tires. Whether it is formally fatigable —
+      worse with minutes of use, recovering with rest — is the zero-cost observation no
+      summary documents, and it is what separates neuromuscular-junction territory from the
+      mechanical explanation.

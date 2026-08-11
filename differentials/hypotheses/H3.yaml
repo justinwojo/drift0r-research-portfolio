@@ -4,7 +4,8 @@ kind: module
 confidence: medium
 architecture_confidence: null
 module_confidence: medium
-summary: Ongoing calcium-flux research module (serial 24h urine Ca 283→254→333 mg/24h
+summary: >-
+  Ongoing calcium-flux research module (serial 24h urine Ca 283→254→333 mg/24h
   in a male; common male threshold often 300 mg/day or 4 mg/kg — 2 of 3 collections
   below 300; middle value 254 normal at performing lab ref 100–300 vs Litholink 40–250)
   plus high urine Na and missing formation markers; module not unifier. CTX alone
@@ -23,7 +24,16 @@ summary: Ongoing calcium-flux research module (serial 24h urine Ca 283→254→3
   to be inferred — the excess it reports is confined to the spine, while the low
   readings in this record appear at spine, hip and forearm at once, which is more than a
   stone-and-calcium mechanism has been shown to produce. Magnitude mismatch and incomplete
-  mechanism classification remain the other named counters.
+  mechanism classification remain the other named counters. Distal renal tubular acidosis —
+  the textbook differential for alkaline urine with high urine calcium and metabolic bone
+  disease, and until now never named anywhere in this record — is registered here as
+  considered and not favoured: the same stone-risk panel shows urine citrate 784 mg/24h
+  against a lower limit of 400 (CLM-0088) where that condition characteristically drives
+  citrate low, and serum total CO2 sits within its reference interval on every documented
+  draw (CLM-0110), where the classic form requires a metabolic acidosis. Neither value
+  excludes an incomplete form with preserved citrate; whether the alkaline-urine picture
+  warrants formal acidification testing is a clinician judgment this record refers rather
+  than closes.
 explains_claim_ids:
 - CLM-0015
 - CLM-0010
@@ -64,4 +74,8 @@ plain_summary: >-
   below the usual threshold — and never under the controlled conditions needed to read
   it. The markers that show whether new bone is being built do not appear anywhere in
   the test record, though that is not proof they were never drawn. This is a gap in the
-  documented workup rather than an established finding.
+  documented workup rather than an established finding. A kidney condition called distal
+  renal tubular acidosis, which can produce this same combination of alkaline urine,
+  urinary calcium loss and weakened bone, was considered here: two of its expected
+  signatures are absent from his results, so it is not favoured — though only a clinician
+  can judge whether its milder, incomplete form deserves a formal test.
